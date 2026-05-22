@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <!-- ============================================================
+       ALFIRAMA.ID — ROOT INDEX
+       Theme    : Futuristic Cyberpunk Workstation Aesthetic
+       Palette  : Navy/Cyber Black · Neon Blue/Cyan · Premium Gold
+       Version  : 1.0.0
+       ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Alfirama.ID — Satu Ekosistem. Sejuta Solusi Kreatif & Retail. Platform hybrid terpadu untuk Studio Desain, Percetakan, Grosir Retail, dan Komunitas Kreatif Banten." />
+  <meta name="theme-color" content="#0A0F1D" />
+  <title>Alfirama.ID — Futuristic Creative &amp; Retail Ecosystem</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="Alfirama.ID — Futuristic Creative & Retail Ecosystem" />
+  <meta property="og:description" content="Satu Ekosistem. Sejuta Solusi Kreatif & Retail." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://alfirama.id" />
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" type="image/png" href="assets/global/favicon.png" />
+
+  <!-- Google Fonts: Orbitron (Tech/Heading) + Montserrat (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Global Design System -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style id="dark-light-style">
+/* Light mode overrides */
+body.light-mode {
+  --bg-primary: #F0F2F8;
+  background-color: #F0F2F8 !important;
+}
+body.light-mode .cyber-bg,
+body.light-mode #hero,
+body.light-mode #ecosystem {
+  background: #E8ECF5 !important;
+}
+body.light-mode #navbar {
+  background: rgba(240,242,248,0.9) !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .nav-link { color: #1A1E2E !important; }
+body.light-mode .glass-panel {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .text-white { color: #0F172A !important; }
+body.light-mode p { color: rgba(15,23,42,0.7) !important; }
+body.light-mode .service-card {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+}
+body.light-mode .stat-card {
+  background: rgba(255,255,255,0.8) !important;
+}
+body.light-mode footer { background: #D8DCE8 !important; }
+body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
+
+</style>
+ 
+
+  <!-- Tailwind Custom Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'cyber-bg':    '#0A0F1D',
+            'cyber-void':  '#070A14',
+            'cyber-navy':  '#0F172A',
+            'cyber-card':  '#13192B',
+            'neon-cyan':   '#00F0FF',
+            'gold':        '#C9B26D',
+            'gold-light':  '#E2CC8E',
+            'gold-dark':   '#A38A47',
+          },
+          fontFamily: {
+            tech: ['Orbitron', 'sans-serif'],
+            body: ['Montserrat', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Page transition overlay */
+    #page-overlay {
+      position: fixed;
+      inset: 0;
+      background: #070A14;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    #page-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Mobile nav drawer */
+    #mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    /* Hero animated grid lines */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Scanline CRT overlay */
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.025) 3px,
+        rgba(0,0,0,0.025) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* Stat counter animate */
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(105deg, #FFFFFF 0%, #E2CC8E 40%, #C9B26D 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Team card neon ring on hover */
+    .team-card {
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 24px rgba(0,240,255,0.2), 0 16px 40px rgba(0,0,0,0.5);
+    }
+    .team-card:hover .team-avatar-ring {
+      box-shadow: 0 0 0 2px #00F0FF, 0 0 18px rgba(0,240,255,0.5);
+    }
+    .team-avatar-ring {
+      transition: box-shadow 0.35s ease;
+      box-shadow: 0 0 0 2px rgba(201,178,109,0.3);
+    }
+
+    /* Map overlay */
+    .map-wrapper {
+      position: relative;
+    }
+    .map-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(7,10,20,0.3) 0%, rgba(0,240,255,0.03) 100%);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* Social icon hover */
+    .social-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .social-icon:hover {
+      color: #00F0FF;
+      border-color: rgba(0,240,255,0.4);
+      background: rgba(0,240,255,0.07);
+      box-shadow: 0 0 14px rgba(0,240,255,0.35);
+    }
+
+    /* Gsap initial state */
+    .gsap-hidden {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    #how-it-works .gsap-hidden,
+#portfolio .gsap-hidden {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+    /* Neon corner decoration */
+    .corner-tl::before,
+    .corner-br::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: #00F0FF;
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .corner-tl::before {
+      top: 0; left: 0;
+      border-width: 2px 0 0 2px;
+    }
+    .corner-br::after {
+      bottom: 0; right: 0;
+      border-width: 0 2px 2px 0;
+    }
+    .skill-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.55rem;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.2s ease;
+  }
+  .skill-tag:hover {
+    color: rgba(0,240,255,0.7);
+    border-color: rgba(0,240,255,0.2);
+    background: rgba(0,240,255,0.05);
+  }
+  </style>
+  <meta property="og:image" content="https://alfirama.id/assets/global/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Alfirama.ID — Futuristic Creative & Retail Ecosystem" />
+</head>
+
+<body class="bg-cyber-bg text-white font-body antialiased overflow-x-hidden">
+
+<div id="floating-buttons" style="position:fixed;bottom:28px;right:24px;z-index:1000;display:flex;flex-direction:column;align-items:center;gap:12px;">
+ 
+  <!-- Back to Top -->
+  <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    aria-label="Kembali ke atas"
+    style="
+      width:44px;height:44px;border-radius:12px;border:1px solid rgba(0,240,255,0.25);
+      background:rgba(7,10,20,0.92);backdrop-filter:blur(12px);
+      color:#00F0FF;cursor:pointer;display:flex;align-items:center;justify-content:center;
+      opacity:0;transform:translateY(10px);
+      transition:opacity 0.3s ease,transform 0.3s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+      box-shadow:0 4px 20px rgba(0,0,0,0.4);
+    "
+    onmouseover="this.style.boxShadow='0 0 16px rgba(0,240,255,0.3),0 4px 20px rgba(0,0,0,0.4)';this.style.borderColor='rgba(0,240,255,0.5)';"
+    onmouseout="this.style.boxShadow='0 4px 20px rgba(0,0,0,0.4)';this.style.borderColor='rgba(0,240,255,0.25)';"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+ 
+  <!-- WhatsApp -->
+  <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi..."
+    target="_blank" rel="noopener noreferrer"
+    aria-label="Chat WhatsApp Alfirama"
+    id="wa-float-btn"
+    style="
+      width:52px;height:52px;border-radius:14px;
+      background:linear-gradient(135deg,#25D366,#128C7E);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 24px rgba(37,211,102,0.35),0 2px 8px rgba(0,0,0,0.4);
+      transition:transform 0.2s ease,box-shadow 0.2s ease;
+      position:relative;
+    "
+    onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(37,211,102,0.5),0 2px 8px rgba(0,0,0,0.4)';"
+    onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 24px rgba(37,211,102,0.35),0 2px 8px rgba(0,0,0,0.4)';"
+  >
+    <!-- Pulse ring -->
+    <span style="position:absolute;inset:-6px;border-radius:20px;border:2px solid rgba(37,211,102,0.4);animation:waPulse 2s ease-in-out infinite;"></span>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+    </svg>
+    <!-- Tooltip -->
+    <span style="
+      position:absolute;right:60px;top:50%;transform:translateY(-50%);
+      background:rgba(7,10,20,0.95);border:1px solid rgba(37,211,102,0.3);
+      color:white;font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;
+      padding:6px 12px;border-radius:8px;white-space:nowrap;
+      opacity:0;pointer-events:none;transition:opacity 0.2s ease;
+    " id="wa-tooltip">Chat Sekarang</span>
+  </a>
+ 
+</div>
+ 
+<style>
+@keyframes waPulse {
+  0%,100%{ transform:scale(1); opacity:0.6; }
+  50%{ transform:scale(1.15); opacity:0; }
+}
+</style>
+ 
+<script>
+// Back to top visibility
+window.addEventListener('scroll', function(){
+  const btn = document.getElementById('back-to-top');
+  if(window.scrollY > 400){
+    btn.style.opacity = '1';
+    btn.style.transform = 'translateY(0)';
+  } else {
+    btn.style.opacity = '0';
+    btn.style.transform = 'translateY(10px)';
+  }
+}, { passive:true });
+ 
+// WA tooltip hover
+const waBtn = document.getElementById('wa-float-btn');
+const waTip = document.getElementById('wa-tooltip');
+waBtn.addEventListener('mouseenter', ()=> waTip.style.opacity = '1');
+waBtn.addEventListener('mouseleave', ()=> waTip.style.opacity = '0');
+</script>
+
+<!-- ============================================================
+  FITUR 3 — COOKIE / NOTIF BANNER
+  POSISI: Paste tepat SEBELUM tag </body>
+  (tapi SETELAH blok floating buttons di atas)
+  ============================================================ -->
+<div id="cookie-banner" style="
+  position:fixed;bottom:0;left:0;right:0;z-index:9998;
+  padding:16px 24px;
+  background:rgba(7,10,20,0.97);
+  border-top:1px solid rgba(0,240,255,0.15);
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  transform:translateY(100%);
+  transition:transform 0.5s cubic-bezier(0.22,1,0.36,1);
+">
+  <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:260px;">
+    <div style="flex-shrink:0;width:36px;height:36px;border-radius:10px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.2);display:flex;align-items:center;justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <p style="font-family:'Montserrat',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.5;margin:0;">
+      Kami menggunakan cookie untuk meningkatkan pengalaman kamu di Alfirama.ID.
+      <a href="privacy.html" style="color:#00F0FF;text-decoration:none;font-weight:600;">Pelajari selengkapnya</a>
+    </p>
+  </div>
+  <div style="display:flex;gap:10px;flex-shrink:0;">
+    <button onclick="rejectCookies()"
+      style="padding:8px 18px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.45);font-family:'Montserrat',sans-serif;font-size:0.75rem;cursor:pointer;transition:all 0.2s ease;"
+      onmouseover="this.style.borderColor='rgba(255,255,255,0.25)';this.style.color='rgba(255,255,255,0.7)';"
+      onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.45)';"
+    >Tolak</button>
+    <button onclick="acceptCookies()"
+      style="padding:8px 20px;border-radius:8px;border:none;background:linear-gradient(105deg,#C9B26D,#E2CC8E);color:#070A14;font-family:'Orbitron',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s ease;box-shadow:0 0 16px rgba(201,178,109,0.3);"
+      onmouseover="this.style.boxShadow='0 0 24px rgba(201,178,109,0.5)';"
+      onmouseout="this.style.boxShadow='0 0 16px rgba(201,178,109,0.3)';"
+    >TERIMA</button>
+  </div>
+</div>
+ 
+<script>
+function acceptCookies(){
+  localStorage.setItem('alfirama_cookie','accepted');
+  document.getElementById('cookie-banner').style.transform = 'translateY(100%)';
+}
+function rejectCookies(){
+  localStorage.setItem('alfirama_cookie','rejected');
+  document.getElementById('cookie-banner').style.transform = 'translateY(100%)';
+}
+// Tampilkan banner kalau belum ada pilihan
+if(!localStorage.getItem('alfirama_cookie')){
+  setTimeout(()=>{
+    document.getElementById('cookie-banner').style.transform = 'translateY(0)';
+  }, 2000);
+}
+
+</script>
+
+
+  <!-- ============================================================
+       PAGE TRANSITION OVERLAY
+       ============================================================ -->
+       <div id="splash-screen" style="
+  position:fixed; inset:0; z-index:99999;
+  background:#040609;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:28px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+">
+  <!-- Grid lines -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,240,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;"></div>
+  <!-- Glow orb -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,240,255,0.08) 0%,transparent 70%);filter:blur(60px);pointer-events:none;"></div>
+ 
+  <div style="position:relative;z-index:1;text-align:center;">
+    <!-- Logo text -->
+    <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.5rem,4vw,2.5rem);letter-spacing:0.2em;margin-bottom:8px;">
+      <span style="color:#FFFFFF;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
+    </div>
+    <!-- Tagline -->
+    <p id="splash-status" style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.25em;color:rgba(0,240,255,0.6);margin-bottom:28px;">
+      INITIALIZING SYSTEM...
+    </p>
+    <!-- Loading bar container -->
+    <div style="width:260px;height:2px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;margin:0 auto 12px;">
+      <div id="splash-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00F0FF,#C9B26D);border-radius:2px;transition:width 0.4s ease;box-shadow:0 0 12px rgba(0,240,255,0.5);"></div>
+    </div>
+    <!-- Percentage -->
+    <p id="splash-pct" style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.2em;color:rgba(255,255,255,0.3);">0%</p>
+  </div>
+</div>
+ 
+<style>
+#splash-screen.hidden {
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+</style>
+ 
+<script>
+(function(){
+  const bar    = document.getElementById('splash-bar');
+  const pct    = document.getElementById('splash-pct');
+  const status = document.getElementById('splash-status');
+  const splash = document.getElementById('splash-screen');
+  const steps  = [
+    { p:20, t:'LOADING ASSETS...' },
+    { p:45, t:'CONNECTING ECOSYSTEM...' },
+    { p:70, t:'BUILDING INTERFACE...' },
+    { p:90, t:'ALMOST READY...' },
+    { p:100,t:'SYSTEM ONLINE ✓' },
+  ];
+  let i = 0;
+  function next(){
+    if(i >= steps.length){ 
+      setTimeout(()=>{
+        splash.classList.add('hidden');
+        /* ── BGM AUTOPLAY BYPASS ──
+           Triggered by user interaction (page load sequence acts as implicit
+           gesture after DOMContentLoaded fires). Play after splash fades. */
+        const bgm = document.getElementById('bgm-player');
+        if(bgm){
+          bgm.volume = 0.35; // mulai pelan, tidak mengagetkan
+          bgm.play().catch(()=>{
+            /* Fallback: jika browser masih blokir, coba lewat interaksi berikutnya */
+            document.addEventListener('click', function tryPlay(){
+              bgm.play();
+              document.removeEventListener('click', tryPlay);
+            }, { once: true });
+          });
+        }
+      }, 500);
+      return;
+    }
+    const s = steps[i++];
+    bar.style.width    = s.p + '%';
+    pct.textContent    = s.p + '%';
+    status.textContent = s.t;
+    setTimeout(next, i === steps.length ? 400 : 350);
+  }
+  setTimeout(next, 200);
+})();
+</script>
+  <div id="page-overlay" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       1. NAVBAR — Cyber Glassmorphism + Hubtown Nav Links
+       ============================================================ -->
+  <header id="navbar" class="navbar fixed top-0 left-0 right-0 z-50 px-6 lg:px-10 py-4 flex items-center justify-between transition-all duration-300">
+
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-3 flex-shrink-0 nav-transition-link" aria-label="Alfirama.ID Home">
+      <img
+        src="assets/global/logo.png"
+        alt="Alfirama Logo"
+        class="h-9 w-auto"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <!-- Fallback text logo if image not found -->
+      <span class="font-tech font-black text-lg tracking-widest hidden" style="display:none;">
+        <span style="color:#FFFFFF;">ALFIRAMA</span><span class="text-neon-cyan" style="color:#00F0FF;">.ID</span>
+      </span>
+      <!-- Always show text logo alongside image -->
+      <span class="font-tech font-black text-base tracking-widest leading-none">
+        <span style="color:#FFFFFF;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
+      </span>
+    </a>
+
+    <!-- Desktop Nav Links (center-right) -->
+    <nav class="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+      <a href="studio/index.html"  class="nav-link nav-transition-link">Studio</a>
+      <a href="print/index.html"   class="nav-link nav-transition-link">Print &amp; Apparel</a>
+      <a href="mart/index.html"    class="nav-link nav-transition-link">AlfiraMart</a>
+      <a href="space/index.html"   class="nav-link nav-transition-link">Space</a>
+      <a href="about.html"         class="nav-link nav-transition-link">Tentang</a>
+    </nav>
+
+    <!-- CTA + Mobile Hamburger -->
+    <div class="flex items-center gap-4">
+      <a href="login.html" class="btn btn-cyber-gold btn--sm nav-transition-link hidden sm:inline-flex">
+        Masuk / Daftar
+      </a>
+      
+      <!-- TOMBOL TOGGLE — paste di dalam <div class="flex items-center gap-4"> di navbar, sebelum tombol hamburger -->
+<button id="theme-toggle" onclick="toggleTheme()"
+  aria-label="Toggle dark/light mode"
+  class="hidden md:flex items-center justify-center"
+  style="
+    width:36px;height:36px;border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.04);
+    color:rgba(255,255,255,0.6);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  "
+  onmouseover="this.style.borderColor='rgba(0,240,255,0.3)';this.style.color='#00F0FF';"
+  onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)';"
+>
+  <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+
+
+
+      <!-- BGM MUTE/UNMUTE TOGGLE -->
+<button id="bgm-toggle" onclick="toggleBGM()"
+  aria-label="Toggle background music"
+  title="Toggle BGM"
+  class="flex items-center justify-center"
+  style="
+    width:36px;height:36px;border-radius:10px;
+    border:1px solid rgba(0,240,255,0.2);
+    background:rgba(0,240,255,0.05);
+    color:#00F0FF;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    position:relative;
+  "
+  onmouseover="this.style.borderColor='rgba(0,240,255,0.45)';this.style.background='rgba(0,240,255,0.1)';this.style.boxShadow='0 0 12px rgba(0,240,255,0.25)';"
+  onmouseout="this.style.borderColor='rgba(0,240,255,0.2)';this.style.background='rgba(0,240,255,0.05)';this.style.boxShadow='none';"
+>
+  <!-- Icon: Sound ON (soundwave bars) -->
+  <svg id="bgm-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+  <!-- Icon: Sound OFF (muted speaker) -->
+  <svg id="bgm-icon-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+  <!-- Animated pulse dot (shows music is playing) -->
+  <span id="bgm-pulse" style="
+    position:absolute;top:6px;right:6px;
+    width:5px;height:5px;border-radius:50%;
+    background:#00F0FF;
+    animation:bgmPulse 1.4s ease-in-out infinite;
+  "></span>
+</button>
+
+      <!-- Hamburger (mobile) -->
+      <button id="hamburger-btn" class="md:hidden flex flex-col justify-center items-center gap-1.5 w-9 h-9" aria-label="Toggle menu" aria-expanded="false">
+        <span class="block w-6 h-0.5 bg-white transition-all duration-300 origin-center" id="ham-line-1"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all duration-300" id="ham-line-2"></span>
+        <span class="block w-4 h-0.5 bg-white transition-all duration-300 origin-center" id="ham-line-3"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Drawer -->
+  <div id="mobile-menu" class="fixed top-0 right-0 h-full w-72 z-40 flex flex-col" style="background:rgba(7,10,20,0.97); backdrop-filter:blur(24px); border-left:1px solid rgba(0,240,255,0.1);" aria-hidden="true">
+    <div class="flex items-center justify-between p-6 border-b" style="border-color:rgba(0,240,255,0.08);">
+      <span class="font-tech font-black text-sm tracking-widest text-gradient-gold">MENU</span>
+      <button id="mobile-menu-close" class="text-white opacity-60 hover:opacity-100 transition-opacity" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-1 p-6 flex-1" aria-label="Mobile Navigation">
+      <a href="studio/index.html" class="nav-link nav-transition-link py-3 border-b" style="border-color:rgba(255,255,255,0.05);">Studio</a>
+      <a href="print/index.html"  class="nav-link nav-transition-link py-3 border-b" style="border-color:rgba(255,255,255,0.05);">Print &amp; Apparel</a>
+      <a href="mart/index.html"   class="nav-link nav-transition-link py-3 border-b" style="border-color:rgba(255,255,255,0.05);">AlfiraMart</a>
+      <a href="space/index.html"  class="nav-link nav-transition-link py-3 border-b" style="border-color:rgba(255,255,255,0.05);">Space</a>
+      <a href="about.html"        class="nav-link nav-transition-link py-3 border-b" style="border-color:rgba(255,255,255,0.05);">Tentang</a>
+      <div class="mt-6">
+        <a href="login.html" class="btn btn-cyber-gold w-full justify-center nav-transition-link">Masuk / Daftar</a>
+      </div>
+    </nav>
+    <div class="p-6 border-t" style="border-color:rgba(0,240,255,0.08);">
+      <p class="text-xs font-tech tracking-widest opacity-30 text-center">© 2026 ALFIRAMA.ID</p>
+    </div>
+  </div>
+  <!-- Mobile Backdrop -->
+  <div id="mobile-backdrop" class="fixed inset-0 z-30 hidden" style="background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);" aria-hidden="true"></div>
+
+
+  <!-- ============================================================
+       2. HERO SECTION — Neon Aura, Slogan, Realtime Clock
+       ============================================================ -->
+  <main>
+    <section id="hero" class="hero-section cyber-bg neon-blue-glow scanlines hero-grid relative min-h-screen flex items-center justify-center text-center px-6 pt-28 pb-20 overflow-hidden">
+
+      <!-- Decorative floating orb blobs -->
+      <div class="absolute top-1/4 -left-32 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background:radial-gradient(circle, rgba(0,240,255,0.3) 0%, transparent 70%); filter:blur(60px);"></div>
+      <div class="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full opacity-15 pointer-events-none" style="background:radial-gradient(circle, rgba(201,178,109,0.35) 0%, transparent 70%); filter:blur(80px);"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-10 pointer-events-none" style="background:radial-gradient(circle, rgba(0,100,255,0.25) 0%, transparent 65%); filter:blur(100px);"></div>
+
+      <!-- Hero Content -->
+      <div class="relative z-10 max-w-5xl mx-auto">
+
+        <!-- Location & Clock bar -->
+        <div class="flex items-center justify-center gap-4 mb-8 flex-wrap">
+          <div class="flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" class="opacity-80"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span class="text-label" style="color:#00F0FF; font-size:0.6rem;">Serang – Cilegon, Banten</span>
+          </div>
+          <div class="w-px h-3 opacity-20" style="background:#00F0FF;"></div>
+          <!-- Realtime Digital Clock -->
+          <div class="flex items-center gap-2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2" class="opacity-70"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+            <span id="digital-clock" class="font-tech text-xs font-600 tracking-widest" style="color:#C9B26D; letter-spacing:0.2em;">--:--:-- WIB</span>
+          </div>
+        </div>
+
+        <!-- Eyebrow label -->
+        <div class="gsap-hidden mb-6" id="hero-eyebrow">
+          <span class="hero-section__eyebrow">
+            ⬡ Futuristic Business Operating System ⬡
+          </span>
+        </div>
+
+        <!-- Main Slogan -->
+        <h1 id="hero-title" class="gsap-hidden font-tech font-black leading-tight tracking-tight mb-6"
+            style="font-size: clamp(1.8rem, 5.5vw, 4.5rem);">
+          <span class="text-gradient-gold block">Satu Ekosistem.</span>
+          <span class="text-white block">Sejuta Solusi Kreatif &amp; Retail.</span>
+        </h1>
+
+        <!-- Sub-description -->
+        <p id="hero-desc" class="gsap-hidden font-body text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed" style="color:rgba(255,255,255,0.6);">
+          Platform hybrid terpadu — dari studio desain, percetakan premium, grosir retail lokal, hingga hub komunitas kreatif Banten. Semua dalam satu ekosistem digital yang dirancang untuk masa depan.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div id="hero-ctas" class="gsap-hidden flex items-center justify-center gap-4 flex-wrap">
+          <a href="studio/index.html" class="btn btn-cyber-gold btn--lg nav-transition-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Jelajahi Ekosistem
+          </a>
+          <a href="about.html" class="btn btn-outline-cyan btn--lg nav-transition-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Tentang Kami
+          </a>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="mt-16 flex flex-col items-center gap-2 opacity-40">
+          <span class="font-tech text-xs tracking-widest" style="font-size:0.55rem; color:rgba(255,255,255,0.5);">SCROLL</span>
+          <div class="w-px h-8 relative overflow-hidden" style="background:rgba(0,240,255,0.15);">
+            <div class="absolute top-0 left-0 w-full" style="height:40%; background:linear-gradient(180deg,#00F0FF,transparent); animation: scrollDrop 1.6s ease-in-out infinite;"></div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        @keyframes scrollDrop {
+          0%   { transform: translateY(-100%); opacity:0; }
+          30%  { opacity:1; }
+          100% { transform: translateY(300%); opacity:0; }
+        }
+      </style>
+    </section>
+
+
+    <!-- ============================================================
+         3. INFINITE HORIZONTAL MARQUEE
+         ============================================================ -->
+    <div class="marquee-container py-3 relative" style="background:rgba(7,10,20,0.9); border-top:1px solid rgba(0,240,255,0.07); border-bottom:1px solid rgba(201,178,109,0.1);">
+      <div class="marquee-content">
+        <!-- Track 1 -->
+        <div class="marquee-track">
+          <span class="marquee-item marquee-item--highlight">ALFIRAMA STUDIO</span>
+          <span class="marquee-item marquee-item--cyan">ALFIRAMART GROSIR RETAIL</span>
+          <span class="marquee-item marquee-item--highlight">ALFIRAMA PRESS &amp; APPAREL</span>
+          <span class="marquee-item marquee-item--cyan">ALFIRAMA SPACE COMMUNITY</span>
+          <span class="marquee-item" style="color:rgba(255,255,255,0.35);">FUTURISTIC BUSINESS OPERATING SYSTEM</span>
+          <span class="marquee-item marquee-item--highlight">SERANG · CILEGON · BANTEN</span>
+          <span class="marquee-item marquee-item--cyan">DESAIN EKSKLUSIF</span>
+          <span class="marquee-item" style="color:rgba(255,255,255,0.35);">CETAK &amp; SABLON PREMIUM</span>
+          <span class="marquee-item marquee-item--highlight">PANTAUAN HARGA REALTIME</span>
+          <span class="marquee-item marquee-item--cyan">HUB KOMUNITAS KREATIF</span>
+        </div>
+        <!-- Track 2 (duplicate for infinite seamless loop) -->
+        <div class="marquee-track" aria-hidden="true">
+          <span class="marquee-item marquee-item--highlight">ALFIRAMA STUDIO</span>
+          <span class="marquee-item marquee-item--cyan">ALFIRAMART GROSIR RETAIL</span>
+          <span class="marquee-item marquee-item--highlight">ALFIRAMA PRESS &amp; APPAREL</span>
+          <span class="marquee-item marquee-item--cyan">ALFIRAMA SPACE COMMUNITY</span>
+          <span class="marquee-item" style="color:rgba(255,255,255,0.35);">FUTURISTIC BUSINESS OPERATING SYSTEM</span>
+          <span class="marquee-item marquee-item--highlight">SERANG · CILEGON · BANTEN</span>
+          <span class="marquee-item marquee-item--cyan">DESAIN EKSKLUSIF</span>
+          <span class="marquee-item" style="color:rgba(255,255,255,0.35);">CETAK &amp; SABLON PREMIUM</span>
+          <span class="marquee-item marquee-item--highlight">PANTAUAN HARGA REALTIME</span>
+          <span class="marquee-item marquee-item--cyan">HUB KOMUNITAS KREATIF</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================
+         4. ECOSYSTEM GRID SECTION — 4 Pilar Bisnis
+         ============================================================ -->
+    <section id="ecosystem" class="section section--lg cyber-bg">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="section-header gsap-hidden" id="eco-header">
+          <span class="section-header__eyebrow">⬡ Ekosistem Hybrid</span>
+          <div class="cyber-divider--sm"></div>
+          <h2 class="section-header__title font-tech">
+            <span class="text-gradient-gold">4 Pilar</span> Utama Alfirama.ID
+          </h2>
+          <p class="section-header__desc">
+            Setiap unit bisnis dirancang saling terhubung — membentuk ekosistem yang lebih kuat dari sekadar jumlah bagiannya.
+          </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6" id="eco-cards">
+
+          <!-- Card 1: Alfirama Studio -->
+          <a href="studio/index.html" class="service-card group block nav-transition-link gsap-hidden" id="card-1">
+            <div class="service-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <span class="service-card__badge">Studio</span>
+            <h3 class="service-card__title mt-3">Alfirama Studio</h3>
+            <p class="service-card__desc">
+              Jasa branding, desain eksklusif, &amp; marketplace template digital untuk UMKM dan kreator lokal Banten.
+            </p>
+            <div class="flex items-center gap-2 mt-5 text-xs font-tech tracking-widest" style="color:#00F0FF; font-size:0.65rem;">
+              <span>EXPLORE</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1 duration-200"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <!-- Card 2: Alfirama Press & Apparel -->
+          <a href="print/index.html" class="service-card group block nav-transition-link gsap-hidden" id="card-2">
+            <div class="service-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8">
+                <rect x="6" y="2" width="12" height="8" rx="1"/>
+                <path d="M2 11h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7z"/>
+                <path d="M6 15h.01M10 15h.01"/>
+                <path d="M6 19v-4"/>
+              </svg>
+            </div>
+            <span class="service-card__badge">Print</span>
+            <h3 class="service-card__title mt-3">Press &amp; Apparel</h3>
+            <p class="service-card__desc">
+              Jasa cetak, konveksi, &amp; sablon premium dengan kalkulator harga transparan dan estimasi produksi akurat.
+            </p>
+            <div class="flex items-center gap-2 mt-5 text-xs font-tech tracking-widest" style="color:#00F0FF; font-size:0.65rem;">
+              <span>EXPLORE</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1 duration-200"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <!-- Card 3: AlfiraMart -->
+          <a href="mart/index.html" class="service-card group block nav-transition-link gsap-hidden" id="card-3">
+            <div class="service-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8">
+                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4"/>
+                <circle cx="7" cy="20" r="1"/>
+                <circle cx="17" cy="20" r="1"/>
+                <path d="M7 13L5.4 5"/>
+              </svg>
+            </div>
+            <span class="service-card__badge">Mart</span>
+            <h3 class="service-card__title mt-3">AlfiraMart</h3>
+            <p class="service-card__desc">
+              Agen grosir sembako ringan lokal dengan tabel pantauan harga komoditas realtime berbasis data pasar Banten.
+            </p>
+            <div class="flex items-center gap-2 mt-5 text-xs font-tech tracking-widest" style="color:#00F0FF; font-size:0.65rem;">
+              <span>EXPLORE</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1 duration-200"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <!-- Card 4: Alfirama Space -->
+          <a href="space/index.html" class="service-card group block nav-transition-link gsap-hidden" id="card-4">
+            <div class="service-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                <path d="M8 7h8M8 11h5"/>
+              </svg>
+            </div>
+            <span class="service-card__badge">Space</span>
+            <h3 class="service-card__title mt-3">Alfirama Space</h3>
+            <p class="service-card__desc">
+              Perpustakaan digital &amp; pusat hub event komunitas kreatif Banten — ruang tumbuh bersama para inovator lokal.
+            </p>
+            <div class="flex items-center gap-2 mt-5 text-xs font-tech tracking-widest" style="color:#00F0FF; font-size:0.65rem;">
+              <span>EXPLORE</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="transition-transform group-hover:translate-x-1 duration-200"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+    
+<section id="how-it-works" class="section relative overflow-hidden" style="background:linear-gradient(160deg,#070A14 0%,#0D1526 100%);">
+ 
+  <!-- Decorative -->
+  <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image:linear-gradient(rgba(201,178,109,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(201,178,109,0.5) 1px,transparent 1px);background-size:50px 50px;"></div>
+ 
+  <div class="container relative z-10">
+ 
+    <div class="section-header gsap-hidden mb-16" id="hiw-header">
+      <span class="section-header__eyebrow">⬡ Cara Kerja</span>
+      <div class="cyber-divider--sm"></div>
+      <h2 class="section-header__title font-tech">
+        Dari <span class="text-gradient-gold">Ide</span> Hingga <span class="text-gradient-gold">Hasil</span>
+      </h2>
+      <p class="section-header__desc">
+        Proses yang simpel, transparan, dan terstruktur — supaya kamu tahu persis apa yang terjadi di setiap tahap.
+      </p>
+    </div>
+ 
+    <!-- Steps -->
+    <div class="relative gsap-hidden" id="hiw-steps">
+ 
+      <!-- Connector line (desktop) -->
+      <div class="hidden lg:block absolute top-12 left-0 right-0 h-px" style="background:linear-gradient(90deg,transparent 5%,rgba(0,240,255,0.15) 20%,rgba(201,178,109,0.2) 50%,rgba(0,240,255,0.15) 80%,transparent 95%);z-index:0;"></div>
+ 
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+ 
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center gap-5">
+          <div class="relative">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.08);">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">01</span>
+          </div>
+          <div>
+            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">KONSULTASI</h4>
+            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Ceritakan kebutuhan kamu. Gratis, tanpa komitmen. Tim kami siap mendengar via WhatsApp atau tatap muka.</p>
+          </div>
+        </div>
+ 
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center gap-5">
+          <div class="relative">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.08);">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">02</span>
+          </div>
+          <div>
+            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">BRIEF & DEAL</h4>
+            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Kami siapkan brief, timeline, dan penawaran harga. Transparan, tidak ada biaya tersembunyi.</p>
+          </div>
+        </div>
+ 
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center gap-5">
+          <div class="relative">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.08);">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">03</span>
+          </div>
+          <div>
+            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">PROSES</h4>
+            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Tim kami mulai bekerja. Kamu dapat update progress secara berkala — tidak perlu nunggu bingung.</p>
+          </div>
+        </div>
+ 
+        <!-- Step 4 -->
+        <div class="flex flex-col items-center text-center gap-5">
+          <div class="relative">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.08);">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">04</span>
+          </div>
+          <div>
+            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">DELIVER</h4>
+            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Hasil jadi dikirimkan tepat waktu. Revisi gratis 2x. Kamu puas, kami senang.</p>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+  </div>
+</section>
+
+    <!-- ============================================================
+         5. STATISTIK SECTION — Pencapaian
+         ============================================================ -->
+
+         
+    <section id="stats" class="section relative overflow-hidden" style="background:linear-gradient(160deg, #070A14 0%, #0D1526 100%);">
+
+      <!-- Decorative background grid -->
+      <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: linear-gradient(rgba(0,240,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.5) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+      <div class="container relative z-10">
+        <div class="section-header mb-12 gsap-hidden" id="stats-header">
+          <span class="section-header__eyebrow">⬡ Jejak Rekam</span>
+          <h2 class="section-header__title font-tech text-white">Angka yang Berbicara</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gsap-hidden" id="stats-grid">
+
+          <!-- Stat 1 -->
+          <div class="stat-card corner-tl corner-br relative text-center py-10 px-8">
+            <div class="stat-number mb-3">50<span style="color:#00F0FF;">+</span></div>
+            <p class="font-tech text-sm tracking-wider mb-2" style="color:#C9B26D; font-size:0.7rem; letter-spacing:0.15em;">KLIEN AKTIF</p>
+            <p class="text-muted text-sm">Klien Kreatif &amp; UMKM yang telah dilayani dengan solusi branding &amp; retail.</p>
+          </div>
+
+          <!-- Stat 2 -->
+          <div class="stat-card corner-tl corner-br relative text-center py-10 px-8">
+            <div class="stat-number mb-3">10<span style="color:#00F0FF;">K+</span></div>
+            <p class="font-tech text-sm tracking-wider mb-2" style="color:#C9B26D; font-size:0.7rem; letter-spacing:0.15em;">DATA KOMODITAS</p>
+            <p class="text-muted text-sm">Pantauan harga komoditas retail yang dikumpulkan dan dianalisis secara realtime.</p>
+          </div>
+
+          <!-- Stat 3 -->
+          <div class="stat-card corner-tl corner-br relative text-center py-10 px-8">
+            <div class="stat-number mb-3">3<span style="color:#00F0FF;">+</span></div>
+            <p class="font-tech text-sm tracking-wider mb-2" style="color:#C9B26D; font-size:0.7rem; letter-spacing:0.15em;">TAHUN BERKEMBANG</p>
+            <p class="text-muted text-sm">Tahun pengembangan ekosistem hybrid yang terus berinovasi untuk ekonomi lokal.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <section id="portfolio" class="section cyber-bg">
+  <div class="container">
+ 
+    <div class="section-header gsap-hidden mb-12" id="porto-header">
+      <span class="section-header__eyebrow">⬡ Hasil Kerja</span>
+      <div class="cyber-divider--sm"></div>
+      <h2 class="section-header__title font-tech">
+        Portofolio <span class="text-gradient-gold">Pilihan</span>
+      </h2>
+      <p class="section-header__desc">
+        Sebagian dari proyek yang telah kami selesaikan — dari branding, cetak, hingga konveksi.
+      </p>
+    </div>
+ 
+    <!-- Filter Tabs -->
+    <div class="flex items-center justify-center gap-3 mb-10 flex-wrap gsap-hidden" id="porto-filter">
+      <button onclick="filterPorto('all', this)" class="porto-filter-btn active-filter font-tech text-xs tracking-widest px-5 py-2 rounded-full transition-all duration-200" style="font-size:0.6rem;letter-spacing:0.15em;">SEMUA</button>
+      <button onclick="filterPorto('studio', this)" class="porto-filter-btn font-tech text-xs tracking-widest px-5 py-2 rounded-full transition-all duration-200" style="font-size:0.6rem;letter-spacing:0.15em;">STUDIO</button>
+      <button onclick="filterPorto('print', this)" class="porto-filter-btn font-tech text-xs tracking-widest px-5 py-2 rounded-full transition-all duration-200" style="font-size:0.6rem;letter-spacing:0.15em;">PRINT</button>
+      <button onclick="filterPorto('apparel', this)" class="porto-filter-btn font-tech text-xs tracking-widest px-5 py-2 rounded-full transition-all duration-200" style="font-size:0.6rem;letter-spacing:0.15em;">APPAREL</button>
+    </div>
+ 
+    <style>
+    .porto-filter-btn {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.4);
+    }
+    .porto-filter-btn:hover {
+      border-color: rgba(0,240,255,0.3);
+      color: #00F0FF;
+      background: rgba(0,240,255,0.05);
+    }
+    .porto-filter-btn.active-filter {
+      border-color: rgba(201,178,109,0.5);
+      background: rgba(201,178,109,0.1);
+      color: #C9B26D;
+    }
+    .porto-item {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .porto-item.hidden-item {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      display: none;
+    }
+    .porto-card-inner {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #13192B;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .porto-card-inner:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,240,255,0.1);
+      border-color: rgba(0,240,255,0.2);
+    }
+    .porto-card-inner:hover .porto-overlay {
+      opacity: 1;
+    }
+    .porto-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(7,10,20,0.95) 0%, rgba(7,10,20,0.4) 60%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+    </style>
+ 
+    <!-- Portfolio Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 gsap-hidden" id="porto-grid">
+ 
+      <!-- Item 1 -->
+      <div class="porto-item" data-cat="studio">
+        <div class="porto-card-inner">
+          <!-- Placeholder visual (ganti dengan <img src="..."> jika punya foto) -->
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1526,#13192B);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--cyan mb-2" style="width:fit-content;font-size:0.48rem;">Studio</span>
+            <h4 class="font-tech font-bold text-white text-sm">Brand Identity — Kedai Kopi Samar</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Logo, color palette, brand guideline</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Item 2 -->
+      <div class="porto-item" data-cat="print">
+        <div class="porto-card-inner">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0A1520,#111D2B);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1"><rect x="6" y="2" width="12" height="8" rx="1"/><path d="M2 11h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7z"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--gold mb-2" style="width:fit-content;font-size:0.48rem;">Print</span>
+            <h4 class="font-tech font-bold text-white text-sm">Banner & Spanduk — Event Komunitas</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Cetak digital, finishing laminating</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Item 3 -->
+      <div class="porto-item" data-cat="apparel">
+        <div class="porto-card-inner">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1A20,#112028);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--cyan mb-2" style="width:fit-content;font-size:0.48rem;">Apparel</span>
+            <h4 class="font-tech font-bold text-white text-sm">Kaos Seragam 80pcs — Komunitas Cilegon</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Sablon DTF, cotton combed 30s</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Item 4 -->
+      <div class="porto-item" data-cat="studio">
+        <div class="porto-card-inner">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1526,#13192B);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--cyan mb-2" style="width:fit-content;font-size:0.48rem;">Studio</span>
+            <h4 class="font-tech font-bold text-white text-sm">Social Media Kit — UMKM Kuliner</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Template IG feed, story, highlight cover</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Item 5 -->
+      <div class="porto-item" data-cat="print">
+        <div class="porto-card-inner">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0A1520,#111D2B);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1"><rect x="6" y="2" width="12" height="8" rx="1"/><path d="M2 11h20v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7z"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--gold mb-2" style="width:fit-content;font-size:0.48rem;">Print</span>
+            <h4 class="font-tech font-bold text-white text-sm">Stiker & Packaging — Brand F&B</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Stiker vinyl, label kemasan, kartu nama</p>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Item 6 -->
+      <div class="porto-item" data-cat="apparel">
+        <div class="porto-card-inner">
+          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1A20,#112028);">
+            <div style="text-align:center;opacity:0.2;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+              <p style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(255,255,255,0.4);margin-top:8px;letter-spacing:0.15em;">GANTI DENGAN FOTO</p>
+            </div>
+          </div>
+          <div class="porto-overlay">
+            <span class="badge badge--cyan mb-2" style="width:fit-content;font-size:0.48rem;">Apparel</span>
+            <h4 class="font-tech font-bold text-white text-sm">Hoodie Custom — Komunitas Motor</h4>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin-top:4px;">Sablon rubber, fleece premium</p>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+ 
+    <!-- CTA -->
+    <div class="text-center mt-10 gsap-hidden" id="porto-cta">
+      <a href="https://wa.me/6281234567890?text=Halo%20Alfirama!%20Saya%20ingin%20lihat%20portofolio%20lengkap..." target="_blank" rel="noopener noreferrer" class="btn btn-outline-cyan" style="display:inline-flex;gap:8px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Lihat Portofolio Lengkap
+      </a>
+    </div>
+ 
+  </div>
+</section>
+ 
+<script>
+function filterPorto(cat, btn){
+  document.querySelectorAll('.porto-filter-btn').forEach(b => b.classList.remove('active-filter'));
+  btn.classList.add('active-filter');
+  document.querySelectorAll('.porto-item').forEach(item => {
+    if(cat === 'all' || item.dataset.cat === cat){
+      item.classList.remove('hidden-item');
+      item.style.display = '';
+    } else {
+      item.classList.add('hidden-item');
+      setTimeout(()=>{ if(item.classList.contains('hidden-item')) item.style.display='none'; }, 300);
+    }
+  });
+}
+</script>
+
+
+    <!-- ============================================================
+         6. PROFIL TIM — Alfirama Crew
+         ============================================================ -->
+    <section id="team" class="section cyber-bg">
+      <div class="container">
+
+        <!-- Section Header -->
+        <div class="section-header gsap-hidden" id="team-header">
+          <span class="section-header__eyebrow">⬡ Alfirama Crew</span>
+          <div class="cyber-divider--sm"></div>
+          <h2 class="section-header__title font-tech">
+            Pondasi di Balik <span class="text-gradient-gold">Layar</span>
+          </h2>
+          <p class="section-header__desc">
+            Tim kecil yang bergerak cepat — menggabungkan kreativitas desain dengan ketepatan sistem komputer.
+          </p>
+        </div>
+
+        <!-- Team Grid -->
+        <!-- Team Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gsap-hidden" id="team-grid">
+ 
+  <!-- ── Member 1 — Owner ── -->
+  <div class="team-card glass-panel glass-panel--gold text-center p-6 flex flex-col gap-4">
+ 
+    <!-- Avatar -->
+    <div class="relative mx-auto w-20 h-20">
+      <div class="team-avatar-ring w-20 h-20 rounded-full overflow-hidden">
+        <img
+          src="assets/global/team1.png"
+          alt="Foto Owner Alfirama — Alfi Rama"
+          class="w-full h-full object-cover"
+          onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'><rect fill=\'%2313192B\' width=\'80\' height=\'80\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23C9B26D\' font-size=\'28\' font-family=\'sans-serif\'>A</text></svg>'"
+        />
+      </div>
+      <!-- Online dot -->
+      <span class="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 rounded-full border-2 border-cyber-card" style="background:#00FF88;"></span>
+    </div>
+ 
+    <!-- Badge + Nama -->
+    <div>
+      <span class="badge badge--gold mb-2">Owner</span>
+      <h4 class="font-tech font-bold text-sm tracking-wide text-white mt-2">Alfi Rama</h4>
+      <p class="text-muted text-xs mt-1">Founder &amp; Creative Director</p>
+    </div>
+ 
+    <!-- Stat pengalaman -->
+    <div class="flex items-center justify-center gap-2 py-2 px-4 rounded-lg mx-auto"
+      style="background:rgba(201,178,109,0.07); border:1px solid rgba(201,178,109,0.18);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2" opacity="0.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      <span style="font-family:'Orbitron',sans-serif; font-size:0.58rem; letter-spacing:0.1em; color:#C9B26D;">10 TAHUN PENGALAMAN</span>
+    </div>
+ 
+    <!-- Quote -->
+    <p class="text-xs italic leading-relaxed" style="color:rgba(255,255,255,0.38); border-left:2px solid rgba(201,178,109,0.25); padding-left:10px; text-align:left;">
+      "Bangun sistem dulu, baru scale. Ekosistem yang kuat lahir dari fondasi yang benar."
+    </p>
+ 
+    <!-- Deskripsi -->
+    <p class="text-xs leading-relaxed" style="color:rgba(255,255,255,0.4); text-align:left;">
+      Menginisiasi ekosistem hybrid Alfirama.ID dari nol dengan visi jangka panjang untuk ekonomi kreatif Banten.
+    </p>
+ 
+    <!-- Skill tags -->
+    <div class="flex flex-wrap gap-1.5 justify-center">
+      <span class="skill-tag">Brand Strategy</span>
+      <span class="skill-tag">Business Dev</span>
+      <span class="skill-tag">Creative Direction</span>
+      <span class="skill-tag">Project Management</span>
+    </div>
+ 
+    <!-- Social link -->
+    <div class="flex items-center justify-center gap-2 mt-auto pt-2" style="border-top:1px solid rgba(255,255,255,0.05);">
+      <a href="https://www.instagram.com/alfii_ramaa?igsh=OTJjcXpjaXdvaHU1&utm_source=qr" target="_blank" rel="noopener noreferrer"
+        class="social-icon" style="width:32px; height:32px; border-radius:8px;" aria-label="Instagram Alfi Rama">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+ 
+  </div>
+  <!-- /Member 1 -->
+ 
+ 
+  <!-- ── Member 2 — Lead Designer ── -->
+  <div class="team-card glass-panel text-center p-6 flex flex-col gap-4">
+ 
+    <div class="relative mx-auto w-20 h-20">
+      <div class="team-avatar-ring w-20 h-20 rounded-full overflow-hidden">
+        <img
+          src="assets/global/team2.png"
+          alt="Foto Lead Designer Alfirama"
+          class="w-full h-full object-cover"
+          onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'><rect fill=\'%2313192B\' width=\'80\' height=\'80\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300F0FF\' font-size=\'28\' font-family=\'sans-serif\'>D</text></svg>'"
+        />
+      </div>
+    </div>
+ 
+    <div>
+      <span class="badge badge--cyan mb-2">Design</span>
+      <h4 class="font-tech font-bold text-sm tracking-wide text-white mt-2">Tim Desainer</h4>
+      <p class="text-muted text-xs mt-1">Visual Identity &amp; UI Specialist</p>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 py-2 px-4 rounded-lg mx-auto"
+      style="background:rgba(0,240,255,0.05); border:1px solid rgba(0,240,255,0.15);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      <span style="font-family:'Orbitron',sans-serif; font-size:0.58rem; letter-spacing:0.1em; color:#00F0FF;">5 TAHUN PENGALAMAN</span>
+    </div>
+ 
+    <p class="text-xs italic leading-relaxed" style="color:rgba(255,255,255,0.38); border-left:2px solid rgba(0,240,255,0.2); padding-left:10px; text-align:left;">
+      "Visual yang baik bukan yang paling ramai — tapi yang paling mudah diingat."
+    </p>
+ 
+    <p class="text-xs leading-relaxed" style="color:rgba(255,255,255,0.4); text-align:left;">
+      Bertanggung jawab atas estetika visual seluruh unit bisnis dan konsistensi brand Alfirama.ID.
+    </p>
+ 
+    <div class="flex flex-wrap gap-1.5 justify-center">
+      <span class="skill-tag">Figma</span>
+      <span class="skill-tag">Adobe Illustrator</span>
+      <span class="skill-tag">Brand Identity</span>
+      <span class="skill-tag">Motion Design</span>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 mt-auto pt-2" style="border-top:1px solid rgba(255,255,255,0.05);">
+      <a href="https://instagram.com/alfirama.id" target="_blank" rel="noopener noreferrer"
+        class="social-icon" style="width:32px; height:32px; border-radius:8px;" aria-label="Instagram Tim Desainer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+ 
+  </div>
+  <!-- /Member 2 -->
+ 
+ 
+  <!-- ── Member 3 — Sistem Komputer / Dev ── -->
+  <div class="team-card glass-panel glass-panel--cyan text-center p-6 flex flex-col gap-4">
+ 
+    <div class="relative mx-auto w-20 h-20">
+      <div class="team-avatar-ring w-20 h-20 rounded-full overflow-hidden">
+        <img
+          src="assets/global/team3.png"
+          alt="Foto Tim Developer Alfirama"
+          class="w-full h-full object-cover"
+          onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'><rect fill=\'%2313192B\' width=\'80\' height=\'80\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300F0FF\' font-size=\'28\' font-family=\'sans-serif\'>S</text></svg>'"
+        />
+      </div>
+    </div>
+ 
+    <div>
+      <span class="badge badge--cyan mb-2">Dev</span>
+      <h4 class="font-tech font-bold text-sm tracking-wide text-white mt-2">Tim Sistem Komputer</h4>
+      <p class="text-muted text-xs mt-1">Full-Stack Web &amp; System Engineer</p>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 py-2 px-4 rounded-lg mx-auto"
+      style="background:rgba(0,240,255,0.05); border:1px solid rgba(0,240,255,0.15);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      <span style="font-family:'Orbitron',sans-serif; font-size:0.58rem; letter-spacing:0.1em; color:#00F0FF;">3 TAHUN PENGALAMAN</span>
+    </div>
+ 
+    <p class="text-xs italic leading-relaxed" style="color:rgba(255,255,255,0.38); border-left:2px solid rgba(0,240,255,0.2); padding-left:10px; text-align:left;">
+      "Kode yang baik adalah kode yang tidak perlu dijelaskan — dia berbicara sendiri."
+    </p>
+ 
+    <p class="text-xs leading-relaxed" style="color:rgba(255,255,255,0.4); text-align:left;">
+      Membangun dan memelihara infrastruktur digital ekosistem — dari frontend hingga sistem data backend.
+    </p>
+ 
+    <div class="flex flex-wrap gap-1.5 justify-center">
+      <span class="skill-tag">Firebase</span>
+      <span class="skill-tag">JavaScript</span>
+      <span class="skill-tag">Tailwind CSS</span>
+      <span class="skill-tag">HTML / CSS</span>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 mt-auto pt-2" style="border-top:1px solid rgba(255,255,255,0.05);">
+      <a href="https://github.com/alfiramaid" target="_blank" rel="noopener noreferrer"
+        class="social-icon" style="width:32px; height:32px; border-radius:8px;" aria-label="GitHub Tim Dev">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+    </div>
+ 
+  </div>
+  <!-- /Member 3 -->
+ 
+ 
+  <!-- ── Member 4 — Retail & Ops ── -->
+  <div class="team-card glass-panel text-center p-6 flex flex-col gap-4">
+ 
+    <div class="relative mx-auto w-20 h-20">
+      <div class="team-avatar-ring w-20 h-20 rounded-full overflow-hidden">
+        <img
+          src="assets/global/team4.png"
+          alt="Foto Tim Retail Alfirama"
+          class="w-full h-full object-cover"
+          onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\' viewBox=\'0 0 80 80\'><rect fill=\'%2313192B\' width=\'80\' height=\'80\'/><text x=\'50%25\' y=\'55%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23C9B26D\' font-size=\'28\' font-family=\'sans-serif\'>R</text></svg>'"
+        />
+      </div>
+    </div>
+ 
+    <div>
+      <span class="badge badge--gold mb-2">Retail</span>
+      <h4 class="font-tech font-bold text-sm tracking-wide text-white mt-2">Tim Retail &amp; Ops</h4>
+      <p class="text-muted text-xs mt-1">AlfiraMart Operations Lead</p>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 py-2 px-4 rounded-lg mx-auto"
+      style="background:rgba(201,178,109,0.07); border:1px solid rgba(201,178,109,0.18);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2" opacity="0.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      <span style="font-family:'Orbitron',sans-serif; font-size:0.58rem; letter-spacing:0.1em; color:#C9B26D;">4 TAHUN PENGALAMAN</span>
+    </div>
+ 
+    <p class="text-xs italic leading-relaxed" style="color:rgba(255,255,255,0.38); border-left:2px solid rgba(201,178,109,0.25); padding-left:10px; text-align:left;">
+      "Retail bukan soal jual beli — tapi soal membangun kepercayaan setiap hari."
+    </p>
+ 
+    <p class="text-xs leading-relaxed" style="color:rgba(255,255,255,0.4); text-align:left;">
+      Mengelola rantai pasok, relasi agen, dan pemantauan harga komoditas AlfiraMart secara harian.
+    </p>
+ 
+    <div class="flex flex-wrap gap-1.5 justify-center">
+      <span class="skill-tag">Supply Chain</span>
+      <span class="skill-tag">Negosiasi</span>
+      <span class="skill-tag">Market Analysis</span>
+      <span class="skill-tag">Operasional</span>
+    </div>
+ 
+    <div class="flex items-center justify-center gap-2 mt-auto pt-2" style="border-top:1px solid rgba(255,255,255,0.05);">
+      <a href="https://instagram.com/alfirama.id" target="_blank" rel="noopener noreferrer"
+        class="social-icon" style="width:32px; height:32px; border-radius:8px;" aria-label="Instagram Tim Retail">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+ 
+  </div>
+  <!-- /Member 4 -->
+ 
+</div>
+</div>  <!-- TUTUP team-grid -->
+  </div>  <!-- TUTUP container -->
+</section>  <!-- TUTUP section #team -->
+
+
+    <!-- ============================================================
+         7. ALAMAT & GOOGLE MAPS SECTION
+         ============================================================ -->
+    <section id="location" class="section relative overflow-hidden" style="background:linear-gradient(160deg, #060910 0%, #0A0F1D 100%);">
+
+      <div class="container">
+        <div class="section-header gsap-hidden mb-12" id="location-header">
+          <span class="section-header__eyebrow">⬡ Temukan Kami</span>
+          <div class="cyber-divider--sm"></div>
+          <h2 class="section-header__title font-tech">
+            Alamat <span class="text-gradient-gold">Resmi</span>
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start gsap-hidden" id="location-grid">
+
+          <!-- Address Detail -->
+          <div class="glass-panel glass-panel--gold space-y-6">
+            <div>
+              <span class="text-label mb-3 block">Kantor &amp; Holding</span>
+              <h3 class="font-tech text-xl font-bold text-white mb-1">Alfirama.ID Headquarters</h3>
+              <div class="cyber-divider--sm" style="margin:12px 0;"></div>
+            </div>
+
+            <!-- Address -->
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.2);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </div>
+              <div>
+                <p class="font-tech text-xs tracking-wider mb-1" style="color:#C9B26D; font-size:0.6rem; letter-spacing:0.18em;">ALAMAT FISIK</p>
+                <p class="text-white font-medium leading-relaxed">VVPG+JXC, Kamasan,<br />Kec. Cinangka, Kabupaten Serang,<br />Banten 42167</p>
+              </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(201,178,109,0.08); border:1px solid rgba(201,178,109,0.2);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.9 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.99 5.99l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <p class="font-tech text-xs tracking-wider mb-1" style="color:#C9B26D; font-size:0.6rem; letter-spacing:0.18em;">KONTAK</p>
+                <a href="https://wa.me/6285135602885" class="text-white hover:text-neon-cyan transition-colors" style="--tw-text-opacity:1;">+62 812-XXXX-XXXX</a><br />
+                <a href="mailto:hello@alfirama.id" class="text-white hover:text-neon-cyan transition-colors" style="font-size:0.9rem;">hello@alfirama.id</a>
+              </div>
+            </div>
+
+            <!-- Hours -->
+            <div class="flex items-start gap-4">
+  <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.2);">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+  </div>
+  <div>
+    <p class="font-tech text-xs tracking-wider mb-2" style="color:#C9B26D; font-size:0.6rem; letter-spacing:0.18em;">JAM OPERASIONAL</p>
+    <p class="text-white text-sm">Senin – Sabtu: 08.00 – 17.00 WIB</p>
+    <p class="text-muted text-sm">Minggu: Konsultasi Online Only</p>
+ 
+    <!-- Status Realtime -->
+    <div id="open-status" class="flex items-center gap-2 mt-3 px-3 py-2 rounded-lg" style="background:rgba(0,0,0,0.2);width:fit-content;">
+      <span id="status-dot" style="width:8px;height:8px;border-radius:50%;flex-shrink:0;"></span>
+      <span id="status-text" class="font-tech" style="font-size:0.58rem;letter-spacing:0.12em;"></span>
+    </div>
+  </div>
+</div>
+ 
+<script>
+(function(){
+  function updateOpenStatus(){
+    const now    = new Date();
+    const utc    = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const wib    = new Date(utc + 7 * 3600000);
+    const day    = wib.getDay();   // 0=Sun, 1=Mon, ..., 6=Sat
+    const hour   = wib.getHours();
+    const minute = wib.getMinutes();
+    const time   = hour + minute / 60;
+ 
+    const dot  = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    if(!dot || !text) return;
+ 
+    let isOpen = false;
+    let message = '';
+ 
+    if(day === 0){
+      // Minggu
+      message = 'ONLINE ONLY HARI INI';
+      dot.style.background  = '#C9B26D';
+      dot.style.boxShadow   = '0 0 8px rgba(201,178,109,0.6)';
+      text.style.color      = '#C9B26D';
+    } else if(day >= 1 && day <= 6 && time >= 8 && time < 17){
+      // Buka
+      isOpen  = true;
+      const closeIn = Math.ceil((17 - time) * 60);
+      message = closeIn <= 60
+        ? `BUKA SEKARANG — TUTUP ${closeIn} MENIT LAGI`
+        : 'BUKA SEKARANG';
+      dot.style.background  = '#00FF88';
+      dot.style.boxShadow   = '0 0 8px rgba(0,255,136,0.6)';
+      text.style.color      = '#00FF88';
+    } else {
+      // Tutup
+      message = day === 6 ? 'TUTUP — BUKA SENIN 08.00 WIB' : 'SEDANG TUTUP — BUKA JAM 08.00';
+      dot.style.background  = '#FF4444';
+      dot.style.boxShadow   = '0 0 8px rgba(255,68,68,0.6)';
+      text.style.color      = '#FF6666';
+    }
+ 
+    text.textContent = message;
+  }
+ 
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
+})();
+</script>
+
+            <!-- CTA to Maps -->
+            <a href="https://maps.google.com/?q=VVPG+JXC,+Kamasan,+Kec.+Cinangka,+Kabupaten+Serang,+Banten+42167" target="_blank" rel="noopener noreferrer" class="btn btn-outline-cyan w-full justify-center mt-4">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              Buka di Google Maps
+            </a>
+          </div>
+
+          <!-- Google Maps Embed -->
+          <div class="map-wrapper rounded-xl overflow-hidden" style="height:420px; border:1px solid rgba(0,240,255,0.12); box-shadow: 0 0 40px rgba(0,240,255,0.07), 0 20px 60px rgba(0,0,0,0.5);">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.1!2d106.0!3d-6.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zVlZQRytKWEMsIEthbWFzYW4sIEtlYy4gQ2luYW5na2EsIEthYnVwYXRlbiBTZXJhbmcsIEJhbnRlbiA0MjE2Nw!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid"
+              width="100%"
+              height="100%"
+              style="border:0; filter:invert(90%) hue-rotate(180deg) saturate(0.8) brightness(0.85);"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Lokasi Alfirama.ID — Kamasan, Cinangka, Kabupaten Serang, Banten"
+            ></iframe>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /main -->
+
+
+<section id="testimoni" class="section relative overflow-hidden" style="background:linear-gradient(160deg, #0A0F1D 0%, #070A14 100%);">
+ 
+  <!-- Decorative blobs -->
+  <div class="absolute top-0 left-1/4 w-80 h-80 rounded-full opacity-10 pointer-events-none" style="background:radial-gradient(circle, rgba(0,240,255,0.25) 0%, transparent 70%); filter:blur(80px);"></div>
+  <div class="absolute bottom-0 right-1/4 w-64 h-64 rounded-full opacity-10 pointer-events-none" style="background:radial-gradient(circle, rgba(201,178,109,0.3) 0%, transparent 70%); filter:blur(80px);"></div>
+ 
+  <div class="container relative z-10">
+ 
+    <!-- Section Header -->
+    <div class="section-header gsap-hidden mb-14" id="testi-header">
+      <span class="section-header__eyebrow">⬡ Suara Klien</span>
+      <div class="cyber-divider--sm"></div>
+      <h2 class="section-header__title font-tech">
+        Apa Kata <span class="text-gradient-gold">Mereka</span>
+      </h2>
+      <p class="section-header__desc">
+        Kepercayaan klien adalah bahan bakar utama ekosistem Alfirama.ID terus berkembang.
+      </p>
+    </div>
+ 
+    <!-- Testimoni Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gsap-hidden" id="testi-grid">
+ 
+      <!-- Card 1 -->
+      <div class="glass-panel relative p-7 flex flex-col gap-5"
+        style="border-color:rgba(0,240,255,0.1); transition:border-color 0.3s ease, transform 0.3s ease;"
+        onmouseover="this.style.borderColor='rgba(0,240,255,0.28)'; this.style.transform='translateY(-4px)';"
+        onmouseout="this.style.borderColor='rgba(0,240,255,0.1)'; this.style.transform='none';">
+ 
+        <!-- Quote icon -->
+        <div style="color:rgba(0,240,255,0.25); font-size:2.5rem; line-height:1; font-family:Georgia,serif; margin-bottom:-10px;">"</div>
+ 
+        <!-- Stars -->
+        <div class="flex items-center gap-1" aria-label="Rating 5 bintang">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+ 
+        <!-- Teks testimoni -->
+        <p class="text-sm leading-relaxed flex-1" style="color:rgba(255,255,255,0.65);">
+          "Alfirama Studio beneran ngerti vibe brand kami. Logo yang mereka buat langsung kena di hati — modern, tegas, dan beda dari kompetitor. Prosesnya cepat dan komunikasinya responsif banget!"
+        </p>
+ 
+        <!-- Profil klien -->
+        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <div class="w-10 h-10 rounded-full flex items-center justify-content:center flex-shrink-0 flex items-center justify-center font-tech font-bold text-sm"
+            style="background:linear-gradient(135deg,rgba(0,240,255,0.2),rgba(0,240,255,0.08)); border:1px solid rgba(0,240,255,0.25); color:#00F0FF;">
+            RH
+          </div>
+          <div>
+            <p class="font-tech font-bold text-sm text-white" style="font-size:0.75rem; letter-spacing:0.05em;">Rizky Hermawan</p>
+            <p class="text-xs" style="color:rgba(255,255,255,0.35); font-size:0.65rem;">Owner — Kedai Kopi Samar, Serang</p>
+          </div>
+          <div class="ml-auto">
+            <span class="badge badge--cyan" style="font-size:0.48rem; padding:2px 7px;">Studio</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Card 2 -->
+      <div class="glass-panel relative p-7 flex flex-col gap-5"
+        style="border-color:rgba(201,178,109,0.12); transition:border-color 0.3s ease, transform 0.3s ease;"
+        onmouseover="this.style.borderColor='rgba(201,178,109,0.35)'; this.style.transform='translateY(-4px)';"
+        onmouseout="this.style.borderColor='rgba(201,178,109,0.12)'; this.style.transform='none';">
+ 
+        <div style="color:rgba(201,178,109,0.25); font-size:2.5rem; line-height:1; font-family:Georgia,serif; margin-bottom:-10px;">"</div>
+ 
+        <div class="flex items-center gap-1" aria-label="Rating 5 bintang">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+ 
+        <p class="text-sm leading-relaxed flex-1" style="color:rgba(255,255,255,0.65);">
+          "Order kaos seragam 80 pcs untuk acara komunitas. Kualitas sablon tajam, jahitan rapi, dan yang bikin puas — dikirim tepat waktu sesuai deadline. Alfirama Press &amp; Apparel jadi andalan kami sekarang."
+        </p>
+ 
+        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center font-tech font-bold text-sm"
+            style="background:linear-gradient(135deg,rgba(201,178,109,0.2),rgba(201,178,109,0.08)); border:1px solid rgba(201,178,109,0.3); color:#C9B26D;">
+            DF
+          </div>
+          <div>
+            <p class="font-tech font-bold text-sm text-white" style="font-size:0.75rem; letter-spacing:0.05em;">Dinda Fauziah</p>
+            <p class="text-xs" style="color:rgba(255,255,255,0.35); font-size:0.65rem;">Koordinator — Komunitas Kreatif Cilegon</p>
+          </div>
+          <div class="ml-auto">
+            <span class="badge badge--gold" style="font-size:0.48rem; padding:2px 7px;">Apparel</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Card 3 -->
+      <div class="glass-panel relative p-7 flex flex-col gap-5"
+        style="border-color:rgba(0,240,255,0.1); transition:border-color 0.3s ease, transform 0.3s ease;"
+        onmouseover="this.style.borderColor='rgba(0,240,255,0.28)'; this.style.transform='translateY(-4px)';"
+        onmouseout="this.style.borderColor='rgba(0,240,255,0.1)'; this.style.transform='none';">
+ 
+        <div style="color:rgba(0,240,255,0.25); font-size:2.5rem; line-height:1; font-family:Georgia,serif; margin-bottom:-10px;">"</div>
+ 
+        <div class="flex items-center gap-1" aria-label="Rating 5 bintang">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9B26D" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+ 
+        <p class="text-sm leading-relaxed flex-1" style="color:rgba(255,255,255,0.65);">
+          "Sewa meja di Alfirama Space buat kerja remote mingguan — suasananya beda dari coworking biasa. Vibes-nya kreatif, koneksi internet stabil, dan komunitas di sana saling support. Recommended banget!"
+        </p>
+ 
+        <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
+          <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center font-tech font-bold text-sm"
+            style="background:linear-gradient(135deg,rgba(0,240,255,0.2),rgba(0,240,255,0.08)); border:1px solid rgba(0,240,255,0.25); color:#00F0FF;">
+            AP
+          </div>
+          <div>
+            <p class="font-tech font-bold text-sm text-white" style="font-size:0.75rem; letter-spacing:0.05em;">Aldi Pratama</p>
+            <p class="text-xs" style="color:rgba(255,255,255,0.35); font-size:0.65rem;">Freelance Designer — Serang, Banten</p>
+          </div>
+          <div class="ml-auto">
+            <span class="badge badge--cyan" style="font-size:0.48rem; padding:2px 7px;">Space</span>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+    <!-- /Testimoni Grid -->
+ 
+  </div>
+</section>
+<!-- /SECTION TESTIMONI -->
+ 
+ 
+<!-- ============================================================
+     SECTION 2 — CTA SEBELUM FOOTER
+     Letakkan setelah section #testimoni, sebelum <footer>
+     ============================================================ -->
+<section id="cta-final" class="section relative overflow-hidden" style="background:linear-gradient(135deg, #070A14 0%, #0D1526 50%, #070A14 100%);">
+ 
+  <!-- Decorative neon lines -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent 0%, rgba(0,240,255,0.15) 30%, rgba(201,178,109,0.25) 50%, rgba(0,240,255,0.15) 70%, transparent 100%);"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent 0%, rgba(201,178,109,0.15) 30%, rgba(0,240,255,0.2) 50%, rgba(201,178,109,0.15) 70%, transparent 100%);"></div>
+    <!-- Center glow blob -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-10 pointer-events-none" style="background:radial-gradient(circle, rgba(0,240,255,0.3) 0%, rgba(201,178,109,0.15) 40%, transparent 70%); filter:blur(60px);"></div>
+  </div>
+ 
+  <div class="container relative z-10 text-center">
+ 
+    <!-- Eyebrow -->
+    <div class="gsap-hidden mb-6" id="cta-eyebrow">
+      <span class="hero-section__eyebrow">⬡ Mulai Sekarang ⬡</span>
+    </div>
+ 
+    <!-- Heading -->
+    <h2 class="gsap-hidden font-tech font-black mb-5" id="cta-heading"
+      style="font-size:clamp(1.6rem, 4vw, 3rem); line-height:1.15;">
+      <span class="text-gradient-gold">Siap Wujudkan</span><br/>
+      <span class="text-white">Proyek Impian Kamu?</span>
+    </h2>
+ 
+    <!-- Sub text -->
+    <p class="gsap-hidden text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed" id="cta-desc"
+      style="color:rgba(255,255,255,0.55);">
+      Konsultasi gratis, tanpa komitmen. Tim Alfirama siap membantu dari ide awal hingga hasil akhir — desain, cetak, grosir, atau ruang kreatif.
+    </p>
+ 
+    <!-- CTA Buttons — dua jalur -->
+    <div class="gsap-hidden flex items-center justify-center gap-4 flex-wrap" id="cta-buttons">
+ 
+      <!-- WhatsApp -->
+      <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi%20mengenai..."
+        target="_blank" rel="noopener noreferrer"
+        class="btn btn-cyber-gold btn--lg"
+        style="gap:10px;">
+        <!-- WhatsApp icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+        </svg>
+        Chat WhatsApp Sekarang
+      </a>
+ 
+      <!-- Login / Daftar -->
+      <a href="login.html" class="btn btn-outline-cyan btn--lg nav-transition-link" style="gap:10px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Masuk / Daftar Gratis
+      </a>
+ 
+    </div>
+ 
+    <!-- Trust indicators -->
+    <div class="gsap-hidden mt-10 flex items-center justify-center gap-6 flex-wrap" id="cta-trust">
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span style="font-family:'Orbitron',sans-serif; font-size:0.56rem; letter-spacing:0.1em; color:rgba(255,255,255,0.35);">KONSULTASI GRATIS</span>
+      </div>
+      <div class="w-px h-4 opacity-20" style="background:#fff;"></div>
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2" opacity="0.7"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+        <span style="font-family:'Orbitron',sans-serif; font-size:0.56rem; letter-spacing:0.1em; color:rgba(255,255,255,0.35);">RESPONS &lt; 1 JAM</span>
+      </div>
+      <div class="w-px h-4 opacity-20" style="background:#fff;"></div>
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span style="font-family:'Orbitron',sans-serif; font-size:0.56rem; letter-spacing:0.1em; color:rgba(255,255,255,0.35);">GARANSI REVISI</span>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+<!-- /SECTION CTA -->
+ 
+ 
+<!-- ============================================================
+     SECTION 3 — FAQ ACCORDION
+     Letakkan setelah section #cta-final, sebelum <footer>
+     ============================================================ -->
+<section id="faq" class="section" style="background:#070A14;">
+ 
+  <div class="container">
+ 
+    <!-- Section Header -->
+    <div class="section-header gsap-hidden mb-12" id="faq-header">
+      <span class="section-header__eyebrow">⬡ Pertanyaan Umum</span>
+      <div class="cyber-divider--sm"></div>
+      <h2 class="section-header__title font-tech">
+        Ada yang Ingin <span class="text-gradient-gold">Ditanyakan?</span>
+      </h2>
+      <p class="section-header__desc">
+        Jawaban dari pertanyaan yang paling sering masuk ke tim Alfirama.
+      </p>
+    </div>
+ 
+    <!-- FAQ Accordion -->
+    <div class="max-w-3xl mx-auto gsap-hidden" id="faq-list">
+ 
+      <!-- Item 1 -->
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Berapa lama proses desain di Alfirama Studio?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Tergantung kompleksitas proyek. Untuk logo dan identitas brand dasar, estimasi <strong style="color:rgba(255,255,255,0.8);">3–7 hari kerja</strong>. Proyek yang lebih besar seperti brand system lengkap atau desain animasi 3D bisa memakan waktu <strong style="color:rgba(255,255,255,0.8);">2–4 minggu</strong>. Kamu akan mendapat timeline detail di awal setelah brief diterima.
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Item 2 -->
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Berapa minimum order untuk cetak dan konveksi?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Untuk <strong style="color:rgba(255,255,255,0.8);">Alfirama Press</strong> (banner, stiker, brosur) tidak ada minimum order — bisa pesan 1 lembar sekalipun. Untuk <strong style="color:rgba(255,255,255,0.8);">Alfirama Apparel</strong> (konveksi kaos/hoodie/seragam) minimum order adalah <strong style="color:rgba(255,255,255,0.8);">12 pcs</strong> per desain dengan harga yang lebih kompetitif mulai dari 24 pcs ke atas.
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Item 3 -->
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Apakah bisa revisi desain? Berapa kali?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Setiap paket Studio sudah termasuk <strong style="color:rgba(255,255,255,0.8);">2 kali revisi gratis</strong>. Revisi ketiga dan seterusnya dikenakan biaya tambahan sesuai kompleksitas perubahan. Kami sangat menyarankan brief yang detail di awal agar proses revisi lebih efisien dan hasil akhirnya tepat sasaran.
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Item 4 -->
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Bagaimana cara booking meja di Alfirama Space?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Bisa booking langsung lewat halaman <strong style="color:rgba(255,255,255,0.8);">Alfirama Space</strong> di website ini, atau chat WhatsApp kami untuk reservasi mendadak. Tersedia pilihan sewa harian, mingguan, dan bulanan. Member yang sudah punya akun di Alfirama.ID mendapat prioritas booking dan diskon spesial.
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Item 5 -->
+      <div class="faq-item" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Bagaimana sistem Loyalty Points Alfirama bekerja?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Setiap transaksi di ekosistem Alfirama menghasilkan poin yang tersimpan otomatis di akun kamu. Poin bisa ditukar dengan <strong style="color:rgba(255,255,255,0.8);">voucher diskon digital</strong> untuk transaksi berikutnya. Semakin banyak poin, semakin tinggi tier kamu — dari Bronze hingga Cyber Elite — dengan keuntungan eksklusif di tiap level.
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Item 6 -->
+      <div class="faq-item">
+        <button class="faq-trigger w-full flex items-center justify-between gap-4 py-5 text-left"
+          onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="font-tech font-bold text-sm text-white" style="letter-spacing:0.04em;">
+            Apakah Alfirama melayani klien di luar Banten?
+          </span>
+          <span class="faq-icon flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300"
+            style="border:1px solid rgba(0,240,255,0.2); background:rgba(0,240,255,0.04); color:#00F0FF;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="faq-chevron" style="transition:transform 0.3s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer overflow-hidden" style="max-height:0; transition:max-height 0.4s ease;">
+          <p class="pb-5 text-sm leading-relaxed" style="color:rgba(255,255,255,0.55);">
+            Tentu! Untuk layanan <strong style="color:rgba(255,255,255,0.8);">Studio, Press, dan Apparel</strong> kami melayani seluruh Indonesia secara online — file digital dikirim via platform, produk fisik dikirim via ekspedisi. Untuk <strong style="color:rgba(255,255,255,0.8);">AlfiraMart</strong> saat ini masih fokus di area Serang–Cilegon. <strong style="color:rgba(255,255,255,0.8);">Alfirama Space</strong> tentu saja harus hadir langsung di lokasi.
+          </p>
+        </div>
+      </div>
+ 
+    </div>
+    <!-- /FAQ List -->
+ 
+    <!-- Still have questions? -->
+    <div class="text-center mt-10 gsap-hidden" id="faq-footer">
+      <p class="text-sm mb-4" style="color:rgba(255,255,255,0.4);">Pertanyaan kamu belum terjawab di sini?</p>
+      <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20punya%20pertanyaan..."
+        target="_blank" rel="noopener noreferrer"
+        class="btn btn-outline-cyan"
+        style="display:inline-flex; gap:8px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Tanya Langsung ke Tim Kami
+      </a>
+    </div>
+ 
+  </div>
+</section>
+<!-- /SECTION FAQ -->
+
+
+  <!-- ============================================================
+       8. FOOTER — Sosial Media & Copyright
+       ============================================================ -->
+
+       <footer id="footer" class="relative" style="background:#040609; border-top:1px solid rgba(0,240,255,0.07);">
+    
+
+    <!-- Top gradient line -->
+    <div class="h-px w-full" style="background:linear-gradient(90deg, transparent 0%, rgba(0,240,255,0.2) 20%, rgba(201,178,109,0.3) 50%, rgba(0,240,255,0.2) 80%, transparent 100%);"></div>
+
+    <div class="container py-14 px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+        <!-- Brand Column -->
+        <div class="md:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <img src="assets/global/logo.png" alt="Alfirama Logo" class="h-8 w-auto" onerror="this.style.display='none';" />
+            <span class="font-tech font-black text-base tracking-widest">
+              <span style="color:#FFFFFF;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed mb-5" style="color:rgba(255,255,255,0.4); max-width:220px;">
+            Futuristic Creative &amp; Retail Ecosystem. Dibangun untuk ekonomi lokal Banten yang lebih kuat dan terhubung.
+          </p>
+          <!-- Social Icons -->
+          <div class="flex items-center gap-3 flex-wrap">
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/alfirama.id?igsh=MTlkNnlhZWd1bGVlYQ==" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram Alfirama.ID">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="https://youtube.com/@alfiramaid" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube Alfirama.ID">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
+            </a>
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@alfirama.id?_r=1&_t=ZS-96ZllJHgiqg" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok Alfirama.ID">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+            <!-- GitHub -->
+            <a href="https://github.com/alfiramaid" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub Alfirama.ID">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Nav: Ekosistem -->
+        <div>
+          <h5 class="font-tech text-xs tracking-widest mb-4" style="color:#C9B26D; letter-spacing:0.2em; font-size:0.62rem;">EKOSISTEM</h5>
+          <ul class="space-y-3">
+            <li><a href="studio/index.html" class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Alfirama Studio</a></li>
+            <li><a href="print/index.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Press &amp; Apparel</a></li>
+            <li><a href="mart/index.html"   class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">AlfiraMart</a></li>
+            <li><a href="space/index.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Alfirama Space</a></li>
+          </ul>
+        </div>
+
+        <!-- Nav: Perusahaan -->
+        <div>
+          <h5 class="font-tech text-xs tracking-widest mb-4" style="color:#C9B26D; letter-spacing:0.2em; font-size:0.62rem;">PERUSAHAAN</h5>
+          <ul class="space-y-3">
+            <li><a href="about.html"    class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Tentang Kami</a></li>
+            <li><a href="team.html"     class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Tim</a></li>
+            <li><a href="careers.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Karir</a></li>
+            <li><a href="contact.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Kontak</a></li>
+          </ul>
+        </div>
+
+        <!-- Nav: Legal & Newsletter -->
+        <div>
+          <h5 class="font-tech text-xs tracking-widest mb-4" style="color:#C9B26D; letter-spacing:0.2em; font-size:0.62rem;">LEGAL &amp; INFO</h5>
+          <ul class="space-y-3 mb-6">
+            <li><a href="privacy.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Privacy Policy</a></li>
+            <li><a href="terms.html"    class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Terms of Service</a></li>
+            <li><a href="sitemap.html"  class="nav-link nav-transition-link text-sm" style="font-size:0.85rem;">Sitemap</a></li>
+          </ul>
+          <!-- Status badge -->
+          <div class="flex items-center gap-2">
+            <span class="badge badge--down badge--live">All Systems Operational</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="cyber-divider mt-10 mb-6"></div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs font-tech tracking-widest" style="color:rgba(255,255,255,0.25); letter-spacing:0.12em; font-size:0.6rem;">
+          © 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED
+        </p>
+        <div class="flex items-center gap-4">
+          <a href="privacy.html" class="text-xs nav-link nav-transition-link" style="font-size:0.7rem; color:rgba(255,255,255,0.35);">Privacy Policy</a>
+          <span class="w-px h-3" style="background:rgba(255,255,255,0.1);"></span>
+          <a href="terms.html" class="text-xs nav-link nav-transition-link" style="font-size:0.7rem; color:rgba(255,255,255,0.35);">Terms</a>
+          <span class="w-px h-3" style="background:rgba(255,255,255,0.1);"></span>
+          <span class="text-xs font-tech" style="color:rgba(0,240,255,0.3); font-size:0.6rem; letter-spacing:0.1em;">v1.0.0</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       SCRIPTS — GSAP CDN + Native JS
+       ============================================================ -->
+
+  <!-- GSAP Core + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    /* ============================================================
+       1. REALTIME DIGITAL CLOCK (WIB = UTC+7)
+       ============================================================ */
+    function updateClock() {
+      const now     = new Date();
+      const utc     = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const wib     = new Date(utc + 7 * 3600000);
+      const hh      = String(wib.getHours()).padStart(2, '0');
+      const mm      = String(wib.getMinutes()).padStart(2, '0');
+      const ss      = String(wib.getSeconds()).padStart(2, '0');
+      const el      = document.getElementById('digital-clock');
+      if (el) el.textContent = `${hh}:${mm}:${ss} WIB`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+
+    /* ============================================================
+       2. NAVBAR SCROLL EFFECT
+       ============================================================ */
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 60) {
+        navbar.classList.add('navbar--scrolled');
+      } else {
+        navbar.classList.remove('navbar--scrolled');
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+
+    /* ============================================================
+       3. MOBILE NAVIGATION DRAWER
+       ============================================================ */
+    const hamburgerBtn   = document.getElementById('hamburger-btn');
+    const mobileMenu     = document.getElementById('mobile-menu');
+    const mobileBackdrop = document.getElementById('mobile-backdrop');
+    const mobileClose    = document.getElementById('mobile-menu-close');
+    const hamLine1       = document.getElementById('ham-line-1');
+    const hamLine2       = document.getElementById('ham-line-2');
+    const hamLine3       = document.getElementById('ham-line-3');
+    let menuOpen         = false;
+
+    function openMobileMenu() {
+      menuOpen = true;
+      mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      mobileBackdrop.classList.remove('hidden');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      // Animate to X
+      hamLine1.style.transform = 'translateY(8px) rotate(45deg)';
+      hamLine2.style.opacity   = '0';
+      hamLine3.style.transform = 'translateY(-6px) rotate(-45deg)';
+      hamLine3.style.width     = '24px';
+    }
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileBackdrop.classList.add('hidden');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      // Reset lines
+      hamLine1.style.transform = '';
+      hamLine2.style.opacity   = '1';
+      hamLine3.style.transform = '';
+      hamLine3.style.width     = '16px';
+    }
+
+    hamburgerBtn.addEventListener('click', () => menuOpen ? closeMobileMenu() : openMobileMenu());
+    mobileClose.addEventListener('click', closeMobileMenu);
+    mobileBackdrop.addEventListener('click', closeMobileMenu);
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuOpen) closeMobileMenu();
+    });
+
+
+    /* ============================================================
+       4. PAGE TRANSITION — Fade Out Before Navigate
+       ============================================================ */
+    const overlay = document.getElementById('page-overlay');
+
+    function navigateTo(href) {
+      if (!href || href === '#' || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || href.startsWith('https://wa')) {
+        return; // Let browser handle external / mailto links
+      }
+      overlay.classList.add('active');
+      setTimeout(() => { window.location.href = href; }, 420);
+    }
+
+    // Intercept all nav-transition-link clicks
+    document.querySelectorAll('.nav-transition-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (!href) return;
+        // Allow external links and anchors to behave normally
+        const isExternal = this.getAttribute('target') === '_blank' || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || href.startsWith('#');
+        if (isExternal) return;
+        e.preventDefault();
+        closeMobileMenu();
+        navigateTo(href);
+      });
+    });
+
+    // Fade in on page load
+    window.addEventListener('pageshow', () => {
+      overlay.classList.remove('active');
+    });
+
+
+    /* ============================================================
+       5. GSAP ANIMATIONS
+       ============================================================ */
+    gsap.registerPlugin(ScrollTrigger);
+
+    // — Hero Text Reveal (on load) —
+    const heroTL = gsap.timeline({ delay: 0.2 });
+
+    heroTL
+      .to('#hero-eyebrow', {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      })
+      .to('#hero-title', {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      }, '-=0.4')
+      .to('#hero-desc', {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      }, '-=0.5')
+      .to('#hero-ctas', {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+      }, '-=0.4');
+
+    // — Ecosystem Section Header —
+    gsap.to('#eco-header', {
+      scrollTrigger: {
+        trigger: '#eco-header',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+    });
+
+    // — Ecosystem Cards (stagger) —
+    gsap.to(['#card-1', '#card-2', '#card-3', '#card-4'], {
+      scrollTrigger: {
+        trigger: '#eco-cards',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      },
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.12,
+      ease: 'power3.out',
+    });
+
+    // — Stats —
+    gsap.to('#stats-header', {
+      scrollTrigger: { trigger: '#stats-header', start: 'top 85%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    });
+    gsap.to('#stats-grid', {
+      scrollTrigger: { trigger: '#stats-grid', start: 'top 85%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    });
+
+    // — Team —
+    gsap.to('#team-header', {
+      scrollTrigger: { trigger: '#team-header', start: 'top 85%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    });
+    gsap.to('#team-grid', {
+      scrollTrigger: { trigger: '#team-grid', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    });
+
+    // — Location —
+    gsap.to('#location-header', {
+      scrollTrigger: { trigger: '#location-header', start: 'top 85%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+    });
+    gsap.to('#location-grid', {
+      scrollTrigger: { trigger: '#location-grid', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+    });
+
+
+    /* ============================================================
+       6. ACTIVE NAV LINK HIGHLIGHT ON SCROLL
+       ============================================================ */
+
+    
+(function(){
+  const counters = [
+    { selector: '.stat-number', targets: [
+      { el: null, end: 50, suffix: '+' },
+      { el: null, end: 10000, suffix: 'K+', divide: 1000 },
+      { el: null, end: 3, suffix: '+' },
+    ]}
+  ];
+ 
+  function animateCounter(el, end, suffix, divide, duration){
+    const start = 0;
+    const startTime = performance.now();
+    divide = divide || 1;
+    function update(now){
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      const current = Math.floor(eased * end);
+      const display = divide > 1 ? (current / divide).toFixed(0) + suffix : current + suffix;
+      el.innerHTML = display.replace(/(\d+)/, '<span>$1</span>');
+      if(progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+ 
+  const statEls = document.querySelectorAll('.stat-number');
+  const data = [
+    { end: 50, suffix: '<span style="color:#00F0FF;">+</span>', raw: 50 },
+    { end: 10, suffix: '<span style="color:#00F0FF;">K+</span>', raw: 10 },
+    { end: 3,  suffix: '<span style="color:#00F0FF;">+</span>', raw: 3 },
+  ];
+ 
+  let animated = false;
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !animated){
+        animated = true;
+        statEls.forEach((el, i)=>{
+          const d = data[i];
+          if(!d) return;
+          let current = 0;
+          const duration = 1800;
+          const startTime = performance.now();
+          function tick(now){
+            const t = Math.min((now - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - t, 3);
+            current = Math.floor(eased * d.raw);
+            el.innerHTML = current + d.suffix;
+            if(t < 1) requestAnimationFrame(tick);
+            else el.innerHTML = d.raw + d.suffix;
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+ 
+  const statsSection = document.getElementById('stats');
+  if(statsSection) observer.observe(statsSection);
+})();
+
+
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const id = entry.target.getAttribute('id');
+          const matchingLink = document.querySelector(`.nav-link[href*="${id}"]`);
+          if (matchingLink) matchingLink.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(section => sectionObserver.observe(section));
+
+    /* ── FAQ ACCORDION ── */
+function toggleFaq(trigger) {
+  const item    = trigger.closest('.faq-item');
+  const answer  = item.querySelector('.faq-answer');
+  const chevron = trigger.querySelector('.faq-chevron');
+  const icon    = trigger.querySelector('.faq-icon');
+  const isOpen  = trigger.getAttribute('aria-expanded') === 'true';
+
+  /* Tutup semua yang lain dulu */
+  document.querySelectorAll('.faq-trigger').forEach(function(t) {
+    if (t === trigger) return;
+    t.setAttribute('aria-expanded', 'false');
+    t.closest('.faq-item').querySelector('.faq-answer').style.maxHeight = '0';
+    t.querySelector('.faq-chevron').style.transform = 'rotate(0deg)';
+    t.querySelector('.faq-icon').style.borderColor  = 'rgba(0,240,255,0.2)';
+    t.querySelector('.faq-icon').style.background   = 'rgba(0,240,255,0.04)';
+  });
+
+  /* Toggle yang diklik */
+  if (isOpen) {
+    trigger.setAttribute('aria-expanded', 'false');
+    answer.style.maxHeight  = '0';
+    chevron.style.transform = 'rotate(0deg)';
+    icon.style.borderColor  = 'rgba(0,240,255,0.2)';
+    icon.style.background   = 'rgba(0,240,255,0.04)';
+  } else {
+    trigger.setAttribute('aria-expanded', 'true');
+    answer.style.maxHeight  = answer.scrollHeight + 'px';
+    chevron.style.transform = 'rotate(180deg)';
+    icon.style.borderColor  = 'rgba(201,178,109,0.5)';
+    icon.style.background   = 'rgba(201,178,109,0.08)';
+  }
+}
+
+/* ── GSAP SCROLL ANIMATIONS untuk 3 section baru ── */
+gsap.to('#testi-header', {
+  scrollTrigger: { trigger:'#testi-header', start:'top 85%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.8, ease:'power3.out'
+});
+gsap.to('#testi-grid', {
+  scrollTrigger: { trigger:'#testi-grid', start:'top 80%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.9, ease:'power3.out'
+});
+gsap.to(['#cta-eyebrow','#cta-heading','#cta-desc','#cta-buttons','#cta-trust'], {
+  scrollTrigger: { trigger:'#cta-final', start:'top 80%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out'
+});
+gsap.to('#faq-header', {
+  scrollTrigger: { trigger:'#faq-header', start:'top 85%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.8, ease:'power3.out'
+});
+gsap.to('#faq-list', {
+  scrollTrigger: { trigger:'#faq-list', start:'top 80%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.8, ease:'power3.out'
+});
+gsap.to('#faq-footer', {
+  scrollTrigger: { trigger:'#faq-footer', start:'top 90%', toggleActions:'play none none none' },
+  opacity:1, y:0, duration:0.7, ease:'power3.out'
+});
+  </script>
+  <script>
+function toggleTheme(){
+  const body = document.body;
+  const moon = document.getElementById('icon-moon');
+  const sun  = document.getElementById('icon-sun');
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  moon.style.display = isLight ? 'none'  : 'block';
+  sun.style.display  = isLight ? 'block' : 'none';
+  localStorage.setItem('alfirama_theme', isLight ? 'light' : 'dark');
+}
+// Restore saved theme
+if(localStorage.getItem('alfirama_theme') === 'light'){
+  document.body.classList.add('light-mode');
+  const moon = document.getElementById('icon-moon');
+  const sun  = document.getElementById('icon-sun');
+  if(moon) moon.style.display = 'none';
+  if(sun)  sun.style.display  = 'block';
+}
+</script>
+
+  <!-- ============================================================
+       BGM CONTROLLER — CSS + JavaScript
+       ============================================================ -->
+  <style>
+  @keyframes bgmPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.6); }
+  }
+  #bgm-toggle.muted {
+    border-color: rgba(255,255,255,0.1) !important;
+    background: rgba(255,255,255,0.03) !important;
+    color: rgba(255,255,255,0.3) !important;
+    box-shadow: none !important;
+  }
+  </style>
+
+  <script>
+  (function(){
+    let _bgmMuted = false;
+
+    window.toggleBGM = function(){
+      const bgm     = document.getElementById('bgm-player');
+      const iconOn  = document.getElementById('bgm-icon-on');
+      const iconOff = document.getElementById('bgm-icon-off');
+      const pulse   = document.getElementById('bgm-pulse');
+      const btn     = document.getElementById('bgm-toggle');
+      if(!bgm) return;
+
+      _bgmMuted = !_bgmMuted;
+
+      if(_bgmMuted){
+        /* MUTE */
+        bgm.pause();
+        iconOn.style.display  = 'none';
+        iconOff.style.display = 'block';
+        pulse.style.animation = 'none';
+        pulse.style.opacity   = '0.15';
+        btn.classList.add('muted');
+        btn.setAttribute('title', 'BGM: OFF — klik untuk nyalakan');
+      } else {
+        /* UNMUTE */
+        bgm.play().catch(()=>{});
+        iconOn.style.display  = 'block';
+        iconOff.style.display = 'none';
+        pulse.style.animation = 'bgmPulse 1.4s ease-in-out infinite';
+        pulse.style.opacity   = '1';
+        btn.classList.remove('muted');
+        btn.setAttribute('title', 'BGM: ON — klik untuk matikan');
+      }
+    };
+  })();
+  </script>
+
+  <!-- ============================================================
+       BGM PLAYER — Hidden Audio Element
+       ============================================================ -->
+  <audio id="bgm-player" src="assets/global/bgm-cyber.mp3" loop preload="auto"></audio>
+
+</body>
+</html>
