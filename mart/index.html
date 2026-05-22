@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="id">
+    <link rel="stylesheet" href="../css/style.css">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AlfiraMart — Agen grosir sembako dan kebutuhan harian dengan harga terjangkau di Kabupaten Serang." />
+  <title>AlfiraMart — Agen Grosir Sembako Kabupaten Serang</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    body::after{
+      content:'';
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:9999;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.3;
+    }
+
+    .mart-hero{
+      position:relative;
+      padding-top:calc(var(--navbar-height) + 5rem);
+      padding-bottom:5rem;
+      overflow:hidden;
+    }
+
+    .mart-hero__bg{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top left, rgba(52,211,153,0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(77,163,209,0.12), transparent 40%),
+        var(--color-bg-primary);
+    }
+
+    .mart-hero__grid{
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(77,163,209,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77,163,209,0.04) 1px, transparent 1px);
+      background-size:50px 50px;
+      mask-image:radial-gradient(circle at center, black 35%, transparent 90%);
+    }
+
+    .mart-hero__inner{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 1.5rem;
+      text-align:center;
+    }
+
+    .mart-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.45rem 1rem;
+      border-radius:999px;
+      background:rgba(52,211,153,0.08);
+      border:1px solid rgba(52,211,153,0.25);
+      color:#34D399;
+      font-size:.7rem;
+      font-weight:700;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      margin-bottom:1.5rem;
+    }
+
+    .mart-badge__dot{
+      width:7px;
+      height:7px;
+      background:#34D399;
+      border-radius:50%;
+      animation:pulse 2s infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{opacity:1;transform:scale(1);}
+      50%{opacity:.4;transform:scale(1.3);}
+    }
+
+    .mart-title{
+      font-size:clamp(2.2rem,6vw,4rem);
+      font-weight:900;
+      color:#fff;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      margin-bottom:1rem;
+    }
+
+    .mart-title span{
+      color:#34D399;
+    }
+
+    .mart-desc{
+      max-width:680px;
+      margin:0 auto;
+      color:rgba(203,213,225,.65);
+      line-height:1.8;
+      font-size:1rem;
+    }
+
+    .market-section{
+      padding:0 1.25rem 5rem;
+      margin-top:-1rem;
+      position:relative;
+      z-index:5;
+    }
+
+    .market-card{
+      max-width:1100px;
+      margin:0 auto;
+      background:var(--color-bg-secondary);
+      border:1px solid var(--color-border);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+    }
+
+    .market-header{
+      padding:1.5rem;
+      border-bottom:1px solid var(--color-border);
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+
+    .market-title{
+      font-size:1.2rem;
+      font-weight:800;
+      color:#fff;
+      letter-spacing:-.02em;
+    }
+
+    .market-subtitle{
+      font-size:.85rem;
+      color:rgba(203,213,225,.5);
+      margin-top:.3rem;
+    }
+
+    .search-box{
+      position:relative;
+      width:100%;
+      max-width:320px;
+    }
+
+    .search-box input{
+      width:100%;
+      background:var(--color-bg-tertiary);
+      border:1px solid var(--color-border);
+      border-radius:14px;
+      padding:.95rem 1rem;
+      color:#fff;
+      outline:none;
+      transition:.2s;
+      font-size:.92rem;
+    }
+
+    .search-box input:focus{
+      border-color:rgba(52,211,153,.5);
+      box-shadow:0 0 0 4px rgba(52,211,153,.08);
+    }
+
+    .table-wrap{
+      overflow-x:auto;
+    }
+
+    .price-table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:700px;
+    }
+
+    .price-table th{
+      text-align:left;
+      padding:1rem 1.25rem;
+      background:rgba(255,255,255,.02);
+      color:rgba(203,213,225,.55);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      border-bottom:1px solid var(--color-border);
+    }
+
+    .price-table td{
+      padding:1rem 1.25rem;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      color:rgba(255,255,255,.85);
+      font-size:.93rem;
+    }
+
+    .price-table tr:hover{
+      background:rgba(255,255,255,.02);
+    }
+
+    .product-name{
+      font-weight:700;
+      color:#fff;
+    }
+
+    .stock{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .75rem;
+      border-radius:999px;
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.05em;
+    }
+
+    .stock--ready{
+      background:rgba(52,211,153,.12);
+      border:1px solid rgba(52,211,153,.25);
+      color:#34D399;
+    }
+
+    .stock--empty{
+      background:rgba(239,68,68,.1);
+      border:1px solid rgba(239,68,68,.22);
+      color:#EF4444;
+    }
+
+    .maps-section{
+      padding:0 1.25rem 5rem;
+    }
+
+    .maps-card{
+      max-width:1100px;
+      margin:0 auto;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid var(--color-border);
+      background:var(--color-bg-secondary);
+    }
+
+    .maps-content{
+      padding:1.5rem;
+    }
+
+    .maps-label{
+      display:inline-block;
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      color:#34D399;
+      margin-bottom:.75rem;
+    }
+
+    .maps-title{
+      font-size:1.7rem;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:-.03em;
+      margin-bottom:.8rem;
+    }
+
+    .maps-desc{
+      color:rgba(203,213,225,.6);
+      line-height:1.7;
+      margin-bottom:1.5rem;
+    }
+
+    .maps-frame{
+      width:100%;
+      height:420px;
+      border:none;
+      display:block;
+    }
+
+    .cta-section{
+      padding:0 1.25rem 5rem;
+    }
+
+    .cta-box{
+      max-width:900px;
+      margin:0 auto;
+      border-radius:24px;
+      padding:3rem 2rem;
+      text-align:center;
+      background:
+        radial-gradient(circle at top, rgba(52,211,153,.12), transparent 45%),
+        linear-gradient(135deg,#162032 0%, #1a2433 100%);
+      border:1px solid rgba(52,211,153,.18);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .cta-title{
+      font-size:clamp(1.8rem,4vw,2.8rem);
+      font-weight:900;
+      color:#fff;
+      letter-spacing:-.03em;
+      margin-bottom:1rem;
+    }
+
+    .cta-desc{
+      max-width:620px;
+      margin:0 auto 2rem;
+      color:rgba(203,213,225,.65);
+      line-height:1.8;
+    }
+
+    .wa-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.8rem;
+      background:#25D366;
+      color:#fff;
+      padding:1rem 2rem;
+      border-radius:18px;
+      font-weight:800;
+      font-size:.95rem;
+      text-decoration:none;
+      transition:.25s;
+      box-shadow:0 10px 30px rgba(37,211,102,.25);
+    }
+
+    .wa-btn:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 40px rgba(37,211,102,.3);
+    }
+
+    @media(max-width:768px){
+      .market-header{
+        align-items:flex-start;
+      }
+
+      .search-box{
+        max-width:100%;
+      }
+
+      .maps-frame{
+        height:320px;
+      }
+
+      .cta-box{
+        padding:2.2rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner">
+
+    <a href="/" class="navbar__brand">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="38" height="38" rx="10" fill="#316182"/>
+        <path d="M10 28L19 10L28 28" stroke="#34D399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.5 22H24.5" stroke="#34D399" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+
+      <div>
+        <div class="nav-logo-text">
+          Alfira<span class="dot-id">Mart</span>
+        </div>
+        <div class="nav-logo-tagline">
+          Grosir · Sembako · FMCG
+        </div>
+      </div>
+    </a>
+
+    <nav class="navbar__nav">
+      <a href="/" class="navbar__link">Home</a>
+      <a href="/studio" class="navbar__link">Studio</a>
+      <a href="/print" class="navbar__link">Print</a>
+      <a href="/mart" class="navbar__link navbar__link--active">Mart</a>
+    </nav>
+
+    <div class="navbar__cta">
+      <a href="#order" class="btn btn--primary btn--sm">
+        Order Grosir
+      </a>
+    </div>
+
+    <button class="navbar__toggle" id="navToggle">
+      <span class="navbar__toggle-bar"></span>
+      <span class="navbar__toggle-bar"></span>
+      <span class="navbar__toggle-bar"></span>
+    </button>
+
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="mart-hero">
+
+    <div class="mart-hero__bg">
+      <div class="mart-hero__grid"></div>
+    </div>
+
+    <div class="mart-hero__inner">
+
+      <div class="mart-badge">
+        <span class="mart-badge__dot"></span>
+        Update Harga Hari Ini
+      </div>
+
+      <h1 class="mart-title">
+        Grosir Sembako<br>
+        <span>Lebih Mudah & Terjangkau</span>
+      </h1>
+
+      <p class="mart-desc">
+        AlfiraMart melayani kebutuhan sembako harian untuk warung, reseller, UMKM, hingga rumah tangga dengan harga kompetitif dan stok terupdate setiap hari.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- PRICE TABLE -->
+  <section class="market-section">
+
+    <div class="market-card">
+
+      <div class="market-header">
+
+        <div>
+          <h2 class="market-title">
+            Daftar Harga Sembako
+          </h2>
+          <p class="market-subtitle">
+            Cari produk dengan cepat melalui kolom pencarian.
+          </p>
+        </div>
+
+        <div class="search-box">
+          <input 
+            type="text" 
+            id="searchInput"
+            placeholder="Cari barang..."
+          />
+        </div>
+
+      </div>
+
+      <div class="table-wrap">
+
+        <table class="price-table" id="priceTable">
+
+          <thead>
+            <tr>
+              <th>Produk</th>
+              <th>Harga</th>
+              <th>Satuan</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td class="product-name">Beras Premium</td>
+              <td>Rp 74.000</td>
+              <td>5 Kg</td>
+              <td>
+                <span class="stock stock--ready">
+                  ● Ready
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Minyak Goreng</td>
+              <td>Rp 18.500</td>
+              <td>1 Liter</td>
+              <td>
+                <span class="stock stock--ready">
+                  ● Ready
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Gula Pasir</td>
+              <td>Rp 17.000</td>
+              <td>1 Kg</td>
+              <td>
+                <span class="stock stock--ready">
+                  ● Ready
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Tepung Terigu</td>
+              <td>Rp 13.500</td>
+              <td>1 Kg</td>
+              <td>
+                <span class="stock stock--empty">
+                  ● Habis
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Telur Ayam</td>
+              <td>Rp 29.000</td>
+              <td>1 Kg</td>
+              <td>
+                <span class="stock stock--ready">
+                  ● Ready
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Mie Instan</td>
+              <td>Rp 120.000</td>
+              <td>1 Dus</td>
+              <td>
+                <span class="stock stock--ready">
+                  ● Ready
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="product-name">Kopi Sachet</td>
+              <td>Rp 38.000</td>
+              <td>1 Renteng</td>
+              <td>
+                <span class="stock stock--empty">
+                  ● Habis
+                </span>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MAPS -->
+  <section class="maps-section">
+
+    <div class="maps-card">
+
+      <div class="maps-content">
+
+        <div class="maps-label">
+          Lokasi Gudang
+        </div>
+
+        <h2 class="maps-title">
+          Gudang Grosir Kabupaten Serang
+        </h2>
+
+        <p class="maps-desc">
+          Pengambilan barang dan distribusi dilakukan langsung dari area Kabupaten Serang untuk memastikan pengiriman lebih cepat dan efisien.
+        </p>
+
+      </div>
+
+      <iframe 
+        class="maps-frame"
+        src="https://maps.google.com/maps?q=kabupaten%20serang&t=&z=10&ie=UTF8&iwloc=&output=embed"
+        loading="lazy"
+        allowfullscreen>
+      </iframe>
+
+    </div>
+
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="order">
+
+    <div class="cta-box">
+
+      <h2 class="cta-title">
+        Siap Order Grosir?
+      </h2>
+
+      <p class="cta-desc">
+        Klik tombol di bawah untuk langsung menghubungi admin AlfiraMart melalui WhatsApp dengan format order otomatis.
+      </p>
+
+      <a 
+        href="https://wa.me/6281234567890?text=Halo%20Admin%20AlfiraMart%2C%20saya%20ingin%20memesan%20produk%20grosir.%0A%0ANama%20%3A%0AProduk%20%3A%0AJumlah%20%3A"
+        class="wa-btn"
+        target="_blank"
+      >
+        <span>🛒</span>
+        Pesan Grosir via WhatsApp
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+  // Navbar Scroll
+  const navbar = document.getElementById('navbar');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('navbar--scrolled', window.scrollY > 20);
+  });
+
+  // Mobile Menu
+  const navToggle = document.getElementById('navToggle');
+
+  navToggle.addEventListener('click', () => {
+    navbar.classList.toggle('navbar--open');
+  });
+
+  // Live Search
+  const searchInput = document.getElementById('searchInput');
+  const table = document.getElementById('priceTable');
+  const rows = table.getElementsByTagName('tr');
+
+  searchInput.addEventListener('keyup', function() {
+
+    const keyword = this.value.toLowerCase();
+
+    for(let i = 1; i < rows.length; i++) {
+
+      const product = rows[i]
+        .getElementsByTagName('td')[0]
+        .textContent
+        .toLowerCase();
+
+      if(product.includes(keyword)){
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
