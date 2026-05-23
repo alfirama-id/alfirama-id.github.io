@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daftar Akun — Alfirama.ID</title>
 
+  <!-- ⚡ BUGFIX #1: Theme Sync — jalankan PERTAMA sebelum render agar tidak ada flash -->
+  <!-- Membaca key 'alfirama_theme' yang sama digunakan index.html & profile.html -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('alfirama_theme') || 'dark';
+      document.documentElement.classList.toggle('dark', saved === 'dark');
+    })();
+  </script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -140,11 +149,7 @@
     /* ============================================================
        CORNER BRACKET DECORATIONS — identik dengan login.html
     ============================================================ */
-    .corner-bracket { position: absolute; width: 20px; height: 20px; }
-    .corner-bracket.tl { top: 12px; left: 12px;   border-top:    1.5px solid rgba(201,178,109,0.5); border-left:   1.5px solid rgba(201,178,109,0.5); }
-    .corner-bracket.tr { top: 12px; right: 12px;  border-top:    1.5px solid rgba(201,178,109,0.5); border-right:  1.5px solid rgba(201,178,109,0.5); }
-    .corner-bracket.bl { bottom: 12px; left: 12px;  border-bottom: 1.5px solid rgba(201,178,109,0.5); border-left:   1.5px solid rgba(201,178,109,0.5); }
-    .corner-bracket.br { bottom: 12px; right: 12px; border-bottom: 1.5px solid rgba(201,178,109,0.5); border-right:  1.5px solid rgba(201,178,109,0.5); }
+    /* Corner brackets dihapus sesuai permintaan */
 
     /* ============================================================
        TYPOGRAPHY — GRADIENT GOLD (shimmer animasi) — identik login.html
@@ -596,34 +601,188 @@
     #reg-whatsapp.has-prefix { padding-left: 80px; }
 
     /* ============================================================
-       RESPONSIVE
+       RESPONSIVE LAYOUT — Mobile: single card, Desktop: 2-column split
     ============================================================ */
+
+    /* Mobile: card centered, tidak terlalu memanjang */
+    .register-wrapper {
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      margin: 0 auto;
+    }
+
+    /* Desktop (≥1024px): 2-column split layout */
+    @media (min-width: 1024px) {
+      body {
+        padding: 0 !important;
+        align-items: stretch !important;
+      }
+      .register-wrapper {
+        max-width: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+        gap: 0;
+      }
+      .register-brand-panel {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 60px 56px;
+        background: linear-gradient(135deg,
+          rgba(7,10,20,0.98) 0%,
+          rgba(13,21,41,0.95) 60%,
+          rgba(201,178,109,0.03) 100%);
+        border-right: 1px solid rgba(0,240,255,0.08);
+        position: relative;
+        overflow: hidden;
+      }
+      .register-brand-panel::before {
+        content: '';
+        position: absolute;
+        bottom: -100px; right: -80px;
+        width: 450px; height: 450px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(201,178,109,0.07) 0%, transparent 65%);
+        filter: blur(50px);
+        pointer-events: none;
+      }
+      .register-brand-panel::after {
+        content: '';
+        position: absolute;
+        top: -80px; left: -80px;
+        width: 350px; height: 350px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, transparent 65%);
+        filter: blur(40px);
+        pointer-events: none;
+      }
+      .register-form-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 40px;
+        overflow-y: auto;
+      }
+      #register-card {
+        width: 100%;
+        max-width: 440px;
+      }
+    }
+
+    /* Mobile: sembunyikan brand panel */
+    .register-brand-panel {
+      display: none;
+    }
+    .register-form-panel {
+      width: 100%;
+    }
+
+    /* Compact card di mobile agar tidak terlalu memanjang */
+    @media (max-width: 640px) {
+      #register-card {
+        padding: 28px 20px !important;
+      }
+      .mb-8 { margin-bottom: 18px !important; }
+      .mb-6 { margin-bottom: 14px !important; }
+      .mb-5 { margin-bottom: 12px !important; }
+    }
+
     @media (max-width: 480px) {
       .glass-panel { border-radius: 16px; }
     }
   </style>
 </head>
 
-<body class="cyber-bg text-white min-h-screen flex flex-col justify-center items-center relative overflow-x-hidden overflow-y-auto py-12 px-4">
+<body class="cyber-bg text-white min-h-screen flex flex-col justify-center items-center relative overflow-x-hidden overflow-y-auto">
 
   <!-- ============================================================
        PARTICLE CANVAS
   ============================================================ -->
-  <canvas id="particles-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+  <canvas id="particles-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
 
   <!-- Page Transition Overlay -->
   <div id="page-transition"></div>
 
   <!-- ============================================================
-       MAIN REGISTER CARD
+       RESPONSIVE WRAPPER — Mobile: single card | Desktop: 2-column
+  ============================================================ -->
+  <div class="register-wrapper relative z-10">
+
+    <!-- ── PANEL KIRI (Desktop only) — Branding & Visual ── -->
+    <div class="register-brand-panel">
+      <!-- Grid decoration -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,240,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0;"></div>
+
+      <div style="position:relative;z-index:1;">
+        <!-- Logo -->
+        <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:48px;text-decoration:none;">
+          <img src="assets/global/logo.png" alt="Alfirama Logo" style="height:40px;width:auto;" onerror="this.style.display='none'" />
+          <span style="font-family:var(--font-tech);font-weight:900;font-size:1.1rem;letter-spacing:0.2em;">
+            <span style="color:#fff;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
+          </span>
+        </a>
+
+        <div style="margin-bottom:16px;">
+          <span style="font-family:var(--font-tech);font-size:0.55rem;letter-spacing:0.25em;color:rgba(201,178,109,0.6);">⬡ BERGABUNG SEKARANG</span>
+        </div>
+        <h2 style="font-family:var(--font-tech);font-weight:900;font-size:clamp(1.6rem,2.5vw,2.3rem);line-height:1.2;margin-bottom:20px;">
+          <span style="background:linear-gradient(135deg,#F0D980,#C9B26D,#fff,#C9B26D);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Daftar Gratis,</span><br/>
+          <span style="color:#fff;">Akses Penuh.</span>
+        </h2>
+        <p style="font-size:0.875rem;line-height:1.7;color:rgba(255,255,255,0.45);max-width:340px;margin-bottom:40px;">
+          Buat akun Alfirama.ID untuk menikmati tracking order, loyalty points, download aset digital, dan akses prioritas ke seluruh ekosistem layanan kami.
+        </p>
+
+        <!-- Keuntungan daftar -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:40px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Gratis selamanya, tanpa kartu kredit</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Dashboard tracking order realtime</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Loyalty points di setiap transaksi</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);">Download aset digital yang dibeli</p>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(0,240,255,0.15);border-radius:20px;background:rgba(0,240,255,0.04);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span style="font-family:var(--font-tech);font-size:0.5rem;letter-spacing:0.1em;color:rgba(0,240,255,0.5);">ENKRIPSI AES-256</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(201,178,109,0.15);border-radius:20px;background:rgba(201,178,109,0.04);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+            <span style="font-family:var(--font-tech);font-size:0.5rem;letter-spacing:0.1em;color:rgba(201,178,109,0.5);">DAFTAR &lt; 1 MENIT</span>
+          </div>
+        </div>
+
+        <div style="margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.05);">
+          <p style="font-family:var(--font-tech);font-size:0.5rem;letter-spacing:0.18em;color:rgba(255,255,255,0.2);">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL KANAN — Form Register ── -->
+    <div class="register-form-panel py-10 px-4">
+
+  <!-- ============================================================
+       REGISTER CARD
   ============================================================ -->
   <div id="register-card" class="glass-panel relative z-10 w-full max-w-md p-8 md:p-10" style="opacity: 0; transform: translateY(30px);">
-
-    <!-- Corner Brackets -->
-    <div class="corner-bracket tl"></div>
-    <div class="corner-bracket tr"></div>
-    <div class="corner-bracket bl"></div>
-    <div class="corner-bracket br"></div>
 
     <!-- ── HEADER ── -->
     <div class="flex flex-col items-center mb-8">
@@ -886,6 +1045,9 @@
 
   </div>
   <!-- /register-card -->
+
+    </div><!-- /register-form-panel -->
+  </div><!-- /register-wrapper -->
 
   <!-- ============================================================
        PARTICLE ANIMATION — identik dengan login.html
@@ -1316,7 +1478,7 @@
   <script type="module">
   // ── 1. IMPORT WAJIB ──
   import { initializeApp }                                            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { getFirestore, doc, setDoc }                               from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
   // ── 2. FIREBASE CONFIG ──
@@ -1334,6 +1496,14 @@
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getFirestore(app);
+
+  // ── BUGFIX #3: AUTH GUARD — Jika user sudah login, langsung redirect ke dashboard ──
+  // Menggunakan replace() agar halaman register tidak masuk history browser
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.location.replace('profile.html');
+    }
+  });
 
   // ── 4. UI REFERENCES ──
   const registerForm = document.getElementById('register-form');
@@ -1388,7 +1558,7 @@
       waFormatted = '+' + waFormatted;
     }
     await setDoc(doc(db, 'users', uid), {
-      name:      name,
+      displayName: name,
       email:     email,
       whatsapp:  waFormatted,
       role:      'customer',
@@ -1478,6 +1648,11 @@
         // Buat akun di Firebase Auth
         const userCredential = await createUserWithEmailAndPassword(auth, emailValue, passwordValue);
         const uid = userCredential.user.uid;
+
+        // BUGFIX #2: Sinkronkan displayName ke Firebase Auth object.
+        // Tanpa ini, user.displayName akan selalu null saat login ulang via email,
+        // sehingga login.html tidak bisa menyapa user dengan nama mereka.
+        await updateProfile(userCredential.user, { displayName: nameValue });
 
         // Simpan data tambahan ke Firestore
         await saveUserToFirestore(uid, nameValue, emailValue, whatsappValue);
