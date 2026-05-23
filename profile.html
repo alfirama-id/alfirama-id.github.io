@@ -1,1528 +1,884 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alfirama.ID — Client Dashboard</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Alfirama.ID — Client Dashboard</title>
+<script>(function(){var s=localStorage.getItem('alfirama_theme')||'dark';document.documentElement.setAttribute('data-theme',s);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 
-  <!-- ⚡ Theme Sync — jalankan PERTAMA sebelum render agar tidak ada flash -->
-  <script>
-    (function () {
-      var saved = localStorage.getItem('alfirama_theme') || 'dark';
-      document.documentElement.classList.toggle('dark', saved === 'dark');
-    })();
-  </script>
+:root{
+  --bg:#020810;
+  --bg2:#040c18;
+  --bg3:#060f1e;
+  --surface:rgba(4,12,26,0.7);
+  --surface2:rgba(6,15,30,0.8);
+  --border:rgba(0,140,255,0.12);
+  --border2:rgba(0,140,255,0.22);
+  --blue:#3ab0ff;
+  --blue2:#00c8ff;
+  --blue-glow:rgba(0,140,255,0.18);
+  --gold:#c9b26d;
+  --gold2:#e2cc8e;
+  --gold-glow:rgba(201,178,109,0.15);
+  --text:#e6edf3;
+  --text2:rgba(230,237,243,0.55);
+  --text3:rgba(230,237,243,0.28);
+  --green:#3fb950;
+  --font-tech:'Orbitron',sans-serif;
+  --font-body:'Montserrat',sans-serif;
+  --sidebar-w:220px;
+}
+[data-theme="light"]{
+  --bg:#f0f4fa;
+  --bg2:#e8eef8;
+  --bg3:#dce6f5;
+  --surface:rgba(255,255,255,0.82);
+  --surface2:rgba(240,244,250,0.9);
+  --border:rgba(0,100,200,0.13);
+  --border2:rgba(0,100,200,0.25);
+  --blue:#1a6fc4;
+  --blue2:#0d5faa;
+  --blue-glow:rgba(0,100,200,0.1);
+  --gold:#9a7c3c;
+  --gold2:#b8963e;
+  --gold-glow:rgba(154,124,60,0.1);
+  --text:#0f172a;
+  --text2:rgba(15,23,42,0.55);
+  --text3:rgba(15,23,42,0.3);
+}
 
-  <!-- Google Fonts: Orbitron (Tech/Heading) + Montserrat (Body) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            'cyber-bg':   '#0A0F1D',
-            'cyber-void': '#070A14',
-            'cyber-navy': '#0F172A',
-            'cyber-card': '#13192B',
-            'neon-cyan':  '#00F0FF',
-            'gold':       '#C9B26D',
-            'gold-light': '#E2CC8E',
-            'gold-dark':  '#A38A47',
-          },
-          fontFamily: {
-            tech: ['Orbitron', 'sans-serif'],
-            body: ['Montserrat', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,140,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,140,255,0.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  pointer-events:none;z-index:0;
+}
 
-  <style>
-    /* ═══════════════════════════════════════════
-       GLOBAL RESET & BASE
-    ═══════════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+#hero-glow{
+  position:fixed;top:-120px;left:50%;transform:translateX(-50%);
+  width:900px;height:520px;
+  background:radial-gradient(ellipse at 50% 30%, rgba(0,120,255,0.18) 0%, rgba(0,80,200,0.07) 45%, transparent 72%);
+  pointer-events:none;z-index:0;
+  animation:glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:.8}50%{opacity:1}}
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-      background: #0A0F1D;
-      color: #E6EDF3;
-      overflow-x: hidden;
-    }
+/* LOADING */
+#loading-overlay{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  background:#020810;
+}
+.loader-ring{width:38px;height:38px;border-radius:50%;border:2px solid rgba(0,160,255,0.1);border-top-color:var(--blue);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ── Hero grid lines overlay (same as index.html) ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,240,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,240,255,0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
+/* TOAST */
+#toast{
+  position:fixed;bottom:28px;right:28px;z-index:9000;
+  padding:12px 18px;border-radius:12px;
+  font-family:var(--font-body);font-size:.82rem;font-weight:500;
+  background:rgba(4,12,28,0.97);border:1px solid var(--border2);color:var(--text);
+  backdrop-filter:blur(20px);opacity:0;transform:translateY(8px);
+  transition:all .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);
+}
+#toast.show{opacity:1;transform:translateY(0);pointer-events:all}
 
-    /* ── LIGHT MODE OVERRIDES ── */
-    html:not(.dark) body {
-      background: #F8FAFC;
-      color: #0F172A;
-    }
-    html:not(.dark) body::before {
-      background-image:
-        linear-gradient(rgba(49,97,130,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(49,97,130,0.04) 1px, transparent 1px);
-    }
-    html:not(.dark) .gh-nav {
-      background: rgba(248,250,252,0.92) !important;
-      border-color: rgba(0,0,0,0.06) !important;
-    }
-    html:not(.dark) .glass-panel {
-      background: rgba(255,255,255,0.7) !important;
-      border-color: rgba(0,0,0,0.06) !important;
-    }
-    html:not(.dark) .glass-panel-subtle {
-      background: rgba(255,255,255,0.5) !important;
-      border-color: rgba(0,0,0,0.05) !important;
-    }
-    html:not(.dark) .sidebar-wrap {
-      background: rgba(248,250,252,0.8) !important;
-      border-color: rgba(0,0,0,0.06) !important;
-    }
-    html:not(.dark) .nav-tab { color: #64748B; }
-    html:not(.dark) .nav-tab:hover { background: rgba(0,0,0,0.04) !important; color: #0F172A; }
-    html:not(.dark) .nav-tab.active { background: rgba(77,163,209,0.1) !important; color: #316182 !important; }
-    html:not(.dark) .nav-tab.active .tab-dot { background: #316182 !important; }
-    html:not(.dark) .stat-mini { background: rgba(77,163,209,0.06) !important; border-color: rgba(77,163,209,0.15) !important; }
-    html:not(.dark) .order-divider { border-color: rgba(0,0,0,0.04) !important; }
-    html:not(.dark) .text-muted { color: #64748B !important; }
-    html:not(.dark) .text-main { color: #0F172A !important; }
-    html:not(.dark) .btn-dl {
-      background: rgba(77,163,209,0.08) !important;
-      border-color: rgba(77,163,209,0.25) !important;
-      color: #316182 !important;
-    }
-    html:not(.dark) .btn-dl:hover { background: rgba(77,163,209,0.15) !important; }
-    html:not(.dark) .btn-ghost {
-      border-color: rgba(0,0,0,0.12) !important;
-      color: #64748B !important;
-    }
-    html:not(.dark) .btn-ghost:hover { background: rgba(0,0,0,0.05) !important; color: #0F172A !important; }
-    html:not(.dark) .gh-input {
-      background: rgba(255,255,255,0.9) !important;
-      border-color: rgba(0,0,0,0.12) !important;
-      color: #0F172A !important;
-    }
-    html:not(.dark) .gh-input:focus { border-color: #316182 !important; }
-    html:not(.dark) .progress-track { background: rgba(0,0,0,0.08) !important; }
-    html:not(.dark) .section-eyebrow { color: #316182 !important; }
-    html:not(.dark) #theme-toggle-btn {
-      border-color: rgba(49,97,130,0.2) !important;
-      background: rgba(49,97,130,0.06) !important;
-      color: #316182 !important;
-    }
-    html:not(.dark) .badge-active { background: rgba(77,163,209,0.1) !important; color: #316182 !important; border-color: rgba(77,163,209,0.3) !important; }
-    html:not(.dark) .neon-text { color: #316182 !important; }
-    html:not(.dark) .cyber-divider { background: linear-gradient(90deg, transparent, rgba(49,97,130,0.3), transparent) !important; }
-    html:not(.dark) .tl-line.done { background: #316182 !important; }
-    html:not(.dark) .tl-dot.done { background: #316182 !important; }
-    html:not(.dark) .tl-dot.active { background: #4DA3D1 !important; box-shadow: 0 0 0 3px rgba(77,163,209,0.15) !important; }
-    html:not(.dark) .asset-panel { background: rgba(77,163,209,0.04) !important; border-color: rgba(77,163,209,0.15) !important; }
-    html:not(.dark) .footer-bar { background: rgba(248,250,252,0.8) !important; border-color: rgba(0,0,0,0.06) !important; }
+#app{display:none;min-height:100vh;position:relative;z-index:1}
 
-    /* ═══════════════════════════════════════════
-       GLASS PANEL (like index.html cards)
-    ═══════════════════════════════════════════ */
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-    .glass-panel-subtle {
-      background: rgba(255, 255, 255, 0.015);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .glass-panel-gold {
-      background: rgba(201, 178, 109, 0.04);
-      border: 1px solid rgba(201, 178, 109, 0.15);
-      border-radius: 16px;
-      backdrop-filter: blur(20px);
-    }
-    .glass-panel-cyan {
-      background: rgba(0, 240, 255, 0.03);
-      border: 1px solid rgba(0, 240, 255, 0.12);
-      border-radius: 16px;
-      backdrop-filter: blur(20px);
-    }
+/* SIDEBAR */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;
+  width:var(--sidebar-w);z-index:150;
+  display:flex;flex-direction:column;
+  background:rgba(2,5,14,0.88);
+  border-right:1px solid var(--border);
+  backdrop-filter:blur(24px);
+  overflow:hidden;
+}
+[data-theme="light"] .sidebar{background:rgba(232,238,248,0.92)}
 
-    /* ═══════════════════════════════════════════
-       NAVBAR
-    ═══════════════════════════════════════════ */
-    .gh-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10, 15, 29, 0.92);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.07);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      height: 60px;
-      display: flex;
-      align-items: center;
-      padding: 0 28px;
-      justify-content: space-between;
-    }
+.sidebar-logo{
+  height:58px;flex-shrink:0;
+  display:flex;align-items:center;
+  padding:0 20px;border-bottom:1px solid var(--border);gap:10px;
+}
 
-    /* ═══════════════════════════════════════════
-       SIDEBAR
-    ═══════════════════════════════════════════ */
-    .sidebar-wrap {
-      background: rgba(7, 10, 20, 0.6);
-      border-right: 1px solid rgba(0, 240, 255, 0.06);
-      width: 256px;
-      flex-shrink: 0;
-      padding: 24px 16px;
-      position: sticky;
-      top: 60px;
-      height: calc(100vh - 60px);
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-    .sidebar-wrap::-webkit-scrollbar { display: none; }
+.sidebar-profile{
+  padding:18px 16px 14px;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-avatar{
+  width:42px;height:42px;border-radius:50%;object-fit:cover;
+  border:2px solid rgba(0,140,255,.3);
+  box-shadow:0 0 0 3px rgba(0,100,255,.07),0 0 14px rgba(0,120,255,.18);
+  cursor:pointer;transition:.2s;display:block;margin:0 auto 10px;
+}
+.sidebar-avatar:hover{box-shadow:0 0 0 3px rgba(0,100,255,.15),0 0 20px rgba(0,120,255,.35)}
 
-    /* ═══════════════════════════════════════════
-       MAIN CONTENT
-    ═══════════════════════════════════════════ */
-    .main-content {
-      flex: 1;
-      min-width: 0;
-      padding: 32px 28px;
-    }
+.tier-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 9px;border-radius:20px;
+  background:rgba(0,100,255,.07);border:1px solid rgba(0,140,255,.2);
+}
 
-    /* ═══════════════════════════════════════════
-       RIGHT PANEL
-    ═══════════════════════════════════════════ */
-    .right-panel {
-      width: 268px;
-      flex-shrink: 0;
-      padding: 24px 16px 24px 0;
-      position: sticky;
-      top: 60px;
-      height: calc(100vh - 60px);
-      overflow-y: auto;
-      scrollbar-width: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .right-panel::-webkit-scrollbar { display: none; }
+.pts-block{
+  margin-top:10px;padding:10px;
+  background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.05);border-radius:9px;
+}
+[data-theme="light"] .pts-block{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
+.progress-track{height:2.5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+[data-theme="light"] .progress-track{background:rgba(0,0,0,.08)}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue2));transition:width 1.2s cubic-bezier(.34,1.56,.64,1)}
 
-    /* ═══════════════════════════════════════════
-       NAV TABS (sidebar menu)
-    ═══════════════════════════════════════════ */
-    .nav-tab {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      font-weight: 500;
-      font-family: 'Montserrat', sans-serif;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      color: rgba(255, 255, 255, 0.45);
-      border: 1px solid transparent;
-      text-decoration: none;
-    }
-    .nav-tab:hover {
-      background: rgba(0, 240, 255, 0.05);
-      color: rgba(255, 255, 255, 0.85);
-    }
-    .nav-tab.active {
-      background: rgba(0, 240, 255, 0.07);
-      color: #00F0FF;
-      border-color: rgba(0, 240, 255, 0.15);
-    }
-    .tab-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: transparent;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .nav-tab.active .tab-dot { background: #00F0FF; }
+.sidebar-nav{flex:1;overflow-y:auto;scrollbar-width:none;padding:14px 12px}
+.sidebar-nav::-webkit-scrollbar{display:none}
 
-    /* ═══════════════════════════════════════════
-       SECTION EYEBROW LABEL
-    ═══════════════════════════════════════════ */
-    .section-eyebrow {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.55rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(0, 240, 255, 0.6);
-    }
-    .section-title {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 800;
-      color: #E6EDF3;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
+.sidebar-label{
+  font-family:var(--font-tech);font-size:.42rem;letter-spacing:.24em;
+  color:var(--text3);text-transform:uppercase;padding:0 8px;margin:0 0 5px;
+}
 
-    /* ═══════════════════════════════════════════
-       CYBER DIVIDER
-    ═══════════════════════════════════════════ */
-    .cyber-divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), rgba(201,178,109,0.25), rgba(0,240,255,0.2), transparent);
-      margin: 16px 0;
-    }
-    .cyber-divider-sm {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, #00F0FF, #C9B26D, transparent);
-      margin: 8px 0 16px;
-    }
+.nav-tab{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 10px;border-radius:8px;
+  font-size:.76rem;font-weight:500;
+  cursor:pointer;transition:.2s;color:var(--text3);
+  border:1px solid transparent;margin-bottom:2px;text-decoration:none;
+}
+.nav-tab:hover{background:rgba(0,140,255,.06);color:var(--text2)}
+.nav-tab.active{background:rgba(0,140,255,.1);color:var(--blue);border-color:rgba(0,140,255,.18);}
+.tab-dot{width:4px;height:4px;border-radius:50%;background:transparent;flex-shrink:0;transition:.2s}
+.nav-tab.active .tab-dot{background:var(--blue)}
+[data-theme="light"] .nav-tab.active{color:var(--blue2);border-color:rgba(0,100,200,.2)}
+[data-theme="light"] .nav-tab.active .tab-dot{background:var(--blue2)}
 
-    /* ═══════════════════════════════════════════
-       STAT MINI CARD
-    ═══════════════════════════════════════════ */
-    .stat-mini {
-      background: rgba(0, 240, 255, 0.04);
-      border: 1px solid rgba(0, 240, 255, 0.1);
-      border-radius: 10px;
-      padding: 14px 12px;
-    }
-    .stat-val-orb {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-    .stat-val-orb.gold { color: #C9B26D; }
-    .stat-val-orb.cyan { color: #00F0FF; }
-    .stat-lbl-mont {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.65rem;
-      color: rgba(255, 255, 255, 0.4);
-      margin-top: 4px;
-      font-weight: 500;
-    }
+/* ── SIDEBAR ACTION BUTTONS (theme + logout) ── */
+.sidebar-actions{
+  flex-shrink:0;
+  padding:10px 12px;
+  border-top:1px solid var(--border);
+  display:flex;gap:6px;
+}
+.btn-sidebar-action{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  padding:8px 6px;border-radius:9px;
+  font-family:var(--font-body);font-size:.6rem;font-weight:600;
+  cursor:pointer;transition:.2s;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);color:var(--text2);
+}
+.btn-sidebar-action:hover{background:rgba(0,140,255,.08);border-color:rgba(0,140,255,.2);color:var(--blue)}
+.btn-sidebar-logout{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  padding:8px 6px;border-radius:9px;
+  font-family:var(--font-body);font-size:.6rem;font-weight:600;letter-spacing:.06em;
+  cursor:pointer;transition:.2s;
+  border:1px solid rgba(0,140,255,.2);
+  background:rgba(0,100,255,.06);color:var(--blue);
+}
+.btn-sidebar-logout:hover{background:rgba(0,100,255,.14);border-color:rgba(0,140,255,.45)}
+[data-theme="light"] .btn-sidebar-action{border-color:rgba(0,0,0,.1);color:var(--text2)}
+[data-theme="light"] .btn-sidebar-logout{border-color:rgba(0,100,200,.25);color:var(--blue2)}
 
-    /* ═══════════════════════════════════════════
-       BADGE
-    ═══════════════════════════════════════════ */
-    .badge {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.5rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      padding: 3px 10px;
-      border-radius: 99px;
-      text-transform: uppercase;
-    }
-    .badge-active {
-      background: rgba(0, 240, 255, 0.08);
-      color: #00F0FF;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-    }
-    .badge-done {
-      background: rgba(63, 185, 80, 0.08);
-      color: #3FB950;
-      border: 1px solid rgba(63, 185, 80, 0.2);
-    }
-    .badge-pending {
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(255, 255, 255, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .badge-gold {
-      background: rgba(201, 178, 109, 0.1);
-      color: #C9B26D;
-      border: 1px solid rgba(201, 178, 109, 0.25);
-    }
+.sidebar-stats{
+  flex-shrink:0;padding:12px;border-top:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;
+}
+.stat-mini{
+  background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.1);
+  border-radius:9px;padding:10px 9px;
+}
+[data-theme="light"] .stat-mini{background:rgba(0,100,200,.05);border-color:rgba(0,100,200,.13)}
+.stat-val{font-family:var(--font-tech);font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.stat-val.blue{color:var(--blue)}
+.stat-val.gold{color:var(--gold)}
+.stat-lbl{font-size:.58rem;color:var(--text3);margin-top:2px;font-weight:500}
 
-    /* ═══════════════════════════════════════════
-       PROGRESS BAR
-    ═══════════════════════════════════════════ */
-    .progress-track {
-      height: 3px;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .progress-fill-gold {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #C9B26D, #E2CC8E);
-      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .progress-fill-cyan {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #00F0FF, rgba(0,240,255,0.5));
-      transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+/* MAIN */
+.main-wrap{
+  margin-left:var(--sidebar-w);
+  min-height:100vh;display:flex;flex-direction:column;
+}
 
-    /* ═══════════════════════════════════════════
-       TIMELINE
-    ═══════════════════════════════════════════ */
-    .tl-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .tl-dot.done { background: #C9B26D; }
-    .tl-dot.active {
-      background: #00F0FF;
-      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
-    }
-    .tl-dot.pending {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-    }
-    .tl-line { flex: 1; height: 1px; }
-    .tl-line.done { background: linear-gradient(90deg, #C9B26D, rgba(201,178,109,0.5)); }
-    .tl-line.pending { background: rgba(255, 255, 255, 0.07); }
+/* HERO — no top nav padding needed */
+.hero-section{
+  position:relative;
+  padding:52px 40px 42px;
+  overflow:hidden;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+}
 
-    /* ═══════════════════════════════════════════
-       BUTTONS
-    ═══════════════════════════════════════════ */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      cursor: pointer;
-      transition: opacity 0.2s, box-shadow 0.2s;
-      border: none;
-      background: linear-gradient(105deg, #C9B26D, #E2CC8E);
-      color: #070A14;
-      box-shadow: 0 0 16px rgba(201,178,109,0.3);
-    }
-    .btn-primary:hover {
-      opacity: 0.88;
-      box-shadow: 0 0 24px rgba(201,178,109,0.5);
-    }
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: transparent;
-      color: rgba(255, 255, 255, 0.45);
-    }
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.06);
-      color: #E6EDF3;
-    }
-    .btn-dl {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      border: 1px solid rgba(201, 178, 109, 0.2);
-      background: rgba(201, 178, 109, 0.06);
-      color: #C9B26D;
-      text-decoration: none;
-    }
-    .btn-dl:hover {
-      background: rgba(201, 178, 109, 0.12);
-      border-color: rgba(201, 178, 109, 0.4);
-    }
-    .btn-outline-cyan {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 10px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      background: rgba(0, 240, 255, 0.05);
-      color: #00F0FF;
-      text-decoration: none;
-    }
-    .btn-outline-cyan:hover {
-      background: rgba(0, 240, 255, 0.1);
-      box-shadow: 0 0 16px rgba(0,240,255,0.2);
-    }
+.hero-orb{
+  position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:700px;height:500px;
+  background:radial-gradient(ellipse at 50% 40%, rgba(0,130,255,0.22) 0%, rgba(0,80,200,0.08) 50%, transparent 72%);
+  pointer-events:none;animation:glowPulse 5s ease-in-out infinite;border-radius:50%;
+}
 
-    /* ═══════════════════════════════════════════
-       INPUT
-    ═══════════════════════════════════════════ */
-    .gh-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 11px 16px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      color: #E6EDF3;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .gh-input:focus {
-      border-color: rgba(0, 240, 255, 0.35);
-      box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.08);
-    }
-    .gh-input:disabled { opacity: 0.35; cursor: not-allowed; }
-    .gh-input::placeholder { color: rgba(255,255,255,0.2); }
+/* hero-arc & hero-arc-2 REMOVED */
 
-    /* ═══════════════════════════════════════════
-       ORDER ROW
-    ═══════════════════════════════════════════ */
-    .order-row {
-      padding: 20px 0;
-    }
-    .order-divider {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
+.hero-content{
+  position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;border-radius:99px;
+  background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.2);
+  font-family:var(--font-tech);font-size:.44rem;letter-spacing:.26em;
+  color:rgba(58,176,255,0.75);margin-bottom:18px;
+}
+.hero-title{
+  font-family:var(--font-tech);font-size:2.2rem;font-weight:900;
+  line-height:1.1;letter-spacing:-.01em;margin-bottom:12px;
+}
+.hero-title .line2{color:var(--blue);text-shadow:0 0 40px rgba(0,160,255,0.45);}
+.hero-sub{font-size:.82rem;color:var(--text3);line-height:1.7;max-width:460px;margin:0 auto 24px;}
 
-    /* ═══════════════════════════════════════════
-       INVOICE ROW
-    ═══════════════════════════════════════════ */
-    .inv-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .inv-row:last-child { border-bottom: none; }
+/* KPI */
+.kpi-row{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  padding:0 40px 36px;margin-top:-2px;
+}
+.kpi-card{
+  background:rgba(4,12,26,0.75);border:1px solid rgba(0,140,255,0.13);
+  border-radius:14px;padding:18px 18px 16px;
+  position:relative;overflow:hidden;transition:.25s;backdrop-filter:blur(12px);
+}
+.kpi-card:hover{border-color:rgba(0,160,255,0.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,100,255,0.1)}
+[data-theme="light"] .kpi-card{background:rgba(255,255,255,0.82);border-color:rgba(0,100,200,0.13)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(58,176,255,.25),transparent);}
+.kpi-icon{width:34px;height:34px;border-radius:9px;background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.14);display:flex;align-items:center;justify-content:center;margin-bottom:13px;}
+.kpi-label{font-size:.68rem;color:var(--text3);font-weight:500;margin-bottom:5px}
+.kpi-value{font-family:var(--font-tech);font-size:1.55rem;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.kpi-value.blue{color:var(--blue)}
+.kpi-value.gold{color:var(--gold)}
+.kpi-change{margin-top:7px;font-size:.62rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;}
+.kpi-change.up{background:rgba(63,185,80,.08);color:var(--green)}
+.kpi-change.neutral{background:rgba(58,176,255,.07);color:var(--blue)}
 
-    /* ═══════════════════════════════════════════
-       AVATAR
-    ═══════════════════════════════════════════ */
-    #avatar-wrapper { position: relative; width: 76px; height: 76px; }
-    #avatar-img {
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(201, 178, 109, 0.3);
-      box-shadow: 0 0 0 4px rgba(201,178,109,0.08), 0 0 20px rgba(201,178,109,0.15);
-    }
-    #avatar-edit {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #C9B26D, #E2CC8E);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: 2px solid #0A0F1D;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    #avatar-edit:hover { opacity: 0.85; transform: scale(1.1); }
-    #avatar-file { display: none; }
+/* BODY GRID */
+.body-grid{display:grid;grid-template-columns:1fr 272px;gap:0;flex:1;}
+.main-panel{padding:28px 28px 36px 40px;border-right:1px solid var(--border);}
 
-    /* ═══════════════════════════════════════════
-       THEME TOGGLE
-    ═══════════════════════════════════════════ */
-    #theme-toggle-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      border: 1px solid rgba(0,240,255,0.2);
-      background: rgba(0,240,255,0.05);
-      color: #00F0FF;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    #theme-toggle-btn:hover {
-      border-color: rgba(0,240,255,0.45);
-      background: rgba(0,240,255,0.1);
-      box-shadow: 0 0 12px rgba(0,240,255,0.2);
-    }
+.sh-eyebrow{font-family:var(--font-tech);font-size:.44rem;letter-spacing:.24em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:4px;}
+.sh-title{font-family:var(--font-tech);font-size:.9rem;font-weight:800;color:var(--text);letter-spacing:.02em;}
+.sh-title .accent{color:var(--blue)}
+.sh-divider{width:44px;height:1px;margin:6px 0 16px;background:linear-gradient(90deg,var(--blue),transparent);}
 
-    /* ═══════════════════════════════════════════
-       LOADING OVERLAY
-    ═══════════════════════════════════════════ */
-    #loading-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      background: #070A14;
-    }
-    .loader-ring {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 2px solid rgba(0,240,255,0.1);
-      border-top-color: #00F0FF;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+.glass{background:var(--surface);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(12px);}
+[data-theme="light"] .glass{background:rgba(255,255,255,.78);border-color:rgba(0,0,0,.07)}
+.glass-gold{background:rgba(201,178,109,.03);border:1px solid rgba(201,178,109,.13);border-radius:14px;}
+.glass-cyan{background:rgba(0,140,255,.03);border:1px solid rgba(0,140,255,.14);border-radius:14px;}
 
-    /* ═══════════════════════════════════════════
-       TOAST
-    ═══════════════════════════════════════════ */
-    #toast {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 9000;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      background: rgba(10, 15, 29, 0.97);
-      border: 1px solid rgba(0,240,255,0.15);
-      color: #E6EDF3;
-      backdrop-filter: blur(20px);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all 0.25s;
-      pointer-events: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    }
-    #toast.show { opacity: 1; transform: translateY(0); pointer-events: all; }
+.badge{font-family:var(--font-tech);font-size:.44rem;font-weight:700;letter-spacing:.1em;padding:3px 9px;border-radius:99px;text-transform:uppercase;}
+.badge-active{background:rgba(0,160,255,.1);color:var(--blue);border:1px solid rgba(0,160,255,.25)}
+.badge-done{background:rgba(63,185,80,.08);color:var(--green);border:1px solid rgba(63,185,80,.2)}
+.badge-pending{background:rgba(255,255,255,.04);color:var(--text3);border:1px solid rgba(255,255,255,.1)}
+.badge-gold{background:rgba(201,178,109,.1);color:var(--gold);border:1px solid rgba(201,178,109,.25)}
+[data-theme="light"] .badge-active{color:var(--blue2)}
 
-    /* ═══════════════════════════════════════════
-       TAB SECTIONS
-    ═══════════════════════════════════════════ */
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tl-dot.done{background:var(--blue)}
+.tl-dot.active{background:var(--blue2);box-shadow:0 0 0 3px rgba(0,200,255,.18)}
+.tl-dot.pending{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12)}
+.tl-line{flex:1;height:1px}
+.tl-line.done{background:linear-gradient(90deg,var(--blue),rgba(0,160,255,.35))}
+.tl-line.pending{background:rgba(255,255,255,.07)}
+[data-theme="light"] .tl-line.done{background:linear-gradient(90deg,var(--blue2),rgba(13,95,170,.3))}
+[data-theme="light"] .tl-dot.done{background:var(--blue2)}
+[data-theme="light"] .tl-dot.active{background:var(--blue);box-shadow:0 0 0 3px rgba(26,111,196,.15)}
 
-    /* ═══════════════════════════════════════════
-       FADE IN ANIMATIONS
-    ═══════════════════════════════════════════ */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-up { animation: fadeInUp 0.5s ease forwards; }
-    .delay-1 { animation-delay: 0.05s; opacity: 0; animation-fill-mode: forwards; }
-    .delay-2 { animation-delay: 0.12s; opacity: 0; animation-fill-mode: forwards; }
-    .delay-3 { animation-delay: 0.19s; opacity: 0; animation-fill-mode: forwards; }
-    .delay-4 { animation-delay: 0.26s; opacity: 0; animation-fill-mode: forwards; }
+.order-row{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.04)}
+.order-row:last-child{border-bottom:none}
+[data-theme="light"] .order-row{border-color:rgba(0,0,0,.05)}
 
-    /* ═══════════════════════════════════════════
-       NEON TEXT GLOW
-    ═══════════════════════════════════════════ */
-    .neon-text { color: #00F0FF; }
-    .gold-text { color: #C9B26D; }
+.inv-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.inv-row:last-child{border-bottom:none}
+[data-theme="light"] .inv-row{border-color:rgba(0,0,0,.05)}
 
-    /* ═══════════════════════════════════════════
-       ASSET PANEL
-    ═══════════════════════════════════════════ */
-    .asset-panel {
-      background: rgba(201, 178, 109, 0.04);
-      border: 1px solid rgba(201, 178, 109, 0.12);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 8px;
-      transition: border-color 0.2s;
-    }
-    .asset-panel:hover { border-color: rgba(201, 178, 109, 0.28); }
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:22px;font-family:var(--font-tech);font-size:.54rem;font-weight:700;letter-spacing:.12em;cursor:pointer;transition:.2s;border:none;background:linear-gradient(105deg,var(--blue),var(--blue2));color:#020810;box-shadow:0 0 16px rgba(0,160,255,.3);}
+.btn-primary:hover{opacity:.88;box-shadow:0 0 26px rgba(0,160,255,.5)}
+.btn-dl{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:8px;font-family:var(--font-body);font-size:.62rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,140,255,.06);color:var(--blue);text-decoration:none;}
+.btn-dl:hover{background:rgba(0,140,255,.14);border-color:rgba(0,140,255,.4)}
 
-    /* ═══════════════════════════════════════════
-       FOOTER BAR
-    ═══════════════════════════════════════════ */
-    .footer-bar {
-      background: rgba(7, 10, 20, 0.8);
-      border-top: 1px solid rgba(0,240,255,0.06);
-    }
+.gh-input{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;font-family:var(--font-body);font-size:.84rem;color:var(--text);outline:none;transition:.2s;}
+[data-theme="light"] .gh-input{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.12);color:var(--text)}
+.gh-input:focus{border-color:rgba(0,140,255,.4);box-shadow:0 0 0 3px rgba(0,140,255,.09)}
+.gh-input:disabled{opacity:.35;cursor:not-allowed}
+.gh-input::placeholder{color:var(--text3)}
 
-    /* ═══════════════════════════════════════════
-       SCROLLBAR
-    ═══════════════════════════════════════════ */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.15); border-radius: 99px; }
+.tab-section{display:none}
+.tab-section.active{display:block}
 
-    /* ═══════════════════════════════════════════
-       NEON GLOW BLOB (hero atmosphere)
-    ═══════════════════════════════════════════ */
-    .neon-blob-1 {
-      position: fixed;
-      top: 20%;
-      right: -15%;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,240,255,0.05) 0%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .neon-blob-2 {
-      position: fixed;
-      bottom: 10%;
-      left: -10%;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,178,109,0.06) 0%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
-    }
+.right-panel{padding:24px 16px 24px 20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;scrollbar-width:none;}
+.right-panel::-webkit-scrollbar{display:none}
 
-    /* ═══════════════════════════════════════════
-       POINT BAR ANIMATION
-    ═══════════════════════════════════════════ */
-    #points-bar { width: 0%; transition: width 1.2s cubic-bezier(0.34,1.56,0.64,1); }
+.asset-panel{background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.12);border-radius:10px;padding:12px;margin-bottom:8px;transition:.2s;}
+.asset-panel:hover{border-color:rgba(0,140,255,.28)}
 
-    /* Tier row glow */
-    .tier-glow {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 10px;
-      border-radius: 8px;
-      background: rgba(201,178,109,0.06);
-      border: 1px solid rgba(201,178,109,0.18);
-      width: fit-content;
-    }
+.footer-bar{background:rgba(2,6,16,.7);border-top:1px solid var(--border);text-align:center;padding:16px;position:relative;z-index:1;}
+[data-theme="light"] .footer-bar{background:rgba(240,244,250,.8)}
 
-    /* UID badge in nav */
-    .uid-badge {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.5rem;
-      letter-spacing: 0.1em;
-      color: rgba(0,240,255,0.4);
-      padding: 3px 8px;
-      border: 1px solid rgba(0,240,255,0.1);
-      border-radius: 6px;
-      background: rgba(0,240,255,0.03);
-    }
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:rgba(0,160,255,.18);border-radius:99px}
 
-    /* Section header divider combo */
-    .sh-block {
-      margin-bottom: 28px;
-    }
-    .sh-block .eyebrow {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.52rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: rgba(0,240,255,0.55);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .sh-block h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #E6EDF3;
-      letter-spacing: 0.02em;
-    }
-    .sh-block h2 .gold-span { color: #C9B26D; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .5s ease forwards}
+.d1{animation-delay:.05s;opacity:0;animation-fill-mode:forwards}
+.d2{animation-delay:.12s;opacity:0;animation-fill-mode:forwards}
+.d3{animation-delay:.19s;opacity:0;animation-fill-mode:forwards}
+.d4{animation-delay:.26s;opacity:0;animation-fill-mode:forwards}
+.d5{animation-delay:.33s;opacity:0;animation-fill-mode:forwards}
 
-    /* points label */
-    .pts-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.62rem;
-      color: rgba(255,255,255,0.35);
-      font-weight: 500;
-    }
-  </style>
+[data-theme="light"] .sh-eyebrow{color:rgba(13,95,170,.55)}
+[data-theme="light"] .glass-gold{background:rgba(255,255,255,.6);border-color:rgba(154,124,60,.15)}
+[data-theme="light"] .asset-panel{background:rgba(0,100,200,.04);border-color:rgba(0,100,200,.13)}
+[data-theme="light"] .hero-section{border-color:rgba(0,100,200,.1)}
+[data-theme="light"] .body-grid{border-color:rgba(0,100,200,.1)}
+[data-theme="light"] .main-panel{border-color:rgba(0,100,200,.1)}
+[data-theme="light"] .kpi-card:hover{box-shadow:0 8px 32px rgba(0,100,200,.08)}
+</style>
 </head>
-
 <body>
 
-<!-- Atmosphere blobs (same vibe as index.html) -->
-<div class="neon-blob-1"></div>
-<div class="neon-blob-2"></div>
+<canvas id="bg-canvas"></canvas>
+<div id="hero-glow"></div>
 
-<!-- ════════ LOADING OVERLAY ════════ -->
+<!-- Loading -->
 <div id="loading-overlay">
-  <div style="text-align:center;">
-    <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:0.2em;margin-bottom:12px;">
-      <span style="color:#FFFFFF;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
+  <div style="text-align:center">
+    <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:.2em;margin-bottom:10px">
+      <span style="color:#fff">ALFIRAMA</span><span style="color:#3ab0ff">.ID</span>
     </div>
-    <p style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.25em;color:rgba(0,240,255,0.5);margin-bottom:20px;">AUTHENTICATING...</p>
-    <div style="width:200px;height:2px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin:0 auto 8px;">
-      <div id="auth-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#00F0FF,#C9B26D);border-radius:2px;transition:width 0.4s ease;"></div>
+    <p style="font-family:'Orbitron',sans-serif;font-size:.44rem;letter-spacing:.26em;color:rgba(0,180,255,.5);margin-bottom:18px">AUTHENTICATING...</p>
+    <div style="width:190px;height:2px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin:0 auto 10px">
+      <div id="auth-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#3ab0ff,#00c8ff);border-radius:2px;transition:width .4s ease"></div>
     </div>
   </div>
   <div class="loader-ring"></div>
 </div>
-<script>
-  // Animate auth bar
-  (function(){
-    let p = 0;
-    const bar = document.getElementById('auth-bar');
-    const iv = setInterval(function(){
-      p += Math.random() * 18;
-      if(p >= 95){ p = 95; clearInterval(iv); }
-      if(bar) bar.style.width = p + '%';
-    }, 200);
-  })();
-</script>
+<script>(function(){var p=0,bar=document.getElementById('auth-bar'),iv=setInterval(function(){p+=Math.random()*18;if(p>=95){p=95;clearInterval(iv)}bar&&(bar.style.width=p+'%')},200)})();</script>
 
-<!-- ════════ TOAST ════════ -->
 <div id="toast"></div>
 
-<!-- ════════ APP SHELL ════════ -->
-<div id="app" style="display:none; min-height:100vh; flex-direction:column; position:relative; z-index:1;">
+<div id="app" style="display:none">
 
-  <!-- ══════════════════════════════════════
-       NAVBAR
-  ═══════════════════════════════════════ -->
-  <nav class="gh-nav">
-    <!-- Logo -->
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;">
-      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-        <rect width="32" height="32" rx="6" fill="rgba(0,240,255,0.08)" stroke="rgba(0,240,255,0.15)" stroke-width="1"/>
-        <path d="M8 24L16 8L24 24" stroke="#E6EDF3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M10.5 19h11" stroke="#C9B26D" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="rgba(0,140,255,0.08)" stroke="rgba(0,140,255,0.2)" stroke-width="1"/>
+        <path d="M8 24L16 8L24 24" stroke="#e6edf3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10.5 19h11" stroke="#3ab0ff" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-      <div>
-        <span style="font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:900;letter-spacing:0.12em;">
-          <span style="color:#FFFFFF;">ALFIRAMA</span><span style="color:#00F0FF;">.ID</span>
-        </span>
+      <span style="font-family:var(--font-tech);font-size:.75rem;font-weight:900;letter-spacing:.14em">
+        <span style="color:#fff">ALFIRAMA</span><span style="color:#3ab0ff">.ID</span>
+      </span>
+    </div>
+
+    <div class="sidebar-profile">
+      <div style="position:relative;width:42px;height:42px;margin:0 auto 10px">
+        <img id="avatar-img" src="https://ui-avatars.com/api/?name=Klien+Alfirama&background=1a3a6e&color=3ab0ff&bold=true&size=200" alt="Foto Profil" class="sidebar-avatar" onclick="document.getElementById('avatar-file').click()" title="Ganti foto"/>
+        <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg);cursor:pointer" onclick="document.getElementById('avatar-file').click()">
+          <svg width="8" height="8" fill="none" viewBox="0 0 24 24" stroke="#020810" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/></svg>
+        </div>
+        <input type="file" id="avatar-file" accept="image/*" onchange="uploadAvatar(this)" style="display:none"/>
       </div>
-    </a>
+      <p style="font-family:var(--font-tech);font-size:.68rem;font-weight:700;color:var(--text);letter-spacing:.04em;text-align:center" id="user-name">—</p>
+      <p style="font-size:.62rem;color:var(--text3);margin-top:2px;text-align:center" id="user-email">—</p>
+      <div style="display:flex;justify-content:center;margin-top:7px">
+        <div class="tier-pill">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.12em;color:var(--blue);font-weight:700" id="user-tier">PREMIUM</span>
+        </div>
+      </div>
+      <div class="pts-block">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:.56rem;color:var(--text3);font-weight:500">LOYALTY PTS</span>
+          <span style="font-family:var(--font-tech);font-size:.88rem;font-weight:800;color:var(--blue)" id="points-val">0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="points-bar" style="width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span style="font-size:.54rem;color:var(--text3)">0</span>
+          <span style="font-family:var(--font-tech);font-size:.38rem;color:rgba(58,176,255,.5)" id="points-next-label">→ GOLD</span>
+          <span style="font-size:.54rem;color:var(--text3)">1000</span>
+        </div>
+      </div>
+    </div>
 
-    <!-- Center: UID -->
-    <span class="uid-badge" id="nav-uid"></span>
+    <nav class="sidebar-nav">
+      <p class="sidebar-label" style="margin-bottom:8px">NAVIGASI</p>
+      <div class="nav-tab active" onclick="switchTab('dashboard',this)">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Overview
+      </div>
+      <div class="nav-tab" onclick="switchTab('orders',this)">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Pesanan Saya
+      </div>
+      <div class="nav-tab" onclick="switchTab('invoices',this)">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Invoice
+      </div>
+      <div class="nav-tab" onclick="switchTab('settings',this)">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        Pengaturan
+      </div>
+      <div style="margin-top:14px;padding:8px 10px;background:rgba(0,140,255,0.03);border:1px solid var(--border);border-radius:8px">
+        <p style="font-family:var(--font-tech);font-size:.38rem;letter-spacing:.12em;color:var(--text3);margin-bottom:3px">CLIENT ID</p>
+        <p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.08em;color:rgba(58,176,255,.45)" id="nav-uid">—</p>
+      </div>
+    </nav>
 
-    <!-- Right controls -->
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle theme">
-        <svg id="icon-moon-nav" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg id="icon-sun-nav" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <!-- Theme + Logout buttons (pindah dari top nav ke sini) -->
+    <div class="sidebar-actions">
+      <button onclick="toggleTheme()" class="btn-sidebar-action" title="Ganti tema">
+        <svg id="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="theme-label">Light</span>
       </button>
-      <button onclick="handleLogout()" class="btn-ghost">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-        </svg>
+      <button onclick="handleLogout()" class="btn-sidebar-logout">
+        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
         Keluar
       </button>
     </div>
-  </nav>
 
-  <!-- ══════════════════════════════════════
-       MAIN LAYOUT
-  ═══════════════════════════════════════ -->
-  <div style="display:flex;flex:1;max-width:1440px;margin:0 auto;width:100%;">
+    <div class="sidebar-stats">
+      <div class="stat-mini"><div class="stat-val gold" id="stat-orders">0</div><div class="stat-lbl">Pesanan</div></div>
+      <div class="stat-mini"><div class="stat-val blue" id="stat-invoices">0</div><div class="stat-lbl">Invoice</div></div>
+      <div class="stat-mini"><div class="stat-val blue" id="stat-done">0</div><div class="stat-lbl">Selesai</div></div>
+      <div class="stat-mini"><div class="stat-val" style="color:var(--text2)" id="stat-assets">0</div><div class="stat-lbl">Aset</div></div>
+    </div>
+  </aside>
 
-    <!-- ══════════════════════
-         SIDEBAR KIRI
-    ═══════════════════════ -->
-    <aside class="sidebar-wrap">
+  <!-- MAIN WRAP — no top padding (no nav bar) -->
+  <div class="main-wrap">
 
-      <!-- Profile Card -->
-      <div class="glass-panel-gold p-5 mb-5 fade-up delay-1" style="text-align:center;">
-        <div id="avatar-wrapper" style="margin:0 auto 14px;">
-          <img id="avatar-img"
-            src="https://ui-avatars.com/api/?name=Klien+Alfirama&background=C9B26D&color=0D1117&bold=true&size=200"
-            alt="Foto Profil" />
-          <div id="avatar-edit" onclick="document.getElementById('avatar-file').click()" title="Ganti foto">
-            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#070A14" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/>
-            </svg>
+    <!-- DASHBOARD TAB -->
+    <div class="tab-section active" id="tab-dashboard">
+      <div class="hero-section">
+        <div class="hero-orb"></div>
+        <!-- hero-arc & hero-arc-2 dihapus -->
+        <div class="hero-content fade-up d1">
+          <div class="hero-eyebrow">
+            <svg width="8" height="8" viewBox="0 0 10 10" fill="rgba(58,176,255,.7)"><circle cx="5" cy="5" r="4"/></svg>
+            CLIENT PORTAL v2026 · ALFIRAMA.ID
           </div>
-          <input type="file" id="avatar-file" accept="image/*" onchange="uploadAvatar(this)" />
-        </div>
-
-        <p style="font-family:'Orbitron',sans-serif;font-size:0.78rem;font-weight:700;color:#E6EDF3;letter-spacing:0.04em;" id="user-name">—</p>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:3px;" id="user-email">—</p>
-
-        <div class="tier-glow" style="margin:10px auto 0;">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#C9B26D"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:#C9B26D;font-weight:700;" id="user-tier">PREMIUM</span>
-        </div>
-
-        <!-- Points Block -->
-        <div style="margin-top:16px;padding:14px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span class="pts-label">LOYALTY POINTS</span>
-            <span style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:800;color:#C9B26D;" id="points-val">0</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill-gold" id="points-bar"></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px;">
-            <span class="pts-label">0</span>
-            <span style="font-family:'Orbitron',sans-serif;font-size:0.45rem;color:rgba(201,178,109,0.6);" id="points-next-label">→ GOLD</span>
-            <span class="pts-label">1000</span>
+          <h1 class="hero-title">
+            Halo, <span id="welcome-name" style="color:var(--text)">Klien</span><br/>
+            <span class="line2" id="hero-greeting-line">Selamat Datang Kembali</span>
+          </h1>
+          <p class="hero-sub">Pantau semua pesanan, invoice, dan aset digital Anda dari satu dashboard terpadu.</p>
+          <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:99px;background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.18)">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(63,185,80,.6)"></div>
+            <span style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.2em;color:var(--text2)">SISTEM AKTIF — REAL-TIME</span>
           </div>
         </div>
       </div>
 
-      <!-- Navigation Menu -->
-      <div class="fade-up delay-2" style="margin-bottom:20px;">
-        <p style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(255,255,255,0.2);text-transform:uppercase;padding:0 10px;margin-bottom:8px;">NAVIGASI</p>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <div class="nav-tab active" onclick="switchTab('dashboard',this)">
-            <span class="tab-dot"></span>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-            Dashboard
-          </div>
-          <div class="nav-tab" onclick="switchTab('orders',this)">
-            <span class="tab-dot"></span>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            Pesanan Saya
-          </div>
-          <div class="nav-tab" onclick="switchTab('invoices',this)">
-            <span class="tab-dot"></span>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            Invoice
-          </div>
-          <div class="nav-tab" onclick="switchTab('settings',this)">
-            <span class="tab-dot"></span>
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-            Pengaturan
-          </div>
+      <div class="kpi-row">
+        <div class="kpi-card fade-up d2">
+          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <div class="kpi-label">Total Pesanan</div>
+          <div class="kpi-value" id="kpi-orders">0</div>
+          <div class="kpi-change neutral"><svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg><span id="kpi-orders-active">0 aktif</span></div>
+        </div>
+        <div class="kpi-card fade-up d3">
+          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--green)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+          <div class="kpi-label">Pesanan Selesai</div>
+          <div class="kpi-value" style="color:var(--green)" id="kpi-done">0</div>
+          <div class="kpi-change up"><svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>Selesai</div>
+        </div>
+        <div class="kpi-card fade-up d4">
+          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+          <div class="kpi-label">Total Invoice</div>
+          <div class="kpi-value gold" id="kpi-invoices">0</div>
+          <div class="kpi-change neutral">Invoice</div>
+        </div>
+        <div class="kpi-card fade-up d5">
+          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue2)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg></div>
+          <div class="kpi-label">Aset Digital</div>
+          <div class="kpi-value blue" id="kpi-assets">0</div>
+          <div class="kpi-change neutral">Siap unduh</div>
         </div>
       </div>
 
-      <!-- Stat Grid -->
-      <div class="fade-up delay-3">
-        <p style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(255,255,255,0.2);text-transform:uppercase;padding:0 10px;margin-bottom:8px;">RINGKASAN</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div class="stat-mini">
-            <div class="stat-val-orb gold" id="stat-orders">0</div>
-            <div class="stat-lbl-mont">Pesanan</div>
-          </div>
-          <div class="stat-mini">
-            <div class="stat-val-orb cyan" id="stat-invoices">0</div>
-            <div class="stat-lbl-mont">Invoice</div>
-          </div>
-          <div class="stat-mini">
-            <div class="stat-val-orb gold" id="stat-done">0</div>
-            <div class="stat-lbl-mont">Selesai</div>
-          </div>
-          <div class="stat-mini">
-            <div class="stat-val-orb" style="color:rgba(255,255,255,0.7);" id="stat-assets">0</div>
-            <div class="stat-lbl-mont">Aset</div>
-          </div>
-        </div>
-      </div>
-
-    </aside>
-
-    <!-- ══════════════════════
-         KONTEN UTAMA
-    ═══════════════════════ -->
-    <main class="main-content">
-
-      <!-- ── DASHBOARD TAB ── -->
-      <div class="tab-section active" id="tab-dashboard">
-
-        <!-- Hero Welcome Card -->
-        <div class="glass-panel p-8 mb-8 fade-up delay-1" style="position:relative;overflow:hidden;">
-          <!-- Decorative neon line at top -->
-          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,240,255,0.3),rgba(201,178,109,0.3),transparent);"></div>
-          <!-- Glow orb -->
-          <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,240,255,0.06) 0%,transparent 70%);filter:blur(30px);pointer-events:none;"></div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
+      <div class="body-grid" style="border-top:1px solid var(--border)">
+        <div class="main-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
             <div>
-              <p id="greeting-time" style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.25em;color:rgba(0,240,255,0.55);margin-bottom:6px;">SELAMAT DATANG</p>
-              <h1 style="font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:-0.01em;line-height:1.1;margin-bottom:8px;">
-                Halo, <span style="color:#C9B26D;" id="welcome-name">Klien</span>
-              </h1>
-              <p style="font-family:'Montserrat',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.6;">
-                Pantau semua pesanan dan aset digital Anda dari satu dashboard terpadu.
-              </p>
-            </div>
-            <div style="flex-shrink:0;width:56px;height:56px;border-radius:14px;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.15);display:flex;align-items:center;justify-content:center;">
-              <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#00F0FF" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
-            </div>
-          </div>
-
-          <!-- Bottom gradient divider line -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,178,109,0.15),transparent);"></div>
-        </div>
-
-        <!-- Active Orders -->
-        <div class="fade-up delay-2">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div class="sh-block" style="margin-bottom:0;">
-              <p class="eyebrow" style="margin-bottom:2px;">⬡ TRACKING</p>
-              <h2 style="font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:800;color:#E6EDF3;">Pesanan <span class="gold-span" style="color:#C9B26D;">Berjalan</span></h2>
+              <p class="sh-eyebrow">⬡ TRACKING</p>
+              <h2 class="sh-title">Pesanan <span class="accent">Berjalan</span></h2>
             </div>
             <span class="badge badge-active" id="orders-count-badge">0 aktif</span>
           </div>
-
-          <div class="glass-panel" id="orders-wrapper" style="padding:0;overflow:hidden;">
-            <div style="padding:48px 24px;text-align:center;" id="orders-empty">
-              <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="rgba(0,240,255,0.2)" stroke-width="1.5" style="margin:0 auto 12px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-              <p style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);">BELUM ADA PESANAN AKTIF</p>
+          <div class="glass" style="padding:0;overflow:hidden">
+            <div style="padding:44px 20px;text-align:center" id="orders-empty">
+              <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(58,176,255,0.2)" stroke-width="1.5" style="margin:0 auto 10px"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA PESANAN AKTIF</p>
             </div>
             <div id="orders-container"></div>
           </div>
         </div>
-
-      </div>
-
-      <!-- ── PESANAN TAB ── -->
-      <div class="tab-section" id="tab-orders">
-        <div class="sh-block fade-up delay-1">
-          <p class="eyebrow">⬡ RIWAYAT</p>
-          <div class="cyber-divider-sm"></div>
-          <h2 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:800;color:#E6EDF3;">Semua <span style="color:#C9B26D;">Pesanan</span></h2>
-        </div>
-        <div class="glass-panel fade-up delay-2" style="padding:0;overflow:hidden;">
-          <div style="padding:48px 24px;text-align:center;" id="all-orders-empty">
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);">BELUM ADA DATA PESANAN</p>
+        <div class="right-panel">
+          <div class="glass" style="padding:18px">
+            <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:12px">⬡ Invoice Terbaru</p>
+            <div id="invoice-summary"><div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">MEMUAT...</p></div></div>
+            <button onclick="switchTab('invoices',document.querySelectorAll('.nav-tab')[2])" style="width:100%;text-align:center;font-family:var(--font-tech);font-size:.42rem;letter-spacing:.14em;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.04);cursor:pointer;background:none;border-bottom:none;border-left:none;border-right:none;transition:color .2s" onmouseover="this.style.color='rgba(58,176,255,.6)'" onmouseout="this.style.color='var(--text3)'">LIHAT SEMUA →</button>
           </div>
+          <div class="glass-gold" style="padding:18px">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
+              <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(201,178,109,.7);text-transform:uppercase">Digital Assets</p>
+            </div>
+            <p style="font-size:.65rem;color:var(--text3);margin-bottom:13px;line-height:1.5">File siap unduh dari Alfirama Studio</p>
+            <div id="assets-container"><div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(201,178,109,.3)">BELUM ADA ASET</p></div></div>
+          </div>
+          <div class="glass-cyan" style="padding:18px">
+            <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:10px">⬡ Butuh Bantuan?</p>
+            <p style="font-size:.68rem;color:var(--text3);margin-bottom:13px;line-height:1.6">Tim Alfirama.ID siap membantu via WhatsApp Business kapan saja.</p>
+            <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi..." target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:22px;background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.2);color:#3fb950;font-family:var(--font-body);font-size:.68rem;font-weight:600;text-decoration:none;transition:.2s" onmouseover="this.style.background='rgba(37,211,102,.13)';this.style.boxShadow='0 0 14px rgba(37,211,102,.18)'" onmouseout="this.style.background='rgba(37,211,102,.07)';this.style.boxShadow='none'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#3fb950"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.848L.044 24l6.327-1.649A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.882 0-3.65-.518-5.17-1.42l-.371-.22-3.757.979.998-3.663-.242-.376A9.975 9.975 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              Chat WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div class="tab-section" id="tab-orders">
+      <div class="hero-section" style="padding:36px 40px 28px">
+        <div class="hero-orb" style="opacity:.6"></div>
+        <p class="sh-eyebrow">⬡ RIWAYAT</p>
+        <h2 class="sh-title" style="font-size:1.4rem">Semua <span class="accent">Pesanan</span></h2>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Riwayat lengkap seluruh pesanan Anda</p>
+      </div>
+      <div style="padding:24px 40px 36px">
+        <div class="glass" style="padding:0;overflow:hidden">
+          <div style="padding:44px 20px;text-align:center" id="all-orders-empty"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA DATA PESANAN</p></div>
           <div id="all-orders-container"></div>
         </div>
       </div>
+    </div>
 
-      <!-- ── INVOICE TAB ── -->
-      <div class="tab-section" id="tab-invoices">
-        <div class="sh-block fade-up delay-1">
-          <p class="eyebrow">⬡ KEUANGAN</p>
-          <div class="cyber-divider-sm"></div>
-          <h2 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:800;color:#E6EDF3;">Riwayat <span style="color:#C9B26D;">Invoice</span></h2>
-        </div>
-        <div class="glass-panel fade-up delay-2" style="padding:4px 24px 0;">
-          <div id="invoices-list">
-            <div style="padding:48px 0;text-align:center;">
-              <p style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);">MEMUAT DATA...</p>
-            </div>
-          </div>
+    <!-- INVOICE TAB -->
+    <div class="tab-section" id="tab-invoices">
+      <div class="hero-section" style="padding:36px 40px 28px">
+        <div class="hero-orb" style="opacity:.6"></div>
+        <p class="sh-eyebrow">⬡ KEUANGAN</p>
+        <h2 class="sh-title" style="font-size:1.4rem">Riwayat <span class="accent">Invoice</span></h2>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Semua tagihan dan status pembayaran Anda</p>
+      </div>
+      <div style="padding:24px 40px 36px">
+        <div class="glass" style="padding:4px 22px 0">
+          <div id="invoices-list"><div style="padding:44px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">MEMUAT DATA...</p></div></div>
         </div>
       </div>
+    </div>
 
-      <!-- ── SETTINGS TAB ── -->
-      <div class="tab-section" id="tab-settings">
-        <div class="sh-block fade-up delay-1">
-          <p class="eyebrow">⬡ AKUN</p>
-          <div class="cyber-divider-sm"></div>
-          <h2 style="font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:800;color:#E6EDF3;">Pengaturan <span style="color:#C9B26D;">Profil</span></h2>
-        </div>
-        <div class="glass-panel p-8 fade-up delay-2" style="max-width:480px;">
-          <div style="display:flex;flex-direction:column;gap:20px;">
+    <!-- SETTINGS TAB -->
+    <div class="tab-section" id="tab-settings">
+      <div class="hero-section" style="padding:36px 40px 28px">
+        <div class="hero-orb" style="opacity:.6"></div>
+        <p class="sh-eyebrow">⬡ AKUN</p>
+        <h2 class="sh-title" style="font-size:1.4rem">Pengaturan <span class="accent">Profil</span></h2>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Kelola informasi akun dan preferensi Anda</p>
+      </div>
+      <div style="padding:24px 40px 36px">
+        <div class="glass" style="padding:28px;max-width:460px">
+          <div style="display:flex;flex-direction:column;gap:18px">
             <div>
-              <label style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.18em;color:rgba(0,240,255,0.55);display:block;margin-bottom:8px;text-transform:uppercase;">Nama Tampilan</label>
-              <input id="settings-name" type="text" placeholder="Nama Anda" class="gh-input" />
-            </div>
-            <div>
-              <label style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.18em;color:rgba(0,240,255,0.55);display:block;margin-bottom:8px;text-transform:uppercase;">Email</label>
-              <input id="settings-email" type="email" disabled class="gh-input" />
+              <label style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.18em;color:rgba(58,176,255,.55);display:block;margin-bottom:7px;text-transform:uppercase">Nama Tampilan</label>
+              <input id="settings-name" type="text" placeholder="Nama Anda" class="gh-input"/>
             </div>
             <div>
-              <label style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.18em;color:rgba(0,240,255,0.55);display:block;margin-bottom:8px;text-transform:uppercase;">Nomor WhatsApp</label>
-              <input id="settings-phone" type="tel" placeholder="+62 8xx-xxxx-xxxx" class="gh-input" />
+              <label style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.18em;color:rgba(58,176,255,.55);display:block;margin-bottom:7px;text-transform:uppercase">Email</label>
+              <input id="settings-email" type="email" disabled class="gh-input"/>
             </div>
-            <div style="padding-top:4px;">
-              <button onclick="saveSettings()" class="btn-primary">
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                SIMPAN PERUBAHAN
-              </button>
+            <div>
+              <label style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.18em;color:rgba(58,176,255,.55);display:block;margin-bottom:7px;text-transform:uppercase">Nomor WhatsApp</label>
+              <input id="settings-phone" type="tel" placeholder="+62 8xx-xxxx-xxxx" class="gh-input"/>
             </div>
+            <button onclick="saveSettings()" class="btn-primary" style="margin-top:4px">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              SIMPAN PERUBAHAN
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
-    </main>
-
-    <!-- ══════════════════════
-         PANEL KANAN
-    ═══════════════════════ -->
-    <aside class="right-panel">
-
-      <!-- Invoice Terbaru -->
-      <div class="glass-panel p-5 fade-up delay-2">
-        <p style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(0,240,255,0.5);text-transform:uppercase;margin-bottom:12px;">⬡ Invoice Terbaru</p>
-        <div id="invoice-summary">
-          <div style="padding:16px 0;text-align:center;">
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:rgba(255,255,255,0.2);">MEMUAT...</p>
-          </div>
-        </div>
-        <button onclick="switchTab('invoices', document.querySelectorAll('.nav-tab')[2])"
-          style="width:100%;text-align:center;font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.04);cursor:pointer;background:none;border-bottom:none;border-left:none;border-right:none;transition:color 0.2s;"
-          onmouseover="this.style.color='rgba(0,240,255,0.6)'"
-          onmouseout="this.style.color='rgba(255,255,255,0.2)'">
-          LIHAT SEMUA →
-        </button>
-      </div>
-
-      <!-- Digital Assets -->
-      <div class="glass-panel-gold p-5 fade-up delay-3">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#C9B26D" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
-          </svg>
-          <p style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(201,178,109,0.7);text-transform:uppercase;">Digital Assets</p>
-        </div>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.35);margin-bottom:14px;line-height:1.5;">File siap unduh dari Alfirama Studio</p>
-        <div id="assets-container">
-          <div style="padding:14px 0;text-align:center;">
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:rgba(201,178,109,0.3);">BELUM ADA ASET</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bantuan -->
-      <div class="glass-panel-cyan p-5 fade-up delay-4">
-        <p style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(0,240,255,0.5);text-transform:uppercase;margin-bottom:10px;">⬡ Butuh Bantuan?</p>
-        <p style="font-family:'Montserrat',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.4);margin-bottom:14px;line-height:1.6;">Tim Alfirama.ID siap membantu via WhatsApp Business kapan saja.</p>
-        <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi..."
-           target="_blank"
-           style="display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:10px;background:rgba(37,211,102,0.07);border:1px solid rgba(37,211,102,0.2);color:#3FB950;font-family:'Montserrat',sans-serif;font-size:0.75rem;font-weight:600;text-decoration:none;transition:background 0.2s,box-shadow 0.2s;"
-           onmouseover="this.style.background='rgba(37,211,102,0.13)';this.style.boxShadow='0 0 14px rgba(37,211,102,0.2)'"
-           onmouseout="this.style.background='rgba(37,211,102,0.07)';this.style.boxShadow='none'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#3FB950">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.848L.044 24l6.327-1.649A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.882 0-3.65-.518-5.17-1.42l-.371-.22-3.757.979.998-3.663-.242-.376A9.975 9.975 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-          </svg>
-          Chat WhatsApp
-        </a>
-      </div>
-
-    </aside>
+    <footer class="footer-bar">
+      <span style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.18em;color:var(--text3)">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</span>
+    </footer>
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer class="footer-bar" style="text-align:center;padding:20px;">
-    <span style="font-family:'Orbitron',sans-serif;font-size:0.48rem;letter-spacing:0.18em;color:rgba(255,255,255,0.15);">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</span>
-  </footer>
-
-</div><!-- /#app -->
-
-
-<!-- ════════════════════════════════════════════════════
-     FIREBASE + APP SCRIPTS
-════════════════════════════════════════════════════ -->
-<script type="module">
-
-import { initializeApp }                                               from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getAuth, onAuthStateChanged, signOut }                        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import {
-  getFirestore,
-  doc, getDoc, setDoc, updateDoc, onSnapshot,
-  collection, query, orderBy, where
-} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-import { getStorage } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
-
-const firebaseConfig = {
-  apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
-  authDomain:        "alfirama-id.firebaseapp.com",
-  projectId:         "alfirama-id",
-  storageBucket:     "alfirama-id.firebasestorage.app",
-  messagingSenderId: "1036820056484",
-  appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
-  measurementId:     "G-V3QGL2R207"
-};
-
-const CLOUDINARY_CLOUD_NAME    = "YOUR_CLOUD_NAME";
-const CLOUDINARY_UPLOAD_PRESET = "YOUR_UNSIGNED_UPLOAD_PRESET";
-
-const app     = initializeApp(firebaseConfig);
-const auth    = getAuth(app);
-const db      = getFirestore(app);
-const storage = getStorage(app);
-
-let currentUser   = null;
-let unsubOrders   = null;
-let unsubInvoices = null;
-let unsubProfile  = null;
-
-/* ── THEME ── */
-function toggleTheme() {
-  const html = document.documentElement;
-  html.classList.toggle('dark');
-  const isDark = html.classList.contains('dark');
-  const moon = document.getElementById('icon-moon-nav');
-  const sun  = document.getElementById('icon-sun-nav');
-  if (moon) moon.style.display = isDark ? 'block' : 'none';
-  if (sun)  sun.style.display  = isDark ? 'none'  : 'block';
-  localStorage.setItem('alfirama_theme', isDark ? 'dark' : 'light');
-}
-window.toggleTheme = toggleTheme;
-// Restore icon state on load
+<!-- PARTICLE CANVAS -->
+<script>
 (function(){
-  const isDark = document.documentElement.classList.contains('dark');
-  const moon = document.getElementById('icon-moon-nav');
-  const sun  = document.getElementById('icon-sun-nav');
-  if (moon) moon.style.display = isDark ? 'block' : 'none';
-  if (sun)  sun.style.display  = isDark ? 'none'  : 'block';
-})();
-
-/* ── TOAST ── */
-function showToast(msg, duration = 3000) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), duration);
-}
-window.showToast = showToast;
-
-/* ── TAB SWITCH ── */
-function switchTab(name, el) {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-}
-window.switchTab = switchTab;
-
-/* ── AUTH GUARD ── */
-onAuthStateChanged(auth, user => {
-  const overlay = document.getElementById('loading-overlay');
-  const appEl   = document.getElementById('app');
-  // Complete auth bar to 100%
-  const bar = document.getElementById('auth-bar');
-  if (bar) bar.style.width = '100%';
-  if (user) {
-    currentUser = user;
-    setTimeout(() => {
-      overlay.style.opacity = '0';
-      overlay.style.transition = 'opacity 0.4s ease';
-      setTimeout(() => { overlay.style.display = 'none'; }, 400);
-      appEl.style.display = 'flex';
-    }, 300);
-    initDashboard(user);
-  } else {
-    window.location.href = 'login.html';
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+  class Particle{
+    constructor(init){this.reset(init)}
+    reset(init){this.x=Math.random()*W;this.y=init?Math.random()*H:H+5;this.r=0.4+Math.random()*1.2;this.vy=-(0.12+Math.random()*0.35);this.vx=(Math.random()-.5)*.2;this.life=0;this.maxLife=200+Math.random()*320;this.baseAlpha=0.14+Math.random()*0.5;this.tw=Math.random()*Math.PI*2;const cols=[[0,160,255],[0,200,255],[58,176,255],[100,200,255],[0,120,220],[30,180,255]];this.col=cols[Math.floor(Math.random()*cols.length)];}
+    tick(){this.x+=this.vx;this.y+=this.vy;this.tw+=.022;this.life++;if(this.y<-8||this.life>this.maxLife)this.reset(false);const fade=Math.min(this.life/40,1)*Math.min((this.maxLife-this.life)/30,1);this.a=this.baseAlpha*fade*(0.7+0.3*Math.sin(this.tw));}
+    draw(){ctx.save();ctx.globalAlpha=Math.max(0,this.a);ctx.fillStyle=`rgba(${this.col.join(',')},1)`;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();ctx.restore();}
   }
+  class Beam{
+    constructor(init){this.reset(init)}
+    reset(init){this.x=Math.random()*W;this.y=init?Math.random()*H:H+30;this.len=20+Math.random()*80;this.vy=-(0.5+Math.random()*1.4);this.alpha=0.03+Math.random()*0.09;this.w=0.4+Math.random()*0.8;}
+    tick(){this.y+=this.vy;if(this.y+this.len<-10)this.reset(false)}
+    draw(){const g=ctx.createLinearGradient(this.x,this.y,this.x,this.y+this.len);g.addColorStop(0,'rgba(0,160,255,0)');g.addColorStop(.5,`rgba(0,190,255,${this.alpha})`);g.addColorStop(1,'rgba(0,160,255,0)');ctx.save();ctx.strokeStyle=g;ctx.lineWidth=this.w;ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x,this.y+this.len);ctx.stroke();ctx.restore();}
+  }
+  let pts,beams,t=0;
+  function init(){resize();pts=Array.from({length:110},(_,i)=>new Particle(true));beams=Array.from({length:28},()=>new Beam(true))}
+  function draw(){
+    const isLight=document.documentElement.getAttribute('data-theme')==='light';
+    ctx.clearRect(0,0,W,H);
+    if(!isLight){
+      ctx.fillStyle='#020810';ctx.fillRect(0,0,W,H);
+      const blob=(bx,by,rad,a)=>{const g=ctx.createRadialGradient(bx,by,0,bx,by,rad);g.addColorStop(0,`rgba(0,80,200,${a})`);g.addColorStop(.4,`rgba(0,50,160,${a*.4})`);g.addColorStop(1,'rgba(0,0,0,0)');ctx.save();ctx.fillStyle=g;ctx.beginPath();ctx.arc(bx,by,rad,0,Math.PI*2);ctx.fill();ctx.restore();};
+      t+=.007;
+      blob(W*.75+Math.sin(t)*22,H*.35+Math.cos(t*.7)*15,300,.06);
+      blob(W*.18+Math.sin(t*.8)*14,H*.65+Math.cos(t)*12,220,.03);
+      blob(W*.5,H*.1,260,.03);
+      beams.forEach(b=>{b.tick();b.draw()});
+      pts.forEach(p=>{p.tick();p.draw()});
+    }
+    requestAnimationFrame(draw);
+  }
+  init();draw();
+  window.addEventListener('resize',resize);
+})();
+</script>
+
+<!-- FIREBASE + APP LOGIC -->
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import{getAuth,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import{getFirestore,doc,getDoc,setDoc,updateDoc,onSnapshot,collection,query,orderBy,where}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import{getStorage}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
+
+const firebaseConfig={apiKey:"AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",authDomain:"alfirama-id.firebaseapp.com",projectId:"alfirama-id",storageBucket:"alfirama-id.firebasestorage.app",messagingSenderId:"1036820056484",appId:"1:1036820056484:web:9eb5143a06077b3039d931",measurementId:"G-V3QGL2R207"};
+const CLOUDINARY_CLOUD_NAME='YOUR_CLOUD_NAME';
+const CLOUDINARY_UPLOAD_PRESET='YOUR_UNSIGNED_UPLOAD_PRESET';
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
+let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null;
+
+/* THEME */
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  localStorage.setItem('alfirama_theme',isDark?'light':'dark');
+  syncThemeIcons();
+}
+function syncThemeIcons(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const moon=document.getElementById('icon-moon');
+  const sun=document.getElementById('icon-sun');
+  const lbl=document.getElementById('theme-label');
+  if(moon)moon.style.display=isDark?'block':'none';
+  if(sun)sun.style.display=isDark?'none':'block';
+  if(lbl)lbl.textContent=isDark?'Light':'Dark';
+}
+window.toggleTheme=toggleTheme;
+syncThemeIcons();
+
+/* TOAST */
+function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+window.showToast=showToast;
+
+/* TAB SWITCH */
+function switchTab(name,el){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+window.switchTab=switchTab;
+
+/* AUTH */
+onAuthStateChanged(auth,user=>{
+  const overlay=document.getElementById('loading-overlay');
+  const appEl=document.getElementById('app');
+  const bar=document.getElementById('auth-bar');
+  if(bar)bar.style.width='100%';
+  if(user){
+    currentUser=user;
+    setTimeout(()=>{overlay.style.opacity='0';overlay.style.transition='opacity .4s';setTimeout(()=>{overlay.style.display='none'},400);appEl.style.display='block';},300);
+    initDashboard(user);
+  }else{window.location.href='login.html'}
 });
 
-/* ── LOGOUT ── */
-async function handleLogout() {
-  const t = document.getElementById('toast');
-  t.style.pointerEvents = 'all';
-  t.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <span style="font-family:'Montserrat',sans-serif;font-size:0.82rem;">Yakin ingin keluar?</span>
-      <button id="btn-confirm-logout" style="padding:5px 12px;border-radius:7px;background:rgba(201,178,109,0.12);border:1px solid rgba(201,178,109,0.3);color:#C9B26D;font-size:0.62rem;cursor:pointer;font-family:'Orbitron',sans-serif;letter-spacing:0.1em;">YA</button>
-      <button id="btn-cancel-logout" style="padding:5px 12px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:0.62rem;cursor:pointer;color:rgba(255,255,255,0.4);font-family:'Montserrat',sans-serif;">Batal</button>
-    </div>`;
+/* LOGOUT */
+async function handleLogout(){
+  const t=document.getElementById('toast');
+  t.style.pointerEvents='all';
+  t.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:var(--font-body);font-size:.82rem">Yakin ingin keluar?</span><button id="btn-confirm-logout" style="padding:5px 12px;border-radius:20px;background:rgba(58,176,255,.12);border:1px solid rgba(58,176,255,.3);color:var(--blue);font-size:.6rem;cursor:pointer;font-family:var(--font-tech);letter-spacing:.1em">YA</button><button id="btn-cancel-logout" style="padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:.6rem;cursor:pointer;color:var(--text3);font-family:var(--font-body)">Batal</button></div>`;
   t.classList.add('show');
-  document.getElementById('btn-confirm-logout').addEventListener('click', e => { e.stopPropagation(); confirmLogout(); });
-  document.getElementById('btn-cancel-logout').addEventListener('click', e => { e.stopPropagation(); t.classList.remove('show'); t.style.pointerEvents='none'; });
+  document.getElementById('btn-confirm-logout').addEventListener('click',e=>{e.stopPropagation();confirmLogout()});
+  document.getElementById('btn-cancel-logout').addEventListener('click',e=>{e.stopPropagation();t.classList.remove('show');t.style.pointerEvents='none'});
 }
-async function confirmLogout() {
-  if (unsubOrders)   unsubOrders();
-  if (unsubInvoices) unsubInvoices();
-  if (unsubProfile)  unsubProfile();
-  await signOut(auth);
-  window.location.href = 'login.html';
-}
-window.handleLogout  = handleLogout;
-window.confirmLogout = confirmLogout;
+async function confirmLogout(){if(unsubOrders)unsubOrders();if(unsubInvoices)unsubInvoices();if(unsubProfile)unsubProfile();await signOut(auth);window.location.href='login.html';}
+window.handleLogout=handleLogout;window.confirmLogout=confirmLogout;
 
-/* ── INIT DASHBOARD ── */
-function initDashboard(user) {
-  const navUid = document.getElementById('nav-uid');
-  const sEmail = document.getElementById('settings-email');
-  if (navUid) navUid.textContent = user.uid.substring(0,10).toUpperCase() + '...';
-  if (sEmail) sEmail.value       = user.email || '';
-
-  const userRef = doc(db, 'users', user.uid);
-  unsubProfile  = onSnapshot(userRef, async snap => {
-    if (snap.exists()) {
-      setProfileUI(snap.data(), user);
-    } else {
-      await setDoc(userRef, {
-        displayName: user.displayName || 'Klien Alfirama',
-        email:       user.email, tier: 'Premium Member',
-        points: 2500, whatsapp: '',
-        photoURL: user.photoURL || '', createdAt: new Date()
-      });
-    }
-  }, err => console.error('Profile error:', err));
-
-  const ordersQ = query(collection(db,'orders'), where('userId','==',user.uid), orderBy('createdAt','desc'));
-  unsubOrders   = onSnapshot(ordersQ, snap => {
-    renderOrders(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-  }, err => console.error('Orders error:', err));
-
-  const invQ  = query(collection(db,'invoices'), where('userId','==',user.uid), orderBy('date','desc'));
-  unsubInvoices = onSnapshot(invQ, snap => {
-    renderInvoices(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-  }, err => console.error('Invoices error:', err));
+/* INIT */
+function initDashboard(user){
+  const navUid=document.getElementById('nav-uid');
+  const sEmail=document.getElementById('settings-email');
+  if(navUid)navUid.textContent=user.uid.substring(0,12).toUpperCase()+'...';
+  if(sEmail)sEmail.value=user.email||'';
+  const userRef=doc(db,'users',user.uid);
+  unsubProfile=onSnapshot(userRef,async snap=>{
+    if(snap.exists()){setProfileUI(snap.data(),user)}
+    else{await setDoc(userRef,{displayName:user.displayName||'Klien Alfirama',email:user.email,tier:'Premium Member',points:2500,whatsapp:'',photoURL:user.photoURL||'',createdAt:new Date()})}
+  },err=>console.error('Profile error:',err));
+  const ordersQ=query(collection(db,'orders'),where('userId','==',user.uid),orderBy('createdAt','desc'));
+  unsubOrders=onSnapshot(ordersQ,snap=>{renderOrders(snap.docs.map(d=>({id:d.id,...d.data()})))},err=>console.error('Orders error:',err));
+  const invQ=query(collection(db,'invoices'),where('userId','==',user.uid),orderBy('date','desc'));
+  unsubInvoices=onSnapshot(invQ,snap=>{renderInvoices(snap.docs.map(d=>({id:d.id,...d.data()})))},err=>console.error('Invoices error:',err));
 }
 
-/* ── PROFILE UI ── */
-function setProfileUI(data, user) {
-  const name = data.displayName || data.name || user.displayName || 'Klien Alfirama';
-  const $     = id => document.getElementById(id);
-  if ($('user-name'))      $('user-name').textContent      = name;
-  if ($('user-email'))     $('user-email').textContent     = data.email || user.email || '';
-  if ($('user-tier'))      $('user-tier').textContent      = (data.tier || 'Premium').toUpperCase();
-  if ($('welcome-name'))   $('welcome-name').textContent   = name.split(' ')[0];
-  if ($('settings-name'))  $('settings-name').value        = name;
-  if ($('settings-phone')) $('settings-phone').value       = data.whatsapp || '';
-
-  const pts  = typeof data.points === 'number' ? data.points : parseInt(data.points || 0);
-  const pct  = Math.min((pts / 1000) * 100, 100);
-  if ($('points-val')) $('points-val').textContent = pts.toLocaleString('id-ID');
-  if ($('points-bar')) setTimeout(() => { $('points-bar').style.width = pct + '%'; }, 600);
-  if ($('points-next-label')) {
-    $('points-next-label').textContent = pts >= 1000 ? 'GOLD TERCAPAI' : `${(1000 - pts).toLocaleString()} PTS LAGI`;
-  }
-
-  const photo = data.photoURL || user.photoURL;
-  if (photo && $('avatar-img')) $('avatar-img').src = photo;
+/* PROFILE UI */
+function setProfileUI(data,user){
+  const name=data.displayName||data.name||user.displayName||'Klien Alfirama';
+  const $=id=>document.getElementById(id);
+  if($('user-name'))$('user-name').textContent=name;
+  if($('user-email'))$('user-email').textContent=data.email||user.email||'';
+  if($('user-tier'))$('user-tier').textContent=(data.tier||'Premium').toUpperCase();
+  if($('welcome-name'))$('welcome-name').textContent=name.split(' ')[0];
+  if($('settings-name'))$('settings-name').value=name;
+  if($('settings-phone'))$('settings-phone').value=data.whatsapp||'';
+  const pts=typeof data.points==='number'?data.points:parseInt(data.points||0);
+  const pct=Math.min((pts/1000)*100,100);
+  if($('points-val'))$('points-val').textContent=pts.toLocaleString('id-ID');
+  if($('points-bar'))setTimeout(()=>{$('points-bar').style.width=pct+'%'},600);
+  if($('points-next-label'))$('points-next-label').textContent=pts>=1000?'GOLD TERCAPAI':`${(1000-pts).toLocaleString()} PTS LAGI`;
+  const h=new Date().getHours();
+  const greet=h>=4&&h<11?'Selamat Pagi ☀️':h>=11&&h<15?'Selamat Siang 🌤️':h>=15&&h<18?'Selamat Sore 🌇':'Selamat Malam 🌙';
+  if($('hero-greeting-line'))$('hero-greeting-line').textContent=greet;
+  const photo=data.photoURL||user.photoURL;
+  if(photo&&$('avatar-img'))$('avatar-img').src=photo;
 }
 
-/* ── ORDERS ── */
-const STEPS      = ['Briefing','Desain','Produksi','Selesai'];
-const STEP_ICONS = ['📋','🎨','🖨️','✅'];
-
-function getStepIndex(status) {
-  const map = { briefing:0, desain:1, produksi:2, selesai:3, dikirim:3 };
-  return map[(status||'').toLowerCase()] ?? 0;
-}
-
-function buildTimeline(cur) {
-  let h = '<div style="display:flex;align-items:center;gap:0;margin-top:16px;">';
-  STEPS.forEach((s,i) => {
-    const cls = i < cur ? 'done' : (i === cur ? 'active' : 'pending');
-    h += `<div class="tl-dot ${cls}" title="${s}"></div>`;
-    if (i < STEPS.length-1) h += `<div class="tl-line ${i < cur ? 'done' : 'pending'}"></div>`;
-  });
-  h += '</div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-top:5px;">';
-  STEPS.forEach((s,i) => {
-    h += `<span style="font-size:0.6rem;${i===cur?'color:#C9B26D;font-weight:600;':'color:rgba(255,255,255,0.25);'}">${STEP_ICONS[i]}</span>`;
-  });
-  h += '</div>';
-  h += `<p style="font-family:'Orbitron',sans-serif;font-size:0.52rem;letter-spacing:0.12em;color:#00F0FF;margin-top:6px;">${STEPS[cur].toUpperCase()}</p>`;
+/* ORDERS */
+const STEPS=['Briefing','Desain','Produksi','Selesai'];
+const STEP_ICONS=['📋','🎨','🖨️','✅'];
+function getStepIndex(status){const map={briefing:0,desain:1,produksi:2,selesai:3,dikirim:3};return map[(status||'').toLowerCase()]??0;}
+function buildTimeline(cur){
+  let h='<div style="display:flex;align-items:center;gap:0;margin-top:14px">';
+  STEPS.forEach((s,i)=>{const cls=i<cur?'done':(i===cur?'active':'pending');h+=`<div class="tl-dot ${cls}" title="${s}"></div>`;if(i<STEPS.length-1)h+=`<div class="tl-line ${i<cur?'done':'pending'}"></div>`;});
+  h+='</div><div style="display:flex;justify-content:space-between;margin-top:4px">';
+  STEPS.forEach((s,i)=>{h+=`<span style="font-size:.58rem;${i===cur?'color:var(--blue);font-weight:600':'color:var(--text3)'}">${STEP_ICONS[i]}</span>`});
+  h+=`</div><p style="font-family:var(--font-tech);font-size:.46rem;letter-spacing:.12em;color:var(--blue);margin-top:5px">${STEPS[cur].toUpperCase()}</p>`;
   return h;
 }
-
-function buildOrderCard(order) {
-  const step   = getStepIndex(order.status);
-  const isDone = step === 3;
-  const badge  = isDone
-    ? '<span class="badge badge-done">SELESAI</span>'
-    : (step > 0 ? '<span class="badge badge-active">BERJALAN</span>' : '<span class="badge badge-pending">PENDING</span>');
-  const div  = (order.division||'').toLowerCase();
-  const icon = div==='apparel' ? '👕' : (div==='studio' ? '🎨' : '📦');
-  return `
-    <div class="order-row order-divider" style="padding:20px 24px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:1.2rem;line-height:1;flex-shrink:0;">${icon}</span>
-          <div>
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.72rem;font-weight:700;color:#E6EDF3;letter-spacing:0.03em;">${escHtml(order.title||'Pesanan Alfirama')}</p>
-            <p style="font-family:'Montserrat',sans-serif;font-size:0.65rem;color:rgba(255,255,255,0.3);margin-top:2px;">${escHtml(order.orderId||order.id)}</p>
-          </div>
-        </div>
-        ${badge}
-      </div>
-      ${buildTimeline(step)}
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.04);">
-        <span style="font-family:'Montserrat',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.35);">Est. selesai: <span style="color:rgba(201,178,109,0.7);font-weight:600;">${escHtml(order.estDate||'3 Hari Kerja')}</span></span>
-        <span style="font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:800;color:#C9B26D;">${formatRupiah(order.total||0)}</span>
-      </div>
-    </div>`;
+function buildOrderCard(order){
+  const step=getStepIndex(order.status);
+  const isDone=step===3;
+  const badge=isDone?'<span class="badge badge-done">SELESAI</span>':(step>0?'<span class="badge badge-active">BERJALAN</span>':'<span class="badge badge-pending">PENDING</span>');
+  const div=(order.division||'').toLowerCase();
+  const icon=div==='apparel'?'👕':(div==='studio'?'🎨':'📦');
+  return`<div class="order-row"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><div style="display:flex;align-items:center;gap:11px"><span style="font-size:1.1rem;line-height:1;flex-shrink:0">${icon}</span><div><p style="font-family:var(--font-tech);font-size:.68rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(order.title||'Pesanan Alfirama')}</p><p style="font-size:.6rem;color:var(--text3);margin-top:2px">${escHtml(order.orderId||order.id)}</p></div></div>${badge}</div>${buildTimeline(step)}<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)"><span style="font-size:.66rem;color:var(--text3)">Est. selesai: <span style="color:rgba(58,176,255,.7);font-weight:600">${escHtml(order.estDate||'3 Hari Kerja')}</span></span><span style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(order.total||0)}</span></div></div>`;
+}
+function renderOrders(orders){
+  const active=orders.filter(o=>getStepIndex(o.status)<3);
+  const $=id=>document.getElementById(id);
+  if($('orders-count-badge'))$('orders-count-badge').textContent=active.length+' aktif';
+  if($('orders-empty'))$('orders-empty').style.display=active.length?'none':'block';
+  if($('orders-container'))$('orders-container').innerHTML=active.length?active.map(buildOrderCard).join(''):'';
+  if($('all-orders-empty'))$('all-orders-empty').style.display=orders.length?'none':'block';
+  if($('all-orders-container'))$('all-orders-container').innerHTML=orders.length?orders.map(buildOrderCard).join(''):'';
+  animCounter('stat-orders',orders.length);animCounter('kpi-orders',orders.length);
+  animCounter('stat-done',orders.filter(o=>getStepIndex(o.status)===3).length);
+  animCounter('kpi-done',orders.filter(o=>getStepIndex(o.status)===3).length);
+  if($('kpi-orders-active'))$('kpi-orders-active').textContent=active.length+' aktif';
+  renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&(o.digitalFile||o.canvaLink)));
 }
 
-function renderOrders(orders) {
-  const active = orders.filter(o => getStepIndex(o.status) < 3);
-  const $ = id => document.getElementById(id);
-  if ($('orders-count-badge')) $('orders-count-badge').textContent = active.length + ' aktif';
-  if ($('orders-empty'))       $('orders-empty').style.display     = active.length ? 'none' : 'block';
-  if ($('orders-container'))   $('orders-container').innerHTML     = active.length ? active.map(buildOrderCard).join('') : '';
-  if ($('all-orders-empty'))   $('all-orders-empty').style.display = orders.length ? 'none' : 'block';
-  if ($('all-orders-container')) $('all-orders-container').innerHTML = orders.length ? orders.map(buildOrderCard).join('') : '';
-  if ($('stat-orders')) animCounter('stat-orders', orders.length);
-  if ($('stat-done'))   animCounter('stat-done', orders.filter(o=>getStepIndex(o.status)===3).length);
-  renderAssets(orders.filter(o => getStepIndex(o.status)===3 && (o.digitalFile||o.canvaLink)));
+/* INVOICES */
+function renderInvoices(invoices){
+  const $=id=>document.getElementById(id);
+  const getAmt=inv=>inv.amount??inv.total??0;
+  animCounter('stat-invoices',invoices.length);animCounter('kpi-invoices',invoices.length);
+  if($('invoices-list')){$('invoices-list').innerHTML=invoices.length?invoices.map(inv=>`<div class="inv-row"><div><p style="font-family:var(--font-tech);font-size:.64rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p><p style="font-size:.6rem;color:var(--text3);margin-top:3px">${escHtml(inv.invoiceId||inv.id)} · ${formatDate(inv.date)}</p></div><div style="text-align:right"><p style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(getAmt(inv))}</p><span class="badge ${inv.paid?'badge-done':'badge-active'}" style="margin-top:4px;display:inline-block">${inv.paid?'LUNAS':'BELUM LUNAS'}</span></div></div>`).join(''):'<div style="padding:44px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA INVOICE</p></div>';}
+  if($('invoice-summary')){$('invoice-summary').innerHTML=invoices.length?invoices.slice(0,3).map(inv=>`<div class="inv-row" style="padding:9px 0"><div><p style="font-family:var(--font-tech);font-size:.56rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p><p style="font-size:.58rem;color:var(--text3);margin-top:2px">${formatDate(inv.date)}</p></div><p style="font-family:var(--font-tech);font-size:.68rem;font-weight:800;color:var(--gold);flex-shrink:0">${formatRupiah(getAmt(inv))}</p></div>`).join(''):'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">BELUM ADA INVOICE</p></div>';}
 }
 
-/* ── INVOICES ── */
-function renderInvoices(invoices) {
-  const $ = id => document.getElementById(id);
-  const getAmt = inv => inv.amount ?? inv.total ?? 0;
-  if ($('stat-invoices')) animCounter('stat-invoices', invoices.length);
-
-  if ($('invoices-list')) {
-    $('invoices-list').innerHTML = invoices.length
-      ? invoices.map(inv => `
-        <div class="inv-row">
-          <div>
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.68rem;font-weight:700;color:#E6EDF3;letter-spacing:0.03em;">${escHtml(inv.title||'Invoice')}</p>
-            <p style="font-family:'Montserrat',sans-serif;font-size:0.65rem;color:rgba(255,255,255,0.3);margin-top:3px;">${escHtml(inv.invoiceId||inv.id)} · ${formatDate(inv.date)}</p>
-          </div>
-          <div style="text-align:right;">
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.82rem;font-weight:800;color:#C9B26D;">${formatRupiah(getAmt(inv))}</p>
-            <span class="badge ${inv.paid?'badge-done':'badge-active'}" style="margin-top:5px;display:inline-block;">${inv.paid?'LUNAS':'BELUM LUNAS'}</span>
-          </div>
-        </div>`).join('')
-      : '<div style="padding:48px 0;text-align:center;"><p style="font-family:\'Orbitron\',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);">BELUM ADA INVOICE</p></div>';
-  }
-
-  if ($('invoice-summary')) {
-    $('invoice-summary').innerHTML = invoices.length
-      ? invoices.slice(0,3).map(inv => `
-        <div class="inv-row" style="padding:10px 0;">
-          <div>
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.6rem;font-weight:700;color:#E6EDF3;line-height:1.3;letter-spacing:0.03em;">${escHtml(inv.title||'Invoice')}</p>
-            <p style="font-family:'Montserrat',sans-serif;font-size:0.6rem;color:rgba(255,255,255,0.3);margin-top:2px;">${formatDate(inv.date)}</p>
-          </div>
-          <p style="font-family:'Orbitron',sans-serif;font-size:0.72rem;font-weight:800;color:#C9B26D;flex-shrink:0;">${formatRupiah(getAmt(inv))}</p>
-        </div>`).join('')
-      : '<div style="padding:14px 0;text-align:center;"><p style="font-family:\'Orbitron\',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:rgba(255,255,255,0.2);">BELUM ADA INVOICE</p></div>';
-  }
+/* ASSETS */
+function renderAssets(orders){
+  animCounter('stat-assets',orders.length);animCounter('kpi-assets',orders.length);
+  const c=document.getElementById('assets-container');if(!c)return;
+  c.innerHTML=orders.length?orders.map(o=>`<div class="asset-panel"><div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><span style="font-size:.9rem">🎨</span><div><p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em">${escHtml(o.title||'Aset Digital')}</p><p style="font-size:.56rem;color:rgba(58,176,255,.5);margin-top:1px">Siap diunduh</p></div></div><div style="display:flex;gap:6px;flex-wrap:wrap">${o.digitalFile?`<a href="${escHtml(o.digitalFile)}" target="_blank" download class="btn-dl"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''} ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl">Canva</a>`:''}</div></div>`).join(''):'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(58,176,255,.3)">BELUM ADA ASET</p></div>';
 }
 
-/* ── ASSETS ── */
-function renderAssets(orders) {
-  const $ = id => document.getElementById(id);
-  if ($('stat-assets')) animCounter('stat-assets', orders.length);
-  const c = $('assets-container');
-  if (!c) return;
-  c.innerHTML = orders.length
-    ? orders.map(o => `
-      <div class="asset-panel">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-          <span style="font-size:1rem;">🎨</span>
-          <div>
-            <p style="font-family:'Orbitron',sans-serif;font-size:0.58rem;font-weight:700;color:#E6EDF3;letter-spacing:0.04em;">${escHtml(o.title||'Aset Digital')}</p>
-            <p style="font-family:'Montserrat',sans-serif;font-size:0.6rem;color:rgba(201,178,109,0.5);margin-top:1px;">Siap diunduh</p>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          ${o.digitalFile ? `<a href="${escHtml(o.digitalFile)}" target="_blank" download class="btn-dl">
-            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>
-            Unduh</a>` : ''}
-          ${o.canvaLink ? `<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-11h2v6h-2zm0-4h2v2h-2z"/></svg>
-            Canva</a>` : ''}
-        </div>
-      </div>`).join('')
-    : '<div style="padding:14px 0;text-align:center;"><p style="font-family:\'Orbitron\',sans-serif;font-size:0.5rem;letter-spacing:0.12em;color:rgba(201,178,109,0.3);">BELUM ADA ASET</p></div>';
+/* SAVE SETTINGS */
+async function saveSettings(){
+  if(!currentUser)return;
+  const name=document.getElementById('settings-name').value.trim();
+  const whatsapp=document.getElementById('settings-phone').value.trim();
+  if(!name){showToast('⚠️ Nama tidak boleh kosong');return}
+  try{await updateDoc(doc(db,'users',currentUser.uid),{displayName:name,whatsapp});await currentUser.updateProfile?.({displayName:name});showToast('✅ Pengaturan berhasil disimpan');}
+  catch(err){showToast('❌ Gagal: '+err.message)}
 }
+window.saveSettings=saveSettings;
 
-/* ── SAVE SETTINGS ── */
-async function saveSettings() {
-  if (!currentUser) return;
-  const name     = document.getElementById('settings-name').value.trim();
-  const whatsapp = document.getElementById('settings-phone').value.trim();
-  if (!name) { showToast('⚠️ Nama tidak boleh kosong'); return; }
-  try {
-    await updateDoc(doc(db,'users',currentUser.uid), { displayName: name, whatsapp });
-    await currentUser.updateProfile?.({ displayName: name });
-    showToast('✅ Pengaturan berhasil disimpan');
-  } catch(err) { showToast('❌ Gagal: ' + err.message); }
+/* UPLOAD AVATAR */
+async function uploadAvatar(input){
+  if(!input.files?.[0])return;
+  const fd=new FormData();fd.append('file',input.files[0]);fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);fd.append('folder','alfirama/avatars');
+  try{const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:'POST',body:fd});const data=await res.json();if(data.secure_url){await currentUser.updateProfile?.({photoURL:data.secure_url});await updateDoc(doc(db,'users',currentUser.uid),{photoURL:data.secure_url});document.getElementById('avatar-img').src=data.secure_url;showToast('✅ Foto berhasil diperbarui');}else throw new Error(data.error?.message||'Upload gagal');}
+  catch(err){showToast('❌ Upload gagal: '+err.message)}
 }
-window.saveSettings = saveSettings;
+window.uploadAvatar=uploadAvatar;
 
-/* ── UPLOAD AVATAR ── */
-async function uploadAvatar(input) {
-  if (!input.files?.[0]) return;
-  const editBtn = document.getElementById('avatar-edit');
-  if (editBtn) editBtn.innerHTML = '<div class="loader-ring" style="width:12px;height:12px;border-width:1.5px;"></div>';
-  const fd = new FormData();
-  fd.append('file', input.files[0]);
-  fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-  fd.append('folder', 'alfirama/avatars');
-  try {
-    const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method:'POST', body:fd });
-    const data = await res.json();
-    if (data.secure_url) {
-      await currentUser.updateProfile?.({ photoURL: data.secure_url });
-      await updateDoc(doc(db,'users',currentUser.uid), { photoURL: data.secure_url });
-      document.getElementById('avatar-img').src = data.secure_url;
-      showToast('✅ Foto berhasil diperbarui');
-    } else { throw new Error(data.error?.message || 'Upload gagal'); }
-  } catch(err) { showToast('❌ Upload gagal: ' + err.message); }
-  finally {
-    if (editBtn) editBtn.innerHTML = `<svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#070A14" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/></svg>`;
-  }
-}
-window.uploadAvatar = uploadAvatar;
-
-/* ── GREETING ── */
-function updateGreeting() {
-  const el = document.getElementById('greeting-time');
-  if (!el) return;
-  const h = new Date().getHours();
-  el.textContent = h>=4&&h<11 ? '⬡ SELAMAT PAGI' : h>=11&&h<15 ? '⬡ SELAMAT SIANG' : h>=15&&h<18 ? '⬡ SELAMAT SORE' : '⬡ SELAMAT MALAM';
-}
-updateGreeting();
-
-/* ── COUNTER ── */
-function animCounter(id, target, dur=700) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (!target) { el.textContent='0'; return; }
+/* COUNTER */
+function animCounter(id,target,dur=700){
+  const el=document.getElementById(id);if(!el)return;
+  if(!target){el.textContent='0';return}
   let start=null;
-  const step = ts => {
-    if (!start) start=ts;
-    const p = Math.min((ts-start)/dur,1);
-    el.textContent = Math.floor((1-Math.pow(1-p,3))*target);
-    if (p<1) requestAnimationFrame(step); else el.textContent=target;
-  };
+  const step=ts=>{if(!start)start=ts;const p=Math.min((ts-start)/dur,1);el.textContent=Math.floor((1-Math.pow(1-p,3))*target);if(p<1)requestAnimationFrame(step);else el.textContent=target;};
   requestAnimationFrame(step);
 }
-window.animCounter = animCounter;
+window.animCounter=animCounter;
 
-/* ── UTILS ── */
-function formatRupiah(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
-function formatDate(ts) {
-  if (!ts) return '—';
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
-  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
-}
-function escHtml(s) {
-  const d = document.createElement('div');
-  d.appendChild(document.createTextNode(String(s)));
-  return d.innerHTML;
-}
-
+/* UTILS */
+function formatRupiah(n){return'Rp '+Number(n).toLocaleString('id-ID')}
+function formatDate(ts){if(!ts)return'—';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
+function escHtml(s){const d=document.createElement('div');d.appendChild(document.createTextNode(String(s)));return d.innerHTML}
 </script>
 </body>
 </html>
