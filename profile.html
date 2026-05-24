@@ -8,298 +8,114 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-
 :root{
-  --bg:#020810;
-  --bg2:#040c18;
-  --bg3:#060f1e;
-  --surface:rgba(4,12,26,0.7);
-  --surface2:rgba(6,15,30,0.8);
-  --border:rgba(0,140,255,0.12);
-  --border2:rgba(0,140,255,0.22);
-  --blue:#3ab0ff;
-  --blue2:#00c8ff;
-  --blue-glow:rgba(0,140,255,0.18);
-  --gold:#c9b26d;
-  --gold2:#e2cc8e;
-  --gold-glow:rgba(201,178,109,0.15);
-  --text:#e6edf3;
-  --text2:rgba(230,237,243,0.55);
-  --text3:rgba(230,237,243,0.28);
+  --bg:#020810;--bg2:#040c18;--bg3:#060f1e;
+  --surface:rgba(4,12,26,0.7);--surface2:rgba(6,15,30,0.8);
+  --border:rgba(0,140,255,0.12);--border2:rgba(0,140,255,0.22);
+  --blue:#3ab0ff;--blue2:#00c8ff;--blue-glow:rgba(0,140,255,0.18);
+  --gold:#c9b26d;--gold2:#e2cc8e;--gold-glow:rgba(201,178,109,0.15);
+  --text:#e6edf3;--text2:rgba(230,237,243,0.55);--text3:rgba(230,237,243,0.28);
   --green:#3fb950;
-  --font-tech:'Orbitron',sans-serif;
-  --font-body:'Montserrat',sans-serif;
+  --font-tech:'Orbitron',sans-serif;--font-body:'Montserrat',sans-serif;
   --sidebar-w:220px;
 }
 [data-theme="light"]{
-  --bg:#f0f4fa;
-  --bg2:#e8eef8;
-  --bg3:#dce6f5;
-  --surface:rgba(255,255,255,0.82);
-  --surface2:rgba(240,244,250,0.9);
-  --border:rgba(0,100,200,0.13);
-  --border2:rgba(0,100,200,0.25);
-  --blue:#1a6fc4;
-  --blue2:#0d5faa;
-  --blue-glow:rgba(0,100,200,0.1);
-  --gold:#9a7c3c;
-  --gold2:#b8963e;
-  --gold-glow:rgba(154,124,60,0.1);
-  --text:#0f172a;
-  --text2:rgba(15,23,42,0.55);
-  --text3:rgba(15,23,42,0.3);
+  --bg:#f0f4fa;--bg2:#e8eef8;--bg3:#dce6f5;
+  --surface:rgba(255,255,255,0.82);--surface2:rgba(240,244,250,0.9);
+  --border:rgba(0,100,200,0.13);--border2:rgba(0,100,200,0.25);
+  --blue:#1a6fc4;--blue2:#0d5faa;--blue-glow:rgba(0,100,200,0.1);
+  --gold:#9a7c3c;--gold2:#b8963e;--gold-glow:rgba(154,124,60,0.1);
+  --text:#0f172a;--text2:rgba(15,23,42,0.55);--text3:rgba(15,23,42,0.3);
 }
-
-body{
-  font-family:var(--font-body);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-  position:relative;
-}
-
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative;}
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
-
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:
-    linear-gradient(rgba(0,140,255,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,140,255,0.025) 1px,transparent 1px);
-  background-size:56px 56px;
-  pointer-events:none;z-index:0;
-}
-
-#hero-glow{
-  position:fixed;top:-120px;left:50%;transform:translateX(-50%);
-  width:900px;height:520px;
-  background:radial-gradient(ellipse at 50% 30%, rgba(0,120,255,0.18) 0%, rgba(0,80,200,0.07) 45%, transparent 72%);
-  pointer-events:none;z-index:0;
-  animation:glowPulse 6s ease-in-out infinite;
-}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,140,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,140,255,0.025) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;}
+#hero-glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:900px;height:520px;background:radial-gradient(ellipse at 50% 30%, rgba(0,120,255,0.18) 0%, rgba(0,80,200,0.07) 45%, transparent 72%);pointer-events:none;z-index:0;animation:glowPulse 6s ease-in-out infinite;}
 @keyframes glowPulse{0%,100%{opacity:.8}50%{opacity:1}}
-
-/* LOADING */
-#loading-overlay{
-  position:fixed;inset:0;z-index:9999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
-  background:#020810;
-}
+#loading-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#020810;}
 .loader-ring{width:38px;height:38px;border-radius:50%;border:2px solid rgba(0,160,255,0.1);border-top-color:var(--blue);animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* TOAST */
-#toast{
-  position:fixed;bottom:28px;right:28px;z-index:9000;
-  padding:12px 18px;border-radius:12px;
-  font-family:var(--font-body);font-size:.82rem;font-weight:500;
-  background:rgba(4,12,28,0.97);border:1px solid var(--border2);color:var(--text);
-  backdrop-filter:blur(20px);opacity:0;transform:translateY(8px);
-  transition:all .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);
-}
+#toast{position:fixed;bottom:28px;right:28px;z-index:9000;padding:12px 18px;border-radius:12px;font-family:var(--font-body);font-size:.82rem;font-weight:500;background:rgba(4,12,28,0.97);border:1px solid var(--border2);color:var(--text);backdrop-filter:blur(20px);opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.6);}
 #toast.show{opacity:1;transform:translateY(0);pointer-events:all}
-
 #app{display:none;min-height:100vh;position:relative;z-index:1}
-
-/* SIDEBAR */
-.sidebar{
-  position:fixed;top:0;left:0;bottom:0;
-  width:var(--sidebar-w);z-index:150;
-  display:flex;flex-direction:column;
-  background:rgba(2,5,14,0.88);
-  border-right:1px solid var(--border);
-  backdrop-filter:blur(24px);
-  overflow:hidden;
-}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);z-index:150;display:flex;flex-direction:column;background:rgba(2,5,14,0.88);border-right:1px solid var(--border);backdrop-filter:blur(24px);overflow:hidden;}
 [data-theme="light"] .sidebar{background:rgba(232,238,248,0.92)}
-
-.sidebar-logo{
-  height:58px;flex-shrink:0;
-  display:flex;align-items:center;
-  padding:0 20px;border-bottom:1px solid var(--border);gap:10px;
-}
-
-.sidebar-profile{
-  padding:18px 16px 14px;flex-shrink:0;
-  border-bottom:1px solid var(--border);
-}
-.sidebar-avatar{
-  width:42px;height:42px;border-radius:50%;object-fit:cover;
-  border:2px solid rgba(0,140,255,.3);
-  box-shadow:0 0 0 3px rgba(0,100,255,.07),0 0 14px rgba(0,120,255,.18);
-  cursor:pointer;transition:.2s;display:block;margin:0 auto 10px;
-}
+.sidebar-logo{height:58px;flex-shrink:0;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--border);gap:10px;}
+.sidebar-profile{padding:18px 16px 14px;flex-shrink:0;border-bottom:1px solid var(--border);}
+.sidebar-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,140,255,.3);box-shadow:0 0 0 3px rgba(0,100,255,.07),0 0 14px rgba(0,120,255,.18);cursor:pointer;transition:.2s;display:block;margin:0 auto 10px;}
 .sidebar-avatar:hover{box-shadow:0 0 0 3px rgba(0,100,255,.15),0 0 20px rgba(0,120,255,.35)}
-
-.tier-pill{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:3px 9px;border-radius:20px;
-  background:rgba(0,100,255,.07);border:1px solid rgba(0,140,255,.2);
-}
-
-.pts-block{
-  margin-top:10px;padding:10px;
-  background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.05);border-radius:9px;
-}
+.avatar-online-dot{position:absolute;bottom:2px;right:2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--bg);box-shadow:0 0 6px rgba(63,185,80,.7);animation:onlinePulse 2s ease-in-out infinite;z-index:2;}
+@keyframes onlinePulse{0%,100%{box-shadow:0 0 4px rgba(63,185,80,.5)}50%{box-shadow:0 0 12px rgba(63,185,80,.9)}}
+.tier-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;background:rgba(0,100,255,.07);border:1px solid rgba(0,140,255,.2);}
+.pts-block{margin-top:10px;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.05);border-radius:9px;}
 [data-theme="light"] .pts-block{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
 .progress-track{height:2.5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
 [data-theme="light"] .progress-track{background:rgba(0,0,0,.08)}
 .progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue2));transition:width 1.2s cubic-bezier(.34,1.56,.64,1)}
-
 .sidebar-nav{flex:1;overflow-y:auto;scrollbar-width:none;padding:14px 12px}
 .sidebar-nav::-webkit-scrollbar{display:none}
-
-.sidebar-label{
-  font-family:var(--font-tech);font-size:.42rem;letter-spacing:.24em;
-  color:var(--text3);text-transform:uppercase;padding:0 8px;margin:0 0 5px;
-}
-
-.nav-tab{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 10px;border-radius:8px;
-  font-size:.76rem;font-weight:500;
-  cursor:pointer;transition:.2s;color:var(--text3);
-  border:1px solid transparent;margin-bottom:2px;text-decoration:none;
-}
+.sidebar-label{font-family:var(--font-tech);font-size:.42rem;letter-spacing:.24em;color:var(--text3);text-transform:uppercase;padding:0 8px;margin:0 0 5px;}
+.nav-tab{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:.76rem;font-weight:500;cursor:pointer;transition:.2s;color:var(--text3);border:1px solid transparent;margin-bottom:2px;text-decoration:none;}
 .nav-tab:hover{background:rgba(0,140,255,.06);color:var(--text2)}
 .nav-tab.active{background:rgba(0,140,255,.1);color:var(--blue);border-color:rgba(0,140,255,.18);}
 .tab-dot{width:4px;height:4px;border-radius:50%;background:transparent;flex-shrink:0;transition:.2s}
 .nav-tab.active .tab-dot{background:var(--blue)}
 [data-theme="light"] .nav-tab.active{color:var(--blue2);border-color:rgba(0,100,200,.2)}
 [data-theme="light"] .nav-tab.active .tab-dot{background:var(--blue2)}
-
-/* ── SIDEBAR ACTION BUTTONS (theme + logout) ── */
-.sidebar-actions{
-  flex-shrink:0;
-  padding:10px 12px;
-  border-top:1px solid var(--border);
-  display:flex;gap:6px;
-}
-.btn-sidebar-action{
-  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;
-  padding:8px 6px;border-radius:9px;
-  font-family:var(--font-body);font-size:.6rem;font-weight:600;
-  cursor:pointer;transition:.2s;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.03);color:var(--text2);
-}
+.sidebar-actions{flex-shrink:0;padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:6px;}
+.btn-sidebar-action{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.6rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--text2);}
 .btn-sidebar-action:hover{background:rgba(0,140,255,.08);border-color:rgba(0,140,255,.2);color:var(--blue)}
-.btn-sidebar-logout{
-  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;
-  padding:8px 6px;border-radius:9px;
-  font-family:var(--font-body);font-size:.6rem;font-weight:600;letter-spacing:.06em;
-  cursor:pointer;transition:.2s;
-  border:1px solid rgba(0,140,255,.2);
-  background:rgba(0,100,255,.06);color:var(--blue);
-}
+.btn-sidebar-logout{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.6rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,100,255,.06);color:var(--blue);}
 .btn-sidebar-logout:hover{background:rgba(0,100,255,.14);border-color:rgba(0,140,255,.45)}
 [data-theme="light"] .btn-sidebar-action{border-color:rgba(0,0,0,.1);color:var(--text2)}
 [data-theme="light"] .btn-sidebar-logout{border-color:rgba(0,100,200,.25);color:var(--blue2)}
-
-.sidebar-stats{
-  flex-shrink:0;padding:12px;border-top:1px solid var(--border);
-  display:grid;grid-template-columns:1fr 1fr;gap:6px;
-}
-.stat-mini{
-  background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.1);
-  border-radius:9px;padding:10px 9px;
-}
+.sidebar-stats{flex-shrink:0;padding:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.stat-mini{background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.1);border-radius:9px;padding:10px 9px;}
 [data-theme="light"] .stat-mini{background:rgba(0,100,200,.05);border-color:rgba(0,100,200,.13)}
 .stat-val{font-family:var(--font-tech);font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
-.stat-val.blue{color:var(--blue)}
-.stat-val.gold{color:var(--gold)}
+.stat-val.blue{color:var(--blue)}.stat-val.gold{color:var(--gold)}
 .stat-lbl{font-size:.58rem;color:var(--text3);margin-top:2px;font-weight:500}
-
-/* MAIN */
-.main-wrap{
-  margin-left:var(--sidebar-w);
-  min-height:100vh;display:flex;flex-direction:column;
-}
-
-/* HERO — no top nav padding needed */
-.hero-section{
-  position:relative;
-  padding:52px 40px 42px;
-  overflow:hidden;flex-shrink:0;
-  border-bottom:1px solid var(--border);
-}
-
-.hero-orb{
-  position:absolute;top:-200px;left:50%;transform:translateX(-50%);
-  width:700px;height:500px;
-  background:radial-gradient(ellipse at 50% 40%, rgba(0,130,255,0.22) 0%, rgba(0,80,200,0.08) 50%, transparent 72%);
-  pointer-events:none;animation:glowPulse 5s ease-in-out infinite;border-radius:50%;
-}
-
-/* hero-arc & hero-arc-2 REMOVED */
-
-.hero-content{
-  position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:5px 14px;border-radius:99px;
-  background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.2);
-  font-family:var(--font-tech);font-size:.44rem;letter-spacing:.26em;
-  color:rgba(58,176,255,0.75);margin-bottom:18px;
-}
-.hero-title{
-  font-family:var(--font-tech);font-size:2.2rem;font-weight:900;
-  line-height:1.1;letter-spacing:-.01em;margin-bottom:12px;
-}
+.main-wrap{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+.hero-section{position:relative;padding:52px 40px 42px;overflow:hidden;flex-shrink:0;border-bottom:1px solid var(--border);}
+.hero-orb{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse at 50% 40%, rgba(0,130,255,0.22) 0%, rgba(0,80,200,0.08) 50%, transparent 72%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite;border-radius:50%;}
+.hero-content{position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:99px;background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.2);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.26em;color:rgba(58,176,255,0.75);margin-bottom:18px;}
+.hero-title{font-family:var(--font-tech);font-size:2.2rem;font-weight:900;line-height:1.1;letter-spacing:-.01em;margin-bottom:12px;}
 .hero-title .line2{color:var(--blue);text-shadow:0 0 40px rgba(0,160,255,0.45);}
 .hero-sub{font-size:.82rem;color:var(--text3);line-height:1.7;max-width:460px;margin:0 auto 24px;}
-
-/* KPI */
-.kpi-row{
-  position:relative;z-index:1;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-  padding:0 40px 36px;margin-top:-2px;
-}
-.kpi-card{
-  background:rgba(4,12,26,0.75);border:1px solid rgba(0,140,255,0.13);
-  border-radius:14px;padding:18px 18px 16px;
-  position:relative;overflow:hidden;transition:.25s;backdrop-filter:blur(12px);
-}
+.kpi-row{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:0 40px 36px;margin-top:-2px;}
+.kpi-card{background:rgba(4,12,26,0.75);border:1px solid rgba(0,140,255,0.13);border-radius:14px;padding:18px 18px 16px;position:relative;overflow:hidden;transition:.25s;backdrop-filter:blur(12px);}
 .kpi-card:hover{border-color:rgba(0,160,255,0.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,100,255,0.1)}
 [data-theme="light"] .kpi-card{background:rgba(255,255,255,0.82);border-color:rgba(0,100,200,0.13)}
 .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(58,176,255,.25),transparent);}
 .kpi-icon{width:34px;height:34px;border-radius:9px;background:rgba(0,140,255,0.08);border:1px solid rgba(0,140,255,0.14);display:flex;align-items:center;justify-content:center;margin-bottom:13px;}
 .kpi-label{font-size:.68rem;color:var(--text3);font-weight:500;margin-bottom:5px}
 .kpi-value{font-family:var(--font-tech);font-size:1.55rem;font-weight:800;color:var(--text);letter-spacing:-.02em}
-.kpi-value.blue{color:var(--blue)}
-.kpi-value.gold{color:var(--gold)}
+.kpi-value.blue{color:var(--blue)}.kpi-value.gold{color:var(--gold)}
 .kpi-change{margin-top:7px;font-size:.62rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;}
 .kpi-change.up{background:rgba(63,185,80,.08);color:var(--green)}
 .kpi-change.neutral{background:rgba(58,176,255,.07);color:var(--blue)}
-
-/* BODY GRID */
 .body-grid{display:grid;grid-template-columns:1fr 272px;gap:0;flex:1;}
 .main-panel{padding:28px 28px 36px 40px;border-right:1px solid var(--border);}
-
 .sh-eyebrow{font-family:var(--font-tech);font-size:.44rem;letter-spacing:.24em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:4px;}
 .sh-title{font-family:var(--font-tech);font-size:.9rem;font-weight:800;color:var(--text);letter-spacing:.02em;}
 .sh-title .accent{color:var(--blue)}
-.sh-divider{width:44px;height:1px;margin:6px 0 16px;background:linear-gradient(90deg,var(--blue),transparent);}
-
 .glass{background:var(--surface);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(12px);}
 [data-theme="light"] .glass{background:rgba(255,255,255,.78);border-color:rgba(0,0,0,.07)}
 .glass-gold{background:rgba(201,178,109,.03);border:1px solid rgba(201,178,109,.13);border-radius:14px;}
 .glass-cyan{background:rgba(0,140,255,.03);border:1px solid rgba(0,140,255,.14);border-radius:14px;}
-
 .badge{font-family:var(--font-tech);font-size:.44rem;font-weight:700;letter-spacing:.1em;padding:3px 9px;border-radius:99px;text-transform:uppercase;}
 .badge-active{background:rgba(0,160,255,.1);color:var(--blue);border:1px solid rgba(0,160,255,.25)}
 .badge-done{background:rgba(63,185,80,.08);color:var(--green);border:1px solid rgba(63,185,80,.2)}
 .badge-pending{background:rgba(255,255,255,.04);color:var(--text3);border:1px solid rgba(255,255,255,.1)}
 .badge-gold{background:rgba(201,178,109,.1);color:var(--gold);border:1px solid rgba(201,178,109,.25)}
 [data-theme="light"] .badge-active{color:var(--blue2)}
-
 .tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.tl-dot.done{background:var(--blue)}
-.tl-dot.active{background:var(--blue2);box-shadow:0 0 0 3px rgba(0,200,255,.18)}
+.tl-dot.done{background:var(--blue)}.tl-dot.active{background:var(--blue2);box-shadow:0 0 0 3px rgba(0,200,255,.18)}
 .tl-dot.pending{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.12)}
 .tl-line{flex:1;height:1px}
 .tl-line.done{background:linear-gradient(90deg,var(--blue),rgba(0,160,255,.35))}
@@ -307,49 +123,37 @@ body::before{
 [data-theme="light"] .tl-line.done{background:linear-gradient(90deg,var(--blue2),rgba(13,95,170,.3))}
 [data-theme="light"] .tl-dot.done{background:var(--blue2)}
 [data-theme="light"] .tl-dot.active{background:var(--blue);box-shadow:0 0 0 3px rgba(26,111,196,.15)}
-
 .order-row{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.04)}
 .order-row:last-child{border-bottom:none}
 [data-theme="light"] .order-row{border-color:rgba(0,0,0,.05)}
-
 .inv-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .inv-row:last-child{border-bottom:none}
 [data-theme="light"] .inv-row{border-color:rgba(0,0,0,.05)}
-
 .btn-primary{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:22px;font-family:var(--font-tech);font-size:.54rem;font-weight:700;letter-spacing:.12em;cursor:pointer;transition:.2s;border:none;background:linear-gradient(105deg,var(--blue),var(--blue2));color:#020810;box-shadow:0 0 16px rgba(0,160,255,.3);}
 .btn-primary:hover{opacity:.88;box-shadow:0 0 26px rgba(0,160,255,.5)}
 .btn-dl{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:8px;font-family:var(--font-body);font-size:.62rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,140,255,.06);color:var(--blue);text-decoration:none;}
 .btn-dl:hover{background:rgba(0,140,255,.14);border-color:rgba(0,140,255,.4)}
-
+.ripple-btn{position:relative;overflow:hidden;}
+@keyframes rippleAnim{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+.ripple-span{position:absolute;border-radius:50%;background:rgba(58,176,255,.35);pointer-events:none;animation:rippleAnim .55s linear;}
 .gh-input{width:100%;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;font-family:var(--font-body);font-size:.84rem;color:var(--text);outline:none;transition:.2s;}
 [data-theme="light"] .gh-input{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.12);color:var(--text)}
 .gh-input:focus{border-color:rgba(0,140,255,.4);box-shadow:0 0 0 3px rgba(0,140,255,.09)}
 .gh-input:disabled{opacity:.35;cursor:not-allowed}
 .gh-input::placeholder{color:var(--text3)}
-
-.tab-section{display:none}
-.tab-section.active{display:block}
-
+.tab-section{display:none}.tab-section.active{display:block}
 .right-panel{padding:24px 16px 24px 20px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;scrollbar-width:none;}
 .right-panel::-webkit-scrollbar{display:none}
-
 .asset-panel{background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.12);border-radius:10px;padding:12px;margin-bottom:8px;transition:.2s;}
 .asset-panel:hover{border-color:rgba(0,140,255,.28)}
-
 .footer-bar{background:rgba(2,6,16,.7);border-top:1px solid var(--border);text-align:center;padding:16px;position:relative;z-index:1;}
 [data-theme="light"] .footer-bar{background:rgba(240,244,250,.8)}
-
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:rgba(0,160,255,.18);border-radius:99px}
-
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(0,160,255,.18);border-radius:99px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{animation:fadeUp .5s ease forwards}
-.d1{animation-delay:.05s;opacity:0;animation-fill-mode:forwards}
-.d2{animation-delay:.12s;opacity:0;animation-fill-mode:forwards}
-.d3{animation-delay:.19s;opacity:0;animation-fill-mode:forwards}
-.d4{animation-delay:.26s;opacity:0;animation-fill-mode:forwards}
+.d1{animation-delay:.05s;opacity:0;animation-fill-mode:forwards}.d2{animation-delay:.12s;opacity:0;animation-fill-mode:forwards}
+.d3{animation-delay:.19s;opacity:0;animation-fill-mode:forwards}.d4{animation-delay:.26s;opacity:0;animation-fill-mode:forwards}
 .d5{animation-delay:.33s;opacity:0;animation-fill-mode:forwards}
-
 [data-theme="light"] .sh-eyebrow{color:rgba(13,95,170,.55)}
 [data-theme="light"] .glass-gold{background:rgba(255,255,255,.6);border-color:rgba(154,124,60,.15)}
 [data-theme="light"] .asset-panel{background:rgba(0,100,200,.04);border-color:rgba(0,100,200,.13)}
@@ -357,6 +161,57 @@ body::before{
 [data-theme="light"] .body-grid{border-color:rgba(0,100,200,.1)}
 [data-theme="light"] .main-panel{border-color:rgba(0,100,200,.1)}
 [data-theme="light"] .kpi-card:hover{box-shadow:0 8px 32px rgba(0,100,200,.08)}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite;}
+[data-theme="light"] .skeleton{background:linear-gradient(90deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.1) 50%,rgba(0,0,0,.05) 75%);background-size:400px 100%;}
+.kpi-value.loading{color:transparent!important}
+[data-theme="light"] .day-progress-track{background:rgba(0,0,0,.07)!important}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    width: 270px;
+    z-index: 400;
+    box-shadow: 4px 0 40px rgba(0,0,0,.7);
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .main-wrap { margin-left: 0 !important; padding-bottom: 68px; }
+  #mobile-header { display: flex !important; }
+  .kpi-row { grid-template-columns: repeat(2,1fr) !important; padding: 0 14px 20px !important; gap: 10px !important; }
+  .body-grid { grid-template-columns: 1fr !important; }
+  .right-panel { border-top: 1px solid var(--border); padding: 18px 14px !important; }
+  .main-panel { padding: 18px 14px !important; border-right: none !important; }
+  .hero-section { padding: 24px 14px 18px !important; }
+  .hero-title { font-size: 1.35rem !important; }
+  .hero-sub { font-size: .74rem !important; }
+  .kpi-value { font-size: 1.2rem !important; }
+  #tab-orders > div:last-child,
+  #tab-invoices > div:last-child,
+  #tab-settings > div:last-child { padding: 14px !important; }
+  #mobile-bottom-nav { display: flex !important; }
+  .footer-bar { display: none; }
+  #toast { bottom: 76px; right: 12px; left: 12px; text-align: center; }
+}
+@media (min-width: 769px) {
+  #mobile-header { display: none !important; }
+  #mobile-bottom-nav { display: none !important; }
+  #sidebar-overlay { display: none !important; }
+}
+.mobile-nav-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 8px; background: none; border: none; cursor: pointer;
+  color: var(--text3); font-family: var(--font-body); font-size: .5rem;
+  font-weight: 600; border-radius: 10px; transition: .2s; min-width: 48px;
+  flex: 1;
+}
+.mobile-nav-btn:hover,.mobile-nav-btn.mob-active { color: var(--blue); }
+.mobile-nav-btn.mob-active svg { filter: drop-shadow(0 0 4px rgba(58,176,255,.6)); }
+[data-theme="light"] .mobile-nav-btn.mob-active { color: var(--blue2); }
+[data-theme="light"] #mobile-header { background: rgba(232,238,248,0.97) !important; }
+[data-theme="light"] #mobile-bottom-nav { background: rgba(232,238,248,0.97) !important; }
 </style>
 </head>
 <body>
@@ -379,11 +234,39 @@ body::before{
 </div>
 <script>(function(){var p=0,bar=document.getElementById('auth-bar'),iv=setInterval(function(){p+=Math.random()*18;if(p>=95){p=95;clearInterval(iv)}bar&&(bar.style.width=p+'%')},200)})();</script>
 
+<!-- Notif Panel -->
+<div id="notif-panel" style="position:fixed;top:0;right:-320px;width:310px;height:100vh;z-index:500;background:rgba(2,6,16,.97);border-left:1px solid rgba(0,140,255,.15);backdrop-filter:blur(24px);transition:right .3s ease;display:flex;flex-direction:column">
+  <div style="padding:20px 18px 14px;border-bottom:1px solid rgba(0,140,255,.1);display:flex;align-items:center;justify-content:space-between">
+    <span style="font-family:var(--font-tech);font-size:.68rem;font-weight:800;color:var(--text);letter-spacing:.1em">NOTIFIKASI</span>
+    <button onclick="closeNotifPanel()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:.68rem">✕</button>
+  </div>
+  <div id="notif-list" style="flex:1;overflow-y:auto;padding:14px 16px;scrollbar-width:none"></div>
+  <div style="padding:12px 16px;border-top:1px solid rgba(0,140,255,.08)">
+    <button onclick="markAllRead()" style="width:100%;padding:8px;border-radius:8px;background:rgba(0,140,255,.07);border:1px solid rgba(0,140,255,.18);color:var(--blue);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.1em;cursor:pointer">TANDAI SEMUA DIBACA</button>
+  </div>
+</div>
+<div id="notif-overlay" onclick="closeNotifPanel()" style="display:none;position:fixed;inset:0;z-index:499;background:rgba(0,0,0,.35)"></div>
+
 <div id="toast"></div>
 
 <div id="app" style="display:none">
 
-  <!-- SIDEBAR -->
+  <!-- MOBILE HEADER -->
+  <div id="mobile-header" style="display:none;position:sticky;top:0;z-index:300;height:54px;background:rgba(2,5,14,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0">
+    <button onclick="toggleMobileSidebar()" style="background:rgba(0,140,255,.07);border:1px solid var(--border2);border-radius:9px;padding:7px 9px;cursor:pointer;color:var(--text2);display:flex;align-items:center" aria-label="Menu">
+      <svg id="hamburger-icon" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span style="font-family:var(--font-tech);font-size:.74rem;font-weight:900;letter-spacing:.14em">
+      <span style="color:#fff">ALFIRAMA</span><span style="color:#3ab0ff">.ID</span>
+    </span>
+    <button onclick="openNotifPanel()" style="background:rgba(0,140,255,.07);border:1px solid var(--border2);border-radius:9px;padding:7px 9px;cursor:pointer;color:var(--text2);position:relative;display:flex;align-items:center" aria-label="Notifikasi">
+      <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      <span id="mobile-notif-dot" style="display:none;position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#3ab0ff;box-shadow:0 0 5px rgba(58,176,255,.8)"></span>
+    </button>
+  </div>
+
+  <div id="sidebar-overlay" onclick="closeMobileSidebar()" style="display:none;position:fixed;inset:0;z-index:399;background:rgba(0,0,0,.6);backdrop-filter:blur(2px)"></div>
+
   <aside class="sidebar">
     <div class="sidebar-logo">
       <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
@@ -395,13 +278,13 @@ body::before{
         <span style="color:#fff">ALFIRAMA</span><span style="color:#3ab0ff">.ID</span>
       </span>
     </div>
-
     <div class="sidebar-profile">
       <div style="position:relative;width:42px;height:42px;margin:0 auto 10px">
         <img id="avatar-img" src="https://ui-avatars.com/api/?name=Klien+Alfirama&background=1a3a6e&color=3ab0ff&bold=true&size=200" alt="Foto Profil" class="sidebar-avatar" onclick="document.getElementById('avatar-file').click()" title="Ganti foto"/>
         <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bg);cursor:pointer" onclick="document.getElementById('avatar-file').click()">
           <svg width="8" height="8" fill="none" viewBox="0 0 24 24" stroke="#020810" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/></svg>
         </div>
+        <div class="avatar-online-dot"></div>
         <input type="file" id="avatar-file" accept="image/*" onchange="uploadAvatar(this)" style="display:none"/>
       </div>
       <p style="font-family:var(--font-tech);font-size:.68rem;font-weight:700;color:var(--text);letter-spacing:.04em;text-align:center" id="user-name">—</p>
@@ -425,48 +308,56 @@ body::before{
         </div>
       </div>
     </div>
-
     <nav class="sidebar-nav">
       <p class="sidebar-label" style="margin-bottom:8px">NAVIGASI</p>
-      <div class="nav-tab active" onclick="switchTab('dashboard',this)">
+      <div class="nav-tab active" onclick="switchTab('dashboard',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
         Overview
       </div>
-      <div class="nav-tab" onclick="switchTab('orders',this)">
+      <div class="nav-tab" onclick="switchTab('orders',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Pesanan Saya
       </div>
-      <div class="nav-tab" onclick="switchTab('invoices',this)">
+      <div class="nav-tab" onclick="switchTab('invoices',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Invoice
       </div>
-      <div class="nav-tab" onclick="switchTab('settings',this)">
+      <div class="nav-tab" onclick="openNotifPanel();closeMobileSidebar()" id="notif-tab" style="position:relative">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        Notifikasi
+        <span id="notif-badge" style="display:none;position:absolute;right:8px;top:7px;background:#3ab0ff;color:#020810;font-family:var(--font-tech);font-size:.42rem;font-weight:800;padding:1px 5px;border-radius:99px;min-width:16px;text-align:center"></span>
+      </div>
+      <div class="nav-tab" onclick="switchTab('settings',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
         Pengaturan
       </div>
       <div style="margin-top:14px;padding:8px 10px;background:rgba(0,140,255,0.03);border:1px solid var(--border);border-radius:8px">
         <p style="font-family:var(--font-tech);font-size:.38rem;letter-spacing:.12em;color:var(--text3);margin-bottom:3px">CLIENT ID</p>
-        <p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.08em;color:rgba(58,176,255,.45)" id="nav-uid">—</p>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:2px">
+          <p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.08em;color:rgba(58,176,255,.45);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="nav-uid">—</p>
+          <button onclick="copyUID()" title="Salin ID" style="background:none;border:none;cursor:pointer;padding:2px;color:rgba(58,176,255,.35);transition:.2s;flex-shrink:0" onmouseover="this.style.color='rgba(58,176,255,.8)'" onmouseout="this.style.color='rgba(58,176,255,.35)'">
+            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+        <p style="font-family:var(--font-tech);font-size:.36rem;letter-spacing:.08em;color:rgba(58,176,255,.28);margin-top:4px">SESI: <span id="session-clock">—</span></p>
       </div>
     </nav>
-
-    <!-- Theme + Logout buttons (pindah dari top nav ke sini) -->
     <div class="sidebar-actions">
-      <button onclick="toggleTheme()" class="btn-sidebar-action" title="Ganti tema">
+      <button onclick="toggleTheme()" class="btn-sidebar-action ripple-btn" title="Ganti tema">
         <svg id="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg id="icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <span id="theme-label">Light</span>
       </button>
-      <button onclick="handleLogout()" class="btn-sidebar-logout">
+      <button onclick="handleLogout()" class="btn-sidebar-logout ripple-btn">
         <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
         Keluar
       </button>
     </div>
-
     <div class="sidebar-stats">
       <div class="stat-mini"><div class="stat-val gold" id="stat-orders">0</div><div class="stat-lbl">Pesanan</div></div>
       <div class="stat-mini"><div class="stat-val blue" id="stat-invoices">0</div><div class="stat-lbl">Invoice</div></div>
@@ -475,14 +366,11 @@ body::before{
     </div>
   </aside>
 
-  <!-- MAIN WRAP — no top padding (no nav bar) -->
   <div class="main-wrap">
-
     <!-- DASHBOARD TAB -->
     <div class="tab-section active" id="tab-dashboard">
       <div class="hero-section">
         <div class="hero-orb"></div>
-        <!-- hero-arc & hero-arc-2 dihapus -->
         <div class="hero-content fade-up d1">
           <div class="hero-eyebrow">
             <svg width="8" height="8" viewBox="0 0 10 10" fill="rgba(58,176,255,.7)"><circle cx="5" cy="5" r="4"/></svg>
@@ -499,7 +387,6 @@ body::before{
           </div>
         </div>
       </div>
-
       <div class="kpi-row">
         <div class="kpi-card fade-up d2">
           <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
@@ -511,7 +398,7 @@ body::before{
           <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--green)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
           <div class="kpi-label">Pesanan Selesai</div>
           <div class="kpi-value" style="color:var(--green)" id="kpi-done">0</div>
-          <div class="kpi-change up"><svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>Selesai</div>
+          <div class="kpi-change neutral" id="kpi-done-badge">Belum ada</div>
         </div>
         <div class="kpi-card fade-up d4">
           <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
@@ -523,10 +410,9 @@ body::before{
           <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue2)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg></div>
           <div class="kpi-label">Aset Digital</div>
           <div class="kpi-value blue" id="kpi-assets">0</div>
-          <div class="kpi-change neutral">Siap unduh</div>
+          <div class="kpi-change neutral" id="kpi-assets-badge">Belum ada</div>
         </div>
       </div>
-
       <div class="body-grid" style="border-top:1px solid var(--border)">
         <div class="main-panel">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -538,8 +424,18 @@ body::before{
           </div>
           <div class="glass" style="padding:0;overflow:hidden">
             <div style="padding:44px 20px;text-align:center" id="orders-empty">
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="rgba(58,176,255,0.2)" stroke-width="1.5" style="margin:0 auto 10px"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin:0 auto 14px;display:block;opacity:.3">
+                <rect x="12" y="8" width="40" height="48" rx="4" stroke="rgba(58,176,255,.8)" stroke-width="1.2"/>
+                <path d="M20 22h24M20 30h24M20 38h14" stroke="rgba(58,176,255,.6)" stroke-width="1.2" stroke-linecap="round"/>
+                <circle cx="48" cy="48" r="10" fill="rgba(2,8,16,1)" stroke="rgba(58,176,255,.5)" stroke-width="1.2"/>
+                <path d="M44 48h8M48 44v8" stroke="rgba(0,200,255,.8)" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
               <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA PESANAN AKTIF</p>
+              <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.55">Hubungi tim Alfirama untuk memulai pesanan baru</p>
+              <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20membuat%20pesanan%20baru" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:7px 16px;border-radius:99px;background:rgba(0,140,255,.07);border:1px solid rgba(0,140,255,.2);color:var(--blue);font-family:var(--font-tech);font-size:.42rem;letter-spacing:.12em;text-decoration:none;transition:.2s" onmouseover="this.style.background='rgba(0,140,255,.14)'" onmouseout="this.style.background='rgba(0,140,255,.07)'">
+                <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                BUAT PESANAN BARU
+              </a>
             </div>
             <div id="orders-container"></div>
           </div>
@@ -580,7 +476,10 @@ body::before{
       </div>
       <div style="padding:24px 40px 36px">
         <div class="glass" style="padding:0;overflow:hidden">
-          <div style="padding:44px 20px;text-align:center" id="all-orders-empty"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA DATA PESANAN</p></div>
+          <div style="padding:48px 20px;text-align:center" id="all-orders-empty">
+            <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA DATA PESANAN</p>
+            <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.5">Riwayat pesanan Anda akan tampil di sini</p>
+          </div>
           <div id="all-orders-container"></div>
         </div>
       </div>
@@ -624,7 +523,7 @@ body::before{
               <label style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.18em;color:rgba(58,176,255,.55);display:block;margin-bottom:7px;text-transform:uppercase">Nomor WhatsApp</label>
               <input id="settings-phone" type="tel" placeholder="+62 8xx-xxxx-xxxx" class="gh-input"/>
             </div>
-            <button onclick="saveSettings()" class="btn-primary" style="margin-top:4px">
+            <button onclick="saveSettings()" class="btn-primary ripple-btn" style="margin-top:4px">
               <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               SIMPAN PERUBAHAN
             </button>
@@ -634,9 +533,41 @@ body::before{
     </div>
 
     <footer class="footer-bar">
-      <span style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.18em;color:var(--text3)">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</span>
+      <div style="display:inline-flex;align-items:center;gap:16px">
+        <span style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.18em;color:var(--text3)">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</span>
+        <div style="display:inline-flex;align-items:center;gap:5px">
+          <div id="net-dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 5px rgba(63,185,80,.6);transition:.3s"></div>
+          <span id="net-label" style="font-family:var(--font-tech);font-size:.38rem;letter-spacing:.12em;color:var(--text3)">ONLINE</span>
+        </div>
+      </div>
     </footer>
   </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <div id="mobile-bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;height:62px;background:rgba(2,5,14,0.97);border-top:1px solid var(--border);backdrop-filter:blur(24px);align-items:center;justify-content:space-around;padding:0 4px 4px">
+    <button class="mobile-nav-btn mob-active" id="mobnav-dashboard" onclick="switchTab('dashboard',document.querySelectorAll('.nav-tab')[0]);setMobNav('dashboard')">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Beranda</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobnav-orders" onclick="switchTab('orders',document.querySelectorAll('.nav-tab')[1]);setMobNav('orders')">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span>Pesanan</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobnav-invoices" onclick="switchTab('invoices',document.querySelectorAll('.nav-tab')[2]);setMobNav('invoices')">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <span>Invoice</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobnav-notif" onclick="openNotifPanel()" style="position:relative">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      <span id="mob-notif-count" style="display:none;position:absolute;top:2px;right:10px;background:#3ab0ff;color:#020810;font-family:var(--font-tech);font-size:.36rem;font-weight:800;padding:1px 4px;border-radius:99px;min-width:14px;text-align:center"></span>
+      <span>Notif</span>
+    </button>
+    <button class="mobile-nav-btn" id="mobnav-settings" onclick="switchTab('settings',document.querySelectorAll('.nav-tab')[4]);setMobNav('settings')">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span>Akun</span>
+    </button>
+  </div>
+
 </div>
 
 <!-- PARTICLE CANVAS -->
@@ -678,24 +609,84 @@ body::before{
   init();draw();
   window.addEventListener('resize',resize);
 })();
+
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('.ripple-btn');
+  if(!btn)return;
+  const rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width,rect.height)*2;
+  const span=document.createElement('span');
+  span.classList.add('ripple-span');
+  span.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.appendChild(span);
+  setTimeout(()=>span.remove(),600);
+});
+
+function toggleMobileSidebar(){
+  const sidebar=document.querySelector('.sidebar');
+  const overlay=document.getElementById('sidebar-overlay');
+  const isOpen=sidebar.classList.contains('mobile-open');
+  if(isOpen){closeMobileSidebar();}
+  else{sidebar.classList.add('mobile-open');overlay.style.display='block';}
+}
+function closeMobileSidebar(){
+  const sidebar=document.querySelector('.sidebar');
+  const overlay=document.getElementById('sidebar-overlay');
+  if(sidebar)sidebar.classList.remove('mobile-open');
+  if(overlay)overlay.style.display='none';
+}
+window.toggleMobileSidebar=toggleMobileSidebar;
+window.closeMobileSidebar=closeMobileSidebar;
+
+function setMobNav(name){
+  document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.remove('mob-active'));
+  const btn=document.getElementById('mobnav-'+name);
+  if(btn)btn.classList.add('mob-active');
+}
+window.setMobNav=setMobNav;
+
+(function(){
+  let startX=0,startY=0;
+  document.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startY=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-startX;
+    const dy=Math.abs(e.changedTouches[0].clientY-startY);
+    if(dy>50)return;
+    if(dx<-60)closeMobileSidebar();
+    if(dx>60&&startX<30)toggleMobileSidebar();
+  },{passive:true});
+})();
 </script>
 
 <!-- FIREBASE + APP LOGIC -->
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import{getAuth,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import{getFirestore,doc,getDoc,setDoc,updateDoc,onSnapshot,collection,query,orderBy,where}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+/* ✅ FIX #2: Import updateProfile dari firebase/auth */
+import{getAuth,onAuthStateChanged,signOut,updateProfile}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import{getFirestore,doc,getDoc,setDoc,updateDoc,onSnapshot,collection,query,orderBy,where,limit,getDocs,writeBatch}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import{getStorage}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 
-const firebaseConfig={apiKey:"AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",authDomain:"alfirama-id.firebaseapp.com",projectId:"alfirama-id",storageBucket:"alfirama-id.firebasestorage.app",messagingSenderId:"1036820056484",appId:"1:1036820056484:web:9eb5143a06077b3039d931",measurementId:"G-V3QGL2R207"};
-const CLOUDINARY_CLOUD_NAME='YOUR_CLOUD_NAME';
-const CLOUDINARY_UPLOAD_PRESET='YOUR_UNSIGNED_UPLOAD_PRESET';
+const firebaseConfig={
+  apiKey:"AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+  authDomain:"alfirama-id.firebaseapp.com",
+  projectId:"alfirama-id",
+  storageBucket:"alfirama-id.firebasestorage.app",
+  messagingSenderId:"1036820056484",
+  appId:"1:1036820056484:web:9eb5143a06077b3039d931",
+  measurementId:"G-V3QGL2R207"
+};
+
+const CLOUDINARY_CLOUD_NAME='dt4vktmo6';
+const CLOUDINARY_UPLOAD_PRESET='Alfirama.ID';
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
 const storage=getStorage(app);
-let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null;
+let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null,unsubNotif=null;
+
+/* ✅ FIX #3: Tambah variabel untuk listener panel notif agar bisa di-cleanup */
+let unsubNotifPanel=null;
 
 /* THEME */
 function toggleTheme(){
@@ -718,14 +709,19 @@ window.toggleTheme=toggleTheme;
 syncThemeIcons();
 
 /* TOAST */
-function showToast(msg,dur=3000){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function showToast(msg,dur=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
 window.showToast=showToast;
 
 /* TAB SWITCH */
 function switchTab(name,el){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
-  el.classList.add('active');
+  if(el)el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
 }
 window.switchTab=switchTab;
@@ -738,9 +734,16 @@ onAuthStateChanged(auth,user=>{
   if(bar)bar.style.width='100%';
   if(user){
     currentUser=user;
-    setTimeout(()=>{overlay.style.opacity='0';overlay.style.transition='opacity .4s';setTimeout(()=>{overlay.style.display='none'},400);appEl.style.display='block';},300);
+    setTimeout(()=>{
+      overlay.style.opacity='0';
+      overlay.style.transition='opacity .4s';
+      setTimeout(()=>{overlay.style.display='none'},400);
+      appEl.style.display='block';
+    },300);
     initDashboard(user);
-  }else{window.location.href='login.html'}
+  }else{
+    window.location.href='login.html';
+  }
 });
 
 /* LOGOUT */
@@ -749,27 +752,82 @@ async function handleLogout(){
   t.style.pointerEvents='all';
   t.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:var(--font-body);font-size:.82rem">Yakin ingin keluar?</span><button id="btn-confirm-logout" style="padding:5px 12px;border-radius:20px;background:rgba(58,176,255,.12);border:1px solid rgba(58,176,255,.3);color:var(--blue);font-size:.6rem;cursor:pointer;font-family:var(--font-tech);letter-spacing:.1em">YA</button><button id="btn-cancel-logout" style="padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:.6rem;cursor:pointer;color:var(--text3);font-family:var(--font-body)">Batal</button></div>`;
   t.classList.add('show');
-  document.getElementById('btn-confirm-logout').addEventListener('click',e=>{e.stopPropagation();confirmLogout()});
-  document.getElementById('btn-cancel-logout').addEventListener('click',e=>{e.stopPropagation();t.classList.remove('show');t.style.pointerEvents='none'});
+  document.getElementById('btn-confirm-logout').addEventListener('click',e=>{e.stopPropagation();confirmLogout();});
+  document.getElementById('btn-cancel-logout').addEventListener('click',e=>{e.stopPropagation();t.classList.remove('show');t.style.pointerEvents='none';});
 }
-async function confirmLogout(){if(unsubOrders)unsubOrders();if(unsubInvoices)unsubInvoices();if(unsubProfile)unsubProfile();await signOut(auth);window.location.href='login.html';}
-window.handleLogout=handleLogout;window.confirmLogout=confirmLogout;
+async function confirmLogout(){
+  if(unsubOrders)unsubOrders();
+  if(unsubInvoices)unsubInvoices();
+  if(unsubProfile)unsubProfile();
+  if(unsubNotif)unsubNotif();
+  if(unsubNotifPanel)unsubNotifPanel(); /* ✅ FIX #3: cleanup panel listener juga */
+  await signOut(auth);
+  window.location.href='login.html';
+}
+window.handleLogout=handleLogout;
+window.confirmLogout=confirmLogout;
 
-/* INIT */
+/* INIT DASHBOARD */
 function initDashboard(user){
+  ['kpi-orders','kpi-done','kpi-invoices','kpi-assets'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('loading','skeleton');el.style.width='48px';el.style.height='1.55rem';el.style.display='block';}
+  });
+
   const navUid=document.getElementById('nav-uid');
   const sEmail=document.getElementById('settings-email');
   if(navUid)navUid.textContent=user.uid.substring(0,12).toUpperCase()+'...';
   if(sEmail)sEmail.value=user.email||'';
+
   const userRef=doc(db,'users',user.uid);
   unsubProfile=onSnapshot(userRef,async snap=>{
-    if(snap.exists()){setProfileUI(snap.data(),user)}
-    else{await setDoc(userRef,{displayName:user.displayName||'Klien Alfirama',email:user.email,tier:'Premium Member',points:2500,whatsapp:'',photoURL:user.photoURL||'',createdAt:new Date()})}
+    if(snap.exists()){
+      setProfileUI(snap.data(),user);
+    }else{
+      await setDoc(userRef,{
+        displayName:user.displayName||'Klien Alfirama',
+        email:user.email,
+        tier:'Premium Member',
+        points:0,
+        whatsapp:'',
+        photoURL:user.photoURL||'',
+        createdAt:new Date()
+      });
+    }
   },err=>console.error('Profile error:',err));
-  const ordersQ=query(collection(db,'orders'),where('userId','==',user.uid),orderBy('createdAt','desc'));
-  unsubOrders=onSnapshot(ordersQ,snap=>{renderOrders(snap.docs.map(d=>({id:d.id,...d.data()})))},err=>console.error('Orders error:',err));
-  const invQ=query(collection(db,'invoices'),where('userId','==',user.uid),orderBy('date','desc'));
-  unsubInvoices=onSnapshot(invQ,snap=>{renderInvoices(snap.docs.map(d=>({id:d.id,...d.data()})))},err=>console.error('Invoices error:',err));
+
+  const ordersQ=query(
+    collection(db,'orders'),
+    where('userId','==',user.uid),
+    orderBy('createdAt','desc')
+  );
+  unsubOrders=onSnapshot(ordersQ,snap=>{
+    renderOrders(snap.docs.map(d=>({id:d.id,...d.data()})));
+  },err=>console.error('Orders error:',err));
+
+  const invQ=query(
+    collection(db,'invoices'),
+    where('userId','==',user.uid),
+    orderBy('date','desc')
+  );
+  unsubInvoices=onSnapshot(invQ,snap=>{
+    renderInvoices(snap.docs.map(d=>({id:d.id,...d.data()})));
+  },err=>console.error('Invoices error:',err));
+
+  const notifQ=query(
+    collection(db,'users',user.uid,'notifications'),
+    where('read','==',false),
+    limit(20)
+  );
+  unsubNotif=onSnapshot(notifQ,snap=>{
+    const badge=document.getElementById('notif-badge');
+    const mobDot=document.getElementById('mobile-notif-dot');
+    const mobCount=document.getElementById('mob-notif-count');
+    const n=snap.docs.length;
+    if(badge){badge.textContent=n>0?n:'';badge.style.display=n>0?'block':'none';}
+    if(mobDot){mobDot.style.display=n>0?'block':'none';}
+    if(mobCount){mobCount.textContent=n>0?n:'';mobCount.style.display=n>0?'block':'none';}
+  },err=>console.error('Notif badge error:',err));
 }
 
 /* PROFILE UI */
@@ -797,24 +855,89 @@ function setProfileUI(data,user){
 /* ORDERS */
 const STEPS=['Briefing','Desain','Produksi','Selesai'];
 const STEP_ICONS=['📋','🎨','🖨️','✅'];
-function getStepIndex(status){const map={briefing:0,desain:1,produksi:2,selesai:3,dikirim:3};return map[(status||'').toLowerCase()]??0;}
+
+function getStepIndex(status){
+  const map={briefing:0,desain:1,produksi:2,selesai:3,dikirim:3};
+  return map[(status||'').toLowerCase()]??0;
+}
+
 function buildTimeline(cur){
   let h='<div style="display:flex;align-items:center;gap:0;margin-top:14px">';
-  STEPS.forEach((s,i)=>{const cls=i<cur?'done':(i===cur?'active':'pending');h+=`<div class="tl-dot ${cls}" title="${s}"></div>`;if(i<STEPS.length-1)h+=`<div class="tl-line ${i<cur?'done':'pending'}"></div>`;});
+  STEPS.forEach((s,i)=>{
+    const cls=i<cur?'done':(i===cur?'active':'pending');
+    h+=`<div class="tl-dot ${cls}" title="${s}"></div>`;
+    if(i<STEPS.length-1)h+=`<div class="tl-line ${i<cur?'done':'pending'}"></div>`;
+  });
   h+='</div><div style="display:flex;justify-content:space-between;margin-top:4px">';
-  STEPS.forEach((s,i)=>{h+=`<span style="font-size:.58rem;${i===cur?'color:var(--blue);font-weight:600':'color:var(--text3)'}">${STEP_ICONS[i]}</span>`});
+  STEPS.forEach((s,i)=>{
+    h+=`<span style="font-size:.58rem;${i===cur?'color:var(--blue);font-weight:600':'color:var(--text3)'}">${STEP_ICONS[i]}</span>`;
+  });
   h+=`</div><p style="font-family:var(--font-tech);font-size:.46rem;letter-spacing:.12em;color:var(--blue);margin-top:5px">${STEPS[cur].toUpperCase()}</p>`;
   return h;
 }
+
+function buildDayProgress(order){
+  if(!order.startDate||!order.estDate)return'';
+  const start=order.startDate.toDate?order.startDate.toDate():new Date(order.startDate);
+  const end=order.estDate.toDate?order.estDate.toDate():new Date(order.estDate);
+  const now=new Date();
+  const total=Math.max(1,Math.round((end-start)/(1000*60*60*24)));
+  const elapsed=Math.max(0,Math.min(total,Math.round((now-start)/(1000*60*60*24))));
+  const pct=Math.min(100,Math.round((elapsed/total)*100));
+  const barColor=pct>=90?'#f85149':pct>=60?'var(--gold)':'var(--blue)';
+  const labelColor=pct>=90?'#f85149':pct>=60?'var(--gold)':'var(--blue)';
+  const sisaHari=Math.max(0,total-elapsed);
+  const sisaLabel=sisaHari===0?'<span style="color:#f85149;font-weight:700">Deadline hari ini!</span>':`sisa ${sisaHari} hari`;
+  return`<div style="margin-top:10px;padding:10px 12px;background:rgba(0,0,0,.15);border-radius:8px;border:1px solid rgba(255,255,255,.04)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+      <span style="font-size:.58rem;color:var(--text3)">Hari ke-<b style="color:var(--text2)">${elapsed}</b> dari <b style="color:var(--text2)">${total}</b> hari kerja</span>
+      <span style="font-family:var(--font-tech);font-size:.56rem;font-weight:700;color:${labelColor}">${pct}%</span>
+    </div>
+    <div class="day-progress-track" style="height:3px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:${barColor};border-radius:99px;transition:width 1.1s cubic-bezier(.34,1.56,.64,1)"></div>
+    </div>
+    <p style="font-size:.56rem;color:var(--text3);margin-top:4px">${sisaLabel}</p>
+  </div>`;
+}
+
 function buildOrderCard(order){
   const step=getStepIndex(order.status);
   const isDone=step===3;
-  const badge=isDone?'<span class="badge badge-done">SELESAI</span>':(step>0?'<span class="badge badge-active">BERJALAN</span>':'<span class="badge badge-pending">PENDING</span>');
+  const badge=isDone
+    ?'<span class="badge badge-done">SELESAI</span>'
+    :(step>0?'<span class="badge badge-active">BERJALAN</span>':'<span class="badge badge-pending">PENDING</span>');
   const div=(order.division||'').toLowerCase();
   const icon=div==='apparel'?'👕':(div==='studio'?'🎨':'📦');
-  return`<div class="order-row"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><div style="display:flex;align-items:center;gap:11px"><span style="font-size:1.1rem;line-height:1;flex-shrink:0">${icon}</span><div><p style="font-family:var(--font-tech);font-size:.68rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(order.title||'Pesanan Alfirama')}</p><p style="font-size:.6rem;color:var(--text3);margin-top:2px">${escHtml(order.orderId||order.id)}</p></div></div>${badge}</div>${buildTimeline(step)}<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)"><span style="font-size:.66rem;color:var(--text3)">Est. selesai: <span style="color:rgba(58,176,255,.7);font-weight:600">${escHtml(order.estDate||'3 Hari Kerja')}</span></span><span style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(order.total||0)}</span></div></div>`;
+
+  /* ✅ FIX #1: pakai formatDate() untuk estDate, bukan String() langsung */
+  const estLabel=order.estDate
+    ?(order.estDate.toDate?formatDate(order.estDate):(typeof order.estDate==='string'?order.estDate:formatDate(order.estDate)))
+    :'3 Hari Kerja';
+
+  return`<div class="order-row">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div style="display:flex;align-items:center;gap:11px">
+        <span style="font-size:1.1rem;line-height:1;flex-shrink:0">${icon}</span>
+        <div>
+          <p style="font-family:var(--font-tech);font-size:.68rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(order.title||'Pesanan Alfirama')}</p>
+          <p style="font-size:.6rem;color:var(--text3);margin-top:2px">${escHtml(order.orderId||order.id)}</p>
+        </div>
+      </div>${badge}
+    </div>
+    ${buildTimeline(step)}
+    ${buildDayProgress(order)}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)">
+      <span style="font-size:.66rem;color:var(--text3)">Est. selesai: <span style="color:rgba(58,176,255,.7);font-weight:600">${escHtml(estLabel)}</span></span>
+      <span style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(order.total||0)}</span>
+    </div>
+  </div>`;
 }
+
 function renderOrders(orders){
+  ['kpi-orders','kpi-done','kpi-assets'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
+  });
   const active=orders.filter(o=>getStepIndex(o.status)<3);
   const $=id=>document.getElementById(id);
   if($('orders-count-badge'))$('orders-count-badge').textContent=active.length+' aktif';
@@ -822,63 +945,318 @@ function renderOrders(orders){
   if($('orders-container'))$('orders-container').innerHTML=active.length?active.map(buildOrderCard).join(''):'';
   if($('all-orders-empty'))$('all-orders-empty').style.display=orders.length?'none':'block';
   if($('all-orders-container'))$('all-orders-container').innerHTML=orders.length?orders.map(buildOrderCard).join(''):'';
-  animCounter('stat-orders',orders.length);animCounter('kpi-orders',orders.length);
+  animCounter('stat-orders',orders.length);
+  animCounter('kpi-orders',orders.length);
   animCounter('stat-done',orders.filter(o=>getStepIndex(o.status)===3).length);
-  animCounter('kpi-done',orders.filter(o=>getStepIndex(o.status)===3).length);
+  const doneCount=orders.filter(o=>getStepIndex(o.status)===3).length;
+animCounter('kpi-done',doneCount);
+const doneBadge=document.getElementById('kpi-done-badge');
+if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.innerHTML='<svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>'+doneCount+' selesai';}else{doneBadge.className='kpi-change neutral';doneBadge.textContent='Belum ada';}}
   if($('kpi-orders-active'))$('kpi-orders-active').textContent=active.length+' aktif';
-  renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&(o.digitalFile||o.canvaLink)));
+  renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&o.downloadUrl));
 }
 
 /* INVOICES */
+function downloadInvoicePDF(invJson){
+  let inv;
+  try{inv=JSON.parse(invJson);}catch(e){showToast('❌ Data invoice tidak valid');return;}
+  if(!window.jspdf){showToast('⏳ Library PDF sedang dimuat, coba lagi...');return;}
+  const{jsPDF}=window.jspdf;
+  const pdoc=new jsPDF({unit:'mm',format:'a5'});
+  pdoc.setFillColor(2,8,16);pdoc.rect(0,0,148,210,'F');
+  pdoc.setFillColor(0,80,160);pdoc.rect(0,0,148,2,'F');
+  pdoc.setFont('helvetica','bold');pdoc.setFontSize(18);
+  pdoc.setTextColor(230,237,243);pdoc.text('ALFIRAMA',14,18);
+  pdoc.setTextColor(58,176,255);pdoc.text('.ID',63,18);
+  pdoc.setFont('helvetica','normal');pdoc.setFontSize(7);
+  pdoc.setTextColor(100,130,160);pdoc.text('CREATIVE & RETAIL HOLDING',14,24);
+  pdoc.setDrawColor(0,100,200);pdoc.setLineWidth(.3);pdoc.line(14,28,134,28);
+  pdoc.setFont('helvetica','bold');pdoc.setFontSize(22);
+  pdoc.setTextColor(230,237,243);pdoc.text('INVOICE',14,42);
+  const isPaid=inv.paid;
+  pdoc.setFillColor(isPaid?15:0,isPaid?100:100,isPaid?50:200);
+  pdoc.roundedRect(100,34,34,10,2,2,'F');
+  pdoc.setFont('helvetica','bold');pdoc.setFontSize(7);
+  pdoc.setTextColor(isPaid?100:180,isPaid?255:220,isPaid?140:255);
+  pdoc.text(isPaid?'LUNAS':'BELUM LUNAS',117,40.5,{align:'center'});
+  pdoc.setFont('helvetica','normal');pdoc.setFontSize(8);
+  pdoc.setTextColor(100,130,160);
+  const rows=[['No. Invoice',inv.id||'—'],['Tanggal',inv.date||'—'],['Untuk',inv.clientName||'Klien Alfirama']];
+  rows.forEach((r,i)=>{
+    pdoc.text(r[0],14,54+(i*8));
+    pdoc.setTextColor(200,220,240);pdoc.text(r[1],60,54+(i*8));
+    pdoc.setTextColor(100,130,160);
+  });
+  pdoc.setFillColor(4,12,26);pdoc.roundedRect(14,80,120,28,2,2,'F');
+  pdoc.setDrawColor(0,80,160);pdoc.setLineWidth(.2);pdoc.roundedRect(14,80,120,28,2,2,'S');
+  pdoc.setFont('helvetica','bold');pdoc.setFontSize(9);
+  pdoc.setTextColor(230,237,243);pdoc.text(String(inv.title||'Layanan Alfirama').substring(0,36),20,91);
+  pdoc.setFont('helvetica','normal');pdoc.setFontSize(7);
+  pdoc.setTextColor(100,130,160);pdoc.text('Layanan kreatif & produksi Alfirama Studio',20,98);
+  pdoc.setDrawColor(0,100,200);pdoc.line(14,114,134,114);
+  pdoc.setFont('helvetica','normal');pdoc.setFontSize(8);pdoc.setTextColor(100,130,160);
+  pdoc.text('TOTAL TAGIHAN',14,122);
+  pdoc.setFont('helvetica','bold');pdoc.setFontSize(16);
+  pdoc.setTextColor(201,178,109);pdoc.text(formatRupiah(inv.amount||0),14,132);
+  pdoc.setFillColor(0,50,120);pdoc.rect(0,185,148,25,'F');
+  pdoc.setFont('helvetica','normal');pdoc.setFontSize(7);
+  pdoc.setTextColor(120,160,200);
+  pdoc.text('Terima kasih telah mempercayakan kebutuhan kreatif Anda kepada Alfirama.ID',74,193,{align:'center'});
+  pdoc.text('alfirama.id  |  WhatsApp: +62 851-3560-2885  |  © 2026 Alfirama Creative Holding',74,200,{align:'center'});
+  pdoc.setFillColor(0,140,255);pdoc.rect(0,208,148,2,'F');
+  pdoc.save(`Invoice-${inv.id||'alfirama'}.pdf`);
+  showToast('✅ Invoice berhasil diunduh sebagai PDF');
+}
+window.downloadInvoicePDF=downloadInvoicePDF;
+
 function renderInvoices(invoices){
+  ['kpi-invoices'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
+  });
   const $=id=>document.getElementById(id);
-  const getAmt=inv=>inv.amount??inv.total??0;
-  animCounter('stat-invoices',invoices.length);animCounter('kpi-invoices',invoices.length);
-  if($('invoices-list')){$('invoices-list').innerHTML=invoices.length?invoices.map(inv=>`<div class="inv-row"><div><p style="font-family:var(--font-tech);font-size:.64rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p><p style="font-size:.6rem;color:var(--text3);margin-top:3px">${escHtml(inv.invoiceId||inv.id)} · ${formatDate(inv.date)}</p></div><div style="text-align:right"><p style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(getAmt(inv))}</p><span class="badge ${inv.paid?'badge-done':'badge-active'}" style="margin-top:4px;display:inline-block">${inv.paid?'LUNAS':'BELUM LUNAS'}</span></div></div>`).join(''):'<div style="padding:44px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA INVOICE</p></div>';}
-  if($('invoice-summary')){$('invoice-summary').innerHTML=invoices.length?invoices.slice(0,3).map(inv=>`<div class="inv-row" style="padding:9px 0"><div><p style="font-family:var(--font-tech);font-size:.56rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p><p style="font-size:.58rem;color:var(--text3);margin-top:2px">${formatDate(inv.date)}</p></div><p style="font-family:var(--font-tech);font-size:.68rem;font-weight:800;color:var(--gold);flex-shrink:0">${formatRupiah(getAmt(inv))}</p></div>`).join(''):'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">BELUM ADA INVOICE</p></div>';}
+  const getAmt=inv=>inv.total??inv.amount??0;
+  animCounter('stat-invoices',invoices.length);
+  animCounter('kpi-invoices',invoices.length);
+  if($('invoices-list')){
+    $('invoices-list').innerHTML=invoices.length?invoices.map(inv=>{
+      const pdfData=JSON.stringify({
+        id:inv.invoiceId||inv.id,
+        title:inv.title||'Invoice',
+        amount:getAmt(inv),
+        date:formatDate(inv.date),
+        paid:!!inv.paid,
+        clientName:inv.clientName||''
+      }).replace(/'/g,'&#39;');
+      return`<div class="inv-row">
+        <div>
+          <p style="font-family:var(--font-tech);font-size:.64rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p>
+          <p style="font-size:.6rem;color:var(--text3);margin-top:3px">${escHtml(inv.invoiceId||inv.id)} · ${formatDate(inv.date)}</p>
+        </div>
+        <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+          <p style="font-family:var(--font-tech);font-size:.78rem;font-weight:800;color:var(--gold)">${formatRupiah(getAmt(inv))}</p>
+          <span class="badge ${inv.paid?'badge-done':'badge-active'}">${inv.paid?'LUNAS':'BELUM LUNAS'}</span>
+          <button onclick='downloadInvoicePDF(this.dataset.inv)' data-inv='${pdfData}' class="btn-dl ripple-btn" style="margin-top:2px">
+            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>PDF
+          </button>
+        </div>
+      </div>`;
+    }).join('')
+    :'<div style="padding:48px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA INVOICE</p></div>';
+  }
+  if($('invoice-summary')){
+    $('invoice-summary').innerHTML=invoices.length
+      ?invoices.slice(0,3).map(inv=>`<div class="inv-row" style="padding:9px 0"><div><p style="font-family:var(--font-tech);font-size:.56rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p><p style="font-size:.58rem;color:var(--text3);margin-top:2px">${formatDate(inv.date)}</p></div><p style="font-family:var(--font-tech);font-size:.68rem;font-weight:800;color:var(--gold);flex-shrink:0">${formatRupiah(getAmt(inv))}</p></div>`).join('')
+      :'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">BELUM ADA INVOICE</p></div>';
+  }
 }
 
-/* ASSETS */
 function renderAssets(orders){
-  animCounter('stat-assets',orders.length);animCounter('kpi-assets',orders.length);
-  const c=document.getElementById('assets-container');if(!c)return;
-  c.innerHTML=orders.length?orders.map(o=>`<div class="asset-panel"><div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><span style="font-size:.9rem">🎨</span><div><p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em">${escHtml(o.title||'Aset Digital')}</p><p style="font-size:.56rem;color:rgba(58,176,255,.5);margin-top:1px">Siap diunduh</p></div></div><div style="display:flex;gap:6px;flex-wrap:wrap">${o.digitalFile?`<a href="${escHtml(o.digitalFile)}" target="_blank" download class="btn-dl"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''} ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl">Canva</a>`:''}</div></div>`).join(''):'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(58,176,255,.3)">BELUM ADA ASET</p></div>';
+animCounter('stat-assets',orders.length);
+animCounter('kpi-assets',orders.length);
+const assetBadge=document.getElementById('kpi-assets-badge');
+if(assetBadge){if(orders.length>0){assetBadge.className='kpi-change neutral';assetBadge.textContent='Siap unduh';}else{assetBadge.className='kpi-change neutral';assetBadge.textContent='Belum ada';}}
+  animCounter('stat-assets',orders.length);
+  animCounter('kpi-assets',orders.length);
+  const c=document.getElementById('assets-container');
+  if(!c)return;
+  c.innerHTML=orders.length
+    ?orders.map(o=>`<div class="asset-panel">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+          <span style="font-size:.9rem">🎨</span>
+          <div>
+            <p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em">${escHtml(o.title||'Aset Digital')}</p>
+            <p style="font-size:.56rem;color:rgba(58,176,255,.5);margin-top:1px">Siap diunduh</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+          ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn">Canva</a>`:''}
+        </div>
+      </div>`).join('')
+    :'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(58,176,255,.3)">BELUM ADA ASET</p></div>';
 }
 
-/* SAVE SETTINGS */
+/* ✅ FIX #2: saveSettings pakai updateProfile yang diimport dengan benar */
 async function saveSettings(){
   if(!currentUser)return;
   const name=document.getElementById('settings-name').value.trim();
   const whatsapp=document.getElementById('settings-phone').value.trim();
-  if(!name){showToast('⚠️ Nama tidak boleh kosong');return}
-  try{await updateDoc(doc(db,'users',currentUser.uid),{displayName:name,whatsapp});await currentUser.updateProfile?.({displayName:name});showToast('✅ Pengaturan berhasil disimpan');}
-  catch(err){showToast('❌ Gagal: '+err.message)}
+  if(!name){showToast('⚠️ Nama tidak boleh kosong');return;}
+  try{
+    /* Update Firestore dulu */
+    await updateDoc(doc(db,'users',currentUser.uid),{displayName:name,whatsapp});
+    /* Update Firebase Auth profile dengan fungsi modular yang benar */
+    await updateProfile(currentUser,{displayName:name});
+    showToast('✅ Pengaturan berhasil disimpan');
+  }catch(err){showToast('❌ Gagal: '+err.message);}
 }
 window.saveSettings=saveSettings;
 
-/* UPLOAD AVATAR */
+/* ✅ FIX #2: uploadAvatar juga pakai updateProfile modular */
 async function uploadAvatar(input){
   if(!input.files?.[0])return;
-  const fd=new FormData();fd.append('file',input.files[0]);fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);fd.append('folder','alfirama/avatars');
-  try{const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:'POST',body:fd});const data=await res.json();if(data.secure_url){await currentUser.updateProfile?.({photoURL:data.secure_url});await updateDoc(doc(db,'users',currentUser.uid),{photoURL:data.secure_url});document.getElementById('avatar-img').src=data.secure_url;showToast('✅ Foto berhasil diperbarui');}else throw new Error(data.error?.message||'Upload gagal');}
-  catch(err){showToast('❌ Upload gagal: '+err.message)}
+  showToast('⏳ Mengupload foto...',10000);
+  const fd=new FormData();
+  fd.append('file',input.files[0]);
+  fd.append('upload_preset',CLOUDINARY_UPLOAD_PRESET);
+  fd.append('folder','alfirama/avatars');
+  try{
+    const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
+    const data=await res.json();
+    if(data.secure_url){
+      /* Update Firebase Auth profile dengan fungsi modular yang benar */
+      await updateProfile(currentUser,{photoURL:data.secure_url});
+      await updateDoc(doc(db,'users',currentUser.uid),{photoURL:data.secure_url});
+      document.getElementById('avatar-img').src=data.secure_url;
+      showToast('✅ Foto berhasil diperbarui');
+    }else{
+      throw new Error(data.error?.message||'Upload gagal');
+    }
+  }catch(err){
+    showToast('❌ Upload gagal: '+err.message);
+  }
 }
 window.uploadAvatar=uploadAvatar;
 
-/* COUNTER */
+/* ANIMATED COUNTER */
 function animCounter(id,target,dur=700){
-  const el=document.getElementById(id);if(!el)return;
-  if(!target){el.textContent='0';return}
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(!target){el.textContent='0';return;}
   let start=null;
-  const step=ts=>{if(!start)start=ts;const p=Math.min((ts-start)/dur,1);el.textContent=Math.floor((1-Math.pow(1-p,3))*target);if(p<1)requestAnimationFrame(step);else el.textContent=target;};
+  const step=ts=>{
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    el.textContent=Math.floor((1-Math.pow(1-p,3))*target);
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target;
+  };
   requestAnimationFrame(step);
 }
 window.animCounter=animCounter;
 
+/* NETWORK STATUS */
+function updateNetStatus(){
+  const dot=document.getElementById('net-dot');
+  const lbl=document.getElementById('net-label');
+  if(!dot||!lbl)return;
+  if(navigator.onLine){
+    dot.style.background='var(--green)';dot.style.boxShadow='0 0 5px rgba(63,185,80,.6)';
+    lbl.textContent='ONLINE';
+  }else{
+    dot.style.background='#f85149';dot.style.boxShadow='0 0 5px rgba(248,81,73,.6)';
+    lbl.textContent='OFFLINE';
+    showToast('⚠️ Koneksi terputus — data mungkin tidak update');
+  }
+}
+updateNetStatus();
+window.addEventListener('online',()=>{updateNetStatus();showToast('✅ Koneksi kembali!');});
+window.addEventListener('offline',updateNetStatus);
+
+/* COPY UID */
+function copyUID(){
+  const uid=document.getElementById('nav-uid')?.textContent;
+  if(!uid||uid==='—')return;
+  navigator.clipboard.writeText(uid).then(()=>showToast('✅ Client ID disalin!')).catch(()=>showToast('❌ Gagal menyalin'));
+}
+window.copyUID=copyUID;
+
+/* ✅ FIX #3: NOTIF PANEL — cleanup listener lama sebelum buat baru */
+function openNotifPanel(){
+  document.getElementById('notif-panel').style.right='0';
+  document.getElementById('notif-overlay').style.display='block';
+  if(currentUser)loadNotifications();
+}
+function closeNotifPanel(){
+  document.getElementById('notif-panel').style.right='-320px';
+  document.getElementById('notif-overlay').style.display='none';
+}
+function loadNotifications(){
+  if(!currentUser)return;
+
+  /* ✅ FIX #3: Unsubscribe listener lama dulu sebelum buat yang baru */
+  if(unsubNotifPanel){
+    unsubNotifPanel();
+    unsubNotifPanel=null;
+  }
+
+  const q=query(
+    collection(db,'users',currentUser.uid,'notifications'),
+    orderBy('createdAt','desc'),
+    limit(20)
+  );
+  /* Simpan referensi unsub ke variabel */
+  unsubNotifPanel=onSnapshot(q,snap=>{
+    const list=document.getElementById('notif-list');
+    const badge=document.getElementById('notif-badge');
+    const mobDot=document.getElementById('mobile-notif-dot');
+    const mobCount=document.getElementById('mob-notif-count');
+    const unread=snap.docs.filter(d=>!d.data().read).length;
+    if(badge){badge.textContent=unread>0?unread:'';badge.style.display=unread>0?'block':'none';}
+    if(mobDot){mobDot.style.display=unread>0?'block':'none';}
+    if(mobCount){mobCount.textContent=unread>0?unread:'';mobCount.style.display=unread>0?'block':'none';}
+    if(!list)return;
+    list.innerHTML=snap.docs.length?snap.docs.map(d=>{
+      const n=d.data();
+      const dotColor=n.read?'rgba(255,255,255,.15)':'var(--blue)';
+      return`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:9px;align-items:flex-start">
+        <div style="width:6px;height:6px;border-radius:50%;background:${dotColor};flex-shrink:0;margin-top:5px;box-shadow:${n.read?'none':'0 0 6px rgba(58,176,255,.6)'}"></div>
+        <div style="flex:1">
+          <p style="font-size:.68rem;color:${n.read?'var(--text3)':'var(--text)'};line-height:1.5">${escHtml(n.message||'')}</p>
+          <p style="font-size:.56rem;color:var(--text3);margin-top:3px">${formatDate(n.createdAt)}</p>
+        </div>
+      </div>`;
+    }).join('')
+    :'<div style="padding:36px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;color:var(--text3);letter-spacing:.12em">BELUM ADA NOTIFIKASI</p></div>';
+  },err=>console.error('loadNotif error:',err));
+}
+async function markAllRead(){
+  if(!currentUser)return;
+  const q=query(
+    collection(db,'users',currentUser.uid,'notifications'),
+    where('read','==',false)
+  );
+  const snap=await getDocs(q);
+  if(snap.empty){showToast('✅ Semua sudah dibaca');return;}
+  const batch=writeBatch(db);
+  snap.docs.forEach(d=>batch.update(doc(db,'users',currentUser.uid,'notifications',d.id),{read:true}));
+  await batch.commit();
+  showToast('✅ Semua notifikasi ditandai dibaca');
+}
+window.openNotifPanel=openNotifPanel;
+window.closeNotifPanel=closeNotifPanel;
+window.markAllRead=markAllRead;
+
+/* SESSION CLOCK */
+(function(){
+  const loginTime=new Date();
+  function updateClock(){
+    const el=document.getElementById('session-clock');
+    if(!el)return;
+    const diff=Math.floor((new Date()-loginTime)/1000);
+    const h=String(Math.floor(diff/3600)).padStart(2,'0');
+    const m=String(Math.floor((diff%3600)/60)).padStart(2,'0');
+    const s=String(diff%60).padStart(2,'0');
+    el.textContent=`${h}:${m}:${s}`;
+  }
+  updateClock();
+  setInterval(updateClock,1000);
+})();
+
 /* UTILS */
-function formatRupiah(n){return'Rp '+Number(n).toLocaleString('id-ID')}
-function formatDate(ts){if(!ts)return'—';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
-function escHtml(s){const d=document.createElement('div');d.appendChild(document.createTextNode(String(s)));return d.innerHTML}
+function formatRupiah(n){return'Rp '+Number(n).toLocaleString('id-ID');}
+function formatDate(ts){
+  if(!ts)return'—';
+  const d=ts.toDate?ts.toDate():new Date(ts);
+  if(isNaN(d.getTime()))return'—';
+  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+}
+function escHtml(s){
+  const d=document.createElement('div');
+  d.appendChild(document.createTextNode(String(s)));
+  return d.innerHTML;
+}
 </script>
 </body>
 </html>
