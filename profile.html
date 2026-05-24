@@ -320,6 +320,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Pesanan Saya
       </div>
+      <div class="nav-tab" onclick="switchTab('gallery',this);closeMobileSidebar()">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Gallery Aset
+      </div>
       <div class="nav-tab" onclick="switchTab('invoices',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -358,11 +363,31 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         Keluar
       </button>
     </div>
-    <div class="sidebar-stats">
-      <div class="stat-mini"><div class="stat-val gold" id="stat-orders">0</div><div class="stat-lbl">Pesanan</div></div>
-      <div class="stat-mini"><div class="stat-val blue" id="stat-invoices">0</div><div class="stat-lbl">Invoice</div></div>
-      <div class="stat-mini"><div class="stat-val blue" id="stat-done">0</div><div class="stat-lbl">Selesai</div></div>
-      <div class="stat-mini"><div class="stat-val" style="color:var(--text2)" id="stat-assets">0</div><div class="stat-lbl">Aset</div></div>
+    <div style="flex-shrink:0;padding:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
+      <div style="background:rgba(0,140,255,.03);border:1px solid var(--border);border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:5px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:.56rem;color:var(--text3);font-weight:500;">Member sejak</span>
+          <span style="font-family:var(--font-tech);font-size:.48rem;color:var(--blue);" id="sidebar-since">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:.56rem;color:var(--text3);font-weight:500;">Tier</span>
+          <span style="font-family:var(--font-tech);font-size:.48rem;color:var(--gold);" id="sidebar-tier-info">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:.56rem;color:var(--text3);font-weight:500;">WhatsApp</span>
+          <span style="font-family:var(--font-tech);font-size:.48rem;color:var(--text2);letter-spacing:.02em;" id="sidebar-wa">—</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20membuat%20pesanan%20baru" target="_blank" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(63,185,80,.2);background:rgba(63,185,80,.06);color:#3fb950;text-decoration:none;" onmouseover="this.style.background='rgba(63,185,80,.14)'" onmouseout="this.style.background='rgba(63,185,80,.06)'">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="#3fb950"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.848L.044 24l6.327-1.649A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.882 0-3.65-.518-5.17-1.42l-.371-.22-3.757.979.998-3.663-.242-.376A9.975 9.975 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Chat WA
+        </a>
+        <button onclick="switchTab('settings',document.querySelectorAll('.nav-tab')[4]);closeMobileSidebar()" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,140,255,.06);color:var(--blue);" onmouseover="this.style.background='rgba(0,140,255,.14)'" onmouseout="this.style.background='rgba(0,140,255,.06)'">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          Profil
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -463,6 +488,23 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
             </a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- GALLERY TAB -->
+    <div class="tab-section" id="tab-gallery">
+      <div class="hero-section" style="padding:36px 40px 28px">
+        <div class="hero-orb" style="opacity:.6"></div>
+        <p class="sh-eyebrow">⬡ KOLEKSI</p>
+        <h2 class="sh-title" style="font-size:1.4rem">Gallery <span class="accent">Aset Digital</span></h2>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Semua file & hasil desain dari Alfirama Studio</p>
+      </div>
+      <div style="padding:24px 40px 36px">
+        <div id="gallery-empty" style="display:none;padding:48px 0;text-align:center">
+          <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA ASET</p>
+          <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.5">Aset akan muncul setelah pesanan selesai</p>
+        </div>
+        <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px"></div>
       </div>
     </div>
 
@@ -850,6 +892,9 @@ function setProfileUI(data,user){
   if($('hero-greeting-line'))$('hero-greeting-line').textContent=greet;
   const photo=data.photoURL||user.photoURL;
   if(photo&&$('avatar-img'))$('avatar-img').src=photo;
+  if($('sidebar-tier-info'))$('sidebar-tier-info').textContent=(data.tier||'Member').toUpperCase();
+  if($('sidebar-wa'))$('sidebar-wa').textContent=data.whatsapp?data.whatsapp:'Belum diisi';
+  if($('sidebar-since')&&data.createdAt){const d=data.createdAt.toDate?data.createdAt.toDate():new Date(data.createdAt);$('sidebar-since').textContent=d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
 }
 
 /* ORDERS */
@@ -954,6 +999,22 @@ const doneBadge=document.getElementById('kpi-done-badge');
 if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.innerHTML='<svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>'+doneCount+' selesai';}else{doneBadge.className='kpi-change neutral';doneBadge.textContent='Belum ada';}}
   if($('kpi-orders-active'))$('kpi-orders-active').textContent=active.length+' aktif';
   renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&o.downloadUrl));
+  orders.forEach(async o=>{
+    const poinDapat=Math.floor((o.total||0)/10000);
+    if(getStepIndex(o.status)===3&&!o.pointsAwarded&&poinDapat>0&&currentUser){
+      const uRef=doc(db,'users',currentUser.uid);
+      const uSnap=await getDoc(uRef);
+      if(uSnap.exists()){
+        const curPts=uSnap.data().points||0;
+        await updateDoc(uRef,{points:curPts+poinDapat});
+        await updateDoc(doc(db,'orders',o.id),{pointsAwarded:true});
+        await setDoc(doc(collection(db,'users',currentUser.uid,'notifications')),{
+          message:`🏆 Kamu dapat +${poinDapat} poin dari order "${o.title||'Pesanan'}"!`,
+          createdAt:new Date(),read:false
+        });
+      }
+    }
+  });
 }
 
 /* INVOICES */
@@ -1018,6 +1079,19 @@ function renderInvoices(invoices){
   const getAmt=inv=>inv.total??inv.amount??0;
   animCounter('stat-invoices',invoices.length);
   animCounter('kpi-invoices',invoices.length);
+  invoices.forEach(async inv=>{
+    const amt=inv.total??inv.amount??0;
+    const poinDapat=Math.floor(amt/10000);
+    if(inv.paid&&!inv.pointsAwarded&&poinDapat>0&&currentUser){
+      const uRef=doc(db,'users',currentUser.uid);
+      const uSnap=await getDoc(uRef);
+      if(uSnap.exists()){
+        const curPts=uSnap.data().points||0;
+        await updateDoc(uRef,{points:curPts+poinDapat});
+        await updateDoc(doc(db,'invoices',inv.id),{pointsAwarded:true});
+      }
+    }
+  });
   if($('invoices-list')){
     $('invoices-list').innerHTML=invoices.length?invoices.map(inv=>{
       const pdfData=JSON.stringify({
@@ -1052,12 +1126,35 @@ function renderInvoices(invoices){
 }
 
 function renderAssets(orders){
-animCounter('stat-assets',orders.length);
-animCounter('kpi-assets',orders.length);
-const assetBadge=document.getElementById('kpi-assets-badge');
-if(assetBadge){if(orders.length>0){assetBadge.className='kpi-change neutral';assetBadge.textContent='Siap unduh';}else{assetBadge.className='kpi-change neutral';assetBadge.textContent='Belum ada';}}
   animCounter('stat-assets',orders.length);
   animCounter('kpi-assets',orders.length);
+  const assetBadge=document.getElementById('kpi-assets-badge');
+  if(assetBadge){if(orders.length>0){assetBadge.className='kpi-change neutral';assetBadge.textContent='Siap unduh';}else{assetBadge.className='kpi-change neutral';assetBadge.textContent='Belum ada';}}
+  const gallery=document.getElementById('gallery-grid');
+  const galleryEmpty=document.getElementById('gallery-empty');
+  if(gallery){
+    if(orders.length===0){if(galleryEmpty)galleryEmpty.style.display='block';gallery.innerHTML='';}
+    else{
+      if(galleryEmpty)galleryEmpty.style.display='none';
+      gallery.innerHTML=orders.map(o=>`
+        <div style="background:rgba(4,12,26,.75);border:1px solid rgba(0,140,255,.13);border-radius:14px;overflow:hidden;transition:.25s;backdrop-filter:blur(12px);" onmouseover="this.style.borderColor='rgba(0,160,255,.35)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,140,255,.13)';this.style.transform='translateY(0)'">
+          <div style="height:110px;background:linear-gradient(135deg,rgba(0,80,200,.15),rgba(0,140,255,.08));display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(0,140,255,.1);overflow:hidden;">
+            ${o.previewUrl
+              ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:100%;object-fit:cover;transition:.3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><span style="display:none;font-size:2.8rem;width:100%;height:100%;align-items:center;justify-content:center">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</span>`
+              :`<span style="font-size:2.8rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</span>`
+            }
+          </div>
+          <div style="padding:14px">
+            <p style="font-family:var(--font-tech);font-size:.62rem;font-weight:700;color:var(--text);letter-spacing:.03em;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(o.title||'Aset Digital')}</p>
+            <p style="font-size:.58rem;color:var(--text3);margin-bottom:10px">${formatDate(o.estDate||o.createdAt)}</p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+              ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
+            </div>
+          </div>
+        </div>`).join('');
+    }
+  }
   const c=document.getElementById('assets-container');
   if(!c)return;
   c.innerHTML=orders.length
