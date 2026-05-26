@@ -595,15 +595,178 @@ input[type="file"].form-input:hover::file-selector-button {
 ══════════════════════════════════════════════ */
 
 @media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } .analytics-row { grid-template-columns: 1fr 1fr; } }
+
+/* ══════════════════════════════════════════
+   MOBILE HAMBURGER BUTTON
+══════════════════════════════════════════ */
+.mobile-menu-btn {
+  display: none; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border2); background: var(--surface2);
+  color: var(--text2); cursor: pointer; flex-shrink: 0;
+  transition: all 0.18s ease; z-index: 200;
+}
+.mobile-menu-btn:hover { background: var(--blue-glow); border-color: rgba(58,176,255,0.3); color: var(--blue); }
+
+/* Overlay backdrop saat sidebar mobile terbuka */
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.sidebar-overlay.show { display: block; }
+
 @media (max-width: 860px) {
   :root { --sidebar-w: 0px; }
-  .sidebar { display: none; }
-  .form-grid-2 { grid-template-columns: 1fr; }
-  .live-log-head, .log-row { grid-template-columns: 1fr 1fr 1fr; }
-  .live-log-head span:nth-child(n+4), .log-cell:nth-child(n+4) { display: none; }
-  .analytics-row { grid-template-columns: 1fr; }
-  .db-klien-log-head, .db-klien-log-row { grid-template-columns: 0.3fr 1fr 0.8fr !important; }
-  .db-klien-log-head span:nth-child(n+4), .db-klien-log-row .log-cell:nth-child(n+4) { display: none; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+    width: 260px; z-index: 200;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 12px 0 48px rgba(0,0,0,0.7);
+  }
+
+  .mobile-menu-btn { display: flex; }
+  .main-wrap { margin-left: 0; }
+
+  /* Header bersih — sembunyikan elemen yang tidak perlu */
+  .top-header { padding: 0 14px; gap: 8px; height: 54px; }
+  .header-eyebrow { display: none; }
+  .header-title { font-size: 0.6rem; letter-spacing: 0.06em; }
+  .header-clock { display: none; }
+
+  /* Sembunyikan tombol Live Site & Keluar di header — sudah ada di sidebar */
+  .top-header .header-right > a,
+  .top-header .header-right > button { display: none; }
+
+  /* User badge ringkas */
+  .header-user { padding: 4px 8px; gap: 6px; }
+  .header-user-name { max-width: 90px; font-size: 0.6rem; }
+
+  /* Page content */
+  .page-content { padding: 14px 12px 40px; }
+
+  /* Grid collapse */
+  .form-grid-2 { grid-template-columns: 1fr; gap: 14px; }
+  .kpi-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .analytics-row { grid-template-columns: 1fr; gap: 10px; }
+
+  /* KPI card compact */
+  .kpi-card { padding: 14px; }
+  .kpi-value { font-size: 1.1rem; }
+  .kpi-sub { font-size: 0.55rem; }
+  .analytics-card { padding: 14px; }
+  .analytics-card-value { font-size: 1.05rem; }
+
+  /* Tabel log — 3 kolom */
+  .live-log-head, .log-row {
+    grid-template-columns: 1.4fr 1fr 0.8fr !important;
+  }
+  .live-log-head span:nth-child(n+4),
+  .log-row .log-cell:nth-child(n+4) { display: none; }
+
+  /* Tabel klien — 3 kolom */
+  .db-klien-log-head,
+  .db-klien-log-row {
+    grid-template-columns: 0.2fr 1fr 0.9fr !important;
+  }
+  .db-klien-log-head span:nth-child(n+4),
+  .db-klien-log-row .log-cell:nth-child(n+4) { display: none; }
+
+  /* Section head stack */
+  .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  /* Filter bar wrap rapi */
+  .filter-bar { flex-wrap: wrap; gap: 8px; }
+  .filter-input { max-width: 100%; min-width: 0; flex: 1 1 100%; }
+  .filter-select { flex: 1 1 calc(50% - 4px); min-width: 0; }
+  .btn-export { flex: 1 1 100%; justify-content: center; }
+
+  /* Form footer stack vertikal */
+  .form-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .form-footer .btn-primary {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.44rem;
+    padding: 11px 14px;
+  }
+  #btn-broadcast { order: 2; }
+  #btn-send-notif { order: 1; }
+
+  /* Form status full width */
+  .form-status { width: 100%; }
+
+  /* Toggle pill stack vertikal */
+  .toggle-pill { flex-direction: column; border-radius: var(--radius-md); }
+  .toggle-option { padding: 10px 14px; border-radius: 0; font-size: 0.42rem; }
+  .toggle-option:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .toggle-option:last-child  { border-radius: 0 0 var(--radius-md) var(--radius-md); }
+
+  /* Cegah horizontal scroll di form hint */
+  .form-hint { font-size: 0.58rem; word-break: break-word; }
+  .form-hint code { word-break: break-all; }
+
+  /* Edit banner wrap */
+  .edit-banner { flex-wrap: wrap; gap: 8px; }
+  .edit-banner-cancel { width: 100%; text-align: center; }
+
+  /* Glass inner padding lebih kecil */
+  .glass-inner { padding: 16px; }
+
+  /* Section title scaling */
+  .section-title { font-size: 0.72rem; }
+  .section-eyebrow { font-size: 0.36rem; }
+
+  /* Sidebar divlinks tetap tampil normal */
+  .div-link { font-size: 0.7rem; }
+}
+
+@media (max-width: 480px) {
+  .kpi-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpi-value { font-size: 1rem; }
+  .kpi-card { padding: 12px; }
+  .kpi-icon { width: 24px; height: 24px; margin-bottom: 8px; }
+
+  /* Header minimal */
+  .header-user { display: none; }
+  .top-header { justify-content: space-between; }
+  .header-title { font-size: 0.55rem; }
+
+  /* Tabel 2 kolom saja */
+  .live-log-head, .log-row {
+    grid-template-columns: 1.5fr 1fr !important;
+  }
+  .live-log-head span:nth-child(n+3),
+  .log-row .log-cell:nth-child(n+3) { display: none; }
+
+  .db-klien-log-head,
+  .db-klien-log-row {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .db-klien-log-head span:nth-child(n+3),
+  .db-klien-log-row .log-cell:nth-child(n+3) { display: none; }
+
+  /* Page padding */
+  .page-content { padding: 12px 10px 32px; }
+
+  /* UID badge lebih sempit */
+  .uid-code { max-width: 80px; font-size: 0.5rem; }
+
+  /* Analytics */
+  .analytics-card-value { font-size: 0.95rem; }
+
+  /* Filter semua full width */
+  .filter-select { flex: 1 1 100%; }
+
+  /* Notif form full width */
+  #notif-form-anchor { max-width: 100% !important; }
 }
 </style>
 </head>
@@ -686,6 +849,12 @@ input[type="file"].form-input:hover::file-selector-button {
   <div class="main-wrap">
 
     <header class="top-header">
+      <!-- Hamburger button — hanya tampil di mobile -->
+      <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Toggle Menu">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
       <div class="header-title-group">
         <p class="header-eyebrow">⬡ ADMIN SYSTEM — ALFIRAMA.ID</p>
         <h1 class="header-title">CENTRAL COMMAND <span class="slash">// FULL ACCESS</span></h1>
@@ -1162,6 +1331,41 @@ input[type="file"].form-input:hover::file-selector-button {
     </div>
   </div>
 </div>
+
+<!-- MOBILE SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
+
+<!-- MOBILE SIDEBAR TOGGLE SCRIPT -->
+<script>
+function toggleMobileSidebar(){
+  var sidebar  = document.querySelector('.sidebar');
+  var overlay  = document.getElementById('sidebar-overlay');
+  var isOpen   = sidebar.classList.contains('mobile-open');
+  if(isOpen){
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    document.body.style.overflow = '';
+  } else {
+    sidebar.classList.add('mobile-open');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+}
+window.toggleMobileSidebar = toggleMobileSidebar;
+
+/* Tutup sidebar otomatis saat nav item diklik di mobile */
+var _origSwitchPanel = window.switchPanel;
+window.switchPanel = function(name, btn){
+  _origSwitchPanel(name, btn);
+  var sidebar = document.querySelector('.sidebar');
+  var overlay = document.getElementById('sidebar-overlay');
+  if(sidebar && sidebar.classList.contains('mobile-open')){
+    sidebar.classList.remove('mobile-open');
+    overlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+};
+</script>
 
 <!-- CLOCK -->
 <script>
