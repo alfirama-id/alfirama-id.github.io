@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin Login — Alfirama.ID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg:        #0A0F1D;
+    --surface:   rgba(255,255,255,0.03);
+    --border:    rgba(255,255,255,0.08);
+    --border-focus: rgba(58,176,255,0.45);
+    --blue:      #3ab0ff;
+    --blue2:     #00c8ff;
+    --text:      #e6edf3;
+    --text2:     rgba(230,237,243,0.55);
+    --text3:     rgba(230,237,243,0.28);
+    --green:     #3fb950;
+    --red:       #f85149;
+    --gold:      #c9b26d;
+    --font-tech: 'Orbitron', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,140,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,140,255,0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-glow {
+    position: fixed;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 480px;
+    background: radial-gradient(ellipse at 50% 35%, rgba(0,110,255,0.12) 0%, rgba(0,70,180,0.05) 50%, transparent 72%);
+    pointer-events: none;
+    z-index: 0;
+    animation: glowPulse 7s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.7; }
+    50%       { opacity: 1;   }
+  }
+
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+
+  .login-panel {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 40px 36px 36px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .login-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(58,176,255,0.3), transparent);
+  }
+
+  .panel-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .panel-logo-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(0,140,255,0.08);
+    border: 1px solid rgba(0,140,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .panel-logo-text {
+    font-family: var(--font-tech);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+
+  .panel-logo-text .white { color: var(--text); }
+  .panel-logo-text .blue  { color: var(--blue); }
+
+  .panel-eyebrow {
+    font-family: var(--font-tech);
+    font-size: 0.44rem;
+    letter-spacing: 0.28em;
+    color: rgba(58,176,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .panel-title {
+    font-family: var(--font-tech);
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .panel-title .accent { color: var(--blue); }
+
+  .panel-subtitle {
+    font-size: 0.72rem;
+    color: var(--text3);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-family: var(--font-tech);
+    font-size: 0.42rem;
+    letter-spacing: 0.2em;
+    color: rgba(58,176,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .form-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-input-icon {
+    position: absolute;
+    left: 13px;
+    color: var(--text3);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+
+  .form-input {
+    width: 100%;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 11px 14px 11px 38px;
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .form-input::placeholder { color: var(--text3); font-weight: 400; }
+
+  .form-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(58,176,255,0.09);
+  }
+
+  .form-input-wrap:focus-within .form-input-icon { color: rgba(58,176,255,0.55); }
+
+  .btn-eye {
+    position: absolute;
+    right: 11px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text3);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+    border-radius: 4px;
+  }
+
+  .btn-eye:hover { color: var(--blue); }
+
+  /* ── Submit button ── */
+  .btn-submit {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px 20px;
+    border-radius: 22px;
+    border: none;
+    background: linear-gradient(105deg, #3ab0ff, #00c8ff);
+    color: #020810;
+    font-family: var(--font-tech);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    transition: opacity 0.2s, box-shadow 0.2s, transform 0.15s;
+    box-shadow: 0 0 18px rgba(0,160,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-submit:hover:not(:disabled) {
+    opacity: 0.9;
+    box-shadow: 0 0 28px rgba(0,160,255,0.45);
+  }
+
+  .btn-submit:active:not(:disabled) { transform: scale(0.98); }
+
+  .btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* ── Google button ── */
+  .btn-google {
+    width: 100%;
+    margin-top: 10px;
+    padding: 11px 20px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-family: var(--font-tech);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-google:hover:not(:disabled) {
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .btn-google:active:not(:disabled) { transform: scale(0.98); }
+
+  .btn-google:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .google-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0 0;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+  }
+
+  .divider-text {
+    font-size: 0.62rem;
+    color: var(--text3);
+    font-family: var(--font-tech);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  /* ── Spinner ── */
+  .btn-spinner {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(2,8,16,0.2);
+    border-top-color: #020810;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .btn-spinner-white {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(230,237,243,0.15);
+    border-top-color: rgba(230,237,243,0.7);
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Error ── */
+  .error-msg {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.22);
+    font-size: 0.7rem;
+    color: var(--red);
+    line-height: 1.5;
+    display: none;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .error-msg.show { display: flex; }
+
+  .panel-footer-note {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+
+  .panel-footer-note span {
+    color: rgba(58,176,255,0.4);
+    font-family: var(--font-tech);
+    font-size: 0.42rem;
+    letter-spacing: 0.12em;
+  }
+
+  .security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    background: rgba(63,185,80,0.06);
+    border: 1px solid rgba(63,185,80,0.15);
+    font-family: var(--font-tech);
+    font-size: 0.4rem;
+    letter-spacing: 0.14em;
+    color: rgba(63,185,80,0.65);
+    margin-bottom: 20px;
+  }
+
+  .security-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 5px rgba(63,185,80,0.7);
+    animation: pulseDot 2.2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 4px rgba(63,185,80,0.5); }
+    50%       { box-shadow: 0 0 10px rgba(63,185,80,0.9); }
+  }
+
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9000;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: rgba(4,12,28,0.97);
+    border: 1px solid rgba(0,140,255,0.2);
+    color: var(--text);
+    backdrop-filter: blur(20px);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    max-width: 320px;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  .ripple-span {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(2,8,16,0.25);
+    pointer-events: none;
+    animation: rippleOut 0.55s linear forwards;
+  }
+
+  @keyframes rippleOut {
+    from { transform: scale(0); opacity: 0.5; }
+    to   { transform: scale(4); opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 460px) {
+    .login-panel { padding: 32px 22px 28px; border-radius: 16px; }
+    .panel-title { font-size: 1.05rem; }
+    #toast { bottom: 16px; right: 12px; left: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="ambient-glow"></div>
+<div id="toast"></div>
+
+<div class="page-wrap">
+  <div class="login-panel">
+
+    <!-- Logo -->
+    <div class="panel-logo">
+      <div class="panel-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+          <path d="M6 26L16 6L26 26" stroke="#e6edf3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.5 21h15" stroke="#3ab0ff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="panel-logo-text">
+        <span class="white">ALFIRAMA</span><span class="blue">.ID</span>
+      </div>
+    </div>
+
+    <!-- Security badge -->
+    <div class="security-badge">
+      <div class="security-dot"></div>
+      SECURE ADMIN PORTAL
+    </div>
+
+    <!-- Heading -->
+    <p class="panel-eyebrow">⬡ OTORITAS PENUH</p>
+    <h1 class="panel-title">Admin <span class="accent">Access</span></h1>
+    <p class="panel-subtitle">Area ini hanya untuk Owner Alfirama.ID. Akses tidak sah akan ditolak secara otomatis.</p>
+
+    <!-- Form -->
+    <form id="login-form" novalidate autocomplete="off">
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email Admin</label>
+        <div class="form-input-wrap">
+          <input type="email" id="email" name="email" class="form-input"
+            placeholder="admin@alfirama.id" autocomplete="username" spellcheck="false" required/>
+          <span class="form-input-icon">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="form-input-wrap">
+          <input type="password" id="password" name="password" class="form-input"
+            placeholder="Masukkan password..." autocomplete="current-password" required/>
+          <span class="form-input-icon">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+          </span>
+          <button type="button" class="btn-eye" id="btn-eye" aria-label="Tampilkan password" tabindex="-1">
+            <svg id="eye-icon-show" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+            <svg id="eye-icon-hide" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="display:none">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error block -->
+      <div class="error-msg" id="error-msg" role="alert">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px">
+          <circle cx="12" cy="12" r="10"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/>
+        </svg>
+        <span id="error-text">Terjadi kesalahan.</span>
+      </div>
+
+      <!-- Submit email/password -->
+      <button type="submit" class="btn-submit" id="btn-submit">
+        <div class="btn-spinner" id="btn-spinner"></div>
+        <svg id="btn-icon" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+        </svg>
+        <span id="btn-text">MASUK SEBAGAI ADMIN</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">ATAU</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Google Sign-In -->
+      <button type="button" class="btn-google" id="btn-google">
+        <div class="btn-spinner-white" id="google-spinner"></div>
+        <!-- Google G logo SVG -->
+        <svg id="google-icon" class="google-icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        <span id="google-text">MASUK DENGAN GOOGLE</span>
+      </button>
+
+    </form>
+
+    <!-- Footer -->
+    <p class="panel-footer-note">
+      Sistem ini memiliki proteksi akses berlapis.<br/>
+      <span>SESSION DILINDUNGI · FIREBASE AUTH v10</span>
+    </p>
+
+  </div>
+</div>
+
+<!-- Particle canvas -->
+<script>
+(function () {
+  var canvas = document.getElementById('bg-canvas');
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function Particle(init) { this.reset(init); }
+  Particle.prototype.reset = function (init) {
+    this.x = Math.random() * W;
+    this.y = init ? Math.random() * H : H + 5;
+    this.r = 0.35 + Math.random() * 1;
+    this.vy = -(0.1 + Math.random() * 0.28);
+    this.vx = (Math.random() - 0.5) * 0.15;
+    this.life = 0;
+    this.maxLife = 220 + Math.random() * 300;
+    this.baseAlpha = 0.12 + Math.random() * 0.38;
+    this.tw = Math.random() * Math.PI * 2;
+    var cols = [[0,160,255],[0,200,255],[58,176,255],[0,120,220]];
+    this.col = cols[Math.floor(Math.random() * cols.length)];
+  };
+  Particle.prototype.tick = function () {
+    this.x += this.vx; this.y += this.vy; this.tw += 0.02; this.life++;
+    if (this.y < -8 || this.life > this.maxLife) this.reset(false);
+    var fade = Math.min(this.life / 40, 1) * Math.min((this.maxLife - this.life) / 30, 1);
+    this.a = this.baseAlpha * fade * (0.7 + 0.3 * Math.sin(this.tw));
+  };
+  Particle.prototype.draw = function () {
+    ctx.save(); ctx.globalAlpha = Math.max(0, this.a);
+    ctx.fillStyle = 'rgba(' + this.col.join(',') + ',1)';
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  };
+  var pts; var t = 0;
+  function init() { resize(); pts = Array.from({ length: 80 }, function () { return new Particle(true); }); }
+  function draw() {
+    ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#0A0F1D'; ctx.fillRect(0, 0, W, H);
+    t += 0.005;
+    var bx = W * 0.5 + Math.sin(t) * 18; var by = H * 0.3 + Math.cos(t * 0.7) * 12;
+    var g = ctx.createRadialGradient(bx, by, 0, bx, by, 260);
+    g.addColorStop(0, 'rgba(0,70,190,0.07)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    pts.forEach(function (p) { p.tick(); p.draw(); });
+    requestAnimationFrame(draw);
+  }
+  init(); draw(); window.addEventListener('resize', resize);
+})();
+</script>
+
+<!-- Ripple -->
+<script>
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('.btn-submit, .btn-google');
+  if (!btn) return;
+  var rect = btn.getBoundingClientRect();
+  var size = Math.max(rect.width, rect.height) * 2;
+  var span = document.createElement('span');
+  span.classList.add('ripple-span');
+  span.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size / 2) + 'px;top:' + (e.clientY - rect.top - size / 2) + 'px';
+  btn.appendChild(span);
+  setTimeout(function () { span.remove(); }, 600);
+});
+</script>
+
+<!-- Password toggle -->
+<script>
+document.getElementById('btn-eye').addEventListener('click', function () {
+  var inp = document.getElementById('password');
+  var showIcon = document.getElementById('eye-icon-show');
+  var hideIcon = document.getElementById('eye-icon-hide');
+  var isHidden = inp.type === 'password';
+  inp.type = isHidden ? 'text' : 'password';
+  showIcon.style.display = isHidden ? 'none' : 'block';
+  hideIcon.style.display = isHidden ? 'block' : 'none';
+  this.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
+});
+</script>
+
+<!-- Toast -->
+<script>
+function showToast(msg, dur) {
+  dur = dur || 3500;
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function () { t.classList.remove('show'); }, dur);
+}
+window.showToast = showToast;
+</script>
+
+<!-- Firebase Auth -->
+<script type="module">
+import { initializeApp }    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+  authDomain:        "alfirama-id.firebaseapp.com",
+  projectId:         "alfirama-id",
+  storageBucket:     "alfirama-id.firebasestorage.app",
+  messagingSenderId: "1036820056484",
+  appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
+  measurementId:     "G-V3QGL2R207"
+};
+
+const ADMIN_EMAILS = [
+  "alfirama1945@gmail.com",
+  "alfirama.id@gmail.com"
+];
+
+const app      = initializeApp(firebaseConfig);
+const auth     = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+/* DOM refs */
+const form         = document.getElementById('login-form');
+const emailInp     = document.getElementById('email');
+const passInp      = document.getElementById('password');
+const btnSubmit    = document.getElementById('btn-submit');
+const btnSpinner   = document.getElementById('btn-spinner');
+const btnIcon      = document.getElementById('btn-icon');
+const btnText      = document.getElementById('btn-text');
+const btnGoogle    = document.getElementById('btn-google');
+const googleSpinner= document.getElementById('google-spinner');
+const googleIcon   = document.getElementById('google-icon');
+const googleText   = document.getElementById('google-text');
+const errBox       = document.getElementById('error-msg');
+const errText      = document.getElementById('error-text');
+
+/* Helpers */
+function isAdminEmail(email) {
+  return ADMIN_EMAILS.map(e => e.trim().toLowerCase()).includes(email.trim().toLowerCase());
+}
+
+function showError(msg) {
+  errText.textContent = msg;
+  errBox.classList.add('show');
+}
+
+function clearError() {
+  errBox.classList.remove('show');
+}
+
+function setAllDisabled(state) {
+  btnSubmit.disabled = state;
+  btnGoogle.disabled = state;
+}
+
+function setEmailLoading(state) {
+  setAllDisabled(state);
+  btnSpinner.style.display  = state ? 'block' : 'none';
+  btnIcon.style.display     = state ? 'none'  : 'block';
+  btnText.textContent       = state ? 'MEMVERIFIKASI...' : 'MASUK SEBAGAI ADMIN';
+}
+
+function setGoogleLoading(state) {
+  setAllDisabled(state);
+  googleSpinner.style.display = state ? 'block' : 'none';
+  googleIcon.style.display    = state ? 'none'  : 'block';
+  googleText.textContent      = state ? 'MEMVERIFIKASI...' : 'MASUK DENGAN GOOGLE';
+}
+
+function translateFirebaseError(code) {
+  const map = {
+    'auth/user-not-found':        'Email tidak terdaftar di sistem.',
+    'auth/wrong-password':        'Password salah. Periksa kembali.',
+    'auth/invalid-credential':    'Kombinasi email / password tidak valid.',
+    'auth/invalid-email':         'Format email tidak valid.',
+    'auth/user-disabled':         'Akun ini telah dinonaktifkan.',
+    'auth/too-many-requests':     'Terlalu banyak percobaan. Coba lagi nanti.',
+    'auth/network-request-failed':'Koneksi gagal. Periksa jaringan Anda.',
+    'auth/popup-closed-by-user':  'Login dibatalkan. Popup ditutup.',
+    'auth/popup-blocked':         'Popup diblokir browser. Izinkan popup untuk situs ini.',
+    'auth/cancelled-popup-request':'Login dibatalkan.'
+  };
+  return map[code] || 'Terjadi kesalahan. Coba lagi.';
+}
+
+async function handleAdminAccess(user) {
+  if (!isAdminEmail(user.email)) {
+    await signOut(auth);
+    showError('Akses ditolak. Akun ini tidak memiliki otoritas admin.');
+    showToast('🚫 AKSES DITOLAK // KHUSUS OTORITAS ADMIN', 5000);
+    return false;
+  }
+  showToast('✅ Identitas terverifikasi. Mengalihkan ke dashboard...');
+  setTimeout(() => { window.location.href = 'index.html'; }, 900);
+  return true;
+}
+
+/* Auto-redirect jika sesi aktif */
+onAuthStateChanged(auth, user => {
+  if (user && isAdminEmail(user.email)) {
+    showToast('✅ Sesi aktif terdeteksi. Mengalihkan...');
+    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+  }
+});
+
+/* Email/password submit */
+form.addEventListener('submit', async function (e) {
+  e.preventDefault();
+  clearError();
+  const email    = emailInp.value.trim();
+  const password = passInp.value;
+  if (!email)    { showError('Email tidak boleh kosong.'); emailInp.focus(); return; }
+  if (!password) { showError('Password tidak boleh kosong.'); passInp.focus(); return; }
+
+  setEmailLoading(true);
+  try {
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    const ok = await handleAdminAccess(credential.user);
+    if (!ok) {
+      setEmailLoading(false);
+      passInp.value = '';
+      passInp.focus();
+    } else {
+      btnText.textContent = 'DIARAHKAN...';
+    }
+  } catch (err) {
+    setEmailLoading(false);
+    showError(translateFirebaseError(err.code));
+    passInp.value = '';
+    passInp.focus();
+  }
+});
+
+/* Google Sign-In */
+btnGoogle.addEventListener('click', async function () {
+  clearError();
+  setGoogleLoading(true);
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const ok = await handleAdminAccess(result.user);
+    if (!ok) {
+      setGoogleLoading(false);
+    } else {
+      googleText.textContent = 'DIARAHKAN...';
+    }
+  } catch (err) {
+    setGoogleLoading(false);
+    /* Popup ditutup user — jangan tampilkan error menakutkan */
+    if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+      return;
+    }
+    showError(translateFirebaseError(err.code));
+  }
+});
+
+/* Clear error saat mengetik */
+emailInp.addEventListener('input', clearError);
+passInp.addEventListener('input', clearError);
+</script>
+
+</body>
+</html>
