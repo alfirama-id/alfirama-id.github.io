@@ -24,7 +24,7 @@ html{scroll-behavior:smooth}
   --sidebar-w:220px;
 }
 [data-theme="light"]{
-  --bg:#f0f4fa;--bg2:#e8eef8;--bg3:#dce6f5;
+  --bg:#F8FAFC;--bg2:#EEF2F7;--bg3:#DCE6F5;
   --surface:rgba(255,255,255,0.82);--surface2:rgba(240,244,250,0.9);
   --border:rgba(0,100,200,0.13);--border2:rgba(0,100,200,0.25);
   --blue:#1a6fc4;--blue2:#0d5faa;--blue-glow:rgba(0,100,200,0.1);
@@ -55,7 +55,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 [data-theme="light"] .pts-block{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
 .progress-track{height:2.5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
 [data-theme="light"] .progress-track{background:rgba(0,0,0,.08)}
-.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue2));transition:width 1.2s cubic-bezier(.34,1.56,.64,1)}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.2s cubic-bezier(.34,1.56,.64,1)}
 .sidebar-nav{flex:1;overflow-y:auto;scrollbar-width:none;padding:14px 12px}
 .sidebar-nav::-webkit-scrollbar{display:none}
 .sidebar-label{font-family:var(--font-tech);font-size:.42rem;letter-spacing:.24em;color:var(--text3);text-transform:uppercase;padding:0 8px;margin:0 0 5px;}
@@ -219,9 +219,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     gap: 10px !important;
   }
   #gallery-grid > div img {
-    max-height: 160px;
-    object-fit: cover;
     width: 100%;
+    height: auto;
   }
   #gallery-grid > div > div:last-child {
     padding: 10px !important;
@@ -492,6 +491,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
             </div>
             <div id="orders-container"></div>
           </div>
+        <div id="overview-assets-section" style="margin-top:22px;display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div>
+              <p class="sh-eyebrow">⬡ HASIL DESAIN</p>
+              <h2 class="sh-title">Aset <span class="accent">Digital Kamu</span></h2>
+            </div>
+            <button onclick="switchTab('gallery',document.querySelectorAll('.nav-tab')[2])" class="badge badge-gold" style="cursor:pointer;background:none;border:1px solid rgba(201,178,109,.25);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.1em;color:var(--gold)">LIHAT SEMUA →</button>
+          </div>
+          <div id="overview-assets-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px"></div>
+        </div>
         </div>
         <div class="right-panel">
           <div class="glass" style="padding:18px">
@@ -499,14 +508,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
             <div id="invoice-summary"><div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">MEMUAT...</p></div></div>
             <button onclick="switchTab('invoices',document.querySelectorAll('.nav-tab')[2])" style="width:100%;text-align:center;font-family:var(--font-tech);font-size:.42rem;letter-spacing:.14em;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.04);cursor:pointer;background:none;border-bottom:none;border-left:none;border-right:none;transition:color .2s" onmouseover="this.style.color='rgba(58,176,255,.6)'" onmouseout="this.style.color='var(--text3)'">LIHAT SEMUA →</button>
           </div>
-          <div class="glass-gold" style="padding:18px">
-            <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
-              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>
-              <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(201,178,109,.7);text-transform:uppercase">Digital Assets</p>
-            </div>
-            <p style="font-size:.65rem;color:var(--text3);margin-bottom:13px;line-height:1.5">File siap unduh dari Alfirama Studio</p>
-            <div id="assets-container"><div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(201,178,109,.3)">BELUM ADA ASET</p></div></div>
-          </div>
+          <div id="assets-container" style="display:none"></div>
           <div class="glass-cyan" style="padding:18px">
             <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:10px">⬡ Butuh Bantuan?</p>
             <p style="font-size:.68rem;color:var(--text3);margin-bottom:13px;line-height:1.6">Tim Alfirama.ID siap membantu via WhatsApp Business kapan saja.</p>
@@ -754,6 +756,7 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 const storage=getStorage(app);
 let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null,unsubNotif=null;
+const processedPoints=new Set();
 
 /* ✅ FIX #3: Tambah variabel untuk listener panel notif agar bisa di-cleanup */
 let unsubNotifPanel=null;
@@ -1029,14 +1032,15 @@ if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.inne
   renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&o.downloadUrl));
   orders.forEach(async o=>{
     const poinDapat=Math.floor((o.total||0)/10000);
-    if(getStepIndex(o.status)===3&&!o.pointsAwarded&&poinDapat>0&&currentUser){
+    if(getStepIndex(o.status)===3&&!o.pointsAwarded&&poinDapat>0&&currentUser&&!processedPoints.has('order_'+o.id)){
+      processedPoints.add('order_'+o.id);
       const uRef=doc(db,'users',currentUser.uid);
       const uSnap=await getDoc(uRef);
       if(uSnap.exists()){
         const curPts=uSnap.data().points||0;
         await updateDoc(uRef,{points:curPts+poinDapat});
         await updateDoc(doc(db,'orders',o.id),{pointsAwarded:true});
-        await setDoc(doc(collection(db,'users',currentUser.uid,'notifications')),{
+        await addDoc(collection(db,'notifications'),{userId:currentUser.uid,
           message:`🏆 Kamu dapat +${poinDapat} poin dari order "${o.title||'Pesanan'}"!`,
           createdAt:new Date(),read:false
         });
@@ -1110,10 +1114,11 @@ function renderInvoices(invoices){
   invoices.forEach(async inv=>{
     const amt=inv.total??inv.amount??0;
     const poinDapat=Math.floor(amt/10000);
-    if(inv.paid&&!inv.pointsAwarded&&poinDapat>0&&currentUser){
+    if(inv.paid&&!inv.pointsAwarded&&poinDapat>0&&currentUser&&!processedPoints.has('inv_'+inv.id)){
       const uRef=doc(db,'users',currentUser.uid);
       const uSnap=await getDoc(uRef);
       if(uSnap.exists()){
+        processedPoints.add('inv_'+inv.id);
         const curPts=uSnap.data().points||0;
         await updateDoc(uRef,{points:curPts+poinDapat});
         await updateDoc(doc(db,'invoices',inv.id),{pointsAwarded:true});
@@ -1156,6 +1161,25 @@ function renderInvoices(invoices){
 function renderAssets(orders){
   animCounter('stat-assets',orders.length);
   animCounter('kpi-assets',orders.length);
+  const overviewSection=document.getElementById('overview-assets-section');
+  const overviewGrid=document.getElementById('overview-assets-grid');
+  if(overviewSection&&overviewGrid){
+    overviewSection.style.display=orders.length?'block':'none';
+    overviewGrid.innerHTML=orders.map(o=>`
+      <div style="background:rgba(4,12,26,.75);border:1px solid rgba(0,140,255,.13);border-radius:14px;overflow:hidden;transition:.25s;backdrop-filter:blur(12px)" onmouseover="this.style.borderColor='rgba(0,160,255,.35)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,140,255,.13)';this.style.transform='translateY(0)'">
+        ${o.previewUrl
+          ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:auto;display:block" onerror="this.style.display='none'">`
+          :`<div style="padding:28px;text-align:center;font-size:2.2rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</div>`
+        }
+        <div style="padding:12px 14px">
+          <p style="font-family:var(--font-tech);font-size:.6rem;font-weight:700;color:var(--text);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px">${escHtml(o.title||'Aset Digital')}</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+            ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
   const assetBadge=document.getElementById('kpi-assets-badge');
   if(assetBadge){if(orders.length>0){assetBadge.className='kpi-change neutral';assetBadge.textContent='Siap unduh';}else{assetBadge.className='kpi-change neutral';assetBadge.textContent='Belum ada';}}
   const gallery=document.getElementById('gallery-grid');
@@ -1186,19 +1210,20 @@ function renderAssets(orders){
   const c=document.getElementById('assets-container');
   if(!c)return;
   c.innerHTML=orders.length
-    ?orders.map(o=>`<div class="asset-panel">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
-          <span style="font-size:.9rem">🎨</span>
-          <div>
-            <p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em">${escHtml(o.title||'Aset Digital')}</p>
-            <p style="font-size:.56rem;color:rgba(58,176,255,.5);margin-top:1px">Siap diunduh</p>
+    ?`<div style="display:grid;grid-template-columns:1fr;gap:10px">`+orders.map(o=>`
+      <div style="background:rgba(0,0,0,.18);border:1px solid rgba(201,178,109,.1);border-radius:10px;overflow:hidden;transition:.25s" onmouseover="this.style.borderColor='rgba(201,178,109,.35)'" onmouseout="this.style.borderColor='rgba(201,178,109,.1)'">
+        ${o.previewUrl
+          ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:auto;display:block;" onerror="this.style.display='none'">`
+          :`<div style="padding:18px;text-align:center;font-size:1.8rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</div>`
+        }
+        <div style="padding:10px 11px">
+          <p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(o.title||'Aset Digital')}</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
+            ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+            ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
           </div>
         </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
-          ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn">Canva</a>`:''}
-        </div>
-      </div>`).join('')
+      </div>`).join('')+`</div>`
     :'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(58,176,255,.3)">BELUM ADA ASET</p></div>';
 }
 
