@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Central Command — Alfirama.ID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0A0F1D;
+  --bg2:          #070B16;
+  --bg3:          #0D1326;
+  --surface:      rgba(255,255,255,0.02);
+  --surface2:     rgba(255,255,255,0.04);
+  --border:       rgba(255,255,255,0.06);
+  --border2:      rgba(255,255,255,0.10);
+  --blue:         #3ab0ff;
+  --blue-dim:     rgba(58,176,255,0.55);
+  --blue-glow:    rgba(58,176,255,0.12);
+  --gold:         #c9b26d;
+  --gold-dim:     rgba(201,178,109,0.55);
+  --gold-glow:    rgba(201,178,109,0.10);
+  --green:        #3fb950;
+  --green-dim:    rgba(63,185,80,0.55);
+  --green-glow:   rgba(63,185,80,0.10);
+  --red:          #f85149;
+  --red-dim:      rgba(248,81,73,0.55);
+  --red-glow:     rgba(248,81,73,0.10);
+  --cyan:         #00d4c8;
+  --cyan-glow:    rgba(0,212,200,0.12);
+  --cyan-dim:     rgba(0,212,200,0.55);
+  --amber:        #e3a825;
+  --text:         #e6edf3;
+  --text2:        rgba(230,237,243,0.55);
+  --text3:        rgba(230,237,243,0.28);
+  --sidebar-w:    230px;
+  --font-tech:    'Orbitron', sans-serif;
+  --font-body:    'Montserrat', sans-serif;
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(58,176,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58,176,255,0.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#auth-gate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 20px;
+}
+
+.spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid rgba(58,176,255,0.1);
+  border-top-color: var(--blue);
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#auth-gate p {
+  font-family: var(--font-tech);
+  font-size: 0.44rem; letter-spacing: 0.26em;
+  color: rgba(58,176,255,0.5);
+}
+
+#app { display: none; position: relative; z-index: 1; min-height: 100vh; }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: rgba(7,11,22,0.92);
+  border-right: 1px solid var(--border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex; flex-direction: column;
+  z-index: 100; overflow: hidden;
+}
+
+.sidebar-logo {
+  height: 60px; flex-shrink: 0;
+  display: flex; align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border); gap: 10px;
+}
+
+.sidebar-logo-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: rgba(58,176,255,0.08);
+  border: 1px solid rgba(58,176,255,0.2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.sidebar-logo-text {
+  font-family: var(--font-tech); font-size: 0.72rem;
+  font-weight: 900; letter-spacing: 0.12em; line-height: 1;
+}
+.sidebar-logo-text .w { color: var(--text); }
+.sidebar-logo-text .b { color: var(--blue); }
+
+.sidebar-admin-badge { flex-shrink: 0; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+
+.admin-badge-inner {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; border-radius: var(--radius-sm);
+  background: var(--blue-glow); border: 1px solid rgba(58,176,255,0.15);
+}
+
+.admin-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue); box-shadow: 0 0 6px rgba(58,176,255,0.8);
+  flex-shrink: 0; animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 4px rgba(58,176,255,0.5); }
+  50%       { box-shadow: 0 0 10px rgba(58,176,255,0.9); }
+}
+
+.admin-badge-inner span {
+  font-family: var(--font-tech); font-size: 0.44rem;
+  letter-spacing: 0.18em; color: var(--blue-dim);
+}
+
+.sidebar-nav { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 14px 12px; }
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+.nav-section-label {
+  font-family: var(--font-tech); font-size: 0.38rem;
+  letter-spacing: 0.24em; color: var(--text3);
+  text-transform: uppercase; padding: 0 8px; margin: 10px 0 6px;
+}
+.nav-section-label:first-child { margin-top: 0; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 10px; border-radius: var(--radius-sm);
+  font-size: 0.76rem; font-weight: 500; color: var(--text3);
+  cursor: pointer; transition: all 0.18s ease;
+  border: 1px solid transparent; margin-bottom: 2px;
+  text-decoration: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text2); border-color: var(--border); }
+.nav-item.active { background: var(--blue-glow); color: var(--blue); border-color: rgba(58,176,255,0.18); }
+.nav-item svg { flex-shrink: 0; opacity: 0.7; }
+.nav-item.active svg { opacity: 1; }
+
+.nav-item-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: transparent; flex-shrink: 0;
+  margin-left: auto; transition: background 0.18s;
+}
+.nav-item.active .nav-item-dot { background: var(--blue); }
+
+.sidebar-divlinks { flex-shrink: 0; padding: 10px 12px; border-top: 1px solid var(--border); }
+
+.div-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px; border-radius: var(--radius-sm);
+  font-size: 0.74rem; font-weight: 500; color: var(--text3);
+  text-decoration: none; transition: all 0.18s ease;
+  border: 1px solid transparent; margin-bottom: 4px;
+}
+.div-link:hover { background: var(--gold-glow); color: var(--gold); border-color: rgba(201,178,109,0.2); }
+.div-link:last-child { margin-bottom: 0; }
+
+.sidebar-bottom { flex-shrink: 0; padding: 12px; border-top: 1px solid var(--border); }
+
+.btn-logout {
+  width: 100%; display: flex; align-items: center;
+  justify-content: center; gap: 7px;
+  padding: 9px 14px; border-radius: var(--radius-sm);
+  font-family: var(--font-tech); font-size: 0.5rem;
+  font-weight: 700; letter-spacing: 0.14em; cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(248,81,73,0.2);
+  background: rgba(248,81,73,0.05); color: var(--red-dim);
+}
+.btn-logout:hover { background: rgba(248,81,73,0.12); border-color: rgba(248,81,73,0.4); color: var(--red); }
+
+.main-wrap { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; }
+
+.top-header {
+  position: sticky; top: 0; z-index: 50; height: 60px;
+  background: rgba(10,15,29,0.9); border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; flex-shrink: 0;
+}
+
+.header-title-group { display: flex; flex-direction: column; gap: 2px; }
+.header-eyebrow { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.26em; color: rgba(58,176,255,0.45); text-transform: uppercase; }
+.header-title { font-family: var(--font-tech); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text); line-height: 1; }
+.header-title .slash { color: var(--blue); }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-clock { font-family: var(--font-tech); font-size: 0.58rem; letter-spacing: 0.12em; color: var(--text3); padding: 5px 10px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+.header-user { display: flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+.header-user-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--blue-glow); border: 1px solid rgba(58,176,255,0.25); display: flex; align-items: center; justify-content: center; }
+.header-user-name { font-size: 0.72rem; font-weight: 600; color: var(--text2); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.page-content { flex: 1; padding: 28px 32px 40px; }
+.content-panel { display: none; }
+.content-panel.active { display: block; }
+
+/* ── Analytics Row ── */
+.analytics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.analytics-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 18px; position: relative; overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.analytics-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(0,212,200,0.25),transparent); }
+.analytics-card:hover { border-color: rgba(0,212,200,0.18); transform: translateY(-1px); }
+.analytics-card-label { font-size:0.62rem; color:var(--text3); font-weight:500; margin-bottom:3px; }
+.analytics-card-value { font-family:var(--font-tech); font-size:1.3rem; font-weight:800; letter-spacing:-0.02em; color:var(--cyan); }
+.analytics-card-sub { margin-top:6px; font-size:0.6rem; color:var(--text3); }
+.analytics-card-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; background:var(--cyan-glow); border:1px solid rgba(0,212,200,0.15); }
+
+/* ── KPI Row ── */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; position: relative; overflow: hidden; transition: border-color 0.2s ease, transform 0.2s ease; }
+.kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(58,176,255,0.2), transparent); }
+.kpi-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.kpi-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.kpi-icon.blue  { background: var(--blue-glow);  border: 1px solid rgba(58,176,255,0.15); }
+.kpi-icon.gold  { background: var(--gold-glow);  border: 1px solid rgba(201,178,109,0.15); }
+.kpi-icon.green { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.15); }
+.kpi-icon.red   { background: var(--red-glow);   border: 1px solid rgba(248,81,73,0.15); }
+.kpi-label { font-size: 0.66rem; color: var(--text3); font-weight: 500; margin-bottom: 4px; }
+.kpi-value { font-family: var(--font-tech); font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+.kpi-value.blue  { color: var(--blue); }
+.kpi-value.gold  { color: var(--gold); }
+.kpi-value.green { color: var(--green); }
+.kpi-sub { margin-top: 6px; font-size: 0.6rem; color: var(--text3); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-eyebrow { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.24em; color: rgba(58,176,255,0.45); text-transform: uppercase; margin-bottom: 3px; }
+.section-title { font-family: var(--font-tech); font-size: 0.82rem; font-weight: 800; color: var(--text); letter-spacing: 0.04em; }
+.section-title .accent { color: var(--blue); }
+
+.glass { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.glass-inner { padding: 22px 24px; }
+
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-label { font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.2em; color: rgba(58,176,255,0.5); text-transform: uppercase; }
+
+.form-input,
+.form-select {
+  width: 100%; background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm); padding: 10px 13px;
+  font-family: var(--font-body); font-size: 0.82rem;
+  font-weight: 400; color: var(--text); outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none; -webkit-appearance: none;
+}
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(230,237,243,0.3)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 34px; cursor: pointer;
+}
+.form-select option { background: #0D1326; color: var(--text); }
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus, .form-select:focus { border-color: rgba(58,176,255,0.4); box-shadow: 0 0 0 3px rgba(58,176,255,0.08); }
+
+input[type="file"].form-input {
+  padding: 8px 13px;
+  cursor: pointer;
+  color: var(--text2);
+}
+input[type="file"].form-input::file-selector-button {
+  font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.12em;
+  font-weight: 700; padding: 5px 12px; margin-right: 12px;
+  border-radius: 99px; border: 1px solid rgba(58,176,255,0.25);
+  background: rgba(58,176,255,0.08); color: var(--blue);
+  cursor: pointer; transition: all 0.18s ease;
+}
+input[type="file"].form-input:hover::file-selector-button {
+  background: rgba(58,176,255,0.15); border-color: rgba(58,176,255,0.45);
+}
+
+#preview-thumb {
+  display: none;
+  width: 80px; height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(58,176,255,0.2);
+  margin-top: 4px;
+}
+#preview-thumb.show { display: block; }
+
+.form-hint {
+  font-size: 0.64rem; color: var(--text3); line-height: 1.55;
+  padding: 10px 12px; border-radius: 7px;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+  grid-column: 1 / -1;
+}
+.form-hint strong { color: rgba(201,178,109,0.75); font-weight: 600; }
+.form-hint code { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--blue-dim); background: rgba(58,176,255,0.06); padding: 1px 5px; border-radius: 4px; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 22px; border-radius: 22px;
+  font-family: var(--font-tech); font-size: 0.54rem; font-weight: 700;
+  letter-spacing: 0.14em; cursor: pointer; transition: all 0.2s ease; border: none;
+  background: linear-gradient(105deg, var(--blue), #00c8ff);
+  color: #020810; box-shadow: 0 0 18px rgba(58,176,255,0.22);
+  position: relative; overflow: hidden;
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.88; box-shadow: 0 0 28px rgba(58,176,255,0.4); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+.btn-primary.gold-btn { background: linear-gradient(105deg, #c9b26d, #e2cc8e); color: #0A0F1D; box-shadow: 0 0 18px rgba(201,178,109,0.2); }
+.btn-primary.gold-btn:hover:not(:disabled) { box-shadow: 0 0 28px rgba(201,178,109,0.4); }
+.btn-primary.cyan-btn { background: linear-gradient(105deg, #00d4c8, #00f0c0); color: #020810; box-shadow: 0 0 18px rgba(0,212,200,0.22); }
+.btn-primary.cyan-btn:hover:not(:disabled) { box-shadow: 0 0 28px rgba(0,212,200,0.5); }
+
+.btn-spinner {
+  display: none; width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid rgba(2,8,16,0.2); border-top-color: #020810;
+  animation: spin 0.7s linear infinite; flex-shrink: 0;
+}
+
+.form-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+.form-status { display: none; align-items: center; gap: 8px; padding: 9px 13px; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 500; line-height: 1.45; }
+.form-status.show { display: flex; }
+.form-status.success { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.25); color: var(--green); }
+.form-status.error   { background: var(--red-glow);   border: 1px solid rgba(248,81,73,0.25);  color: var(--red); }
+
+/* ── Filter/Search Bar ── */
+.filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; flex-wrap: wrap;
+}
+.filter-input {
+  flex: 1; min-width: 180px; max-width: 280px;
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm); padding: 8px 12px;
+  font-family: var(--font-body); font-size: 0.76rem; color: var(--text);
+  outline: none; transition: border-color 0.2s ease;
+}
+.filter-input::placeholder { color: var(--text3); }
+.filter-input:focus { border-color: rgba(58,176,255,0.35); }
+.filter-select {
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm); padding: 8px 30px 8px 12px;
+  font-family: var(--font-body); font-size: 0.76rem; color: var(--text2);
+  outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='rgba(230,237,243,0.3)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  transition: border-color 0.2s;
+}
+.filter-select option { background: #0D1326; }
+.filter-select:focus { border-color: rgba(58,176,255,0.35); outline: none; }
+
+.btn-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.12em; font-weight: 700;
+  cursor: pointer; border: 1px solid rgba(63,185,80,0.25);
+  background: rgba(63,185,80,0.06); color: rgba(63,185,80,0.7);
+  transition: all 0.18s ease; white-space: nowrap;
+}
+.btn-export:hover { background: rgba(63,185,80,0.14); border-color: rgba(63,185,80,0.45); color: var(--green); }
+
+/* ── Progress Bar ── */
+.progress-wrap { display: flex; align-items: center; gap: 7px; }
+.progress-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; min-width: 50px; }
+.progress-bar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+.progress-label { font-family: var(--font-tech); font-size: 0.36rem; letter-spacing: 0.06em; color: var(--text3); white-space: nowrap; flex-shrink: 0; }
+
+/* ── Notification Log ── */
+.notif-log-wrap { margin-top: 28px; }
+
+/* ── Reminder Bell Btn ── */
+.btn-bell {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 6px;
+  border: 1px solid rgba(227,168,37,0.2);
+  background: rgba(227,168,37,0.05); color: rgba(227,168,37,0.6);
+  cursor: pointer; transition: all 0.18s ease; flex-shrink: 0; font-size: 12px;
+}
+.btn-bell:hover { background: rgba(227,168,37,0.14); border-color: rgba(227,168,37,0.5); color: var(--amber); }
+
+.live-log-head { display: grid; gap: 0; padding: 10px 18px; border-bottom: 1px solid var(--border); }
+.live-log-head span { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.2em; color: var(--text3); text-transform: uppercase; }
+
+.log-row { display: grid; gap: 0; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.15s ease; }
+.log-row:last-child { border-bottom: none; }
+.log-row:hover { background: rgba(255,255,255,0.015); }
+.log-cell { font-size: 0.7rem; color: var(--text2); display: flex; align-items: center; }
+.log-cell.mono { font-family: 'Courier New', monospace; font-size: 0.66rem; color: var(--text3); }
+.log-empty { padding: 36px 18px; text-align: center; font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.16em; color: var(--text3); }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-tech); font-size: 0.4rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.badge.blue    { background: var(--blue-glow);  color: var(--blue);  border: 1px solid rgba(58,176,255,0.2); }
+.badge.gold    { background: var(--gold-glow);  color: var(--gold);  border: 1px solid rgba(201,178,109,0.2); }
+.badge.green   { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.2); }
+.badge.red     { background: var(--red-glow);   color: var(--red);   border: 1px solid rgba(248,81,73,0.2); }
+.badge.neutral { background: rgba(255,255,255,0.04); color: var(--text3); border: 1px solid var(--border); }
+.badge.cyan    { background: var(--cyan-glow);  color: var(--cyan);  border: 1px solid rgba(0,212,200,0.2); }
+
+#toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+  padding: 12px 18px; border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 0.8rem; font-weight: 500;
+  background: rgba(4,12,28,0.97); border: 1px solid var(--border2);
+  color: var(--text); backdrop-filter: blur(20px);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none; box-shadow: 0 8px 32px rgba(0,0,0,0.6); max-width: 320px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeInUp 0.42s cubic-bezier(0.22,1,0.36,1) both; }
+.d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.10s; }
+.d3 { animation-delay: 0.16s; } .d4 { animation-delay: 0.22s; }
+.d5 { animation-delay: 0.28s; }
+
+.toggle-pill { display: flex; align-items: center; border-radius: 22px; border: 1px solid var(--border2); overflow: hidden; background: rgba(0,0,0,0.2); }
+.toggle-option { flex: 1; padding: 9px 14px; font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.12em; font-weight: 700; cursor: pointer; border: none; background: none; color: var(--text3); transition: all 0.18s ease; text-align: center; }
+.toggle-option.selected-paid   { background: var(--green-glow); color: var(--green); }
+.toggle-option.selected-unpaid { background: var(--red-glow);   color: var(--red); }
+
+.notif-banner { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(58,176,255,0.05); border: 1px solid rgba(58,176,255,0.14); margin-bottom: 20px; }
+.notif-banner p { font-size: 0.72rem; color: var(--text3); line-height: 1.55; }
+.notif-banner strong { color: var(--text2); font-weight: 600; }
+
+.realtime-dot { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: var(--green-glow); border: 1px solid rgba(63,185,80,0.15); font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.16em; color: var(--green-dim); }
+.rt-blink { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px rgba(63,185,80,0.8); animation: blink-rt 1.6s ease-in-out infinite; }
+@keyframes blink-rt { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+.edit-banner {
+  display: none; align-items: flex-start; gap: 10px;
+  padding: 11px 14px; border-radius: 8px;
+  background: rgba(201,178,109,0.07);
+  border: 1px solid rgba(201,178,109,0.2);
+  margin-bottom: 16px;
+}
+.edit-banner.show { display: flex; }
+.edit-banner-cancel {
+  padding: 5px 12px; border-radius: 99px;
+  border: 1px solid rgba(248,81,73,0.25);
+  background: rgba(248,81,73,0.06);
+  color: rgba(248,81,73,0.7);
+  font-family: var(--font-tech); font-size: 0.4rem;
+  letter-spacing: 0.12em; cursor: pointer;
+  transition: all 0.18s ease; white-space: nowrap;
+}
+.edit-banner-cancel:hover { background: rgba(248,81,73,0.14); color: var(--red); border-color: rgba(248,81,73,0.5); }
+
+.preview-existing {
+  display: none;
+  align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 6px;
+  background: rgba(58,176,255,0.05);
+  border: 1px solid rgba(58,176,255,0.12);
+  font-size: 0.62rem; color: var(--text3); margin-top: 4px;
+}
+.preview-existing.show { display: flex; }
+.preview-existing img { width: 40px; height: 28px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(58,176,255,0.15); flex-shrink: 0; }
+.preview-existing span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ══════════════════════════════════════════════
+   DATABASE KLIEN — NEW STYLES
+══════════════════════════════════════════════ */
+
+/* Section separator */
+.db-klien-section { margin-top: 32px; }
+
+/* UID Code Badge */
+.uid-code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.6rem;
+  color: var(--blue-dim);
+  background: rgba(58,176,255,0.07);
+  border: 1px solid rgba(58,176,255,0.14);
+  border-radius: 5px;
+  padding: 2px 7px;
+  display: inline-block;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* Copy UID Button */
+.btn-copy-uid {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 5px;
+  border: 1px solid rgba(58,176,255,0.18);
+  background: rgba(58,176,255,0.05);
+  color: rgba(58,176,255,0.5);
+  cursor: pointer; font-size: 11px;
+  transition: all 0.18s ease; flex-shrink: 0;
+  vertical-align: middle; margin-left: 5px;
+  position: relative;
+}
+.btn-copy-uid:hover {
+  background: rgba(58,176,255,0.16);
+  border-color: rgba(58,176,255,0.45);
+  color: var(--blue);
+  transform: scale(1.08);
+}
+.btn-copy-uid.copied {
+  background: var(--green-glow);
+  border-color: rgba(63,185,80,0.4);
+  color: var(--green);
+}
+
+/* Send Notif Tactical Button */
+.btn-send-to-notif {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: 6px;
+  border: 1px solid rgba(58,176,255,0.2);
+  background: rgba(58,176,255,0.06);
+  color: var(--blue-dim);
+  font-family: var(--font-tech); font-size: 0.38rem;
+  font-weight: 700; letter-spacing: 0.1em;
+  cursor: pointer; transition: all 0.18s ease; white-space: nowrap;
+}
+.btn-send-to-notif:hover {
+  background: rgba(58,176,255,0.15);
+  border-color: rgba(58,176,255,0.45);
+  color: var(--blue);
+  box-shadow: 0 0 10px rgba(58,176,255,0.15);
+}
+
+/* Client DB table specific column count */
+.db-klien-log-head {
+  grid-template-columns: 0.28fr 1.2fr 1.6fr 1.1fr 0.65fr 0.9fr;
+}
+.db-klien-log-row {
+  grid-template-columns: 0.28fr 1.2fr 1.6fr 1.1fr 0.65fr 0.9fr;
+}
+
+/* Client search bar */
+.client-filter-bar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* Total order badge in client table */
+.order-count-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 20px; border-radius: 99px;
+  font-family: var(--font-tech); font-size: 0.42rem;
+  font-weight: 700; letter-spacing: 0.06em;
+  padding: 0 8px;
+}
+.order-count-badge.has-orders {
+  background: var(--blue-glow);
+  color: var(--blue);
+  border: 1px solid rgba(58,176,255,0.2);
+}
+.order-count-badge.no-orders {
+  background: rgba(255,255,255,0.03);
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════
+   END DATABASE KLIEN STYLES
+══════════════════════════════════════════════ */
+
+@media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } .analytics-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 860px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar { display: none; }
+  .form-grid-2 { grid-template-columns: 1fr; }
+  .live-log-head, .log-row { grid-template-columns: 1fr 1fr 1fr; }
+  .live-log-head span:nth-child(n+4), .log-cell:nth-child(n+4) { display: none; }
+  .analytics-row { grid-template-columns: 1fr; }
+  .db-klien-log-head, .db-klien-log-row { grid-template-columns: 0.3fr 1fr 0.8fr !important; }
+  .db-klien-log-head span:nth-child(n+4), .db-klien-log-row .log-cell:nth-child(n+4) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="auth-gate">
+  <div style="font-family:var(--font-tech);font-weight:900;font-size:1.1rem;letter-spacing:0.2em;margin-bottom:8px;">
+    <span style="color:#fff;">ALFIRAMA</span><span style="color:#3ab0ff;">.ID</span>
+  </div>
+  <div class="spinner"></div>
+  <p>VERIFYING ADMIN SESSION...</p>
+</div>
+
+<div id="toast"></div>
+
+<div id="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+          <path d="M6 26L16 6L26 26" stroke="#e6edf3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.5 21h15" stroke="#3ab0ff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="sidebar-logo-text"><span class="w">ALFIRAMA</span><span class="b">.ID</span></div>
+    </div>
+
+    <div class="sidebar-admin-badge">
+      <div class="admin-badge-inner">
+        <div class="admin-dot"></div>
+        <span>OWNER ACCESS — FULL CONTROL</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">UTAMA</p>
+      <button class="nav-item active" onclick="switchPanel('overview', this)">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Command Center<span class="nav-item-dot"></span>
+      </button>
+      <button class="nav-item" onclick="switchPanel('orders', this)">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Kelola Order<span class="nav-item-dot"></span>
+      </button>
+      <button class="nav-item" onclick="switchPanel('invoices', this)">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Invoice Generator<span class="nav-item-dot"></span>
+      </button>
+      <button class="nav-item" onclick="switchPanel('notif', this)">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        Kirim Notifikasi<span class="nav-item-dot"></span>
+      </button>
+      <p class="nav-section-label">DIVISI</p>
+    </nav>
+
+    <div class="sidebar-divlinks">
+      <a href="studio-panel.html" class="div-link">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 17l10 5 10-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12l10 5 10-5"/></svg>
+        Studio Panel
+      </a>
+      <a href="mart-panel.html" class="div-link">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        AlfiraMart Panel
+      </a>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px">
+        <span style="font-size:0.6rem;color:var(--text3);">Admin</span>
+        <span style="font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.1em;color:rgba(58,176,255,0.35);" id="sidebar-email-display">—</span>
+      </div>
+      <button onclick="doSignOut()" class="btn-logout">
+        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
+        SIGN OUT
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-wrap">
+
+    <header class="top-header">
+      <div class="header-title-group">
+        <p class="header-eyebrow">⬡ ADMIN SYSTEM — ALFIRAMA.ID</p>
+        <h1 class="header-title">CENTRAL COMMAND <span class="slash">// FULL ACCESS</span></h1>
+      </div>
+      <div class="header-right">
+        <div class="header-clock" id="header-clock">--:--:-- WIB</div>
+        <a href="../index.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(230,237,243,0.35);font-family:var(--font-body);font-size:0.62rem;font-weight:500;letter-spacing:0.04em;text-decoration:none;transition:border-color .2s,color .2s,box-shadow .2s;white-space:nowrap;"
+          onmouseover="this.style.borderColor='rgba(58,176,255,0.3)';this.style.color='rgba(230,237,243,0.8)';this.style.boxShadow='0 0 12px rgba(58,176,255,0.08)';"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='rgba(230,237,243,0.35)';this.style.boxShadow='none';">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          LIVE SITE
+        </a>
+        <div class="header-user">
+          <div class="header-user-avatar">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--blue)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </div>
+          <span class="header-user-name" id="header-email-display">Loading...</span>
+        </div>
+        <button onclick="doSignOut()" style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--radius-sm);border:1px solid rgba(248,81,73,0.2);background:rgba(248,81,73,0.05);color:rgba(248,81,73,0.6);font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.12em;cursor:pointer;transition:all .2s;"
+          onmouseover="this.style.background='rgba(248,81,73,0.12)';this.style.color='var(--red)';this.style.borderColor='rgba(248,81,73,0.4)'"
+          onmouseout="this.style.background='rgba(248,81,73,0.05)';this.style.color='rgba(248,81,73,0.6)';this.style.borderColor='rgba(248,81,73,0.2)'">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7"/></svg>
+          KELUAR
+        </button>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- ═══════════════════════════════════════
+           PANEL: OVERVIEW
+      ═══════════════════════════════════════ -->
+      <div class="content-panel active fade-in" id="panel-overview">
+
+        <!-- TIER 3: Analytics Dashboard -->
+        <div class="analytics-row fade-in d1">
+          <div class="analytics-card">
+            <div class="analytics-card-icon">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--cyan)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="analytics-card-label">Total Revenue (Invoice Lunas)</div>
+            <div class="analytics-card-value" id="ana-revenue">Rp —</div>
+            <div class="analytics-card-sub" id="ana-revenue-sub">Memuat...</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-icon">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--cyan)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div class="analytics-card-label">Order Split (Studio vs Apparel)</div>
+            <div class="analytics-card-value" id="ana-split">— / —</div>
+            <div class="analytics-card-sub" id="ana-split-sub">Studio · Apparel</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-icon">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="var(--cyan)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            </div>
+            <div class="analytics-card-label">Conversion Rate Invoice</div>
+            <div class="analytics-card-value" id="ana-conversion">—%</div>
+            <div class="analytics-card-sub" id="ana-conversion-sub">Invoice Lunas / Total Invoice</div>
+          </div>
+        </div>
+
+        <div class="kpi-row d1">
+          <div class="kpi-card fade-in d1">
+            <div class="kpi-icon blue"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--blue)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+            <div class="kpi-label">Total Order</div>
+            <div class="kpi-value blue" id="kpi-total-orders">—</div>
+            <div class="kpi-sub" id="kpi-active-orders">Memuat...</div>
+          </div>
+          <div class="kpi-card fade-in d2">
+            <div class="kpi-icon green"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--green)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="kpi-label">Order Selesai</div>
+            <div class="kpi-value green" id="kpi-done-orders">—</div>
+            <div class="kpi-sub">Status: selesai</div>
+          </div>
+          <div class="kpi-card fade-in d3">
+            <div class="kpi-icon gold"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+            <div class="kpi-label">Total Invoice</div>
+            <div class="kpi-value gold" id="kpi-total-invoices">—</div>
+            <div class="kpi-sub" id="kpi-invoice-paid">Memuat...</div>
+          </div>
+          <div class="kpi-card fade-in d4">
+            <div class="kpi-icon blue"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--blue)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg></div>
+            <div class="kpi-label">Total Klien</div>
+            <div class="kpi-value blue" id="kpi-total-users">—</div>
+            <div class="kpi-sub">Akun terdaftar</div>
+          </div>
+        </div>
+
+        <div class="notif-banner fade-in d3">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="rgba(58,176,255,0.6)" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/></svg>
+          <p>Selamat datang di <strong>Central Command Alfirama.ID</strong>. Gunakan panel <strong>Kelola Order</strong> untuk update workflow klien secara real-time, dan panel <strong>Invoice Generator</strong> untuk menerbitkan tagihan. Setiap perubahan akan langsung terdeteksi oleh listener di Client Portal.</p>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="section-head fade-in d3">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ MONITORING</p>
+            <h2 class="section-title">Order <span class="accent">Terbaru</span></h2>
+          </div>
+          <div class="realtime-dot"><div class="rt-blink"></div>LIVE SYNC</div>
+        </div>
+
+        <div class="glass fade-in d4">
+          <div class="live-log-head" style="grid-template-columns:1.2fr 1fr 0.8fr 0.8fr 1fr 0.6fr;">
+            <span>JUDUL ORDER</span><span>USER ID</span><span>STATUS</span><span>DIVISI</span><span>NOMINAL</span><span>AKSI</span>
+          </div>
+          <div id="overview-log"><div class="log-empty">MEMUAT DATA...</div></div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════
+             DATABASE KLIEN ALFIRAMA — NEW SECTION
+        ══════════════════════════════════════════════ -->
+        <div class="db-klien-section fade-in d5">
+
+          <div class="section-head" style="margin-bottom:12px;">
+            <div class="section-head-left">
+              <p class="section-eyebrow">⬡ MASTER DATA</p>
+              <h2 class="section-title">Database Klien <span class="accent">Alfirama</span></h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="realtime-dot"><div class="rt-blink"></div>LIVE LISTENER</div>
+              <button class="btn-export" onclick="exportKlienCSV()">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                EXPORT KLIEN (CSV)
+              </button>
+            </div>
+          </div>
+
+          <!-- Search bar khusus klien -->
+          <div class="client-filter-bar">
+            <input
+              type="text"
+              class="filter-input"
+              id="klien-search"
+              placeholder="🔍 Cari nama klien / email / UID..."
+              oninput="filterKlienTable()"
+              style="max-width:320px;"
+            />
+            <span style="font-size:0.62rem;color:var(--text3);margin-left:4px;" id="klien-count-label">— klien terdaftar</span>
+          </div>
+
+          <div class="glass">
+            <!-- Header kolom -->
+            <div class="live-log-head db-klien-log-head">
+              <span>NO</span>
+              <span>NAMA KLIEN</span>
+              <span>EMAIL</span>
+              <span>USER ID (UID)</span>
+              <span>TOTAL ORDER</span>
+              <span>AKSI</span>
+            </div>
+            <!-- Body tabel klien -->
+            <div id="db-klien-log">
+              <div class="log-empty">MEMUAT DATABASE KLIEN...</div>
+            </div>
+          </div>
+
+          <!-- Legend hint -->
+          <div style="display:flex;align-items:center;gap:16px;margin-top:10px;padding:0 2px;flex-wrap:wrap;">
+            <span style="font-size:0.6rem;color:var(--text3);display:flex;align-items:center;gap:5px;">
+              <span class="uid-code" style="max-width:60px;font-size:0.52rem;">UID_CONTOH</span>
+              = UID Firebase Auth klien
+            </span>
+            <span style="font-size:0.6rem;color:var(--text3);display:flex;align-items:center;gap:5px;">
+              <button class="btn-copy-uid" style="pointer-events:none;">📋</button>
+              = Salin UID ke clipboard
+            </span>
+            <span style="font-size:0.6rem;color:var(--text3);display:flex;align-items:center;gap:5px;">
+              <button class="btn-send-to-notif" style="pointer-events:none;font-size:0.34rem;">✈ NOTIF</button>
+              = Isi form notifikasi + scroll otomatis
+            </span>
+          </div>
+        </div>
+        <!-- END DATABASE KLIEN -->
+
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           PANEL: KELOLA ORDER
+      ═══════════════════════════════════════ -->
+      <div class="content-panel" id="panel-orders">
+        <div class="section-head fade-in">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ WORKFLOW MANAGEMENT</p>
+            <h2 class="section-title">Update <span class="accent">Order Klien</span></h2>
+          </div>
+          <div class="realtime-dot"><div class="rt-blink"></div>PUSH TO FIRESTORE</div>
+        </div>
+
+        <div class="glass fade-in" style="margin-bottom:24px;">
+          <div class="glass-inner">
+
+            <div class="edit-banner" id="edit-mode-banner">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              <div style="flex:1;">
+                <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:3px;">MODE EDIT AKTIF</p>
+                <p style="font-size:0.66rem;color:var(--text3);">Mengedit dokumen: <code id="edit-doc-id" style="font-family:'Courier New';font-size:0.68rem;color:rgba(58,176,255,0.7);background:rgba(58,176,176,0.06);padding:1px 5px;border-radius:4px;">—</code></p>
+              </div>
+              <button class="edit-banner-cancel" onclick="cancelEditOrder()">BATAL EDIT</button>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.2em;color:rgba(58,176,255,0.5);margin-bottom:4px;">FORM 1</p>
+              <p style="font-size:0.76rem;color:var(--text2);font-weight:600;">Management Workflow &amp; Tracking Order</p>
+              <p style="font-size:0.66rem;color:var(--text3);margin-top:3px;">Isi field di bawah lalu klik <strong style="color:var(--text2);">UPDATE WORKFLOW ORDER</strong> — data akan langsung ditulis ke collection <code style="font-family:'Courier New';font-size:0.68rem;color:var(--blue-dim);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">orders</code> di Firestore.</p>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="order-uid">User UID Klien *</label>
+                <input type="text" id="order-uid" class="form-input" placeholder="UID Firebase Auth klien (contoh: xK9mN2qP...)" autocomplete="off" spellcheck="false"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-title">Nama / Judul Project *</label>
+                <input type="text" id="order-title" class="form-input" placeholder="contoh: Logo Kopi Samar, Kaos Komunitas 80pcs" autocomplete="off"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-division">Divisi (service)</label>
+                <select id="order-division" class="form-select">
+                  <option value="studio">Studio — Desain &amp; Branding</option>
+                  <option value="apparel">Apparel — Konveksi &amp; Sablon</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-status">Tahapan Status (status)</label>
+                <select id="order-status" class="form-select">
+                  <option value="briefing">Briefing — Tahap awal konsultasi</option>
+                  <option value="desain">Desain — Proses kreatif berjalan</option>
+                  <option value="produksi">Produksi — Eksekusi &amp; cetak</option>
+                  <option value="selesai">Selesai — Deliver ke klien</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-total">Nominal Total (Rp)</label>
+                <input type="number" id="order-total" class="form-input" placeholder="contoh: 500000" min="0" step="1000"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="order-est">Tanggal Estimasi Selesai</label>
+                <input type="date" id="order-est" class="form-input"/>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="order-digital">Link File Digital (digitalFile)</label>
+                <input type="url" id="order-digital" class="form-input" placeholder="https://canva.com/... atau https://drive.google.com/..." autocomplete="off"/>
+              </div>
+
+              <div class="form-group full">
+                <label class="form-label" for="order-preview">Upload Gambar Preview</label>
+                <input type="file" id="order-preview" class="form-input" accept="image/*"/>
+                <img id="preview-thumb" class="preview-thumb" alt="preview"/>
+                <div class="preview-existing" id="preview-existing">
+                  <img id="preview-existing-img" src="" alt=""/>
+                  <span id="preview-existing-url">—</span>
+                  <span style="font-size:0.58rem;color:rgba(58,176,255,0.5);flex-shrink:0;">· gambar lama dipertahankan</span>
+                </div>
+                <span style="font-size:0.6rem;color:var(--text3);">⬆ File diupload otomatis ke Cloudinary CDN · folder: alfirama/studio — kosongkan jika tidak ingin mengganti gambar</span>
+              </div>
+
+              <div class="form-hint">
+                <strong>📌 Catatan Sistem:</strong> Field <code>userId</code> diisi otomatis dari User UID di atas. Field <code>downloadUrl</code> diambil dari Link File Digital. Saat status diset ke <code>selesai</code> dan <code>downloadUrl</code> terisi, aset akan muncul di Gallery Klien secara otomatis. Notifikasi perubahan status <strong>dikirim otomatis</strong> ke Client Portal klien setiap kali order diperbarui.
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <div class="form-status" id="order-status-msg">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span id="order-status-text">—</span>
+              </div>
+              <button class="btn-primary" id="btn-update-order" onclick="handleUpdateOrder()">
+                <div class="btn-spinner" id="order-spinner"></div>
+                <svg id="order-icon" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                <span id="order-btn-text">UPDATE WORKFLOW ORDER</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter, Search, Export -->
+        <div class="section-head" style="margin-top:8px;margin-bottom:10px;">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ RIWAYAT AKSI</p>
+            <h2 class="section-title">Log Order <span class="accent">Terbaru</span></h2>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <input type="text" class="filter-input" id="order-search" placeholder="🔍 Cari nama project / UID klien..." oninput="filterOrdersTable()"/>
+          <select class="filter-select" id="order-filter-status" onchange="filterOrdersTable()">
+            <option value="">Semua Status</option>
+            <option value="briefing">Briefing</option>
+            <option value="desain">Desain</option>
+            <option value="produksi">Produksi</option>
+            <option value="selesai">Selesai</option>
+          </select>
+          <select class="filter-select" id="order-filter-division" onchange="filterOrdersTable()">
+            <option value="">Semua Divisi</option>
+            <option value="studio">Studio</option>
+            <option value="apparel">Apparel</option>
+          </select>
+          <button class="btn-export" onclick="exportOrdersCSV()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            EXPORT DATA (CSV)
+          </button>
+        </div>
+
+        <div class="glass">
+          <div class="live-log-head" style="grid-template-columns:1.4fr 1fr 0.7fr 0.7fr 1.1fr 0.7fr 0.6fr;">
+            <span>JUDUL</span><span>USER ID</span><span>STATUS</span><span>DIVISI</span><span>PROGRESS</span><span>DITULIS</span><span>AKSI</span>
+          </div>
+          <div id="orders-live-log"><div class="log-empty">MEMUAT DATA ORDERS...</div></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           PANEL: INVOICE GENERATOR
+      ═══════════════════════════════════════ -->
+      <div class="content-panel" id="panel-invoices">
+        <div class="section-head fade-in">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ BILLING SYSTEM</p>
+            <h2 class="section-title">Invoice <span class="accent">Generator</span></h2>
+          </div>
+          <div class="realtime-dot"><div class="rt-blink"></div>PUSH TO FIRESTORE</div>
+        </div>
+
+        <div class="glass fade-in" style="margin-bottom:24px;">
+          <div class="glass-inner">
+
+            <div class="edit-banner" id="inv-edit-mode-banner">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--gold)" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              <div style="flex:1;">
+                <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:3px;">MODE EDIT AKTIF</p>
+                <p style="font-size:0.66rem;color:var(--text3);">Mengedit invoice: <code id="inv-edit-doc-id" style="font-family:'Courier New';font-size:0.68rem;color:rgba(58,176,255,0.7);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">—</code></p>
+              </div>
+              <button class="edit-banner-cancel" onclick="cancelEditInvoice()">BATAL EDIT</button>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.2em;color:rgba(201,178,109,0.5);margin-bottom:4px;">FORM 2</p>
+              <p style="font-size:0.76rem;color:var(--text2);font-weight:600;">Invoice Generator &amp; Point Conversion</p>
+              <p style="font-size:0.66rem;color:var(--text3);margin-top:3px;">Terbitkan invoice baru yang akan langsung tampil di tab <strong style="color:var(--text2);">Invoice</strong> di Client Portal klien secara real-time.</p>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="inv-uid">User UID Klien *</label>
+                <input type="text" id="inv-uid" class="form-input" placeholder="UID Firebase Auth klien yang dituju" autocomplete="off" spellcheck="false"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inv-client-name">Nama Klien</label>
+                <input type="text" id="inv-client-name" class="form-input" placeholder="contoh: Rizky Hermawan" autocomplete="off"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inv-id">Nomor Invoice (invoiceId) *</label>
+                <input type="text" id="inv-id" class="form-input" placeholder="contoh: INV/2026/06/001" autocomplete="off" spellcheck="false"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inv-title">Judul / Deskripsi Layanan *</label>
+                <input type="text" id="inv-title" class="form-input" placeholder="contoh: Jasa Desain Logo Brand Identity" autocomplete="off"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inv-amount">Nominal Tagihan — Rp (amount) *</label>
+                <input type="number" id="inv-amount" class="form-input" placeholder="contoh: 750000" min="0" step="1000"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inv-date">Tanggal Invoice</label>
+                <input type="date" id="inv-date" class="form-input"/>
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Status Pembayaran (paid)</label>
+                <div class="toggle-pill">
+                  <button class="toggle-option selected-paid" id="toggle-paid" onclick="selectPaid(true)">✓ LUNAS (paid: true)</button>
+                  <button class="toggle-option" id="toggle-unpaid" onclick="selectPaid(false)">✕ BELUM LUNAS (paid: false)</button>
+                </div>
+              </div>
+              <div class="form-hint">
+                <strong>⚙️ Logika Sistem Poin (Auto):</strong> Saat invoice diterbitkan dengan status <code>paid: true</code>, notifikasi poin otomatis dikirim ke klien dengan format: <code>+N Loyalty XP</code>. Rumus konversi: <code>Math.floor(amount / 10000)</code>. Contoh: tagihan Rp 750.000 → <code>+75 Loyalty XP 🎉</code>.
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <div class="form-status" id="inv-status-msg">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span id="inv-status-text">—</span>
+              </div>
+              <button class="btn-primary gold-btn" id="btn-publish-inv" onclick="handlePublishInvoice()">
+                <div class="btn-spinner" id="inv-spinner" style="border-top-color:#0A0F1D;border-color:rgba(10,15,29,0.2);"></div>
+                <svg id="inv-icon" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>
+                <span id="inv-btn-text">TERBITKAN INVOICE</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:8px;">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ RIWAYAT</p>
+            <h2 class="section-title">Invoice <span class="accent">Terbaru</span></h2>
+          </div>
+          <button class="btn-export" onclick="exportInvoicesCSV()">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            EXPORT INVOICE (CSV)
+          </button>
+        </div>
+        <div class="glass">
+          <div class="live-log-head" style="grid-template-columns:1.2fr 1fr 0.8fr 0.8fr 0.8fr 0.7fr;">
+            <span>INVOICE ID</span><span>JUDUL</span><span>USER ID</span><span>NOMINAL</span><span>STATUS</span><span>AKSI</span>
+          </div>
+          <div id="invoices-live-log"><div class="log-empty">MEMUAT DATA INVOICES...</div></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           PANEL: KIRIM NOTIFIKASI
+      ═══════════════════════════════════════ -->
+      <div class="content-panel" id="panel-notif">
+        <div class="section-head fade-in">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ PUSH SYSTEM</p>
+            <h2 class="section-title">Kirim <span class="accent">Notifikasi Klien</span></h2>
+          </div>
+        </div>
+        <div class="glass fade-in" id="notif-form-anchor" style="max-width:560px;margin-bottom:28px;">
+          <div class="glass-inner">
+            <div style="margin-bottom:18px;">
+              <p style="font-size:0.76rem;color:var(--text2);font-weight:600;">Push Notifikasi ke Akun Klien</p>
+              <p style="font-size:0.66rem;color:var(--text3);margin-top:3px;">Pesan akan muncul langsung di panel Notifikasi Client Portal milik klien. Ditandai sebagai belum dibaca (<code style="font-family:'Courier New';font-size:0.68rem;color:var(--blue-dim);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">read: false</code>) hingga klien membacanya.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="form-group">
+                <label class="form-label" for="notif-uid">User UID Klien *</label>
+                <input type="text" id="notif-uid" class="form-input" placeholder="UID Firebase Auth klien yang dituju" autocomplete="off" spellcheck="false"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="notif-message">Isi Pesan Notifikasi *</label>
+                <textarea id="notif-message" class="form-input" rows="4" placeholder="contoh: ✅ Desain logo kamu sudah selesai! Silakan cek tab Gallery untuk mengunduh file." style="resize:vertical;min-height:90px;line-height:1.55;"></textarea>
+              </div>
+            </div>
+            <div class="form-footer">
+              <div class="form-status" id="notif-status-msg">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span id="notif-status-text">—</span>
+              </div>
+              <button class="btn-primary cyan-btn" id="btn-broadcast" onclick="handleBroadcastAll()" style="margin-right:auto;">
+                <div class="btn-spinner" id="broadcast-spinner" style="border-top-color:#020810;border-color:rgba(2,8,16,0.2);"></div>
+                <svg id="broadcast-icon" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                <span id="broadcast-btn-text">BROADCAST KE SEMUA KLIEN</span>
+              </button>
+              <button class="btn-primary" id="btn-send-notif" onclick="handleSendNotif()">
+                <div class="btn-spinner" id="notif-spinner"></div>
+                <svg id="notif-icon" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                <span id="notif-btn-text">KIRIM NOTIFIKASI</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIER 1: Riwayat Notifikasi Global -->
+        <div class="section-head">
+          <div class="section-head-left">
+            <p class="section-eyebrow">⬡ MONITORING</p>
+            <h2 class="section-title">Log Riwayat Notifikasi <span class="accent">Global</span></h2>
+          </div>
+          <div class="realtime-dot"><div class="rt-blink"></div>LIVE</div>
+        </div>
+        <div class="glass">
+          <div class="live-log-head" style="grid-template-columns:1fr 2fr 0.8fr 0.7fr;">
+            <span>UID KLIEN</span><span>ISI PESAN</span><span>WAKTU</span><span>STATUS</span>
+          </div>
+          <div id="notif-global-log"><div class="log-empty">MEMUAT LOG NOTIFIKASI GLOBAL...</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CLOCK -->
+<script>
+(function(){
+  function tick(){
+    var now=new Date(),utc=now.getTime()+(now.getTimezoneOffset()*60000),wib=new Date(utc+7*3600000);
+    var el=document.getElementById('header-clock');
+    if(el) el.textContent=String(wib.getHours()).padStart(2,'0')+':'+String(wib.getMinutes()).padStart(2,'0')+':'+String(wib.getSeconds()).padStart(2,'0')+' WIB';
+  }
+  tick(); setInterval(tick,1000);
+})();
+</script>
+
+<!-- NAV -->
+<script>
+function switchPanel(name,btn){
+  document.querySelectorAll('.content-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var t=document.getElementById('panel-'+name);
+  if(t){t.classList.add('active');t.classList.remove('fade-in');void t.offsetWidth;t.classList.add('fade-in');}
+  if(btn) btn.classList.add('active');
+}
+window.switchPanel=switchPanel;
+</script>
+
+<!-- TOAST -->
+<script>
+function showToast(msg,dur){
+  dur=dur||3500;
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._tid);
+  t._tid=setTimeout(function(){t.classList.remove('show');},dur);
+}
+window.showToast=showToast;
+</script>
+
+<!-- PAID TOGGLE -->
+<script>
+var invoicePaid=true;
+function selectPaid(val){
+  invoicePaid=val;
+  var p=document.getElementById('toggle-paid'),u=document.getElementById('toggle-unpaid');
+  if(val){p.classList.add('selected-paid');p.classList.remove('selected-unpaid');u.classList.remove('selected-paid','selected-unpaid');}
+  else{u.classList.add('selected-unpaid');u.classList.remove('selected-paid');p.classList.remove('selected-paid','selected-unpaid');}
+}
+window.selectPaid=selectPaid;
+</script>
+
+<!-- PREVIEW FILE THUMBNAIL -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var input = document.getElementById('order-preview');
+  var thumb = document.getElementById('preview-thumb');
+  if(input && thumb){
+    input.addEventListener('change', function(){
+      var file = input.files && input.files[0];
+      if(file){
+        var reader = new FileReader();
+        reader.onload = function(e){
+          thumb.src = e.target.result;
+          thumb.classList.add('show');
+        };
+        reader.readAsDataURL(file);
+        var pe = document.getElementById('preview-existing');
+        if(pe) pe.classList.remove('show');
+      } else {
+        thumb.classList.remove('show');
+        thumb.src = '';
+      }
+    });
+  }
+});
+</script>
+
+<!-- TIER 2: Filter, Progress, CSV Utils -->
+<script>
+window._ordersCache   = [];
+window._invoicesCache = [];
+window._klienCache    = [];
+
+/* Progress bar helper */
+function progressHtml(status){
+  var map = { briefing:25, desain:50, produksi:75, selesai:100 };
+  var pct = map[status] || 0;
+  var color = pct===100?'var(--green)':pct>=75?'var(--gold)':pct>=50?'var(--blue)':'var(--text3)';
+  return '<div class="progress-wrap">'+
+    '<div class="progress-bar-track"><div class="progress-bar-fill" style="width:'+pct+'%;background:'+color+';"></div></div>'+
+    '<span class="progress-label">'+pct+'%</span>'+
+  '</div>';
+}
+
+/* Filter orders table */
+function filterOrdersTable(){
+  var search       = (document.getElementById('order-search').value||'').toLowerCase();
+  var filterStatus = document.getElementById('order-filter-status').value;
+  var filterDiv    = document.getElementById('order-filter-division').value;
+  var filtered = window._ordersCache.filter(function(item){
+    var matchSearch = !search ||
+      (item.data.title||item.data.name||'').toLowerCase().includes(search) ||
+      (item.data.userId||'').toLowerCase().includes(search);
+    var matchStatus = !filterStatus || item.data.status === filterStatus;
+    var matchDiv    = !filterDiv    || (item.data.service||item.data.division||'') === filterDiv;
+    return matchSearch && matchStatus && matchDiv;
+  });
+  renderOrdersLog(filtered);
+}
+window.filterOrdersTable = filterOrdersTable;
+
+/* Render orders log */
+function renderOrdersLog(items){
+  var el = document.getElementById('orders-live-log'); if(!el) return;
+  if(!items || items.length===0){ el.innerHTML='<div class="log-empty">TIDAK ADA DATA YANG COCOK</div>'; return; }
+  el.innerHTML = items.map(function(item){
+    var o = item.data; var docId = item.id;
+    return '<div class="log-row" style="grid-template-columns:1.4fr 1fr 0.7fr 0.7fr 1.1fr 0.7fr 0.6fr;">'+
+      '<div class="log-cell">'+truncate(o.title||o.name||'—',26)+'</div>'+
+      '<div class="log-cell mono">'+truncate(o.userId||'—',14)+'</div>'+
+      '<div class="log-cell">'+badgeHtml(o.status)+'</div>'+
+      '<div class="log-cell"><span class="badge neutral">'+(o.service||o.division||'—').toUpperCase()+'</span></div>'+
+      '<div class="log-cell">'+progressHtml(o.status)+'</div>'+
+      '<div class="log-cell" style="color:var(--text3);font-size:0.64rem;">'+formatDate(o.createdAt)+'</div>'+
+      '<div class="log-cell" style="display:flex;align-items:center;gap:4px;">'+btnEditHtml(docId,'orders')+btnDeleteHtml(docId,'orders')+'</div>'+
+    '</div>';
+  }).join('');
+}
+window.renderOrdersLog = renderOrdersLog;
+
+/* Render invoices log */
+function renderInvoicesLog(items){
+  var el=document.getElementById('invoices-live-log'); if(!el) return;
+  if(!items||items.length===0){ el.innerHTML='<div class="log-empty">BELUM ADA DATA INVOICE</div>'; return; }
+  el.innerHTML=items.map(function(item){
+    var inv=item.data; var d=item.id; var amt=inv.total||inv.amount||0;
+    var reminderBtn = (!inv.paid)
+      ? '<button class="btn-bell" title="Kirim reminder tagihan" onclick="handleSendReminder(\''+d+'\',\''+escapeAttr(inv.userId)+'\',\''+escapeAttr(inv.invoiceId)+'\','+amt+')">🔔</button>'
+      : '';
+    return '<div class="log-row" style="grid-template-columns:1.2fr 1fr 0.8fr 0.8fr 0.8fr 0.7fr;">'+
+      '<div class="log-cell mono" style="font-size:0.64rem;">'+(inv.invoiceId||d||'—')+'</div>'+
+      '<div class="log-cell">'+truncate(inv.title||'—',24)+'</div>'+
+      '<div class="log-cell mono">'+truncate(inv.userId||'—',12)+'</div>'+
+      '<div class="log-cell" style="color:var(--gold);font-family:var(--font-tech);font-size:0.66rem;">'+formatRupiah(amt)+'</div>'+
+      '<div class="log-cell"><span class="badge '+(inv.paid?'green':'red')+'">'+(inv.paid?'LUNAS':'BELUM LUNAS')+'</span></div>'+
+      '<div class="log-cell" style="display:flex;align-items:center;gap:4px;">'+reminderBtn+btnEditHtml(d,'invoices')+btnDeleteHtml(d,'invoices')+'</div>'+
+    '</div>';
+  }).join('');
+}
+window.renderInvoicesLog = renderInvoicesLog;
+
+/* ══════════════════════════════════════════════
+   DATABASE KLIEN: Filter & Render
+══════════════════════════════════════════════ */
+
+/* Render database klien — dipanggil oleh listener dan filter */
+function renderKlienLog(items){
+  var el = document.getElementById('db-klien-log'); if(!el) return;
+  var countLabel = document.getElementById('klien-count-label');
+  if(countLabel) countLabel.textContent = items.length + ' klien terdaftar';
+  if(!items || items.length===0){
+    el.innerHTML='<div class="log-empty">BELUM ADA KLIEN TERDAFTAR DI DATABASE</div>';
+    return;
+  }
+  el.innerHTML = items.map(function(item, index){
+    var uid        = item.uid;
+    var displayName= item.displayName || '—';
+    var email      = item.email || '—';
+    var orderCount = item.orderCount || 0;
+
+    /* UID truncated for display, full uid for data attr */
+    var uidDisplay = uid.length > 14 ? uid.substring(0,14)+'…' : uid;
+    var orderBadgeClass = orderCount > 0 ? 'has-orders' : 'no-orders';
+
+    return '<div class="log-row db-klien-log-row">'+
+      /* NO */
+      '<div class="log-cell" style="font-family:var(--font-tech);font-size:0.55rem;color:var(--text3);">'+(index+1)+'</div>'+
+      /* NAMA KLIEN */
+      '<div class="log-cell" style="font-weight:600;color:var(--text);">'+truncate(displayName,22)+'</div>'+
+      /* EMAIL */
+      '<div class="log-cell" style="font-size:0.66rem;color:var(--text2);">'+truncate(email,28)+'</div>'+
+      /* USER ID (UID) */
+      '<div class="log-cell" style="gap:5px;">'+
+        '<code class="uid-code" title="'+uid+'">'+uidDisplay+'</code>'+
+        '<button class="btn-copy-uid" title="Salin UID ke clipboard" onclick="copyUID(this,\''+uid+'\')">📋</button>'+
+      '</div>'+
+      /* TOTAL ORDER */
+      '<div class="log-cell">'+
+        '<span class="order-count-badge '+orderBadgeClass+'">'+orderCount+'</span>'+
+      '</div>'+
+      /* AKSI */
+      '<div class="log-cell">'+
+        '<button class="btn-send-to-notif" onclick="jumpToNotif(\''+uid+'\')">'+
+          '<svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>'+
+          ' NOTIF'+
+        '</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+window.renderKlienLog = renderKlienLog;
+
+/* Filter tabel klien secara lokal */
+function filterKlienTable(){
+  var search = (document.getElementById('klien-search').value||'').toLowerCase();
+  if(!search){
+    renderKlienLog(window._klienCache);
+    return;
+  }
+  var filtered = window._klienCache.filter(function(item){
+    return (item.displayName||'').toLowerCase().includes(search) ||
+           (item.email||'').toLowerCase().includes(search)       ||
+           (item.uid||'').toLowerCase().includes(search);
+  });
+  renderKlienLog(filtered);
+}
+window.filterKlienTable = filterKlienTable;
+
+/* Copy UID ke clipboard */
+window.copyUID = function(btn, uid){
+  navigator.clipboard.writeText(uid).then(function(){
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    showToast('✅ UID berhasil disalin: '+uid.substring(0,16)+'…');
+    setTimeout(function(){ btn.textContent='📋'; btn.classList.remove('copied'); }, 2000);
+  }).catch(function(){
+    /* Fallback untuk browser yang tidak support clipboard API */
+    var ta = document.createElement('textarea');
+    ta.value = uid; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); showToast('✅ UID disalin ke clipboard'); }
+    catch(e){ showToast('⚠️ Tidak bisa menyalin otomatis, salin manual: '+uid); }
+    document.body.removeChild(ta);
+  });
+};
+
+/* Jump to form notifikasi + isi UID secara otomatis */
+window.jumpToNotif = function(uid){
+  /* Aktifkan panel Notifikasi */
+  var notifNavBtn = null;
+  document.querySelectorAll('.nav-item').forEach(function(b){
+    if(b.textContent.trim().includes('Kirim Notifikasi')) notifNavBtn = b;
+  });
+  if(notifNavBtn) notifNavBtn.click();
+
+  /* Isi field UID dan scroll ke form */
+  setTimeout(function(){
+    var uidInput = document.getElementById('notif-uid');
+    if(uidInput){
+      uidInput.value = uid;
+      /* Highlight input sebentar agar admin tau field terisi */
+      uidInput.style.borderColor = 'rgba(0,212,200,0.6)';
+      uidInput.style.boxShadow   = '0 0 0 3px rgba(0,212,200,0.1)';
+      setTimeout(function(){
+        uidInput.style.borderColor = '';
+        uidInput.style.boxShadow   = '';
+      }, 2000);
+    }
+    var anchor = document.getElementById('notif-form-anchor');
+    if(anchor) anchor.scrollIntoView({ behavior:'smooth', block:'start' });
+    showToast('✈️ UID klien sudah diisi — tulis pesan lalu kirim notifikasi!');
+  }, 120);
+};
+
+/* Export Klien CSV */
+function exportKlienCSV(){
+  var data = window._klienCache;
+  if(!data||!data.length){ showToast('⚠️ Belum ada data klien untuk di-export'); return; }
+  var header = ['No','Nama Klien','Email','User UID','Total Order'];
+  var rows = data.map(function(item, i){
+    return [i+1, item.displayName||'', item.email||'', item.uid||'', item.orderCount||0];
+  });
+  downloadCSV('database_klien_alfirama_'+new Date().toISOString().split('T')[0]+'.csv', [header].concat(rows));
+  showToast('✅ File CSV database klien berhasil diunduh');
+}
+window.exportKlienCSV = exportKlienCSV;
+
+/* TIER 3 Reminder Bell */
+window.handleSendReminder = async function(docId, uid, invoiceId, amount){
+  if(!uid){ showToast('⚠️ UID klien tidak ditemukan di data invoice ini'); return; }
+  var msg = '⚠️ PENGINGAT: Tagihan Invoice #'+invoiceId+' Anda sebesar '+formatRupiah(amount)+' belum terlunasi. Silakan lakukan pembayaran.';
+  if(!confirm('Kirim reminder ke klien UID: '+uid+'?\n\n'+msg)) return;
+  try{
+    await window._firestoreAddNotif(uid, msg);
+    showToast('🔔 Reminder tagihan berhasil dikirim ke klien');
+  } catch(err){ showToast('❌ Gagal kirim reminder: '+err.message, 5000); }
+};
+
+/* Escape attribute helper */
+function escapeAttr(str){ return (str||'').replace(/'/g,"\\'"); }
+
+/* CSV Export (orders & invoices) */
+function exportOrdersCSV(){
+  var data = window._ordersCache;
+  if(!data||!data.length){ showToast('⚠️ Belum ada data orders untuk di-export'); return; }
+  var header = ['ID Dokumen','Judul Project','User UID','Divisi','Status','Total (Rp)','Tanggal Dibuat'];
+  var rows = data.map(function(item){
+    var o=item.data;
+    return [item.id, o.title||o.name||'', o.userId||'', o.service||o.division||'', o.status||'', o.total||0, formatDate(o.createdAt)];
+  });
+  downloadCSV('orders_alfirama_'+new Date().toISOString().split('T')[0]+'.csv', [header].concat(rows));
+  showToast('✅ File CSV orders berhasil diunduh');
+}
+window.exportOrdersCSV = exportOrdersCSV;
+
+function exportInvoicesCSV(){
+  var data = window._invoicesCache;
+  if(!data||!data.length){ showToast('⚠️ Belum ada data invoices untuk di-export'); return; }
+  var header = ['ID Dokumen','Invoice ID','Judul Layanan','User UID','Nama Klien','Nominal (Rp)','Status Bayar','Tanggal Invoice'];
+  var rows = data.map(function(item){
+    var inv=item.data; var amt=inv.total||inv.amount||0;
+    return [item.id, inv.invoiceId||'', inv.title||'', inv.userId||'', inv.clientName||'', amt, inv.paid?'LUNAS':'BELUM LUNAS', formatDate(inv.date)];
+  });
+  downloadCSV('invoices_alfirama_'+new Date().toISOString().split('T')[0]+'.csv', [header].concat(rows));
+  showToast('✅ File CSV invoices berhasil diunduh');
+}
+window.exportInvoicesCSV = exportInvoicesCSV;
+
+function downloadCSV(filename, rows){
+  var csv = rows.map(function(row){
+    return row.map(function(cell){
+      var s = String(cell).replace(/"/g,'""');
+      if(s.includes(',')||s.includes('"')||s.includes('\n')) s='"'+s+'"';
+      return s;
+    }).join(',');
+  }).join('\r\n');
+  var blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+</script>
+
+<!-- FIREBASE MODULE -->
+<script type="module">
+const CLOUDINARY_CLOUD_NAME    = 'dt4vktmo6';
+const CLOUDINARY_UPLOAD_PRESET = 'Alfirama.ID';
+
+import { initializeApp }         from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {
+  getFirestore, collection, collectionGroup, doc,
+  addDoc, updateDoc, deleteDoc,
+  query, orderBy, limit, where,
+  serverTimestamp, onSnapshot,
+  getCountFromServer, getDocs, Timestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+  authDomain:        "alfirama-id.firebaseapp.com",
+  projectId:         "alfirama-id",
+  storageBucket:     "alfirama-id.firebasestorage.app",
+  messagingSenderId: "1036820056484",
+  appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
+  measurementId:     "G-V3QGL2R207"
+};
+
+const ADMIN_EMAILS = ["alfirama1945@gmail.com","alfirama.id@gmail.com"];
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+function isAdmin(email){ return email && ADMIN_EMAILS.map(e=>e.trim().toLowerCase()).includes(email.trim().toLowerCase()); }
+
+/* Expose Firestore addDoc for notif so non-module scripts can call it */
+window._firestoreAddNotif = async function(uid, message){
+  await addDoc(collection(db,'users',uid,'notifications'),{
+    message: message, createdAt: serverTimestamp(), read: false
+  });
+};
+
+onAuthStateChanged(auth, function(user){
+  if(!user || !isAdmin(user.email)){ signOut(auth).catch(()=>{}); window.location.href='login.html'; return; }
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  var em=user.email||'—';
+  var e1=document.getElementById('header-email-display'), e2=document.getElementById('sidebar-email-display');
+  if(e1) e1.textContent=em;
+  if(e2) e2.textContent=em.split('@')[0].toUpperCase();
+  initKPIs(); initOverviewLog(); initOrdersLog(); initInvoicesLog(); initAnalytics(); initGlobalNotifLog(); initKlienDatabase();
+  var today=new Date().toISOString().split('T')[0];
+  var estEl=document.getElementById('order-est'), invDateEl=document.getElementById('inv-date');
+  if(estEl) estEl.value=today;
+  if(invDateEl) invDateEl.value=today;
+  var now=new Date(), invIdEl=document.getElementById('inv-id');
+  if(invIdEl) invIdEl.placeholder='INV/'+now.getFullYear()+'/'+String(now.getMonth()+1).padStart(2,'0')+'/001';
+});
+
+window.doSignOut = async function(){ await signOut(auth); window.location.href='login.html'; };
+
+/* ── Helpers ── */
+window.formatRupiah = function(n){ return 'Rp '+Number(n||0).toLocaleString('id-ID'); };
+window.formatDate   = function(ts){
+  if(!ts) return '—';
+  var d=ts.toDate?ts.toDate():new Date(ts);
+  return isNaN(d.getTime())?'—':d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+};
+function formatDatetime(ts){
+  if(!ts) return '—';
+  var d=ts.toDate?ts.toDate():new Date(ts);
+  if(isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'2-digit'})+
+    ' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+window.truncate = function(str,n){ return !str?'—':str.length>n?str.substring(0,n)+'…':str; };
+window.badgeHtml = function(s){ var m={briefing:'neutral',desain:'blue',produksi:'gold',selesai:'green'}; return '<span class="badge '+(m[s]||'neutral')+'">'+(s||'—').toUpperCase()+'</span>'; };
+
+function statusBtnLoading(btnId,spinnerId,iconId,textId,loading,loadingText,defaultText){
+  var btn=document.getElementById(btnId),sp=document.getElementById(spinnerId),ic=document.getElementById(iconId),tx=document.getElementById(textId);
+  if(!btn) return;
+  btn.disabled=loading; sp.style.display=loading?'block':'none';
+  ic.style.display=loading?'none':'block'; tx.textContent=loading?loadingText:defaultText;
+}
+
+function showFormStatus(msgElId,textElId,type,msg){
+  var box=document.getElementById(msgElId),span=document.getElementById(textElId);
+  if(!box||!span) return;
+  box.className='form-status show '+type; span.textContent=msg;
+  setTimeout(function(){ box.classList.remove('show'); },5000);
+}
+
+/* ── Action Buttons ── */
+function btnEditHtml(docId,col){
+  return '<button title="Edit" onmouseenter="this.style.color=\'#00F0FF\';this.style.borderColor=\'rgba(0,240,255,0.5)\';this.style.background=\'rgba(0,240,255,0.08)\';" onmouseleave="this.style.color=\'rgba(230,237,243,0.3)\';this.style.borderColor=\'rgba(255,255,255,0.08)\';this.style.background=\'transparent\';" onclick="handleEditBtn(\''+docId+'\',\''+col+'\')" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(230,237,243,0.3);cursor:pointer;transition:all .18s ease;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>';
+}
+window.btnEditHtml = btnEditHtml;
+function btnDeleteHtml(docId,col){
+  return '<button title="Hapus" onmouseenter="this.style.color=\'#f85149\';this.style.borderColor=\'rgba(248,81,73,0.5)\';this.style.background=\'rgba(248,81,73,0.12)\';" onmouseleave="this.style.color=\'rgba(248,81,73,0.5)\';this.style.borderColor=\'rgba(248,81,73,0.18)\';this.style.background=\'transparent\';" onclick="handleDeleteBtn(\''+docId+'\',\''+col+'\')" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;border:1px solid rgba(248,81,73,0.18);background:transparent;color:rgba(248,81,73,0.5);cursor:pointer;transition:all .18s ease;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>';
+}
+window.btnDeleteHtml = btnDeleteHtml;
+
+window._snapCache = {};
+
+window.handleEditBtn = function(docId, colName){
+  var data = window._snapCache[docId];
+  if(!data){ showToast('⚠️ Data tidak ditemukan di cache, coba reload'); return; }
+  if(colName==='orders'){
+    document.querySelectorAll('.nav-item').forEach(function(b){ if(b.textContent.trim().includes('Kelola Order')) b.click(); });
+    setTimeout(function(){ if(window.loadOrderToForm) window.loadOrderToForm(docId,data); },150);
+  } else if(colName==='invoices'){
+    document.querySelectorAll('.nav-item').forEach(function(b){ if(b.textContent.trim().includes('Invoice Generator')) b.click(); });
+    setTimeout(function(){ if(window.loadInvoiceToForm) window.loadInvoiceToForm(docId,data); },150);
+  }
+};
+
+window.handleDeleteBtn = async function(docId,colName){
+  var label=colName==='orders'?'order':'invoice';
+  if(!confirm('⚠️ KONFIRMASI HAPUS DATA\n\nAnda akan menghapus '+label+' dengan ID:\n'+docId+'\n\nData yang dihapus TIDAK BISA dikembalikan.\n\nApakah Anda yakin?')) return;
+  try{
+    await deleteDoc(doc(db,colName,docId));
+    showToast('🗑️ Data berhasil dihapus — Client Portal update real-time');
+    initKPIs();
+  } catch(err){ showToast('❌ Gagal menghapus: '+err.message,5000); console.error('Delete error:',err); }
+};
+
+/* ── KPIs ── */
+async function initKPIs(){
+  try{
+    var os=await getCountFromServer(collection(db,'orders')); animCounter('kpi-total-orders',os.data().count);
+    var ac=await getCountFromServer(query(collection(db,'orders'),where('status','!=','selesai')));
+    var acEl=document.getElementById('kpi-active-orders'); if(acEl) acEl.textContent=ac.data().count+' order berjalan';
+    var dn=await getCountFromServer(query(collection(db,'orders'),where('status','==','selesai'))); animCounter('kpi-done-orders',dn.data().count);
+    var iv=await getCountFromServer(collection(db,'invoices')); animCounter('kpi-total-invoices',iv.data().count);
+    var pd=await getCountFromServer(query(collection(db,'invoices'),where('paid','==',true)));
+    var pdEl=document.getElementById('kpi-invoice-paid'); if(pdEl) pdEl.textContent=pd.data().count+' sudah lunas';
+    var us=await getCountFromServer(collection(db,'users')); animCounter('kpi-total-users',us.data().count);
+  } catch(err){ console.warn('KPI error:',err); }
+}
+function animCounter(id,target,dur){
+  dur=dur||700; var el=document.getElementById(id); if(!el) return;
+  if(!target){ el.textContent='0'; return; }
+  var startTs=null;
+  function step(ts){ if(!startTs) startTs=ts; var p=Math.min((ts-startTs)/dur,1); el.textContent=Math.floor((1-Math.pow(1-p,3))*target); if(p<1) requestAnimationFrame(step); else el.textContent=target; }
+  requestAnimationFrame(step);
+}
+
+/* ── TIER 3: Analytics Dashboard ── */
+function initAnalytics(){
+  onSnapshot(query(collection(db,'invoices'),where('paid','==',true)), function(snap){
+    var total = snap.docs.reduce(function(sum,d){ var inv=d.data(); return sum+(inv.total||inv.amount||0); },0);
+    var el=document.getElementById('ana-revenue');
+    if(el) el.textContent=window.formatRupiah(total);
+    var sub=document.getElementById('ana-revenue-sub');
+    if(sub) sub.textContent=snap.size+' invoice lunas';
+  });
+
+  onSnapshot(collection(db,'orders'), function(snap){
+    var studio=0, apparel=0;
+    snap.docs.forEach(function(d){ var svc=d.data().service||d.data().division||''; if(svc==='studio') studio++; else if(svc==='apparel') apparel++; });
+    var el=document.getElementById('ana-split'); if(el) el.textContent=studio+' / '+apparel;
+    var sub=document.getElementById('ana-split-sub'); if(sub) sub.textContent='Studio ('+studio+') · Apparel ('+apparel+')';
+  });
+
+  onSnapshot(collection(db,'invoices'), function(snap){
+    var total=snap.size, paid=snap.docs.filter(function(d){ return d.data().paid===true; }).length;
+    var rate=total>0?Math.round((paid/total)*100):0;
+    var el=document.getElementById('ana-conversion'); if(el) el.textContent=rate+'%';
+    var sub=document.getElementById('ana-conversion-sub'); if(sub) sub.textContent=paid+' lunas dari '+total+' total invoice';
+  });
+}
+
+/* ── Overview Log ── */
+function initOverviewLog(){
+  onSnapshot(query(collection(db,'orders'),orderBy('createdAt','desc'),limit(8)), function(snap){
+    var el=document.getElementById('overview-log'); if(!el) return;
+    if(snap.empty){ el.innerHTML='<div class="log-empty">BELUM ADA DATA ORDER</div>'; return; }
+    snap.docs.forEach(function(d){ window._snapCache[d.id]=d.data(); });
+    el.innerHTML=snap.docs.map(function(d){
+      var o=d.data();
+      return '<div class="log-row" style="grid-template-columns:1.2fr 1fr 0.8fr 0.8fr 1fr 0.6fr;">'+
+        '<div class="log-cell">'+window.truncate(o.title||o.name||'—',26)+'</div>'+
+        '<div class="log-cell mono">'+window.truncate(o.userId||'—',12)+'</div>'+
+        '<div class="log-cell">'+window.badgeHtml(o.status)+'</div>'+
+        '<div class="log-cell"><span class="badge neutral">'+(o.service||o.division||'—').toUpperCase()+'</span></div>'+
+        '<div class="log-cell" style="color:var(--gold);font-family:var(--font-tech);font-size:0.66rem;">'+window.formatRupiah(o.total)+'</div>'+
+        '<div class="log-cell" style="display:flex;align-items:center;gap:6px;">'+btnEditHtml(d.id,'orders')+btnDeleteHtml(d.id,'orders')+'</div>'+
+      '</div>';
+    }).join('');
+  }, function(err){ console.error('Overview log error:',err); });
+}
+
+/* ── Orders Log ── */
+function initOrdersLog(){
+  onSnapshot(query(collection(db,'orders'),orderBy('createdAt','desc'),limit(50)), function(snap){
+    snap.docs.forEach(function(d){ window._snapCache[d.id]=d.data(); });
+    window._ordersCache = snap.docs.map(function(d){ return {id:d.id, data:d.data()}; });
+    window.filterOrdersTable();
+  }, function(err){ console.error('Orders log error:',err); });
+}
+
+/* ── Invoices Log ── */
+function initInvoicesLog(){
+  onSnapshot(query(collection(db,'invoices'),orderBy('date','desc'),limit(50)), function(snap){
+    snap.docs.forEach(function(d){ window._snapCache[d.id]=d.data(); });
+    window._invoicesCache = snap.docs.map(function(d){ return {id:d.id, data:d.data()}; });
+    window.renderInvoicesLog(window._invoicesCache);
+  }, function(err){ console.error('Invoices log error:',err); });
+}
+
+/* ══════════════════════════════════════════════
+   DATABASE KLIEN — Real-time Listener (NEW)
+══════════════════════════════════════════════ */
+function initKlienDatabase(){
+  /*
+   * Listener 1: Pantau collection 'users' untuk data profil klien.
+   * Listener 2: Pantau collection 'orders' untuk menghitung total order per UID.
+   * Setiap kali salah satu berubah, tabel di-render ulang secara otomatis.
+   */
+  var usersData  = {};   /* { uid: { displayName, email } } */
+  var ordersData = {};   /* { uid: count } */
+
+  function rebuildAndRender(){
+    /* Gabungkan data users + hitungan order, lalu render */
+    var combined = Object.keys(usersData).map(function(uid){
+      return {
+        uid:         uid,
+        displayName: usersData[uid].displayName || usersData[uid].name || '—',
+        email:       usersData[uid].email || '—',
+        orderCount:  ordersData[uid] || 0
+      };
+    });
+    /* Sort: terbanyak order dulu, sama order sort by displayName */
+    combined.sort(function(a,b){
+      if(b.orderCount !== a.orderCount) return b.orderCount - a.orderCount;
+      return (a.displayName||'').localeCompare(b.displayName||'');
+    });
+    window._klienCache = combined;
+    window.filterKlienTable(); /* render dengan filter aktif jika ada */
+    /* Update KPI total klien */
+    animCounter('kpi-total-users', combined.length);
+  }
+
+  /* Listener users collection */
+  onSnapshot(collection(db,'users'), function(snap){
+    /* Reset & rebuild users map */
+    usersData = {};
+    snap.docs.forEach(function(d){
+      usersData[d.id] = d.data();
+    });
+    rebuildAndRender();
+  }, function(err){ console.error('DB Klien users listener error:',err); });
+
+  /* Listener orders collection — hitung per userId */
+  onSnapshot(collection(db,'orders'), function(snap){
+    ordersData = {};
+    snap.docs.forEach(function(d){
+      var uid = d.data().userId || d.data().uid;
+      if(uid) ordersData[uid] = (ordersData[uid]||0) + 1;
+    });
+    rebuildAndRender();
+  }, function(err){ console.error('DB Klien orders count listener error:',err); });
+}
+
+/* ── TIER 1: Global Notifications Log (collectionGroup) ── */
+function initGlobalNotifLog(){
+  onSnapshot(
+    query(collectionGroup(db,'notifications'), orderBy('createdAt','desc'), limit(30)),
+    function(snap){
+      var el=document.getElementById('notif-global-log'); if(!el) return;
+      if(snap.empty){ el.innerHTML='<div class="log-empty">BELUM ADA NOTIFIKASI TERKIRIM</div>'; return; }
+      el.innerHTML=snap.docs.map(function(d){
+        var notif=d.data();
+        var pathParts = d.ref.path.split('/');
+        var clientUID = pathParts.length>=4 ? pathParts[1] : '—';
+        return '<div class="log-row" style="grid-template-columns:1fr 2fr 0.8fr 0.7fr;">'+
+          '<div class="log-cell mono" style="font-size:0.64rem;">'+window.truncate(clientUID,16)+'</div>'+
+          '<div class="log-cell" style="font-size:0.68rem;color:var(--text2);">'+window.truncate(notif.message||'—',60)+'</div>'+
+          '<div class="log-cell" style="font-size:0.62rem;color:var(--text3);">'+formatDatetime(notif.createdAt)+'</div>'+
+          '<div class="log-cell"><span class="badge '+(notif.read?'green':'red')+'">'+(notif.read?'DIBACA':'BELUM')+'</span></div>'+
+        '</div>';
+      }).join('');
+    }, function(err){ console.error('Global notif log error:',err); }
+  );
+}
+
+/* ── loadOrderToForm ── */
+window.loadOrderToForm = function(docId, data){
+  window._editingOrderId = docId;
+  document.getElementById('order-uid').value     = data.userId || '';
+  document.getElementById('order-title').value   = data.title||data.name || '';
+  document.getElementById('order-total').value   = data.total || '';
+  document.getElementById('order-digital').value = data.downloadUrl||data.digitalFile || '';
+  var fileInput = document.getElementById('order-preview');
+  if(fileInput) fileInput.value = '';
+  var thumb = document.getElementById('preview-thumb');
+  if(thumb){ thumb.src=''; thumb.classList.remove('show'); }
+  var peBox = document.getElementById('preview-existing');
+  var peImg = document.getElementById('preview-existing-img');
+  var peUrl = document.getElementById('preview-existing-url');
+  if(data.previewUrl && peBox && peImg && peUrl){
+    peImg.src = data.previewUrl;
+    peUrl.textContent = window.truncate(data.previewUrl, 55);
+    peBox.classList.add('show');
+  } else if(peBox){ peBox.classList.remove('show'); }
+  var divEl=document.getElementById('order-division'); if(divEl) divEl.value=data.service||data.division||'studio';
+  var stEl=document.getElementById('order-status');   if(stEl)  stEl.value=data.status||'briefing';
+  var btnText=document.getElementById('order-btn-text'), btnEl=document.getElementById('btn-update-order');
+  if(btnText) btnText.textContent='SIMPAN PERUBAHAN DATA (MODE EDIT)';
+  if(btnEl){ btnEl.style.background='linear-gradient(105deg,#c9b26d,#e2cc8e)'; btnEl.style.color='#0A0F1D'; btnEl.style.boxShadow='0 0 18px rgba(201,178,109,0.35)'; }
+  var banner=document.getElementById('edit-mode-banner'), docIdEl=document.getElementById('edit-doc-id');
+  if(banner) banner.classList.add('show');
+  if(docIdEl) docIdEl.textContent=docId;
+  var formEl=document.querySelector('#panel-orders .glass');
+  if(formEl) formEl.scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('✏️ Mode edit aktif — ubah data lalu klik SIMPAN PERUBAHAN DATA');
+};
+
+/* ── cancelEditOrder ── */
+window.cancelEditOrder = function(){
+  window._editingOrderId = null;
+  var btnText=document.getElementById('order-btn-text'), btnEl=document.getElementById('btn-update-order');
+  if(btnText) btnText.textContent='UPDATE WORKFLOW ORDER';
+  if(btnEl){ btnEl.style.background='linear-gradient(105deg,var(--blue),#00c8ff)'; btnEl.style.color='#020810'; btnEl.style.boxShadow='0 0 18px rgba(58,176,255,0.22)'; }
+  var banner=document.getElementById('edit-mode-banner');
+  if(banner) banner.classList.remove('show');
+  ['order-uid','order-title','order-total','order-digital'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  var fileInput=document.getElementById('order-preview'); if(fileInput) fileInput.value='';
+  var thumb=document.getElementById('preview-thumb'); if(thumb){ thumb.src=''; thumb.classList.remove('show'); }
+  var peBox=document.getElementById('preview-existing'); if(peBox) peBox.classList.remove('show');
+  showToast('↩️ Mode edit dibatalkan — form dikembalikan ke mode normal');
+};
+
+/* ── loadInvoiceToForm ── */
+window.loadInvoiceToForm = function(docId, data){
+  window._editingInvoiceId = docId;
+  document.getElementById('inv-uid').value         = data.userId     || '';
+  document.getElementById('inv-client-name').value = data.clientName || '';
+  document.getElementById('inv-id').value           = data.invoiceId  || '';
+  document.getElementById('inv-title').value        = data.title      || '';
+  document.getElementById('inv-amount').value       = data.total||data.amount || '';
+  if(data.date){
+    var d=data.date.toDate?data.date.toDate():new Date(data.date);
+    if(!isNaN(d.getTime())) document.getElementById('inv-date').value=d.toISOString().split('T')[0];
+  }
+  selectPaid(data.paid!==false);
+  var btnText=document.getElementById('inv-btn-text'), btnEl=document.getElementById('btn-publish-inv');
+  if(btnText) btnText.textContent='SIMPAN PERUBAHAN DATA (MODE EDIT)';
+  if(btnEl){ btnEl.style.background='linear-gradient(105deg,#e2a225,#f0c040)'; btnEl.style.color='#0A0F1D'; btnEl.style.boxShadow='0 0 22px rgba(226,162,37,0.4)'; }
+  var banner=document.getElementById('inv-edit-mode-banner'), docIdEl=document.getElementById('inv-edit-doc-id');
+  if(banner) banner.classList.add('show');
+  if(docIdEl) docIdEl.textContent=docId;
+  var formEl=document.querySelector('#panel-invoices .glass');
+  if(formEl) formEl.scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('✏️ Mode edit invoice aktif — ubah data lalu klik SIMPAN PERUBAHAN DATA');
+};
+
+/* ── cancelEditInvoice ── */
+window.cancelEditInvoice = function(){
+  window._editingInvoiceId = null;
+  var btnText=document.getElementById('inv-btn-text'), btnEl=document.getElementById('btn-publish-inv');
+  if(btnText) btnText.textContent='TERBITKAN INVOICE';
+  if(btnEl){ btnEl.style.background='linear-gradient(105deg,#c9b26d,#e2cc8e)'; btnEl.style.color='#0A0F1D'; btnEl.style.boxShadow='0 0 18px rgba(201,178,109,0.2)'; }
+  var banner=document.getElementById('inv-edit-mode-banner');
+  if(banner) banner.classList.remove('show');
+  ['inv-uid','inv-client-name','inv-id','inv-title','inv-amount'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+  selectPaid(true);
+  showToast('↩️ Mode edit invoice dibatalkan — form dikembalikan ke mode normal');
+};
+
+/* ── TIER 1: Broadcast ke semua klien ── */
+window.handleBroadcastAll = async function(){
+  var message = (document.getElementById('notif-message').value||'').trim();
+  if(!message){ showToast('⚠️ Isi pesan notifikasi wajib diisi sebelum broadcast'); document.getElementById('notif-message').focus(); return; }
+  if(!confirm('📢 BROADCAST KE SEMUA KLIEN\n\nPesan berikut akan dikirim ke SEMUA akun yang terdaftar di collection users:\n\n"'+message+'"\n\nApakah Anda yakin?')) return;
+  statusBtnLoading('btn-broadcast','broadcast-spinner','broadcast-icon','broadcast-btn-text', true,'SEDANG BROADCAST...','BROADCAST KE SEMUA KLIEN');
+  try{
+    var usersSnap = await getDocs(collection(db,'users'));
+    if(usersSnap.empty){ showToast('⚠️ Tidak ada user yang terdaftar di collection users'); statusBtnLoading('btn-broadcast','broadcast-spinner','broadcast-icon','broadcast-btn-text',false,'','BROADCAST KE SEMUA KLIEN'); return; }
+    var promises = usersSnap.docs.map(function(d){
+      return addDoc(collection(db,'users',d.id,'notifications'),{ message:message, createdAt:serverTimestamp(), read:false });
+    });
+    await Promise.all(promises);
+    document.getElementById('notif-message').value='';
+    statusBtnLoading('btn-broadcast','broadcast-spinner','broadcast-icon','broadcast-btn-text',false,'','BROADCAST KE SEMUA KLIEN');
+    showFormStatus('notif-status-msg','notif-status-text','success','✅ Broadcast berhasil ke '+usersSnap.size+' klien!');
+    showToast('📢 Broadcast berhasil terkirim ke '+usersSnap.size+' klien secara serempak', 5000);
+  } catch(err){
+    statusBtnLoading('btn-broadcast','broadcast-spinner','broadcast-icon','broadcast-btn-text',false,'','BROADCAST KE SEMUA KLIEN');
+    showFormStatus('notif-status-msg','notif-status-text','error','❌ Gagal broadcast: '+err.message);
+    showToast('❌ Gagal broadcast: '+err.message, 5000);
+    console.error('Broadcast error:',err);
+  }
+};
+
+/* ── handleUpdateOrder (dengan notifikasi otomatis status) ── */
+window.handleUpdateOrder = async function(){
+  var uid     = (document.getElementById('order-uid').value||'').trim();
+  var title   = (document.getElementById('order-title').value||'').trim();
+  var division= document.getElementById('order-division').value;
+  var status  = document.getElementById('order-status').value;
+  var total   = parseInt(document.getElementById('order-total').value||'0',10)||0;
+  var estRaw  = document.getElementById('order-est').value;
+  var digital = (document.getElementById('order-digital').value||'').trim();
+  var fileInput = document.getElementById('order-preview');
+  var previewFile = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+
+  if(!uid)  { showToast('⚠️ User UID Klien wajib diisi'); document.getElementById('order-uid').focus(); return; }
+  if(!title){ showToast('⚠️ Nama / Judul Project wajib diisi'); document.getElementById('order-title').focus(); return; }
+
+  var isEditMode   = !!window._editingOrderId;
+  var defaultLabel = isEditMode ? 'SIMPAN PERUBAHAN DATA (MODE EDIT)' : 'UPDATE WORKFLOW ORDER';
+  statusBtnLoading('btn-update-order','order-spinner','order-icon','order-btn-text', true, previewFile?'MENGUPLOAD GAMBAR...':'MENYIMPAN...', defaultLabel);
+
+  var preview = '';
+  if(previewFile){
+    try{
+      var fd = new FormData();
+      fd.append('file', previewFile);
+      fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      fd.append('folder', 'alfirama/studio');
+      var cdnRes = await fetch('https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD_NAME+'/image/upload', {method:'POST',body:fd});
+      if(!cdnRes.ok) throw new Error('Cloudinary HTTP '+cdnRes.status);
+      var cdnJson = await cdnRes.json();
+      preview = cdnJson.secure_url || '';
+      if(!preview) throw new Error('secure_url kosong dari Cloudinary');
+      showToast('☁️ Gambar berhasil diupload ke CDN — melanjutkan simpan data...');
+    } catch(cdnErr){
+      statusBtnLoading('btn-update-order','order-spinner','order-icon','order-btn-text', false,'',defaultLabel);
+      showFormStatus('order-status-msg','order-status-text','error','❌ Upload gagal: '+cdnErr.message);
+      showToast('❌ Upload Cloudinary gagal: '+cdnErr.message, 6000);
+      console.error('Cloudinary error:',cdnErr);
+      return;
+    }
+  } else if(isEditMode){
+    var cached = window._snapCache && window._snapCache[window._editingOrderId];
+    preview = (cached && cached.previewUrl) || '';
+  }
+
+  statusBtnLoading('btn-update-order','order-spinner','order-icon','order-btn-text', true,'MENYIMPAN...',defaultLabel);
+
+  var statusLabel = {briefing:'Briefing (Konsultasi Awal)',desain:'Desain (Proses Kreatif)',produksi:'Produksi (Eksekusi & Cetak)',selesai:'Selesai ✅'};
+
+  try{
+    var orderData = {
+      userId:uid, title:title, name:title,
+      service:division, division:division,
+      status:status, total:total,
+      updatedAt: serverTimestamp()
+    };
+    if(estRaw) orderData.estDate = Timestamp.fromDate(new Date(estRaw));
+    if(digital){ orderData.downloadUrl=digital; orderData.digitalFile=digital; if(digital.includes('canva.com')) orderData.canvaLink=digital; }
+    if(preview) orderData.previewUrl = preview;
+
+    var resultId;
+    if(isEditMode){
+      await updateDoc(doc(db,'orders',window._editingOrderId), orderData);
+      resultId = window._editingOrderId;
+      try{
+        await addDoc(collection(db,'users',uid,'notifications'),{
+          message: '🔔 Update Proyek: Proyek "'+title+'" Anda sekarang telah memasuki tahap '+( statusLabel[status]||status.toUpperCase() )+'.',
+          createdAt: serverTimestamp(),
+          read: false
+        });
+      } catch(ne){ console.warn('Notif auto-order edit error:',ne); }
+      window.cancelEditOrder();
+      showFormStatus('order-status-msg','order-status-text','success','✅ Perubahan berhasil disimpan! ID: '+resultId);
+      showToast('✅ Data order diperbarui + notifikasi terkirim ke klien');
+    } else {
+      orderData.createdAt = serverTimestamp();
+      var docRef = await addDoc(collection(db,'orders'), orderData);
+      resultId = docRef.id;
+      try{
+        await addDoc(collection(db,'users',uid,'notifications'),{
+          message: '🆕 Order Baru: Proyek "'+title+'" Anda telah terdaftar di sistem dengan status '+( statusLabel[status]||status.toUpperCase() )+'.',
+          createdAt: serverTimestamp(),
+          read: false
+        });
+      } catch(ne){ console.warn('Notif auto-order new error:',ne); }
+      ['order-uid','order-title','order-total','order-digital'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+      if(fileInput) fileInput.value='';
+      var thumb=document.getElementById('preview-thumb'); if(thumb){ thumb.src=''; thumb.classList.remove('show'); }
+      showFormStatus('order-status-msg','order-status-text','success','✅ Order berhasil ditulis! ID: '+resultId);
+      showToast('✅ Order berhasil ditulis + notifikasi otomatis terkirim ke klien');
+    }
+    statusBtnLoading('btn-update-order','order-spinner','order-icon','order-btn-text', false,'','UPDATE WORKFLOW ORDER');
+    initKPIs();
+  } catch(err){
+    statusBtnLoading('btn-update-order','order-spinner','order-icon','order-btn-text', false,'',defaultLabel);
+    showFormStatus('order-status-msg','order-status-text','error','❌ Gagal: '+err.message);
+    showToast('❌ Gagal menyimpan order: '+err.message, 5000);
+    console.error('Order write error:',err);
+  }
+};
+
+/* ── handlePublishInvoice ── */
+window.handlePublishInvoice = async function(){
+  var uid       = (document.getElementById('inv-uid').value||'').trim();
+  var clientName= (document.getElementById('inv-client-name').value||'').trim();
+  var invoiceId = (document.getElementById('inv-id').value||'').trim();
+  var titleVal  = (document.getElementById('inv-title').value||'').trim();
+  var amountRaw = parseFloat(document.getElementById('inv-amount').value||'0')||0;
+  var dateRaw   = document.getElementById('inv-date').value;
+
+  if(!uid)      { showToast('⚠️ User UID Klien wajib diisi'); document.getElementById('inv-uid').focus(); return; }
+  if(!invoiceId){ showToast('⚠️ Nomor Invoice wajib diisi'); document.getElementById('inv-id').focus(); return; }
+  if(!titleVal) { showToast('⚠️ Judul / Deskripsi Layanan wajib diisi'); document.getElementById('inv-title').focus(); return; }
+  if(!amountRaw||amountRaw<=0){ showToast('⚠️ Nominal tagihan harus lebih dari 0'); document.getElementById('inv-amount').focus(); return; }
+
+  var paid       = window.invoicePaid!==undefined?window.invoicePaid:true;
+  var isEditMode = !!window._editingInvoiceId;
+  var defaultLabel= isEditMode?'SIMPAN PERUBAHAN DATA (MODE EDIT)':'TERBITKAN INVOICE';
+  statusBtnLoading('btn-publish-inv','inv-spinner','inv-icon','inv-btn-text', true,'MENYIMPAN...',defaultLabel);
+
+  try{
+    var invData={
+      userId:uid, invoiceId:invoiceId, title:titleVal,
+      total:amountRaw, amount:amountRaw, paid:paid,
+      date: dateRaw?Timestamp.fromDate(new Date(dateRaw)):serverTimestamp(),
+      updatedAt: serverTimestamp()
+    };
+    if(clientName) invData.clientName=clientName;
+
+    if(isEditMode){
+      await updateDoc(doc(db,'invoices',window._editingInvoiceId), invData);
+      window.cancelEditInvoice();
+      showFormStatus('inv-status-msg','inv-status-text','success','✅ Perubahan invoice berhasil disimpan!');
+      showToast('✅ Data invoice diperbarui — Client Portal update real-time');
+    } else {
+      invData.createdAt=serverTimestamp(); invData.pointsAwarded=false;
+      var docRef=await addDoc(collection(db,'invoices'), invData);
+      if(paid){
+        var earnedPoints=Math.floor(amountRaw/10000);
+        try{
+          var pointMsg = earnedPoints>0
+            ? '🏆 Kamu dapat +'+earnedPoints+' poin dari invoice "'+invoiceId+'"!'
+            : '🏆 Invoice "'+invoiceId+'" telah tercatat LUNAS.';
+          await addDoc(collection(db,'users',uid,'notifications'),{
+            message: pointMsg,
+            createdAt: serverTimestamp(),
+            read: false
+          });
+        } catch(ne){ console.error('🔴 NOTIF ERROR DETAIL:', ne.code, ne.message); }
+      }
+      ['inv-uid','inv-client-name','inv-id','inv-title','inv-amount'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+      selectPaid(true);
+      showFormStatus('inv-status-msg','inv-status-text','success','✅ Invoice berhasil diterbitkan! ID: '+docRef.id);
+      showToast('✅ Invoice berhasil diterbitkan — Client Portal akan update real-time');
+    }
+    statusBtnLoading('btn-publish-inv','inv-spinner','inv-icon','inv-btn-text', false,'','TERBITKAN INVOICE');
+    initKPIs();
+  } catch(err){
+    statusBtnLoading('btn-publish-inv','inv-spinner','inv-icon','inv-btn-text', false,'',defaultLabel);
+    showFormStatus('inv-status-msg','inv-status-text','error','❌ Gagal: '+err.message);
+    showToast('❌ Gagal menerbitkan invoice: '+err.message, 5000);
+    console.error('Invoice write error:',err);
+  }
+};
+
+/* ── handleSendNotif ── */
+window.handleSendNotif = async function(){
+  var uid    =(document.getElementById('notif-uid').value||'').trim();
+  var message=(document.getElementById('notif-message').value||'').trim();
+  if(!uid)    { showToast('⚠️ User UID Klien wajib diisi'); document.getElementById('notif-uid').focus(); return; }
+  if(!message){ showToast('⚠️ Isi pesan notifikasi wajib diisi'); document.getElementById('notif-message').focus(); return; }
+  statusBtnLoading('btn-send-notif','notif-spinner','notif-icon','notif-btn-text', true,'MENGIRIM...','KIRIM NOTIFIKASI');
+  try{
+    await addDoc(collection(db,'users',uid,'notifications'),{message:message,createdAt:serverTimestamp(),read:false});
+    document.getElementById('notif-uid').value='';
+    document.getElementById('notif-message').value='';
+    statusBtnLoading('btn-send-notif','notif-spinner','notif-icon','notif-btn-text', false,'','KIRIM NOTIFIKASI');
+    showFormStatus('notif-status-msg','notif-status-text','success','✅ Notifikasi berhasil dikirim ke klien');
+    showToast('✅ Notifikasi berhasil dikirim — akan muncul real-time di portal klien');
+  } catch(err){
+    statusBtnLoading('btn-send-notif','notif-spinner','notif-icon','notif-btn-text', false,'','KIRIM NOTIFIKASI');
+    showFormStatus('notif-status-msg','notif-status-text','error','❌ Gagal: '+err.message);
+    showToast('❌ Gagal mengirim notifikasi: '+err.message, 5000);
+    console.error('Notif write error:',err);
+  }
+};
+
+window.invoicePaid=true;
+</script>
+
+</body>
+</html>
