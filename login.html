@@ -1477,7 +1477,10 @@ if (emailInput && emailHint) {
   // (user tidak bisa tekan Back untuk kembali ke form login setelah login)
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      window.location.replace('profile.html');
+      const target = ADMIN_EMAILS.includes(user.email)
+        ? 'admin/index.html'
+        : 'profile.html';
+      window.location.replace(target);
     }
   });
 
@@ -1539,7 +1542,15 @@ if (emailInput && emailHint) {
     }
   }
 
-  // ── 7. HELPER: REDIRECT KE profile.html DENGAN ANIMASI GSAP ──
+  // ── 7. DAFTAR EMAIL ADMIN RESMI ──
+  const ADMIN_EMAILS = ["alfirama1945@gmail.com", "alfirama.id@gmail.com"];
+
+  // ── HELPER: TENTUKAN TUJUAN REDIRECT BERDASARKAN KASTA AKUN ──
+  function getRedirectTarget(userEmail) {
+    return ADMIN_EMAILS.includes(userEmail) ? 'admin/index.html' : 'profile.html';
+  }
+
+  // ── HELPER: REDIRECT DENGAN ANIMASI GSAP ──
   // BUGFIX #2: Jika user.displayName null (terjadi pada email/password register yang
   // tidak memanggil updateProfile), kita fallback ke field displayName di Firestore.
   async function redirectToProfile(user) {
@@ -1557,11 +1568,17 @@ if (emailInput && emailHint) {
       }
     }
 
-    if (displayName) {
+    const target = getRedirectTarget(user.email);
+    const isAdmin = ADMIN_EMAILS.includes(user.email);
+
+    if (isAdmin) {
+      window.showSuccessMessage('Selamat datang, Admin! Mengalihkan ke Pusat Komando...');
+    } else if (displayName) {
       window.showSuccessMessage('Selamat datang kembali, ' + displayName + '! Mengalihkan...');
     } else {
       window.showSuccessMessage('Login berhasil! Mengalihkan ke profil...');
     }
+
     setTimeout(function () {
       const overlay = document.getElementById('page-transition');
       if (window.gsap && overlay) {
@@ -1570,10 +1587,10 @@ if (emailInput && emailHint) {
           duration: 0.4,
           ease:     'power2.inOut',
           onStart:    () => { overlay.style.pointerEvents = 'all'; },
-          onComplete: () => { window.location.href = 'profile.html'; }
+          onComplete: () => { window.location.href = target; }
         });
       } else {
-        window.location.href = 'profile.html';
+        window.location.href = target;
       }
     }, 900);
   }
