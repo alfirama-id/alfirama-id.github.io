@@ -611,8 +611,11 @@ input[type="file"].form-input:hover::file-selector-button {
 /* Overlay backdrop saat sidebar mobile terbuka */
 .sidebar-overlay {
   display: none; position: fixed; inset: 0; z-index: 99;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.35);
+  pointer-events: none;
+}
+.sidebar-overlay.show {
+  pointer-events: auto;
 }
 .sidebar-overlay.show { display: block; }
 
@@ -1335,38 +1338,6 @@ input[type="file"].form-input:hover::file-selector-button {
 <!-- MOBILE SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
 
-<!-- MOBILE SIDEBAR TOGGLE SCRIPT -->
-<script>
-function toggleMobileSidebar(){
-  var sidebar  = document.querySelector('.sidebar');
-  var overlay  = document.getElementById('sidebar-overlay');
-  var isOpen   = sidebar.classList.contains('mobile-open');
-  if(isOpen){
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  } else {
-    sidebar.classList.add('mobile-open');
-    overlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-}
-window.toggleMobileSidebar = toggleMobileSidebar;
-
-/* Tutup sidebar otomatis saat nav item diklik di mobile */
-var _origSwitchPanel = window.switchPanel;
-window.switchPanel = function(name, btn){
-  _origSwitchPanel(name, btn);
-  var sidebar = document.querySelector('.sidebar');
-  var overlay = document.getElementById('sidebar-overlay');
-  if(sidebar && sidebar.classList.contains('mobile-open')){
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  }
-};
-</script>
-
 <!-- CLOCK -->
 <script>
 (function(){
@@ -1389,6 +1360,33 @@ function switchPanel(name,btn){
   if(btn) btn.classList.add('active');
 }
 window.switchPanel=switchPanel;
+</script>
+
+<!-- MOBILE SIDEBAR TOGGLE SCRIPT -->
+<script>
+function toggleMobileSidebar(){
+  var sidebar = document.querySelector('.sidebar');
+  var isOpen  = sidebar.classList.contains('mobile-open');
+  if(isOpen){
+    sidebar.classList.remove('mobile-open');
+    document.body.style.overflow = '';
+  } else {
+    sidebar.classList.add('mobile-open');
+    document.body.style.overflow = '';
+  }
+}
+window.toggleMobileSidebar = toggleMobileSidebar;
+
+/* Tutup sidebar otomatis saat nav item diklik — dipasang SETELAH switchPanel didefinisikan */
+var _origSwitchPanel = window.switchPanel;
+window.switchPanel = function(name, btn){
+  if(_origSwitchPanel) _origSwitchPanel(name, btn);
+  var sidebar = document.querySelector('.sidebar');
+  if(sidebar && sidebar.classList.contains('mobile-open')){
+    sidebar.classList.remove('mobile-open');
+    document.body.style.overflow = '';
+  }
+};
 </script>
 
 <!-- TOAST -->
