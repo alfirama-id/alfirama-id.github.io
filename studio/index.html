@@ -1,938 +1,2531 @@
 <!DOCTYPE html>
-<html lang="id">
-    <link rel="stylesheet" href="../css/style.css">
+<html lang="id" class="scroll-smooth dark">
 <head>
+  <!-- ============================================================
+       ALFIRAMA STUDIO — Digital Asset Marketplace & Branding Hub
+       Sinkron dengan: index.html (root) — Master Design System
+       Theme    : Futuristic Cyberpunk Workstation Aesthetic
+       Palette  : #0A0F1D · #00F0FF (Neon Cyan) · #C9B26D (Gold)
+       Version  : 2.1.0 (Midtrans Snap QRIS Integrated)
+  ============================================================ -->
+
+  <!-- Theme sync — jalankan PERTAMA sebelum render agar tidak ada flash -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('alfirama_theme') || 'dark';
+      document.documentElement.classList.toggle('dark', saved === 'dark');
+    })();
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Alfirama Studio — Template Digital Premium & Jasa Branding Custom. Logo, Brand Identity, Konveksi, Animasi untuk UMKM dan Kreator Lokal Banten." />
+  <meta name="theme-color" content="#0A0F1D" />
+  <title>Alfirama Studio — Digital Asset Marketplace & Premium Branding</title>
 
-  <title>Alfirama Studio — Jasa Desain & Konten Kreatif</title>
+  <meta property="og:title"       content="Alfirama Studio — Digital Asset Marketplace" />
+  <meta property="og:description" content="Template digital premium & jasa branding custom untuk UMKM dan kreator lokal Banten." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://alfirama.id/studio/" />
+  <meta property="og:image"       content="https://alfirama.id/assets/global/og-cover.jpg" />
 
-  <meta
-    name="description"
-    content="Alfirama Studio menghadirkan layanan desain grafis, branding, social media content, dan identitas visual modern untuk bisnis dan personal."
-  />
+  <link rel="icon" type="image/png" href="../assets/global/favicon.png" />
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Orbitron + Montserrat -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Global CSS -->
-  <link rel="stylesheet" href="../style.css" />
+  <!-- ============================================================
+       MIDTRANS SNAP SDK — Sandbox
+       Ganti data-client-key dengan key produksi saat go-live
+  ============================================================ -->
+  <script
+    type="text/javascript"
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="Mid-client-KZ3uSwPeV8TtL73D">
+  </script>
+
+  <!-- Tailwind Custom Config — SINKRON dengan index.html global -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'cyber-bg':   '#0A0F1D',
+            'cyber-void': '#070A14',
+            'cyber-navy': '#0F172A',
+            'cyber-card': '#13192B',
+            'neon-cyan':  '#00F0FF',
+            'gold':       '#C9B26D',
+            'gold-light': '#E2CC8E',
+            'gold-dark':  '#A38A47',
+          },
+          fontFamily: {
+            tech: ['Orbitron', 'sans-serif'],
+            body: ['Montserrat', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
 
   <style>
-
-    /* ─────────────────────────────
-       PAGE BACKGROUND
-    ───────────────────────────── */
-    body::after{
-      content:'';
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:9999;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity:.35;
+    /* ================================================================
+       MASTER CSS VARIABLES — SINKRON DENGAN INDEX.HTML GLOBAL
+    ================================================================ */
+    :root {
+      --bg:           #0A0F1D;
+      --bg2:          #070A14;
+      --bg3:          #13192B;
+      --surface:      rgba(255,255,255,0.02);
+      --surface2:     rgba(255,255,255,0.04);
+      --border:       rgba(255,255,255,0.06);
+      --border2:      rgba(255,255,255,0.10);
+      --blue:         #00F0FF;
+      --blue-dim:     rgba(0,240,255,0.55);
+      --blue-glow:    rgba(0,240,255,0.10);
+      --gold:         #C9B26D;
+      --gold-light:   #E2CC8E;
+      --gold-dark:    #A38A47;
+      --gold-dim:     rgba(201,178,109,0.55);
+      --gold-glow:    rgba(201,178,109,0.10);
+      --green:        #00E676;
+      --red:          #FF1744;
+      --text:         #FFFFFF;
+      --text2:        rgba(255,255,255,0.6);
+      --text3:        rgba(255,255,255,0.3);
+      --font-tech:    'Orbitron', sans-serif;
+      --font-body:    'Montserrat', sans-serif;
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    16px;
     }
 
-    /* ─────────────────────────────
-       HERO
-    ───────────────────────────── */
-    .studio-hero{
-      position:relative;
-      min-height:92svh;
-      display:flex;
-      align-items:center;
-      overflow:hidden;
-      padding-top:var(--navbar-height);
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .studio-hero__bg{
-      position:absolute;
-      inset:0;
-      overflow:hidden;
-      background:var(--color-bg-primary);
-    }
+    ::selection { background: rgba(201,178,109,0.3); color: #fff; }
 
-    .studio-hero__orb{
-      position:absolute;
-      border-radius:50%;
-      filter:blur(100px);
-    }
+    /* ================================================================
+       SCROLLBAR — SINKRON
+    ================================================================ */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: rgba(201,178,109,0.3); border-radius: 99px; }
 
-    .studio-hero__orb--1{
-      width:600px;
-      height:600px;
-      background:radial-gradient(circle, rgba(201,178,109,.18) 0%, transparent 70%);
-      top:-180px;
-      left:-150px;
+    /* ================================================================
+       PAGE TRANSITION OVERLAY
+    ================================================================ */
+    #page-overlay {
+      position: fixed; inset: 0;
+      background: var(--bg2);
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
+    #page-overlay.active { opacity: 1; pointer-events: all; }
 
-    .studio-hero__orb--2{
-      width:500px;
-      height:500px;
-      background:radial-gradient(circle, rgba(77,163,209,.18) 0%, transparent 70%);
-      bottom:-150px;
-      right:-100px;
-    }
-
-    .studio-hero__grid{
-      position:absolute;
-      inset:0;
+    /* ================================================================
+       BACKGROUND DECORATORS — SINKRON DENGAN HERO INDEX.HTML
+    ================================================================ */
+    .hero-grid {
       background-image:
-        linear-gradient(rgba(77,163,209,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(77,163,209,0.04) 1px, transparent 1px);
-      background-size:60px 60px;
-      mask-image:radial-gradient(circle at center, black 35%, transparent 100%);
+        linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
 
-    .studio-hero__inner{
-      position:relative;
-      z-index:2;
-      max-width:1200px;
-      margin:0 auto;
-      padding:5rem 2rem;
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:4rem;
-      align-items:center;
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 3px,
+        rgba(0,0,0,0.018) 3px, rgba(0,0,0,0.018) 4px
+      );
+      pointer-events: none;
     }
 
-    .studio-hero__eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:.6rem;
-      padding:.4rem 1rem;
-      border-radius:999px;
-      border:1px solid rgba(201,178,109,.2);
-      background:rgba(201,178,109,.06);
-      color:var(--color-gold);
-      font-size:.72rem;
-      font-weight:700;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      margin-bottom:1.5rem;
+    /* ================================================================
+       GRADIENT TEXT — SINKRON DENGAN text-gradient-gold GLOBAL
+    ================================================================ */
+    .text-gold-grad {
+      background: linear-gradient(105deg, #FFFFFF 0%, #E2CC8E 35%, #C9B26D 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-cyan { color: var(--blue); }
+
+    /* ================================================================
+       NAVBAR — SINKRON DENGAN NAVBAR GLOBAL
+    ================================================================ */
+    #studio-navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(7,10,20,0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(201,178,109,0.08);
+      transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    #studio-navbar.scrolled {
+      background: rgba(7,10,20,0.96);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+      border-bottom-color: rgba(201,178,109,0.15);
     }
 
-    .studio-hero__dot{
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background:var(--color-gold);
+    .nav-logo-text {
+      font-family: var(--font-tech);
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      line-height: 1;
     }
 
-    .studio-hero__title{
-      font-size:clamp(2.5rem,5vw,4.6rem);
-      line-height:1.05;
-      letter-spacing:-0.04em;
-      color:#fff;
-      font-weight:900;
-      margin-bottom:1.4rem;
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+
+    .nav-link {
+      font-family: var(--font-tech);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.25s ease;
+    }
+    .nav-link:hover { color: var(--gold-light); }
+    .nav-link:hover::after,
+    .nav-link.active::after { transform: scaleX(1); }
+    .nav-link.active { color: var(--gold-light); }
+
+    #mobile-menu-studio {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #mobile-menu-studio.open { transform: translateX(0); }
+
+    /* ================================================================
+       BUTTONS — SINKRON DENGAN GLOBAL BUTTON SYSTEM
+    ================================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-tech);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      border: none;
     }
 
-    .studio-hero__title span{
-      color:var(--color-gold);
+    .btn-gold {
+      background: linear-gradient(105deg, var(--gold-dark) 0%, var(--gold) 40%, var(--gold-light) 70%, var(--gold) 100%);
+      background-size: 200% 100%;
+      color: var(--bg2);
+      font-size: 0.65rem;
+      padding: 14px 28px;
+      box-shadow: 0 0 24px rgba(201,178,109,0.3), 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .btn-gold:hover {
+      background-position: 100% 0;
+      box-shadow: 0 0 36px rgba(201,178,109,0.55), 0 6px 28px rgba(0,0,0,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-gold--lg { font-size: 0.72rem; padding: 18px 40px; border-radius: 12px; }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold-light);
+      border: 1px solid rgba(201,178,109,0.4);
+      font-size: 0.6rem;
+      padding: 10px 22px;
+    }
+    .btn-outline-gold:hover {
+      background: rgba(201,178,109,0.08);
+      border-color: rgba(201,178,109,0.7);
+      box-shadow: 0 0 16px rgba(201,178,109,0.2);
+      transform: translateY(-1px);
     }
 
-    .studio-hero__desc{
-      max-width:560px;
-      color:rgba(203,213,225,.65);
-      font-size:1rem;
-      line-height:1.85;
-      margin-bottom:2rem;
+    .btn-outline-cyan {
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid rgba(0,240,255,0.3);
+      font-size: 0.6rem;
+      padding: 10px 22px;
+    }
+    .btn-outline-cyan:hover {
+      background: rgba(0,240,255,0.06);
+      border-color: rgba(0,240,255,0.6);
+      box-shadow: 0 0 16px rgba(0,240,255,0.2);
+      transform: translateY(-1px);
     }
 
-    .studio-hero__cta{
-      display:flex;
-      gap:1rem;
-      flex-wrap:wrap;
+    /* ================================================================
+       HERO SECTION
+    ================================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 130px 32px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg2);
     }
 
-    /* Visual */
-    .studio-hero__visual{
-      position:relative;
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
     }
 
-    .studio-hero__card{
-      position:relative;
-      border-radius:28px;
-      overflow:hidden;
-      background:var(--color-bg-secondary);
-      border:1px solid var(--color-border);
-      padding:2rem;
-      min-height:500px;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-tech);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      border: 1px solid rgba(201,178,109,0.25);
+      background: rgba(201,178,109,0.06);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
     }
 
-    .studio-hero__preview{
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at top left, rgba(201,178,109,.12), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(77,163,209,.18), transparent 35%);
+    .hero-title {
+      font-family: var(--font-tech);
+      font-weight: 900;
+      font-size: clamp(1.6rem, 4.5vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
     }
 
-    .studio-hero__mockup{
-      position:relative;
-      z-index:2;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:1rem;
-      height:100%;
+    .gold-rule {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 32px;
     }
 
-    .mock-card{
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:20px;
-      padding:1rem;
-      backdrop-filter:blur(12px);
+    .hero-subtitle {
+      font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+      color: var(--text2);
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto 48px;
+      font-family: var(--font-body);
     }
 
-    .mock-card--large{
-      grid-column:span 2;
-      min-height:240px;
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .hero-stat-val {
+      font-family: var(--font-tech);
+      font-weight: 800;
+      font-size: 1.8rem;
+      background: linear-gradient(105deg, #E2CC8E, #C9B26D);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label {
+      font-size: 0.6rem;
+      color: var(--text3);
+      font-family: var(--font-tech);
+      letter-spacing: 0.12em;
+      margin-top: 4px;
     }
 
-    .mock-card__img{
-      width:100%;
-      height:100%;
-      border-radius:14px;
-      background:
-        linear-gradient(135deg,
-        rgba(201,178,109,.15),
-        rgba(77,163,209,.15));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:rgba(255,255,255,.2);
-      font-weight:800;
-      letter-spacing:.15em;
-      font-size:.9rem;
-      border:1px solid rgba(255,255,255,.06);
+    .corner-deco-tl {
+      position: absolute; top: 130px; left: 32px;
+      width: 60px; height: 60px;
+      border-top: 1px solid rgba(201,178,109,0.2);
+      border-left: 1px solid rgba(201,178,109,0.2);
+      pointer-events: none;
+    }
+    .corner-deco-br {
+      position: absolute; bottom: 60px; right: 32px;
+      width: 60px; height: 60px;
+      border-bottom: 1px solid rgba(201,178,109,0.2);
+      border-right: 1px solid rgba(201,178,109,0.2);
+      pointer-events: none;
     }
 
-    /* ─────────────────────────────
-       SECTION
-    ───────────────────────────── */
-    .studio-section{
-      padding:6rem 2rem;
+    /* ================================================================
+       SCROLLING MARQUEE BAND
+    ================================================================ */
+    #services-band {
+      background: rgba(7,10,20,0.95);
+      border-top: 1px solid rgba(201,178,109,0.1);
+      border-bottom: 1px solid rgba(0,240,255,0.07);
+      padding: 12px 0;
+      overflow: hidden;
+    }
+    .marquee-wrap {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 30s linear infinite;
+    }
+    .marquee-wrap:hover { animation-play-state: paused; }
+    .m-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 28px;
+      font-family: var(--font-tech);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: var(--text3);
+      flex-shrink: 0;
+    }
+    .m-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.7; }
+    .m-item--gold { color: var(--gold-light); }
+    .m-item--cyan { color: rgba(0,240,255,0.7); }
+
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
-    .studio-section__inner{
-      max-width:1200px;
-      margin:0 auto;
+    /* ================================================================
+       SECTION COMMONS
+    ================================================================ */
+    .section { padding: 100px 32px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-family: var(--font-tech);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 12px;
     }
 
-    .section-head{
-      text-align:center;
-      max-width:700px;
-      margin:0 auto 4rem;
+    .section-title {
+      font-family: var(--font-tech);
+      font-weight: 900;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      line-height: 1.15;
+      margin-bottom: 16px;
     }
 
-    .section-label{
-      color:var(--color-gold);
-      font-size:.72rem;
-      font-weight:700;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      margin-bottom:1rem;
+    .section-desc {
+      color: var(--text2);
+      font-size: 0.9rem;
+      line-height: 1.75;
+      max-width: 540px;
+      font-family: var(--font-body);
     }
 
-    .section-title{
-      color:#fff;
-      font-size:clamp(2rem,4vw,3rem);
-      font-weight:900;
-      line-height:1.1;
-      letter-spacing:-0.03em;
-      margin-bottom:1rem;
+    .divider-gold {
+      width: 40px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 16px 0 20px;
     }
 
-    .section-desc{
-      color:rgba(203,213,225,.6);
-      line-height:1.8;
+    /* ================================================================
+       FILTER TABS
+    ================================================================ */
+    .filter-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 48px; }
+
+    .filter-tab {
+      font-family: var(--font-tech);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      padding: 8px 18px;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-tab:hover {
+      border-color: rgba(0,240,255,0.35);
+      color: var(--blue);
+      background: rgba(0,240,255,0.05);
+    }
+    .filter-tab.active {
+      border-color: rgba(201,178,109,0.55);
+      background: rgba(201,178,109,0.1);
+      color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(201,178,109,0.15);
     }
 
-    /* ─────────────────────────────
-       PORTFOLIO
-    ───────────────────────────── */
-    .portfolio-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:1.4rem;
+    /* ================================================================
+       PRODUCT CARDS GRID
+    ================================================================ */
+    #products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
 
-    .portfolio-card{
-      position:relative;
-      overflow:hidden;
-      border-radius:24px;
-      background:var(--color-bg-secondary);
-      border:1px solid var(--color-border);
-      transition:
-        transform .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
+    .product-card {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.35s ease,
+                  border-color 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0,240,255,0.3);
+      /* Glow DI BELAKANG elemen */
+      box-shadow: 0 0 0 1px rgba(0,240,255,0.08),
+                  0 20px 50px rgba(0,0,0,0.5),
+                  0 0 40px rgba(0,240,255,0.08);
     }
 
-    .portfolio-card:hover{
-      transform:translateY(-6px);
-      border-color:rgba(201,178,109,.3);
-      box-shadow:
-        0 20px 50px rgba(0,0,0,.35),
-        0 0 0 1px rgba(201,178,109,.08);
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .product-card:hover::before { opacity: 1; }
+
+    /* Kartu yang sudah dibeli — state "paid" */
+    .product-card.is-paid {
+      border-color: rgba(0,230,118,0.25);
+    }
+    .product-card.is-paid:hover {
+      border-color: rgba(0,230,118,0.5);
+      box-shadow: 0 0 0 1px rgba(0,230,118,0.08),
+                  0 20px 50px rgba(0,0,0,0.5),
+                  0 0 40px rgba(0,230,118,0.08);
+    }
+    .product-card.is-paid::before {
+      background: linear-gradient(90deg, transparent, #00E676, transparent);
+      opacity: 1;
     }
 
-    .portfolio-card__image{
-      aspect-ratio:1/1;
-      background:
-        linear-gradient(135deg,
-        rgba(201,178,109,.12),
-        rgba(77,163,209,.12));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:rgba(255,255,255,.18);
-      font-weight:800;
-      letter-spacing:.16em;
-      border-bottom:1px solid var(--color-border);
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, #0D1526, var(--bg3));
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .product-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-img-wrap img { transform: scale(1.04); }
+
+    .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
     }
 
-    .portfolio-card__content{
-      padding:1.4rem;
+    .cat-tag {
+      position: absolute; top: 12px; left: 12px;
+      font-family: var(--font-tech);
+      font-size: 0.5rem;
+      letter-spacing: 0.18em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .cat-tag--psd    { background: rgba(0,240,255,0.15); color: #00F0FF; border: 1px solid rgba(0,240,255,0.25); }
+    .cat-tag--vector { background: rgba(201,178,109,0.15); color: #E2CC8E; border: 1px solid rgba(201,178,109,0.25); }
+    .cat-tag--ae     { background: rgba(159,0,255,0.15); color: #CC88FF; border: 1px solid rgba(159,0,255,0.25); }
+    .cat-tag--logo   { background: rgba(255,120,0,0.15); color: #FFB366; border: 1px solid rgba(255,120,0,0.25); }
+    .cat-tag--smkit  { background: rgba(0,200,100,0.15); color: #66FFB3; border: 1px solid rgba(0,200,100,0.25); }
+    .cat-tag--brand  { background: rgba(255,60,100,0.15); color: #FF8FAA; border: 1px solid rgba(255,60,100,0.25); }
+
+    .badge-new {
+      position: absolute; top: 12px; right: 12px;
+      font-family: var(--font-tech); font-size: 0.45rem; letter-spacing: 0.15em;
+      padding: 3px 8px; border-radius: 4px; font-weight: 800;
+      background: linear-gradient(105deg, var(--gold-dark), var(--gold-light)); color: var(--bg2);
+    }
+    .badge-hot {
+      position: absolute; top: 12px; right: 12px;
+      font-family: var(--font-tech); font-size: 0.45rem; letter-spacing: 0.15em;
+      padding: 3px 8px; border-radius: 4px; font-weight: 800;
+      background: linear-gradient(105deg, #FF4444, #FF8888); color: #fff;
     }
 
-    .portfolio-card__category{
-      color:var(--color-gold);
-      font-size:.7rem;
-      font-weight:700;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      margin-bottom:.6rem;
+    .product-body { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .product-title {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .product-desc {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 16px;
+      flex: 1;
     }
 
-    .portfolio-card__title{
-      color:#fff;
-      font-size:1.1rem;
-      font-weight:800;
-      margin-bottom:.5rem;
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: auto;
     }
 
-    .portfolio-card__desc{
-      color:rgba(203,213,225,.55);
-      line-height:1.7;
-      font-size:.9rem;
+    .product-price {
+      font-family: var(--font-tech);
+      font-weight: 800;
+      font-size: 1rem;
+      background: linear-gradient(105deg, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .product-price-note { font-family: var(--font-body); font-size: 0.6rem; color: var(--text3); margin-top: 2px; }
+
+    /* Tombol Beli (state normal) */
+    .btn-buy {
+      font-family: var(--font-tech);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(105deg, var(--gold-dark), var(--gold), var(--gold-light));
+      background-size: 200% 100%;
+      color: var(--bg2);
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .btn-buy:hover {
+      background-position: 100% 0;
+      box-shadow: 0 0 20px rgba(201,178,109,0.4);
+      transform: translateY(-1px);
     }
 
-    /* ─────────────────────────────
-       TESTIMONIALS
-    ───────────────────────────── */
-    .testimonial-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:1.5rem;
+    /* Tombol Download (state setelah bayar) */
+    .btn-download {
+      font-family: var(--font-tech);
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(105deg, #005c28, #00E676, #00FF88);
+      background-size: 200% 100%;
+      color: #001a0a;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .btn-download:hover {
+      background-position: 100% 0;
+      box-shadow: 0 0 20px rgba(0,230,118,0.45);
+      transform: translateY(-1px);
     }
 
-    .testimonial-card{
-      background:var(--color-bg-secondary);
-      border:1px solid var(--color-border);
-      border-radius:24px;
-      padding:2rem;
-      transition:.3s ease;
+    /* Loading & empty states */
+    #products-loading { grid-column: 1/-1; text-align: center; padding: 60px 20px; }
+    .loading-spinner {
+      width: 36px; height: 36px;
+      border: 2px solid rgba(201,178,109,0.15);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; display: none; }
+
+    /* ================================================================
+       JASA CUSTOM CARDS
+    ================================================================ */
+    #services { background: linear-gradient(160deg, var(--bg2) 0%, #0D1526 100%); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
 
-    .testimonial-card:hover{
-      transform:translateY(-5px);
-      border-color:rgba(77,163,209,.25);
+    .service-card {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .service-card:hover {
+      border-color: rgba(0,240,255,0.2);
+      background: rgba(0,240,255,0.03);
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 1px rgba(0,240,255,0.05),
+                  0 16px 40px rgba(0,0,0,0.4),
+                  0 0 30px rgba(0,240,255,0.06);
+    }
+    .service-card:hover::after { opacity: 1; }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .service-title {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .service-desc {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+    .service-price-badge {
+      display: inline-block;
+      font-family: var(--font-tech);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(201,178,109,0.1);
+      border: 1px solid rgba(201,178,109,0.25);
+      color: var(--gold-light);
     }
 
-    .testimonial-stars{
-      color:var(--color-gold);
-      margin-bottom:1.2rem;
-      letter-spacing:.2em;
+    /* ================================================================
+       HOW TO ORDER STEPS
+    ================================================================ */
+    #how-to-order { background: var(--bg2); }
+
+    .order-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+      position: relative;
     }
 
-    .testimonial-text{
-      color:rgba(203,213,225,.68);
-      line-height:1.9;
-      margin-bottom:1.5rem;
-      font-size:.95rem;
+    .order-steps::before {
+      content: '';
+      display: none;
+      position: absolute;
+      top: 36px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.15), rgba(201,178,109,0.2), rgba(0,240,255,0.15), transparent);
     }
 
-    .testimonial-user{
-      display:flex;
-      align-items:center;
-      gap:1rem;
+    @media (min-width: 1024px) {
+      .order-steps::before { display: block; }
     }
 
-    .testimonial-avatar{
-      width:52px;
-      height:52px;
-      border-radius:50%;
-      background:linear-gradient(135deg,
-      rgba(201,178,109,.2),
-      rgba(77,163,209,.2));
-      border:1px solid rgba(255,255,255,.08);
+    .order-step { text-align: center; padding: 32px 20px; }
+    .step-circle {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    .step-number {
+      position: absolute; top: -6px; right: -6px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-tech);
+      font-size: 0.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+      color: var(--bg2);
+    }
+    .step-title {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .step-desc {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text2);
+      line-height: 1.65;
     }
 
-    .testimonial-name{
-      color:#fff;
-      font-weight:700;
+    /* ================================================================
+       CTA SECTION
+    ================================================================ */
+    #cta-section {
+      background: linear-gradient(135deg, var(--bg2) 0%, #0D1526 50%, var(--bg2) 100%);
+      position: relative;
+      overflow: hidden;
     }
 
-    .testimonial-role{
-      color:rgba(203,213,225,.45);
-      font-size:.8rem;
-      margin-top:.2rem;
+    /* ================================================================
+       MODAL — CHECKOUT (legacy WA, tetap dipertahankan sebagai fallback)
+    ================================================================ */
+    #buy-modal {
+      position: fixed; inset: 0; z-index: 2000;
+      display: none;
+      align-items: center; justify-content: center;
+      background: rgba(4,6,9,0.85);
+      backdrop-filter: blur(12px);
+      padding: 20px;
+    }
+    #buy-modal.open { display: flex; }
+    .modal-box {
+      background: var(--bg3);
+      border: 1px solid rgba(201,178,109,0.2);
+      border-radius: 20px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 0 60px rgba(201,178,109,0.08), 0 30px 80px rgba(0,0,0,0.6);
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .modal-close:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
+
+    /* ================================================================
+       TOAST NOTIFICATION SYSTEM — Cyberpunk Theme
+    ================================================================ */
+    #toast-container {
+      position: fixed;
+      top: 90px;
+      right: 20px;
+      z-index: 9000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
     }
 
-    /* ─────────────────────────────
-       CTA
-    ───────────────────────────── */
-    .studio-cta{
-      padding:0 2rem 6rem;
+    .toast {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      min-width: 280px;
+      max-width: 360px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      pointer-events: all;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .toast.hiding {
+      opacity: 0;
+      transform: translateX(40px);
     }
 
-    .studio-cta__box{
-      max-width:1100px;
-      margin:0 auto;
-      position:relative;
-      overflow:hidden;
-      border-radius:32px;
-      padding:4rem 2rem;
-      text-align:center;
-      background:
-        linear-gradient(135deg,
-        #182334 0%,
-        #1d2b40 60%,
-        #182334 100%);
-      border:1px solid rgba(201,178,109,.2);
+    /* Toast scanning line decoration */
+    .toast::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
     }
 
-    .studio-cta__box::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at top,
-        rgba(201,178,109,.14),
-        transparent 50%);
-      pointer-events:none;
+    /* Variants */
+    .toast--success {
+      background: rgba(0,30,15,0.92);
+      border: 1px solid rgba(0,230,118,0.3);
+      box-shadow: 0 0 30px rgba(0,230,118,0.1), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast--success::after {
+      background: linear-gradient(90deg, transparent, #00E676, transparent);
     }
 
-    .studio-cta__title{
-      position:relative;
-      z-index:2;
-      color:#fff;
-      font-size:clamp(2rem,4vw,3rem);
-      font-weight:900;
-      letter-spacing:-0.03em;
-      margin-bottom:1rem;
+    .toast--error {
+      background: rgba(30,5,10,0.92);
+      border: 1px solid rgba(255,23,68,0.35);
+      box-shadow: 0 0 30px rgba(255,23,68,0.1), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast--error::after {
+      background: linear-gradient(90deg, transparent, #FF1744, transparent);
     }
 
-    .studio-cta__desc{
-      position:relative;
-      z-index:2;
-      max-width:650px;
-      margin:0 auto 2rem;
-      color:rgba(203,213,225,.65);
-      line-height:1.8;
+    .toast--warning {
+      background: rgba(28,20,0,0.92);
+      border: 1px solid rgba(255,180,0,0.3);
+      box-shadow: 0 0 30px rgba(255,180,0,0.1), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast--warning::after {
+      background: linear-gradient(90deg, transparent, #FFB400, transparent);
     }
 
-    .studio-whatsapp-btn{
-      position:relative;
-      z-index:2;
-      display:inline-flex;
-      align-items:center;
-      gap:.8rem;
-      padding:1rem 1.6rem;
-      border-radius:999px;
-      background:linear-gradient(135deg,#25D366,#1fb655);
-      color:#fff;
-      font-weight:800;
-      text-decoration:none;
-      letter-spacing:-0.01em;
-      transition:
-        transform .3s ease,
-        box-shadow .3s ease;
-      box-shadow:
-        0 15px 40px rgba(37,211,102,.3);
+    .toast--info {
+      background: rgba(0,15,28,0.92);
+      border: 1px solid rgba(0,240,255,0.3);
+      box-shadow: 0 0 30px rgba(0,240,255,0.1), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast--info::after {
+      background: linear-gradient(90deg, transparent, #00F0FF, transparent);
     }
 
-    .studio-whatsapp-btn:hover{
-      transform:translateY(-3px) scale(1.02);
-      box-shadow:
-        0 20px 50px rgba(37,211,102,.4);
+    .toast-icon {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .toast--success .toast-icon { background: rgba(0,230,118,0.12); }
+    .toast--error   .toast-icon { background: rgba(255,23,68,0.12); }
+    .toast--warning .toast-icon { background: rgba(255,180,0,0.12); }
+    .toast--info    .toast-icon { background: rgba(0,240,255,0.12); }
+
+    .toast-content { flex: 1; }
+    .toast-title {
+      font-family: var(--font-tech);
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+    .toast--success .toast-title { color: #00E676; }
+    .toast--error   .toast-title { color: #FF5566; }
+    .toast--warning .toast-title { color: #FFB400; }
+    .toast--info    .toast-title { color: #00F0FF; }
+
+    .toast-msg {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      color: var(--text2);
+      line-height: 1.5;
     }
 
-    /* ─────────────────────────────
-       RESPONSIVE
-    ───────────────────────────── */
-    @media (max-width:980px){
+    /* Progress bar */
+    .toast-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      border-radius: 0 0 12px 12px;
+      animation: toastProgress linear forwards;
+    }
+    .toast--success .toast-progress { background: rgba(0,230,118,0.5); }
+    .toast--error   .toast-progress { background: rgba(255,23,68,0.5); }
+    .toast--warning .toast-progress { background: rgba(255,180,0,0.5); }
+    .toast--info    .toast-progress { background: rgba(0,240,255,0.5); }
 
-      .studio-hero__inner{
-        grid-template-columns:1fr;
-        text-align:center;
-      }
-
-      .studio-hero__desc{
-        margin-inline:auto;
-      }
-
-      .studio-hero__cta{
-        justify-content:center;
-      }
-
-      .portfolio-grid{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .testimonial-grid{
-        grid-template-columns:1fr;
-      }
+    @keyframes toastProgress {
+      from { width: 100%; }
+      to   { width: 0%; }
     }
 
-    @media (max-width:700px){
-
-      .portfolio-grid{
-        grid-template-columns:1fr;
-      }
-
-      .studio-hero__mockup{
-        grid-template-columns:1fr;
-      }
-
-      .mock-card--large{
-        grid-column:auto;
-      }
+    /* ================================================================
+       PAYMENT LOADING OVERLAY
+    ================================================================ */
+    #payment-loading-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      display: none;
+      align-items: center; justify-content: center;
+      background: rgba(4,6,9,0.92);
+      backdrop-filter: blur(16px);
+    }
+    #payment-loading-overlay.active { display: flex; }
+    .payment-loading-box {
+      text-align: center;
+      padding: 48px 40px;
+      border: 1px solid rgba(0,240,255,0.2);
+      border-radius: 20px;
+      background: var(--bg3);
+      box-shadow: 0 0 60px rgba(0,240,255,0.08), 0 30px 80px rgba(0,0,0,0.7);
+      position: relative;
+      overflow: hidden;
+    }
+    .payment-loading-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    }
+    .pay-spinner {
+      width: 52px; height: 52px;
+      border: 2px solid rgba(0,240,255,0.1);
+      border-top-color: var(--blue);
+      border-right-color: rgba(0,240,255,0.4);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+    .pay-loading-title {
+      font-family: var(--font-tech);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .pay-loading-sub {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text3);
     }
 
+    /* ================================================================
+       FOOTER — SINKRON DENGAN FOOTER GLOBAL
+    ================================================================ */
+    #studio-footer {
+      background: #040609;
+      border-top: 1px solid rgba(0,240,255,0.07);
+      padding: 40px 32px;
+    }
+    .footer-top-line {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), rgba(201,178,109,0.3), rgba(0,240,255,0.2), transparent);
+      margin-bottom: 40px;
+    }
+    .footer-link {
+      font-family: var(--font-tech);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover { color: var(--gold-light); }
+
+    .social-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .social-icon:hover {
+      color: var(--blue);
+      border-color: rgba(0,240,255,0.4);
+      background: rgba(0,240,255,0.07);
+      box-shadow: 0 0 14px rgba(0,240,255,0.3);
+    }
+
+    /* ================================================================
+       FLOATING BUTTONS
+    ================================================================ */
+    #back-to-top {
+      position: fixed; bottom: 88px; right: 24px; z-index: 1000;
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1px solid rgba(0,240,255,0.25);
+      background: rgba(7,10,20,0.92); backdrop-filter: blur(12px);
+      color: var(--blue); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); }
+    #back-to-top:hover { box-shadow: 0 0 16px rgba(0,240,255,0.3), 0 4px 20px rgba(0,0,0,0.4); }
+
+    #wa-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,0.35), 0 2px 8px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #wa-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.5), 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .wa-pulse {
+      position: absolute; inset: -6px; border-radius: 20px;
+      border: 2px solid rgba(37,211,102,0.4);
+      animation: waPulse 2s ease-in-out infinite;
+    }
+    @keyframes waPulse {
+      0%,100% { transform: scale(1); opacity: 0.6; }
+      50%      { transform: scale(1.15); opacity: 0; }
+    }
+
+    /* ================================================================
+       ENTRANCE ANIMATIONS
+    ================================================================ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fd-1 { transition-delay: 0.1s; }
+    .fd-2 { transition-delay: 0.2s; }
+    .fd-3 { transition-delay: 0.3s; }
+    .fd-4 { transition-delay: 0.4s; }
+    .fd-5 { transition-delay: 0.5s; }
+
+    /* ================================================================
+       RESPONSIVE MOBILE
+    ================================================================ */
+    @media (max-width: 768px) {
+      #studio-navbar { padding: 16px 20px; }
+      .nav-links .nav-link { display: none; }
+      .section { padding: 70px 20px; }
+      #hero { padding: 100px 20px 60px; }
+      .hero-stats { gap: 20px; }
+      .hero-stats .divider-v { display: none; }
+      #products-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .order-steps { grid-template-columns: 1fr 1fr; }
+      #toast-container { right: 12px; left: 12px; top: 80px; }
+      .toast { min-width: unset; max-width: unset; }
+    }
+    @media (max-width: 480px) {
+      .order-steps { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
 <body>
 
-<!-- ═══════════════════════════
-     NAVBAR
-═══════════════════════════ -->
-<header class="navbar" id="navbar">
-  <div class="navbar__inner">
+<!-- PAGE TRANSITION OVERLAY -->
+<div id="page-overlay" aria-hidden="true"></div>
 
-    <a href="/" class="navbar__brand">
-      <div>
-        <div class="nav-logo-text">
-          Alfirama<span class="dot-id">.ID</span>
-        </div>
-        <div class="nav-logo-tagline">
-          Creative Ecosystem
-        </div>
+<!-- ============================================================
+     PAYMENT LOADING OVERLAY
+============================================================ -->
+<div id="payment-loading-overlay" aria-hidden="true">
+  <div class="payment-loading-box">
+    <div class="pay-spinner"></div>
+    <div class="pay-loading-title">MENGHUBUNGKAN KE MIDTRANS</div>
+    <div class="pay-loading-sub">Mempersiapkan sesi pembayaran QRIS kamu...</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST NOTIFICATION CONTAINER
+============================================================ -->
+<div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+<!-- ============================================================
+     FLOATING: BACK TO TOP
+============================================================ -->
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ============================================================
+     FLOATING: WHATSAPP
+============================================================ -->
+<a id="wa-float" href="https://wa.me/6285135602885?text=Halo%20Alfirama%20Studio!%20Saya%20tertarik%20dengan%20template%2Fjasa%20desain..." target="_blank" rel="noopener noreferrer" aria-label="Chat WhatsApp" style="position:fixed;bottom:24px;right:24px;z-index:1000;">
+  <span class="wa-pulse"></span>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </svg>
+</a>
+
+<!-- ============================================================
+     BUY MODAL — CHECKOUT WA FALLBACK (tetap aktif)
+============================================================ -->
+<!-- PRODUCT PREVIEW MODAL -->
+<div id="buy-modal" role="dialog" aria-modal="true" aria-label="Konfirmasi Pembelian"
+  style="position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;
+         background:rgba(4,6,9,0.88);backdrop-filter:blur(16px);padding:20px;">
+  <div style="background:var(--bg3);border:1px solid rgba(201,178,109,0.2);border-radius:20px;
+              max-width:520px;width:100%;position:relative;overflow:hidden;
+              box-shadow:0 0 80px rgba(201,178,109,0.08),0 40px 100px rgba(0,0,0,0.7);">
+
+    <!-- Top gold line -->
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;
+                background:linear-gradient(90deg,transparent,#C9B26D,transparent);"></div>
+
+    <!-- Close -->
+    <button onclick="closeBuyModal()" aria-label="Tutup"
+      style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);
+             border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.5);
+             cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+             transition:all 0.2s ease;z-index:1;"
+      onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.3)'"
+      onmouseout="this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='rgba(255,255,255,0.1)'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- Product image -->
+    <div id="modal-img-wrap" style="width:100%;aspect-ratio:16/8;overflow:hidden;background:linear-gradient(135deg,#0D1526,#13192B);">
+      <img id="modal-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;" />
+      <div id="modal-img-placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.2)" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
       </div>
-    </a>
+    </div>
 
-    <nav class="navbar__nav">
-      <a href="/studio" class="navbar__link navbar__link--active">Studio</a>
-      <a href="/press" class="navbar__link">Press</a>
-      <a href="/mart" class="navbar__link">Mart</a>
-      <a href="/space" class="navbar__link">Space</a>
-    </nav>
+    <!-- Content -->
+    <div style="padding:28px 32px 32px;">
+      <span id="modal-cat-tag" style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.2em;
+        padding:3px 10px;border-radius:6px;font-weight:700;display:inline-block;margin-bottom:12px;
+        background:rgba(0,240,255,0.12);color:#00F0FF;border:1px solid rgba(0,240,255,0.25);"></span>
 
-    <div class="navbar__cta">
-      <a href="#portfolio" class="btn btn--primary btn--sm">
-        Lihat Portfolio
+      <h3 id="modal-title" style="font-family:var(--font-tech);font-weight:900;font-size:1rem;
+        letter-spacing:0.04em;margin-bottom:8px;color:var(--text);line-height:1.3;"></h3>
+
+      <p id="modal-price" style="font-family:var(--font-tech);font-weight:800;font-size:1.4rem;
+        background:linear-gradient(105deg,#E2CC8E,#C9B26D);-webkit-background-clip:text;
+        background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;"></p>
+
+      <!-- Deskripsi produk -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+                  border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.15em;
+                  color:var(--gold);margin-bottom:8px;">APA YANG KAMU DAPAT:</p>
+        <p id="modal-desc" style="font-family:var(--font-body);font-size:0.78rem;color:var(--text2);
+                  line-height:1.7;"></p>
+      </div>
+
+      <!-- Info badges -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+        <span style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.12em;
+          padding:4px 10px;border-radius:6px;background:rgba(0,230,118,0.08);
+          color:#00E676;border:1px solid rgba(0,230,118,0.2);">✓ FILE DIGITAL SIAP UNDUH</span>
+        <span style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.12em;
+          padding:4px 10px;border-radius:6px;background:rgba(0,240,255,0.08);
+          color:#00F0FF;border:1px solid rgba(0,240,255,0.2);">✓ AKSES SELAMANYA</span>
+        <span style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.12em;
+          padding:4px 10px;border-radius:6px;background:rgba(201,178,109,0.08);
+          color:#C9B26D;border:1px solid rgba(201,178,109,0.2);">✓ PEMBAYARAN AMAN</span>
+      </div>
+
+      <!-- CTA Button -->
+      <button id="modal-pay-btn" onclick="proceedToPayment()"
+        style="width:100%;font-family:var(--font-tech);font-size:0.65rem;font-weight:800;
+               letter-spacing:0.15em;padding:16px;border-radius:12px;border:none;cursor:pointer;
+               background:linear-gradient(105deg,#A38A47,#C9B26D,#E2CC8E);
+               background-size:200% 100%;color:#070A14;transition:all 0.3s ease;
+               box-shadow:0 0 28px rgba(201,178,109,0.35);">
+        LANJUT BAYAR SEKARANG ➔
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL — muncul setelah bayar -->
+<div id="success-modal" role="dialog" aria-modal="true"
+  style="position:fixed;inset:0;z-index:4000;display:none;align-items:center;justify-content:center;
+         background:rgba(0,10,5,0.92);backdrop-filter:blur(20px);padding:20px;">
+  <div style="background:linear-gradient(145deg,#050F08,#0A1A10);border:1px solid rgba(0,230,118,0.3);
+              border-radius:24px;max-width:460px;width:100%;padding:48px 36px;text-align:center;
+              position:relative;overflow:hidden;
+              box-shadow:0 0 80px rgba(0,230,118,0.12),0 40px 100px rgba(0,0,0,0.8);">
+
+    <!-- Animated top line -->
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;
+                background:linear-gradient(90deg,transparent,#00E676,transparent);"></div>
+
+    <!-- Corner decorations -->
+    <div style="position:absolute;top:20px;left:20px;width:30px;height:30px;
+                border-top:1px solid rgba(0,230,118,0.3);border-left:1px solid rgba(0,230,118,0.3);"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:30px;height:30px;
+                border-bottom:1px solid rgba(0,230,118,0.3);border-right:1px solid rgba(0,230,118,0.3);"></div>
+
+    <!-- Animated checkmark -->
+    <div id="success-check-wrap" style="width:80px;height:80px;border-radius:50%;
+      background:rgba(0,230,118,0.1);border:2px solid rgba(0,230,118,0.4);
+      display:flex;align-items:center;justify-content:center;margin:0 auto 24px;
+      animation:successPulse 2s ease-in-out infinite;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <div style="font-family:var(--font-tech);font-size:0.55rem;letter-spacing:0.3em;
+                color:rgba(0,230,118,0.7);margin-bottom:12px;">✦ TRANSAKSI BERHASIL ✦</div>
+
+    <h2 style="font-family:var(--font-tech);font-weight:900;font-size:1.4rem;
+               color:#fff;margin-bottom:8px;letter-spacing:0.02em;">Terima Kasih! 🎉</h2>
+
+    <p style="font-family:var(--font-body);font-size:0.82rem;color:rgba(255,255,255,0.5);
+              margin-bottom:8px;">Pembayaran kamu untuk</p>
+    <p id="success-product-name" style="font-family:var(--font-tech);font-weight:700;font-size:0.85rem;
+              color:#00E676;margin-bottom:24px;letter-spacing:0.05em;"></p>
+
+    <!-- Download box -->
+    <div style="background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);
+                border-radius:14px;padding:20px;margin-bottom:24px;">
+      <p style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.15em;
+                color:rgba(0,230,118,0.7);margin-bottom:12px;">LINK DOWNLOAD KAMU:</p>
+      <a id="success-download-btn" href="#" target="_blank" rel="noopener noreferrer"
+        style="display:inline-flex;align-items:center;gap:10px;
+               font-family:var(--font-tech);font-size:0.62rem;font-weight:800;
+               letter-spacing:0.12em;padding:14px 28px;border-radius:10px;
+               background:linear-gradient(105deg,#005c28,#00E676,#00FF88);
+               color:#001a0a;text-decoration:none;transition:all 0.25s ease;
+               box-shadow:0 0 24px rgba(0,230,118,0.35);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        DOWNLOAD FILE SEKARANG
       </a>
+    </div>
+
+    <p style="font-family:var(--font-body);font-size:0.72rem;color:rgba(255,255,255,0.3);
+              margin-bottom:20px;">Link download juga tersedia di kartu produk & dashboard kamu.</p>
+
+    <button onclick="closeSuccessModal()"
+      style="font-family:var(--font-tech);font-size:0.55rem;font-weight:700;letter-spacing:0.15em;
+             padding:10px 24px;border-radius:8px;background:transparent;
+             border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);
+             cursor:pointer;transition:all 0.2s ease;"
+      onmouseover="this.style.borderColor='rgba(255,255,255,0.4)';this.style.color='#fff'"
+      onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.4)'">
+      Tutup & Kembali ke Katalog
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes successPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,0.4); }
+  50%      { box-shadow: 0 0 0 16px rgba(0,230,118,0); }
+}
+</style>
+
+<!-- ============================================================
+     NAVBAR — SINKRON DENGAN GLOBAL
+============================================================ -->
+<header id="studio-navbar">
+
+  <a href="../index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;" aria-label="Kembali ke Alfirama.ID">
+    <img src="../assets/global/logo.png" alt="Alfirama Logo" style="height:32px;width:auto;" onerror="this.style.display='none';" />
+    <div class="nav-logo-text">
+      <span style="color:#fff;">ALFIRAMA</span><span style="color:#00F0FF;">.STUDIO</span>
+    </div>
+  </a>
+
+  <nav class="nav-links" aria-label="Studio Navigation">
+    <a href="../index.html"    class="nav-link">Home</a>
+    <a href="../profile.html" class="nav-link" id="portal-link">Portal Klien</a>
+    <a href="../track.html"   class="nav-link">Tracking</a>
+    <a href="../about.html"   class="nav-link">Tentang</a>
+    <a href="brief.html" class="btn btn-gold" style="font-size:0.55rem;padding:9px 18px;border-radius:8px;text-decoration:none;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Brief Sekarang
+    </a>
+  </nav>
+
+  <button id="ham-btn" aria-label="Toggle menu" aria-expanded="false"
+    style="display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:36px;height:36px;background:transparent;border:none;cursor:pointer;"
+    onclick="toggleMobileMenu()">
+    <span id="ham-l1" style="display:block;width:22px;height:2px;background:#fff;transition:all 0.3s ease;transform-origin:center;"></span>
+    <span id="ham-l2" style="display:block;width:22px;height:2px;background:#fff;transition:all 0.3s ease;"></span>
+    <span id="ham-l3" style="display:block;width:14px;height:2px;background:#fff;transition:all 0.3s ease;transform-origin:center;margin-left:8px;"></span>
+  </button>
+
+  <style>
+    @media (max-width: 768px) {
+      #ham-btn { display: flex !important; }
+    }
+  </style>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<div id="mobile-menu-studio"
+  style="position:fixed;top:0;right:0;height:100%;width:280px;z-index:90;
+         background:rgba(7,10,20,0.98);backdrop-filter:blur(24px);
+         border-left:1px solid rgba(0,240,255,0.1);
+         display:flex;flex-direction:column;"
+  aria-hidden="true">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid rgba(0,240,255,0.08);">
+    <span style="font-family:var(--font-tech);font-weight:900;font-size:0.7rem;letter-spacing:0.25em;color:var(--gold-light);">MENU</span>
+    <button onclick="toggleMobileMenu()" aria-label="Tutup menu"
+      style="background:transparent;border:none;color:rgba(255,255,255,0.6);cursor:pointer;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav style="display:flex;flex-direction:column;padding:24px;gap:4px;flex:1;">
+    <a href="../index.html"    class="nav-link" style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Home</a>
+    <a href="../profile.html" class="nav-link" id="portal-link-m" style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Portal Klien</a>
+    <a href="../track.html"   class="nav-link" style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Tracking</a>
+    <a href="../about.html"   class="nav-link" style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Tentang</a>
+    <a href="brief.html" class="btn btn-gold" style="margin-top:20px;justify-content:center;text-decoration:none;">
+      Brief Sekarang
+    </a>
+  </nav>
+  <div style="padding:20px 24px;border-top:1px solid rgba(0,240,255,0.08);">
+    <p style="font-family:var(--font-tech);font-size:0.5rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);text-align:center;">© 2026 ALFIRAMA.ID</p>
+  </div>
+</div>
+<div id="mobile-backdrop-studio" onclick="toggleMobileMenu()"
+  style="display:none;position:fixed;inset:0;z-index:80;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);"
+  aria-hidden="true"></div>
+
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section id="hero" class="hero-grid scanlines">
+
+  <div class="corner-deco-tl"></div>
+  <div class="corner-deco-br"></div>
+
+  <div class="hero-orb" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(201,178,109,0.06) 0%,transparent 65%);filter:blur(100px);"></div>
+  <div class="hero-orb" style="width:400px;height:400px;top:20%;left:-10%;background:radial-gradient(circle,rgba(0,240,255,0.05) 0%,transparent 70%);filter:blur(80px);"></div>
+  <div class="hero-orb" style="width:300px;height:300px;bottom:15%;right:-5%;background:radial-gradient(circle,rgba(201,178,109,0.07) 0%,transparent 70%);filter:blur(70px);"></div>
+
+  <div style="position:relative;z-index:10;max-width:860px;margin:0 auto;width:100%;text-align:center;">
+
+    <div class="fade-up" id="hero-eyebrow">
+      <span class="hero-eyebrow">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="#C9B26D"><polygon points="5,0 10,5 5,10 0,5"/></svg>
+        ALFIRAMA STUDIO — DIGITAL CREATIVE ECOSYSTEM
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="#C9B26D"><polygon points="5,0 10,5 5,10 0,5"/></svg>
+      </span>
+    </div>
+
+    <h1 class="hero-title fade-up fd-1" id="hero-title">
+      <span class="text-gold-grad">DIGITAL ASSET</span><br/>
+      <span style="color:#fff;">& PREMIUM BRANDING</span><br/>
+      <span style="color:rgba(255,255,255,0.35);font-size:0.55em;letter-spacing:0.25em;font-weight:500;">UNTUK BISNIS YANG INGIN TAMPIL BERBEDA</span>
+    </h1>
+
+    <div class="gold-rule fade-up fd-2"></div>
+
+    <p class="hero-subtitle fade-up fd-2">
+      Template digital premium siap pakai — mulai dari kit media sosial, logo pack, hingga animasi motion graphic. Plus jasa desain custom: branding, konveksi, dan identitas visual yang dibangun khusus untuk kebutuhan bisnis kamu.
+    </p>
+
+    <div class="fade-up fd-3" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <a href="brief.html" class="btn btn-gold btn-gold--lg" style="text-decoration:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        PESAN DESAIN CUSTOM ➔
+      </a>
+      <a href="#marketplace" class="btn btn-outline-gold" style="text-decoration:none;font-size:0.62rem;padding:14px 24px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4"/><circle cx="7" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+        Lihat Template Digital
+      </a>
+    </div>
+
+    <div class="hero-stats fade-up fd-4">
+      <div>
+        <div class="hero-stat-val">50+</div>
+        <div class="hero-stat-label">KLIEN AKTIF</div>
+      </div>
+      <div class="divider-v" style="width:1px;height:40px;background:rgba(255,255,255,0.08);"></div>
+      <div>
+        <div class="hero-stat-val">3+</div>
+        <div class="hero-stat-label">TAHUN PENGALAMAN</div>
+      </div>
+      <div class="divider-v" style="width:1px;height:40px;background:rgba(255,255,255,0.08);"></div>
+      <div>
+        <div class="hero-stat-val">100%</div>
+        <div class="hero-stat-label">GARANSI REVISI</div>
+      </div>
+      <div class="divider-v" style="width:1px;height:40px;background:rgba(255,255,255,0.08);"></div>
+      <div>
+        <div class="hero-stat-val">&lt;1J</div>
+        <div class="hero-stat-label">RESPONS WAKTU</div>
+      </div>
     </div>
 
   </div>
-</header>
-
-<main>
-
-  <!-- ═══════════════════════════
-       HERO
-  ═══════════════════════════ -->
-  <section class="studio-hero">
-
-    <div class="studio-hero__bg">
-      <div class="studio-hero__orb studio-hero__orb--1"></div>
-      <div class="studio-hero__orb studio-hero__orb--2"></div>
-      <div class="studio-hero__grid"></div>
-    </div>
-
-    <div class="studio-hero__inner">
-
-      <!-- LEFT -->
-      <div>
-
-        <div class="studio-hero__eyebrow">
-          <span class="studio-hero__dot"></span>
-          Alfirama Studio
-        </div>
-
-        <h1 class="studio-hero__title">
-          Desain yang<br/>
-          <span>Naik Kelas.</span><br/>
-          Branding yang Diingat.
-        </h1>
-
-        <p class="studio-hero__desc">
-          Kami membantu bisnis, UMKM, dan personal brand tampil lebih profesional melalui desain visual modern, identitas brand yang kuat, dan konten kreatif yang relevan di era digital.
-        </p>
-
-        <div class="studio-hero__cta">
-          <a href="#portfolio" class="btn btn--primary btn--lg">
-            Lihat Portfolio
-          </a>
-
-          <a href="#testimonial" class="btn btn--ghost btn--lg">
-            Review Klien
-          </a>
-        </div>
-
-      </div>
-
-      <!-- RIGHT -->
-      <div class="studio-hero__visual">
-
-        <div class="studio-hero__card">
-
-          <div class="studio-hero__preview"></div>
-
-          <div class="studio-hero__mockup">
-
-            <div class="mock-card mock-card--large">
-              <div class="mock-card__img">
-                BRAND PREVIEW
-              </div>
-            </div>
-
-            <div class="mock-card">
-              <div class="mock-card__img">
-                LOGO
-              </div>
-            </div>
-
-            <div class="mock-card">
-              <div class="mock-card__img">
-                CONTENT
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- ═══════════════════════════
-       PORTFOLIO
-  ═══════════════════════════ -->
-  <section class="studio-section" id="portfolio">
-
-    <div class="studio-section__inner">
-
-      <div class="section-head">
-
-        <div class="section-label">
-          Portfolio
-        </div>
-
-        <h2 class="section-title">
-          Karya Visual<br/>
-          yang Dibangun dengan Detail
-        </h2>
-
-        <p class="section-desc">
-          Beberapa contoh hasil desain logo, branding, social media, dan identitas visual yang telah kami kerjakan.
-        </p>
-
-      </div>
-
-      <div class="portfolio-grid">
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Branding
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Modern Coffee Identity
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Desain identitas visual modern untuk coffee shop premium dengan nuansa minimalis elegan.
-            </p>
-          </div>
-        </article>
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Logo Design
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Fashion Brand Concept
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Pembuatan logo eksklusif dengan pendekatan clean luxury branding.
-            </p>
-          </div>
-        </article>
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Social Media
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Content Campaign
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Feed Instagram dan campaign visual untuk meningkatkan engagement brand.
-            </p>
-          </div>
-        </article>
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Packaging
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Product Packaging
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Packaging modern dengan visual clean dan premium untuk produk UMKM.
-            </p>
-          </div>
-        </article>
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Visual Identity
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Corporate Branding
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Sistem identitas visual profesional untuk perusahaan dan startup modern.
-            </p>
-          </div>
-        </article>
-
-        <article class="portfolio-card">
-          <div class="portfolio-card__image">
-            PLACEHOLDER
-          </div>
-
-          <div class="portfolio-card__content">
-            <div class="portfolio-card__category">
-              Design System
-            </div>
-
-            <h3 class="portfolio-card__title">
-              Creative UI Assets
-            </h3>
-
-            <p class="portfolio-card__desc">
-              Kumpulan aset visual dan layout digital untuk kebutuhan promosi brand.
-            </p>
-          </div>
-        </article>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- ═══════════════════════════
-       TESTIMONIAL
-  ═══════════════════════════ -->
-  <section class="studio-section" id="testimonial">
-
-    <div class="studio-section__inner">
-
-      <div class="section-head">
-
-        <div class="section-label">
-          Client Review
-        </div>
-
-        <h2 class="section-title">
-          Dipercaya oleh<br/>
-          Brand & UMKM
-        </h2>
-
-      </div>
-
-      <div class="testimonial-grid">
-
-        <article class="testimonial-card">
-
-          <div class="testimonial-stars">
-            ★★★★★
-          </div>
-
-          <p class="testimonial-text">
-            “Hasil desainnya premium banget. Branding usaha saya jadi jauh lebih profesional dan lebih dipercaya customer.”
-          </p>
-
-          <div class="testimonial-user">
-
-            <div class="testimonial-avatar"></div>
-
-            <div>
-              <div class="testimonial-name">
-                Rizky Maulana
-              </div>
-
-              <div class="testimonial-role">
-                Owner Coffee Brand
-              </div>
-            </div>
-
-          </div>
-
-        </article>
-
-        <article class="testimonial-card">
-
-          <div class="testimonial-stars">
-            ★★★★★
-          </div>
-
-          <p class="testimonial-text">
-            “Fast response, detail desain rapih, dan vibes visualnya modern banget. Recommended buat UMKM.”
-          </p>
-
-          <div class="testimonial-user">
-
-            <div class="testimonial-avatar"></div>
-
-            <div>
-              <div class="testimonial-name">
-                Fina Zahra
-              </div>
-
-              <div class="testimonial-role">
-                Fashion Store
-              </div>
-            </div>
-
-          </div>
-
-        </article>
-
-        <article class="testimonial-card">
-
-          <div class="testimonial-stars">
-            ★★★★★
-          </div>
-
-          <p class="testimonial-text">
-            “Konten sosial media yang dibuat Alfirama Studio bikin engagement akun bisnis saya naik drastis.”
-          </p>
-
-          <div class="testimonial-user">
-
-            <div class="testimonial-avatar"></div>
-
-            <div>
-              <div class="testimonial-name">
-                Dimas Prasetyo
-              </div>
-
-              <div class="testimonial-role">
-                Digital Entrepreneur
-              </div>
-            </div>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- ═══════════════════════════
-       CTA
-  ═══════════════════════════ -->
-  <section class="studio-cta">
-
-    <div class="studio-cta__box">
-
-      <h2 class="studio-cta__title">
-        Siap Bangun Visual Brand-mu?
+</section>
+
+
+<!-- ============================================================
+     MARQUEE BAND
+============================================================ -->
+<div id="services-band">
+  <div class="marquee-wrap">
+    <span class="m-item m-item--gold">LOGO & BRAND IDENTITY</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">SOCIAL MEDIA KIT</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">TEMPLATE PSD PREMIUM</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">MOTION GRAPHIC & ANIMASI</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">KONVEKSI & SABLON CUSTOM</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">PACKAGING DESIGN</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">BRAND GUIDELINE LENGKAP</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">TEMPLATE AFTER EFFECTS</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">VEKTOR & ILUSTRASI</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">DESAIN PERCETAKAN & PROMOSI</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <!-- Duplicate for seamless loop -->
+    <span class="m-item m-item--gold">LOGO & BRAND IDENTITY</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">SOCIAL MEDIA KIT</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">TEMPLATE PSD PREMIUM</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">MOTION GRAPHIC & ANIMASI</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">KONVEKSI & SABLON CUSTOM</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">PACKAGING DESIGN</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">BRAND GUIDELINE LENGKAP</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--cyan">TEMPLATE AFTER EFFECTS</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item m-item--gold">VEKTOR & ILUSTRASI</span>
+    <span class="m-item"><span class="dot"></span></span>
+    <span class="m-item">DESAIN PERCETAKAN & PROMOSI</span>
+    <span class="m-item"><span class="dot"></span></span>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     MARKETPLACE — KATALOG PRODUK DIGITAL
+============================================================ -->
+<section id="marketplace" class="section" style="background:var(--bg);">
+  <div class="container">
+
+    <div class="fade-up" id="market-header" style="margin-bottom:60px;">
+      <span class="section-eyebrow">⬡ Template Digital Premium</span>
+      <div class="divider-gold"></div>
+      <h2 class="section-title">
+        <span class="text-gold-grad">Katalog</span> Produk Digital
       </h2>
-
-      <p class="studio-cta__desc">
-        Konsultasikan kebutuhan desain, branding, dan konten kreatifmu bersama Alfirama Studio sekarang juga.
+      <p class="section-desc">
+        Aset desain siap pakai berkualitas premium — cocok untuk UMKM, kreator konten, dan brand lokal yang ingin tampil profesional tanpa effort lebih.
       </p>
-
-      <a
-        href="https://wa.me/628xxxxxxxxxx"
-        class="studio-whatsapp-btn"
-      >
-        <span>💬</span>
-        Mulai Briefing Desain Sekarang
-      </a>
-
     </div>
 
-  </section>
+    <!-- Filter Tabs -->
+    <div class="filter-tabs fade-up" id="filter-tabs">
+      <button class="filter-tab active" onclick="filterProducts('all', this)">SEMUA</button>
+      <button class="filter-tab" onclick="filterProducts('psd', this)">PSD</button>
+      <button class="filter-tab" onclick="filterProducts('vector', this)">VEKTOR</button>
+      <button class="filter-tab" onclick="filterProducts('ae', this)">AFTER EFFECTS</button>
+      <button class="filter-tab" onclick="filterProducts('smkit', this)">SOCIAL MEDIA KIT</button>
+      <button class="filter-tab" onclick="filterProducts('logo', this)">LOGO PACK</button>
+      <button class="filter-tab" onclick="filterProducts('brand', this)">BRANDING</button>
+    </div>
 
-</main>
+    <!-- Products Grid — diisi oleh Firestore onSnapshot -->
+    <div id="products-grid">
 
+      <div id="products-loading">
+        <div class="loading-spinner"></div>
+        <p style="font-family:var(--font-tech);font-size:0.6rem;letter-spacing:0.2em;color:var(--text3);">MEMUAT KATALOG...</p>
+      </div>
+
+      <div id="empty-state">
+        <div style="width:64px;height:64px;border-radius:16px;background:rgba(201,178,109,0.07);border:1px solid rgba(201,178,109,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.5)" stroke-width="1.5"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4"/><circle cx="7" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>
+        </div>
+        <p style="font-family:var(--font-tech);font-size:0.65rem;letter-spacing:0.15em;color:var(--text3);margin-bottom:8px;">BELUM ADA PRODUK DI KATEGORI INI</p>
+        <p style="font-family:var(--font-body);font-size:0.75rem;color:var(--text3);">Coba filter lain atau hubungi kami untuk kebutuhan custom.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     JASA DESAIN CUSTOM
+============================================================ -->
+<section id="services" class="section">
+  <div class="container">
+
+    <div class="fade-up" id="services-header" style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:40px;margin-bottom:60px;">
+      <div>
+        <span class="section-eyebrow">⬡ Jasa Custom</span>
+        <div class="divider-gold"></div>
+        <h2 class="section-title">
+          Dibangun <span class="text-gold-grad">Khusus</span><br/>Untuk Kamu
+        </h2>
+        <p class="section-desc">
+          Tidak menemukan yang kamu cari di katalog? Tim desainer kami siap membangun visual brand dari nol.
+        </p>
+      </div>
+      <div style="flex-shrink:0;padding-top:8px;">
+        <a href="brief.html" class="btn btn-gold" style="text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Mulai Briefing Sekarang
+        </a>
+      </div>
+    </div>
+
+    <div class="services-grid fade-up" id="services-cards">
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(201,178,109,0.08);border:1px solid rgba(201,178,109,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <div class="service-title">Logo & Brand Identity</div>
+        <div class="service-desc">Desain logo profesional beserta brand guideline lengkap — color palette, tipografi, penggunaan logo, dan aset visual pendukung siap pakai untuk semua media.</div>
+        <span class="service-price-badge">MULAI RP 150.000</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.18);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.6"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div class="service-title">Social Media Kit</div>
+        <div class="service-desc">Paket lengkap template konten media sosial — feed Instagram, story, highlight cover, Facebook banner, dan thumbnail YouTube dengan konsistensi visual brand.</div>
+        <span class="service-price-badge">MULAI RP 99.000</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(159,0,255,0.07);border:1px solid rgba(159,0,255,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#CC88FF" stroke-width="1.6"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div class="service-title">Motion Graphic & Animasi</div>
+        <div class="service-desc">Intro video, logo animasi, bumper iklan, dan template After Effects siap render — cocok untuk konten reels, YouTube, atau presentasi bisnis.</div>
+        <span class="service-price-badge">MULAI RP 200.000</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(255,120,0,0.07);border:1px solid rgba(255,120,0,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFB366" stroke-width="1.6"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <div class="service-title">Packaging & Label Design</div>
+        <div class="service-desc">Desain kemasan produk, label stiker, hangtag, dan kartu nama yang membangun kesan premium untuk brand F&B, skincare, dan produk lokal Banten.</div>
+        <span class="service-price-badge">MULAI RP 120.000</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(0,200,100,0.07);border:1px solid rgba(0,200,100,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#66FFB3" stroke-width="1.6"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+        </div>
+        <div class="service-title">Konveksi & Sablon Custom</div>
+        <div class="service-desc">Kaos, hoodie, topi, dan seragam custom — dari desain hingga produk jadi. Sablon DTF, screen printing, dan bordir berkualitas dengan MOQ mulai 12 pcs.</div>
+        <span class="service-price-badge">MOQ 12 PCS</span>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon" style="background:rgba(255,60,100,0.07);border:1px solid rgba(255,60,100,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF8FAA" stroke-width="1.6"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <div class="service-title">Materi Iklan & Promosi</div>
+        <div class="service-desc">Spanduk, brosur, flyer, X-banner, dan poster promosi — desain yang menarik perhatian dengan pesan yang langsung masuk. Siap cetak via Alfirama Press.</div>
+        <span class="service-price-badge">MULAI RP 75.000</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     HOW TO ORDER
+============================================================ -->
+<section id="how-to-order" class="section">
+  <div class="container">
+
+    <div class="fade-up" id="order-header" style="text-align:center;margin-bottom:60px;">
+      <span class="section-eyebrow" style="text-align:center;display:block;">⬡ Cara Pesan</span>
+      <div class="divider-gold" style="margin:16px auto 20px;"></div>
+      <h2 class="section-title" style="text-align:center;">
+        Simpel, <span class="text-gold-grad">Transparan</span>, Cepat
+      </h2>
+      <p class="section-desc" style="margin:0 auto;text-align:center;">
+        Proses pemesanan dirancang sejelas mungkin agar kamu tahu persis apa yang sedang terjadi.
+      </p>
+    </div>
+
+    <div class="order-steps fade-up" id="order-steps">
+
+      <div class="order-step">
+        <div class="step-circle" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.06);">
+          <span class="step-number">01</span>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="step-title">PILIH PRODUK</div>
+        <div class="step-desc">Pilih template dari katalog atau pilih paket jasa custom yang sesuai kebutuhan bisnismu.</div>
+      </div>
+
+      <div class="order-step">
+        <div class="step-circle" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.06);">
+          <span class="step-number">02</span>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="step-title">LOGIN & BAYAR QRIS</div>
+        <div class="step-desc">Login akun, lalu bayar langsung via QRIS Midtrans. Aman, transparan, tanpa biaya tersembunyi.</div>
+      </div>
+
+      <div class="order-step">
+        <div class="step-circle" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.06);">
+          <span class="step-number">03</span>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <div class="step-title">VERIFIKASI OTOMATIS</div>
+        <div class="step-desc">Sistem kami mendeteksi pembayaran secara real-time dan langsung membuka akses download untukmu.</div>
+      </div>
+
+      <div class="order-step">
+        <div class="step-circle" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.06);">
+          <span class="step-number">04</span>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="step-title">DOWNLOAD MASTER FILE</div>
+        <div class="step-desc">Tombol download Google Drive muncul seketika di kartu produk. File kamu siap diunduh kapan saja.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA SECTION
+============================================================ -->
+<section id="cta-section" class="section" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,240,255,0.15),rgba(201,178,109,0.25),rgba(0,240,255,0.15),transparent);"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,178,109,0.15),rgba(0,240,255,0.2),rgba(201,178,109,0.15),transparent);"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,178,109,0.06) 0%,transparent 65%);filter:blur(60px);pointer-events:none;"></div>
+
+  <div class="container" style="position:relative;z-index:1;text-align:center;">
+    <div class="fade-up">
+      <span class="hero-eyebrow">⬡ MULAI SEKARANG ⬡</span>
+      <h2 class="section-title" style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:20px;text-align:center;">
+        <span class="text-gold-grad">Wujudkan Visi</span><br/>
+        <span style="color:#fff;">Bisnis Kamu Hari Ini</span>
+      </h2>
+      <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--text2);line-height:1.75;max-width:520px;margin:0 auto 40px;">
+        Satu ekosistem kreatif — dari ide visual hingga produk jadi. Konsultasi gratis, tanpa komitmen. Tim Alfirama Studio siap merespons dalam kurang dari 1 jam.
+      </p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px;">
+        <a href="brief.html" class="btn btn-gold btn-gold--lg" style="text-decoration:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          MULAI BRIEFING SEKARANG
+        </a>
+        <a href="https://wa.me/6285135602885?text=Halo%20Alfirama%20Studio!%20Saya%20ingin%20konsultasi..." target="_blank" rel="noopener noreferrer" class="btn btn-outline-cyan" style="text-decoration:none;font-size:0.62rem;padding:14px 24px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Chat WhatsApp
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.12em;color:var(--text3);">KONSULTASI GRATIS</span>
+        </div>
+        <div style="width:1px;height:14px;background:rgba(255,255,255,0.1);"></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="2" opacity="0.7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.12em;color:var(--text3);">GARANSI 2x REVISI</span>
+        </div>
+        <div style="width:1px;height:14px;background:rgba(255,255,255,0.1);"></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          <span style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.12em;color:var(--text3);">RESPONS &lt; 1 JAM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer id="studio-footer">
+  <div class="footer-top-line"></div>
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:28px;">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <img src="../assets/global/logo.png" alt="Alfirama Logo" style="height:28px;width:auto;" onerror="this.style.display='none';" />
+        <div style="font-family:var(--font-tech);font-weight:900;font-size:0.8rem;letter-spacing:0.2em;">
+          <span style="color:#fff;">ALFIRAMA</span><span style="color:#00F0FF;">.STUDIO</span>
+        </div>
+      </div>
+
+      <nav style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;" aria-label="Footer Navigation">
+        <a href="../index.html"         class="footer-link">HOME</a>
+        <a href="../about.html"         class="footer-link">TENTANG</a>
+        <a href="../print/index.html"   class="footer-link">PRINT & APPAREL</a>
+        <a href="../mart/index.html"    class="footer-link">ALFIRAMART</a>
+        <a href="../space/index.html"   class="footer-link">SPACE</a>
+        <a href="../profile.html"       class="footer-link" id="footer-portal-link">PORTAL KLIEN</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="https://www.instagram.com/alfirama.id" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://wa.me/6285135602885" target="_blank" rel="noopener noreferrer"
+          style="width:36px;height:36px;border-radius:9px;border:1px solid rgba(37,211,102,0.2);background:rgba(37,211,102,0.05);display:flex;align-items:center;justify-content:center;color:rgba(37,211,102,0.6);transition:all 0.2s ease;text-decoration:none;"
+          onmouseover="this.style.borderColor='rgba(37,211,102,0.5)';this.style.color='#25D366';"
+          onmouseout="this.style.borderColor='rgba(37,211,102,0.2)';this.style.color='rgba(37,211,102,0.6)';"
+          aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        </a>
+        <a href="https://github.com/alfiramaid" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <p style="font-family:var(--font-tech);font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2);">© 2026 ALFIRAMA.ID — ALL RIGHTS RESERVED</p>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="../privacy.html" class="footer-link">PRIVACY POLICY</a>
+        <a href="../terms.html"   class="footer-link">TERMS</a>
+        <span style="font-family:var(--font-tech);font-size:0.52rem;color:rgba(0,240,255,0.25);letter-spacing:0.1em;">STUDIO v2.1.0</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     SCRIPTS — NATIVE JS (UI, Navbar, Animasi, Toast, Midtrans)
+============================================================ -->
 <script>
 
-  // Navbar scroll
-  const navbar = document.getElementById('navbar');
-
+  /* ─────────────────────────────────────────────
+     1. NAVBAR SCROLL
+  ───────────────────────────────────────────── */
+  const navbar = document.getElementById('studio-navbar');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('navbar--scrolled', window.scrollY > 20);
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ─────────────────────────────────────────────
+     2. BACK TO TOP
+  ───────────────────────────────────────────── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  /* ─────────────────────────────────────────────
+     3. MOBILE MENU
+  ───────────────────────────────────────────── */
+  let mobileOpen = false;
+  function toggleMobileMenu() {
+    mobileOpen = !mobileOpen;
+    const menu     = document.getElementById('mobile-menu-studio');
+    const backdrop = document.getElementById('mobile-backdrop-studio');
+    const btn      = document.getElementById('ham-btn');
+    const l1 = document.getElementById('ham-l1');
+    const l2 = document.getElementById('ham-l2');
+    const l3 = document.getElementById('ham-l3');
+
+    if (mobileOpen) {
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden', 'false');
+      backdrop.style.display = 'block';
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      l1.style.transform = 'translateY(7px) rotate(45deg)';
+      l2.style.opacity   = '0';
+      l3.style.transform = 'translateY(-7px) rotate(-45deg)';
+      l3.style.width = '22px'; l3.style.marginLeft = '0';
+    } else {
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+      backdrop.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      l1.style.transform = ''; l2.style.opacity = '1';
+      l3.style.transform = ''; l3.style.width = '14px'; l3.style.marginLeft = '8px';
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileOpen) toggleMobileMenu(); });
+
+  /* ─────────────────────────────────────────────
+     4. PAGE TRANSITION
+  ───────────────────────────────────────────── */
+  const overlay = document.getElementById('page-overlay');
+  document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"]):not([href^="https://wa"]):not([href^="mailto"]):not([href^="tel"])').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (!href || href === '#') return;
+      e.preventDefault();
+      overlay.classList.add('active');
+      setTimeout(() => { window.location.href = href; }, 400);
+    });
+  });
+  window.addEventListener('pageshow', () => overlay.classList.remove('active'));
+
+  /* ─────────────────────────────────────────────
+     5. FADE-UP INTERSECTION OBSERVER
+  ───────────────────────────────────────────── */
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        fadeObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  const heroEls = document.querySelectorAll('#hero .fade-up');
+  heroEls.forEach((el, i) => setTimeout(() => el.classList.add('visible'), 200 + i * 150));
+  document.querySelectorAll('.fade-up:not(#hero .fade-up)').forEach(el => fadeObserver.observe(el));
+
+  /* ─────────────────────────────────────────────
+     6. PRODUCT FILTER
+  ───────────────────────────────────────────── */
+  let currentFilter = 'all';
+  window.filterProducts = function (cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.product-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const show = cat === 'all' || card.dataset.category === cat;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    const emptyEl = document.getElementById('empty-state');
+    if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
+  };
+
+  /* ─────────────────────────────────────────────
+     7. BUY MODAL (WA fallback)
+  ───────────────────────────────────────────── */
+  /* ── Current item yang akan dibayar ── */
+  let _currentPayItem = null;
+
+  window.openBuyModal = function (item) {
+    _currentPayItem = item;
+    const modal = document.getElementById('buy-modal');
+
+    // Isi konten modal
+    document.getElementById('modal-title').textContent = item.title || '';
+    document.getElementById('modal-price').textContent = item.price || '';
+    document.getElementById('modal-desc').textContent  = item.description || 'Template digital premium siap pakai.';
+
+    // Category tag
+    const catEl = document.getElementById('modal-cat-tag');
+    if (catEl) catEl.textContent = item.catLabel || item.category?.toUpperCase() || 'TEMPLATE';
+
+    // Image
+    const imgEl = document.getElementById('modal-img');
+    const imgPh = document.getElementById('modal-img-placeholder');
+    const imgSrc = item.imageFile || item.imageUrl || '';
+    if (imgSrc && imgEl) {
+      imgEl.src = imgSrc;
+      imgEl.style.display = 'block';
+      if (imgPh) imgPh.style.display = 'none';
+    } else {
+      if (imgEl) imgEl.style.display = 'none';
+      if (imgPh) imgPh.style.display = 'flex';
+    }
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeBuyModal = function () {
+    document.getElementById('buy-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.proceedToPayment = function () {
+    if (!_currentPayItem) return;
+    closeBuyModal();
+    initiateMidtransPayment(_currentPayItem);
+  };
+
+  window.closeSuccessModal = function () {
+    document.getElementById('success-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.showSuccessModal = function (productName, fileUrl) {
+    document.getElementById('success-product-name').textContent = productName || 'produk ini';
+    const dlBtn = document.getElementById('success-download-btn');
+    if (dlBtn) {
+      dlBtn.href = fileUrl || '#';
+      dlBtn.style.display = fileUrl ? 'inline-flex' : 'none';
+    }
+    document.getElementById('success-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  document.getElementById('buy-modal').addEventListener('click', function (e) {
+    if (e.target === this) closeBuyModal();
+  });
+  document.getElementById('success-modal').addEventListener('click', function (e) {
+    if (e.target === this) closeSuccessModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeBuyModal(); closeSuccessModal(); }
   });
 
+  /* ─────────────────────────────────────────────
+     8. TOAST NOTIFICATION SYSTEM — Cyberpunk Theme
+     Tipe: 'success' | 'error' | 'warning' | 'info'
+  ───────────────────────────────────────────── */
+  const TOAST_ICONS = {
+    success: '✦',
+    error:   '⊗',
+    warning: '⚠',
+    info:    '◈',
+  };
+
+  window.showToast = function (type, title, message, duration) {
+    duration = duration || 4500;
+    const container = document.getElementById('toast-container');
+
+    const toast = document.createElement('div');
+    toast.className = 'toast toast--' + type;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+      <div class="toast-icon">${TOAST_ICONS[type] || '◈'}</div>
+      <div class="toast-content">
+        <div class="toast-title">${title}</div>
+        <div class="toast-msg">${message}</div>
+      </div>
+      <div class="toast-progress" style="animation-duration:${duration}ms;width:100%;"></div>
+    `;
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => toast.classList.add('visible'));
+    });
+
+    setTimeout(() => {
+      toast.classList.add('hiding');
+      toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    }, duration);
+  };
+
+  /* ─────────────────────────────────────────────
+     9. PAYMENT LOADING OVERLAY HELPERS
+  ───────────────────────────────────────────── */
+  window.showPaymentLoading = function () {
+    const el = document.getElementById('payment-loading-overlay');
+    el.classList.add('active');
+    el.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  window.hidePaymentLoading = function () {
+    const el = document.getElementById('payment-loading-overlay');
+    el.classList.remove('active');
+    el.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  /* ─────────────────────────────────────────────
+     10. UNLOCK DOWNLOAD — ubah tampilan kartu produk
+         secara real-time setelah pembayaran sukses
+  ───────────────────────────────────────────── */
+  window.unlockDownloadCard = function (templateId, fileLink) {
+    const card = document.querySelector('.product-card[data-id="' + templateId + '"]');
+    if (!card) return;
+
+    // Tandai kartu sebagai sudah dibeli
+    card.classList.add('is-paid');
+
+    // Ganti tombol Beli → tombol Download
+    const buyBtn = card.querySelector('.btn-buy');
+    if (buyBtn) {
+      const downloadBtn = document.createElement('a');
+      downloadBtn.href        = fileLink || '#';
+      downloadBtn.target      = '_blank';
+      downloadBtn.rel         = 'noopener noreferrer';
+      downloadBtn.className   = 'btn-download';
+      downloadBtn.setAttribute('aria-label', 'Download Master File');
+      downloadBtn.innerHTML = `
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        DOWNLOAD FILE
+      `;
+      buyBtn.parentNode.replaceChild(downloadBtn, buyBtn);
+    }
+
+    // Update price note
+    const priceNote = card.querySelector('.product-price-note');
+    if (priceNote) {
+      priceNote.textContent = '✦ Sudah dibeli — akses selamanya';
+      priceNote.style.color = 'rgba(0,230,118,0.7)';
+    }
+  };
+
+</script>
+
+
+<!-- ============================================================
+     FIREBASE MODULE — FIRESTORE REALTIME CATALOG (onSnapshot)
+     Collection: studio_templates
+============================================================ -->
+<script type="module">
+  import { initializeApp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import { getFirestore, collection, onSnapshot, query, orderBy, doc, setDoc, getDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { getAuth, onAuthStateChanged }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+  /* ── Firebase Config ── */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+    authDomain:        "alfirama-id.firebaseapp.com",
+    projectId:         "alfirama-id",
+    storageBucket:     "alfirama-id.firebasestorage.app",
+    messagingSenderId: "1036820056484",
+    appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
+    measurementId:     "G-V3QGL2R207"
+  };
+
+  const app  = initializeApp(firebaseConfig, 'studio-catalog');
+  const db   = getFirestore(app);
+  const auth = getAuth(app);
+
+  /* ── State: user aktif saat ini ── */
+  let currentUser = null;
+  let authReady = false;
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    authReady = true;
+
+    /* Update nav portal link */
+    const portalLinks = [
+      document.getElementById('portal-link'),
+      document.getElementById('portal-link-m'),
+      document.getElementById('footer-portal-link'),
+    ];
+    portalLinks.forEach(link => {
+      if (!link) return;
+      link.textContent = user ? '⚡ Dashboard' : 'Portal Klien';
+      link.href        = '../profile.html';
+    });
+
+    /* Setelah user login, cek produk yang sudah dibeli dan unlock kartu-nya */
+    if (user) {
+      checkUserDownloads(user.uid);
+    }
+  });
+
+  /* ── Cek riwayat pembelian user dari Firestore ── */
+  async function checkUserDownloads(uid) {
+    try {
+      const { collection: col, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      const downloadsRef = collection(db, 'user_downloads');
+      const { query: q2, where } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      const q = q2(downloadsRef, where('userId', '==', uid), where('status', '==', 'paid'));
+      const snap = await getDocs(q);
+      snap.forEach(docSnap => {
+        const data = docSnap.data();
+        if (data.templateId && data.fileLink) {
+          window.unlockDownloadCard(data.templateId, data.fileLink);
+        }
+      });
+    } catch (err) {
+      console.warn('[Alfirama] checkUserDownloads error:', err.message);
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     MIDTRANS SNAP PAYMENT — Entry point
+     Dipanggil dari tombol "BELI SEKARANG" tiap kartu
+     Parameter: item = { id, title, price, priceRaw, fileUrl }
+  ───────────────────────────────────────────── */
+window.initiateMidtransPayment = async function (item) {
+
+    if (!authReady) {
+      await new Promise((resolve) => {
+        const check = setInterval(() => {
+          if (authReady) { clearInterval(check); resolve(); }
+        }, 100);
+      });
+    }
+
+    // == SINKRONISASI JALUR PEMBELI UMUM / ANONIM ==
+    const uid       = currentUser ? currentUser.uid : 'ANON-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const userName  = currentUser ? (currentUser.displayName || 'Pelanggan Alfirama') : 'Pembeli Umum';
+    const userEmail = currentUser ? (currentUser.email || '') : 'anon@alfirama.id';
+
+    showPaymentLoading();
+    
+    let snapToken = null;
+    try {
+      const orderId = 'ALF-' + uid.slice(0, 6).toUpperCase() + '-' + item.id.toUpperCase() + '-' + Date.now();
+      const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+         ? 'http://localhost:3001' : 'https://alfirama-backend-production.up.railway.app';
+        const response = await fetch(API_BASE + '/api/midtrans/create-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, amount: item.priceRaw || 0, name: userName, email: userEmail, templateId: item.id, templateTitle: item.title }),
+      });
+      if (!response.ok) throw new Error('Server responded with status ' + response.status);
+      const data = await response.json();
+      snapToken = data.token;
+      if (!snapToken) throw new Error('Snap token tidak ditemukan.');
+    } catch (fetchErr) {
+      hidePaymentLoading();
+      showToast('error', 'KONEKSI GAGAL', 'Tidak dapat menghubungi server pembayaran.', 6000);
+      return;
+    }
+
+    hidePaymentLoading();
+
+    window.snap.pay(snapToken, {
+      onSuccess: async function (result) {
+        try {
+          const downloadDocRef = doc(db, 'user_downloads', uid + '_' + item.id);
+          await setDoc(downloadDocRef, {
+            userId: uid, userName, userEmail,
+            templateId: item.id, templateTitle: item.title, templatePrice: item.price,
+            status: 'paid', fileLink: item.fileUrl || '',
+            orderId: result.order_id || '', transactionId: result.transaction_id || '',
+            paymentType: result.payment_type || '', timestamp: serverTimestamp(),
+          }, { merge: true });
+          window.unlockDownloadCard(item.id, item.fileUrl || '');
+        } catch (e) {
+          showToast('warning', 'CATATAN', 'Pembayaran sukses tapi gagal simpan data. Hubungi support.', 8000);
+        }
+        // Tampilkan success modal dengan animasi
+        window.showSuccessModal(item.title, item.fileUrl || '');
+      },
+      onPending: function () {
+        showToast('warning', 'MENUNGGU PEMBAYARAN', 'Selesaikan pembayaran QRIS kamu.', 7000);
+      },
+      onError: function () {
+        showToast('error', 'TRANSAKSI GAGAL', 'Pembayaran tidak dapat diproses.', 7000);
+      },
+      onClose: function () {
+        showToast('info', 'DIBATALKAN', 'Klik "Beli Sekarang" kapan saja untuk melanjutkan.', 5000);
+      },
+    });
+  };
+
+  /* ─────────────────────────────────────────────
+     PLACEHOLDER PRODUK ───────────────────────────────────────────── */
+  const PLACEHOLDER_PRODUCTS = [
+    {
+      id: 'ph-1',
+      title: 'Social Media Kit — Brand Kuliner',
+      description: 'Paket 30+ template feed Instagram, 10 story, dan 5 highlight cover. Bisa diedit sendiri via Canva Pro atau Adobe Illustrator.',
+      price: 'Rp 75.000', priceRaw: 75000,
+      category: 'smkit', catLabel: 'SOCIAL MEDIA KIT', catClass: 'cat-tag--smkit',
+      badge: 'hot',
+      imageFile: '../assets/studio/smkit-kuliner.png',
+      fileUrl: '',
+    },
+    {
+      id: 'ph-2',
+      title: 'Logo Pack — Minimalist Modern (5 Konsep)',
+      description: 'Paket 5 konsep logo minimal modern dalam format AI, EPS, SVG, PNG transparan, dan PDF. Cocok untuk UMKM, startup, dan personal branding.',
+      price: 'Rp 150.000', priceRaw: 150000,
+      category: 'logo', catLabel: 'LOGO PACK', catClass: 'cat-tag--logo',
+      badge: 'new',
+      imageFile: '../assets/studio/logo-pack-minimal.png',
+      fileUrl: '',
+    },
+    {
+      id: 'ph-3',
+      title: 'After Effects — Logo Reveal Neon Glow',
+      description: 'Template intro video premium dengan efek neon glow dan partikel. Durasi 5 detik. Mudah dikustomisasi, no plugin, After Effects CS6+.',
+      price: 'Rp 120.000', priceRaw: 120000,
+      category: 'ae', catLabel: 'AFTER EFFECTS', catClass: 'cat-tag--ae',
+      badge: null,
+      imageFile: '../assets/studio/ae-logo-neon.png',
+      fileUrl: '',
+    },
+    {
+      id: 'ph-4',
+      title: 'PSD — Business Card Premium (10 Desain)',
+      description: 'Template kartu nama bisnis premium dalam format PSD berlayer. Ukuran standar 9x5.5cm, 300dpi siap cetak. Includes mockup scene.',
+      price: 'Rp 65.000', priceRaw: 65000,
+      category: 'psd', catLabel: 'PSD', catClass: 'cat-tag--psd',
+      badge: 'hot',
+      imageFile: '../assets/studio/psd-bizcard.png',
+      fileUrl: '',
+    },
+    {
+      id: 'ph-5',
+      title: 'Brand Identity Kit — F&B Artisan',
+      description: 'Paket identitas brand lengkap untuk usaha F&B artisan: logo, color system, tipografi, pattern, packaging mockup, dan brand guideline 20 halaman.',
+      price: 'Rp 350.000', priceRaw: 350000,
+      category: 'brand', catLabel: 'BRANDING', catClass: 'cat-tag--brand',
+      badge: 'new',
+      imageFile: '../assets/studio/brand-kit-fnb.png',
+      fileUrl: '',
+    },
+    {
+      id: 'ph-6',
+      title: 'Vektor — Pattern Batik Modern (25 Motif)',
+      description: 'Koleksi 25 motif batik kontemporer dalam format SVG dan AI. Ideal untuk brand fashion lokal, packaging, dan merchandise Indonesia.',
+      price: 'Rp 90.000', priceRaw: 90000,
+      category: 'vector', catLabel: 'VEKTOR', catClass: 'cat-tag--vector',
+      badge: null,
+      imageFile: '../assets/studio/vector-batik.png',
+      fileUrl: '',
+    },
+  ];
+
+  /* ── Helpers ── */
+  function getCatClass(cat) {
+    return { psd:'cat-tag--psd', vector:'cat-tag--vector', ae:'cat-tag--ae', logo:'cat-tag--logo', smkit:'cat-tag--smkit', brand:'cat-tag--brand' }[cat] || 'cat-tag--psd';
+  }
+  function getCatLabel(cat) {
+    return { psd:'PSD', vector:'VEKTOR', ae:'AFTER EFFECTS', logo:'LOGO PACK', smkit:'SOCIAL MEDIA KIT', brand:'BRANDING' }[cat] || cat.toUpperCase();
+  }
+  function formatRp(num) {
+    return 'Rp ' + Number(num).toLocaleString('id-ID');
+  }
+
+  /* ── Build HTML kartu produk ── */
+  function buildCard(item) {
+    const catClass   = item.catClass  || getCatClass(item.category);
+    const catLabel   = item.catLabel  || getCatLabel(item.category);
+    const price      = item.price     || formatRp(item.priceRaw || 0);
+    const priceRaw   = item.priceRaw  || item.price || 0;
+    const imgSrc     = item.imageFile || item.imageUrl || '';
+    const fileUrl    = item.fileUrl   || item.fileLink || '';
+    const titleSafe  = (item.title || '').replace(/'/g, "\\'");
+    const descSafe   = (item.description || '');
+
+    /* Badge */
+    const badgeHTML = item.badge === 'new'
+      ? '<span class="badge-new">NEW</span>'
+      : item.badge === 'hot'
+      ? '<span class="badge-hot">🔥 HOT</span>'
+      : '';
+
+    /* Image */
+    const imgHTML = imgSrc
+      ? `<img src="${imgSrc}" alt="${item.title}" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />`
+      : '';
+
+    /*
+      data-attributes yang dipakai oleh initiateMidtransPayment:
+        data-id       = id produk (dipakai sebagai templateId)
+        data-price    = harga teks (contoh: "Rp 75.000")
+        data-priceraw = harga angka (dipakai untuk amount Midtrans)
+        data-title    = judul produk
+        data-fileurl  = link Google Drive / URL download
+    */
+    return `
+      <div class="product-card"
+           data-category="${item.category || 'psd'}"
+           data-id="${item.id}"
+           data-price="${price}"
+           data-priceraw="${priceRaw}"
+           data-title="${titleSafe}"
+           data-fileurl="${fileUrl}">
+
+        <div class="product-img-wrap">
+          ${imgHTML}
+          <div class="img-placeholder" style="${imgSrc ? 'display:none;' : ''}">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.25)" stroke-width="1">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            <p style="font-family:var(--font-tech);font-size:0.4rem;color:rgba(255,255,255,0.2);letter-spacing:0.18em;margin-top:4px;">${catLabel}</p>
+          </div>
+          <span class="cat-tag ${catClass}">${catLabel}</span>
+          ${badgeHTML}
+        </div>
+
+        <div class="product-body">
+          <div class="product-title">${item.title}</div>
+          <div class="product-desc">${descSafe}</div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price">${price}</div>
+              <div class="product-price-note">File digital siap unduh</div>
+            </div>
+            <button class="btn-buy"
+              onclick="
+                openBuyModal({
+                  id:          '${item.id}',
+                  title:       '${titleSafe}',
+                  price:       '${price}',
+                  priceRaw:    ${priceRaw},
+                  fileUrl:     '${fileUrl}',
+                  description: \`${descSafe.replace(/`/g, '\\`')}\`,
+                  catLabel:    '${catLabel}',
+                  imageFile:   '${imgSrc}',
+                  imageUrl:    '${imgSrc}'
+                })
+              ">
+              BELI SEKARANG
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ── Render produk ke grid ── */
+  function renderProducts(items) {
+    const grid    = document.getElementById('products-grid');
+    const loading = document.getElementById('products-loading');
+    const empty   = document.getElementById('empty-state');
+
+    if (loading) loading.remove();
+    grid.querySelectorAll('.product-card').forEach(el => el.remove());
+
+    if (!items || items.length === 0) {
+      if (empty) empty.style.display = 'block';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    const fragment = document.createDocumentFragment();
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.innerHTML = buildCard(item).trim();
+      fragment.appendChild(div.firstChild);
+    });
+    grid.appendChild(fragment);
+
+    /* Re-apply filter aktif */
+    if (currentFilter && currentFilter !== 'all') {
+      const activeBtn = document.querySelector('.filter-tab.active');
+      if (activeBtn) filterProducts(currentFilter, activeBtn);
+    }
+
+    /* Jika user sudah login, unlock kartu yang sudah dibeli */
+    if (currentUser) {
+      checkUserDownloads(currentUser.uid);
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     onSnapshot — Realtime listener ke Firestore
+     Collection: studio_templates (ordered by createdAt desc)
+  ───────────────────────────────────────────── */
+  try {
+    const q = query(
+      collection(db, 'studio_templates'),
+      orderBy('createdAt', 'desc')
+    );
+
+    onSnapshot(q, (snapshot) => {
+      const items = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+      renderProducts(items.length > 0 ? items : PLACEHOLDER_PRODUCTS);
+    }, (error) => {
+      console.warn('[Alfirama Studio] Firestore onSnapshot error — fallback ke placeholder:', error.message);
+      renderProducts(PLACEHOLDER_PRODUCTS);
+    });
+
+  } catch (err) {
+    console.warn('[Alfirama Studio] Firebase init error — fallback ke placeholder:', err);
+    renderProducts(PLACEHOLDER_PRODUCTS);
+  }
+
+  /* ─────────────────────────────────────────────
+     Expose checkUserDownloads ke scope global
+     (dibutuhkan oleh renderProducts saat user login belakangan)
+  ───────────────────────────────────────────── */
+  window._checkUserDownloads = checkUserDownloads;
 </script>
 
 </body>
