@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth dark">
 <head>
   <!-- ============================================================
        ALFIRAMA.ID — ROOT INDEX
@@ -7,12 +7,23 @@
        Palette  : Navy/Cyber Black · Neon Blue/Cyan · Premium Gold
        Version  : 1.0.0
        ============================================================ -->
+
+  <!-- ⚡ BUGFIX #1: Theme Sync — jalankan PERTAMA sebelum render agar tidak ada flash -->
+  <!-- Membaca key 'alfirama_theme' yang sama dengan login.html, register.html, profile.html -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('alfirama_theme') || 'dark';
+      var isDark = saved === 'dark';
+      document.documentElement.classList.toggle('dark', isDark);
+      // light-mode class di body diisi setelah DOM ready di script bawah
+    })();
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Alfirama.ID — Satu Ekosistem. Sejuta Solusi Kreatif & Retail. Platform hybrid terpadu untuk Studio Desain, Percetakan, Grosir Retail, dan Komunitas Kreatif Banten." />
   <meta name="theme-color" content="#0A0F1D" />
   <title>Alfirama.ID — Futuristic Creative &amp; Retail Ecosystem</title>
-
   <!-- Open Graph -->
   <meta property="og:title"       content="Alfirama.ID — Futuristic Creative & Retail Ecosystem" />
   <meta property="og:description" content="Satu Ekosistem. Sejuta Solusi Kreatif & Retail." />
@@ -29,43 +40,12 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lenis Smooth Scroll -->
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
 
   <!-- Global Design System -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <style id="dark-light-style">
-/* Light mode overrides */
-body.light-mode {
-  --bg-primary: #F0F2F8;
-  background-color: #F0F2F8 !important;
-}
-body.light-mode .cyber-bg,
-body.light-mode #hero,
-body.light-mode #ecosystem {
-  background: #E8ECF5 !important;
-}
-body.light-mode #navbar {
-  background: rgba(240,242,248,0.9) !important;
-  border-bottom-color: rgba(0,0,0,0.08) !important;
-}
-body.light-mode .nav-link { color: #1A1E2E !important; }
-body.light-mode .glass-panel {
-  background: rgba(255,255,255,0.7) !important;
-  border-color: rgba(0,0,0,0.08) !important;
-}
-body.light-mode .text-white { color: #0F172A !important; }
-body.light-mode p { color: rgba(15,23,42,0.7) !important; }
-body.light-mode .service-card {
-  background: rgba(255,255,255,0.8) !important;
-  border-color: rgba(0,0,0,0.07) !important;
-}
-body.light-mode .stat-card {
-  background: rgba(255,255,255,0.8) !important;
-}
-body.light-mode footer { background: #D8DCE8 !important; }
-body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
-
-</style>
  
 
   <!-- Tailwind Custom Config -->
@@ -91,6 +71,40 @@ body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
       },
     };
   </script>
+   <style id="dark-light-style">
+/* Light mode overrides */
+body.light-mode {
+  --bg-primary: #F0F2F8;
+  background-color: #F8FAFC !important;
+}
+body.light-mode .cyber-bg,
+body.light-mode #hero,
+body.light-mode #ecosystem {
+  background: #EEF2F7 !important;
+}
+body.light-mode #navbar {
+  background: rgba(240,242,248,0.9) !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .nav-link { color: #1A1E2E !important; }
+body.light-mode .glass-panel {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.light-mode .text-white { color: #0F172A !important; }
+body.light-mode p { color: rgba(15,23,42,0.7) !important; }
+body.light-mode .service-card {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(0,0,0,0.07) !important;
+}
+body.light-mode .stat-card {
+  background: rgba(255,255,255,0.8) !important;
+}
+body.light-mode footer { background: #D8DCE8 !important; }
+body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
+
+</style>
+ 
 
   <style>
     /* Page transition overlay */
@@ -154,11 +168,17 @@ body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
 
     /* Team card neon ring on hover */
     .team-card {
-      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+      transition: box-shadow 0.35s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
     .team-card:hover {
-      transform: translateY(-6px);
       box-shadow: 0 0 24px rgba(0,240,255,0.2), 0 16px 40px rgba(0,0,0,0.5);
+    }
+    /* Tilt juga untuk service card */
+    .service-card {
+      transform-style: preserve-3d;
+      will-change: transform;
     }
     .team-card:hover .team-avatar-ring {
       box-shadow: 0 0 0 2px #00F0FF, 0 0 18px rgba(0,240,255,0.5);
@@ -249,6 +269,122 @@ body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
     border-color: rgba(0,240,255,0.2);
     background: rgba(0,240,255,0.05);
   }
+  /* ============================================================
+     FITUR PREMIUM 3 — GLITCH TEXT EFFECT
+     ============================================================ */
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  .glitch::before {
+    color: #00F0FF;
+    animation: glitch-top 3.5s infinite linear;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    transform: translateX(-2px);
+  }
+  .glitch::after {
+    color: #C9B26D;
+    animation: glitch-bot 3.5s infinite linear;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    transform: translateX(2px);
+  }
+  @keyframes glitch-top {
+    0%,80%,100% { transform: translateX(0);    opacity: 0; }
+    81%          { transform: translateX(-3px); opacity: 1; clip-path: polygon(0 0,100% 0,100% 33%,0 33%); }
+    83%          { transform: translateX(3px);  opacity: 1; clip-path: polygon(0 5%,100% 5%,100% 40%,0 40%); }
+    85%          { transform: translateX(-2px); opacity: 1; clip-path: polygon(0 0,100% 0,100% 28%,0 28%); }
+    87%          { transform: translateX(0);    opacity: 0; }
+  }
+  @keyframes glitch-bot {
+    0%,80%,100% { transform: translateX(0);    opacity: 0; }
+    82%          { transform: translateX(3px);  opacity: 1; clip-path: polygon(0 60%,100% 60%,100% 100%,0 100%); }
+    84%          { transform: translateX(-3px); opacity: 1; clip-path: polygon(0 70%,100% 70%,100% 95%,0 95%); }
+    86%          { transform: translateX(2px);  opacity: 1; clip-path: polygon(0 65%,100% 65%,100% 100%,0 100%); }
+    88%          { transform: translateX(0);    opacity: 0; }
+  }
+
+  /* ── Lenis Smooth Scroll Support ── */
+html.lenis {
+  height: auto;
+}
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+  /* ============================================================
+     FITUR PREMIUM 1 — CUSTOM CYBER CURSOR
+     ============================================================ */
+  * { cursor: none !important; }
+
+  #cyber-cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 6px; height: 6px;
+    background: #00F0FF;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999999;
+    transform: translate(-50%, -50%);
+    transition: background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 0 8px rgba(0,240,255,0.9);
+  }
+
+  #cyber-cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(0,240,255,0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 999998;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.25s cubic-bezier(0.22,1,0.36,1),
+      height 0.25s cubic-bezier(0.22,1,0.36,1),
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      opacity 0.2s ease;
+    box-shadow: 0 0 10px rgba(0,240,255,0.2);
+  }
+
+  #cyber-cursor-ring.cursor-hover {
+    width: 56px; height: 56px;
+    border-color: rgba(201,178,109,0.8);
+    box-shadow: 0 0 18px rgba(201,178,109,0.4);
+  }
+
+  #cyber-cursor-ring.cursor-click {
+    width: 24px; height: 24px;
+    border-color: rgba(0,240,255,1);
+    box-shadow: 0 0 24px rgba(0,240,255,0.7);
+  }
+
+  /* ============================================================
+     FITUR PREMIUM 2 — SCROLL PROGRESS BAR
+     ============================================================ */
+  #scroll-progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #00F0FF 0%, #C9B26D 60%, #E2CC8E 100%);
+    z-index: 99999;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0,240,255,0.5);
+    transition: width 0.05s linear;
+  }
   </style>
   <meta property="og:image" content="https://alfirama.id/assets/global/og-cover.jpg" />
 <meta property="og:image:width" content="1200" />
@@ -257,6 +393,10 @@ body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
 </head>
 
 <body class="bg-cyber-bg text-white font-body antialiased overflow-x-hidden">
+
+<div id="scroll-progress-bar" aria-hidden="true"></div>
+<div id="cyber-cursor-dot"    aria-hidden="true"></div>
+<div id="cyber-cursor-ring"   aria-hidden="true"></div>
 
 <div id="floating-buttons" style="position:fixed;bottom:28px;right:24px;z-index:1000;display:flex;flex-direction:column;align-items:center;gap:12px;">
  
@@ -621,13 +761,27 @@ if(!localStorage.getItem('alfirama_cookie')){
   <main>
     <section id="hero" class="hero-section cyber-bg neon-blue-glow scanlines hero-grid relative min-h-screen flex items-center justify-center text-center px-6 pt-28 pb-20 overflow-hidden">
 
+      <canvas
+        id="hero-particles"
+        aria-hidden="true"
+        style="
+          position:absolute;
+          inset:0;
+          width:100%;
+          height:100%;
+          pointer-events:none;
+          z-index:1;
+          opacity:0.55;
+        "
+      ></canvas>
+
       <!-- Decorative floating orb blobs -->
       <div class="absolute top-1/4 -left-32 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background:radial-gradient(circle, rgba(0,240,255,0.3) 0%, transparent 70%); filter:blur(60px);"></div>
       <div class="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full opacity-15 pointer-events-none" style="background:radial-gradient(circle, rgba(201,178,109,0.35) 0%, transparent 70%); filter:blur(80px);"></div>
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-10 pointer-events-none" style="background:radial-gradient(circle, rgba(0,100,255,0.25) 0%, transparent 65%); filter:blur(100px);"></div>
 
       <!-- Hero Content -->
-      <div class="relative z-10 max-w-5xl mx-auto">
+      <div class="relative z-20 max-w-5xl mx-auto">
 
         <!-- Location & Clock bar -->
         <div class="flex items-center justify-center gap-4 mb-8 flex-wrap">
@@ -653,18 +807,24 @@ if(!localStorage.getItem('alfirama_cookie')){
         <!-- Main Slogan -->
         <h1 id="hero-title" class="gsap-hidden font-tech font-black leading-tight tracking-tight mb-6"
             style="font-size: clamp(1.8rem, 5.5vw, 4.5rem);">
-          <span class="text-gradient-gold block">Satu Ekosistem.</span>
-          <span class="text-white block">Sejuta Solusi Kreatif &amp; Retail.</span>
+          <span class="text-gradient-gold block glitch" data-text="Satu Ekosistem.">Satu Ekosistem</span>
+          <span class="text-white block">Sejuta Solusi Kreatif &amp; Retail</span>
         </h1>
 
         <!-- Sub-description -->
         <p id="hero-desc" class="gsap-hidden font-body text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed" style="color:rgba(255,255,255,0.6);">
-          Platform hybrid terpadu — dari studio desain, percetakan premium, grosir retail lokal, hingga hub komunitas kreatif Banten. Semua dalam satu ekosistem digital yang dirancang untuk masa depan.
+          Platform hybrid terpadu — <span id="typed-text" style="color:#00F0FF;font-weight:600;"></span><span id="typed-cursor" style="color:#00F0FF;font-weight:300;animation:typedBlink 0.7s infinite;">|</span>
         </p>
+        <style>
+          @keyframes typedBlink {
+            0%,100% { opacity:1; }
+            50%      { opacity:0; }
+          }
+        </style>
 
         <!-- CTA Buttons -->
         <div id="hero-ctas" class="gsap-hidden flex items-center justify-center gap-4 flex-wrap">
-          <a href="studio/index.html" class="btn btn-cyber-gold btn--lg nav-transition-link">
+          <a href="studio/index.html" class="btn btn-cyber-gold btn--lg nav-transition-link magnetic-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             Jelajahi Ekosistem
           </a>
@@ -727,6 +887,20 @@ if(!localStorage.getItem('alfirama_cookie')){
       </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     <!-- ============================================================
          4. ECOSYSTEM GRID SECTION — 4 Pilar Bisnis
@@ -834,93 +1008,1140 @@ if(!localStorage.getItem('alfirama_cookie')){
       </div>
     </section>
     
-<section id="how-it-works" class="section relative overflow-hidden" style="background:linear-gradient(160deg,#070A14 0%,#0D1526 100%);">
+<!-- ============================================================
+     REPLACEMENT v5: SECTION #how-it-works
+     - Desktop: sticky 500vh, garis smooth, card 4 kolom
+     - Mobile: sticky 350vh, layout vertikal compact, no garis
+     ============================================================ -->
+
+<style>
+/* ── Scroll space: desktop 500vh, mobile 350vh ── */
+#hiw-scroll-space {
+  height: 500vh;
+  position: relative;
+}
+@media (max-width: 767px) {
+  #hiw-scroll-space { height: 350vh; }
+}
+
+/* ── Sticky panel ── */
+#hiw-sticky-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(160deg, #070A14 0%, #0D1526 100%);
+}
+#hiw-sticky-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,178,109,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,178,109,0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+/* ── DESKTOP: card grid 4 kolom ── */
+#hiw-cards-desktop {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 767px) {
+  #hiw-cards-desktop { display: none; }
+}
+
+/* ── MOBILE: single card aktif (1 card ditampilkan) ── */
+#hiw-cards-mobile {
+  display: none;
+}
+@media (max-width: 767px) {
+  #hiw-cards-mobile { display: block; }
+}
+
+/* ── Card style ── */
+.hiw-card-v5 {
+  padding: 16px 18px;
+  border-radius: 14px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.hiw-card-v5.cyan-card { background:rgba(0,240,255,0.04); border:1px solid rgba(0,240,255,0.12); }
+.hiw-card-v5.gold-card  { background:rgba(201,178,109,0.04); border:1px solid rgba(201,178,109,0.12); }
+.hiw-card-v5.show       { opacity:1; transform:translateY(0); }
+
+/* Mobile single card — full width, lebih compact */
+#hiw-mobile-card {
+  padding: 16px 18px;
+  border-radius: 14px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  min-height: 100px;
+}
+#hiw-mobile-card.show { opacity:1; transform:translateY(0); }
+
+/* ── Step dots ── */
+.hiw-sdot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.35s ease;
+  display: inline-block;
+}
+.hiw-sdot.active {
+  width: 20px;
+  border-radius: 3px;
+  background: #00F0FF;
+  box-shadow: 0 0 8px rgba(0,240,255,0.7);
+}
+
+/* ── Mobile icon row: 4 sejajar kecil ── */
+#hiw-mobile-icons {
+  display: none;
+}
+@media (max-width: 767px) {
+  #hiw-mobile-icons { display: flex; }
+  #hiw-desktop-icons { display: none; }
+}
+</style>
+
+<div id="hiw-scroll-space">
+  <div id="hiw-sticky-panel">
+    <div class="container relative z-10">
+
+      <!-- JUDUL — compact di mobile -->
+      <div id="hiw-hdr5"
+        style="opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;
+               text-align:center;margin-bottom:clamp(16px,3vh,32px);">
+        <span style="font-family:'Orbitron',sans-serif;font-size:0.55rem;letter-spacing:0.25em;
+                     color:rgba(0,240,255,0.7);display:block;margin-bottom:8px;">⬡ CARA KERJA</span>
+        <div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,#00F0FF,transparent);margin:0 auto 12px;"></div>
+        <h2 style="font-family:'Orbitron',sans-serif;font-weight:900;line-height:1.15;
+                   font-size:clamp(1.4rem,4vw,3rem);margin:0;">
+          Dari <span style="background:linear-gradient(105deg,#C9B26D,#E2CC8E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Ide</span>
+          Hingga <span style="background:linear-gradient(105deg,#C9B26D,#E2CC8E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Hasil</span>
+        </h2>
+      </div>
+
+      <!-- ══ DESKTOP: ICON ROW + GARIS ══ -->
+      <div id="hiw-desktop-icons"
+        style="opacity:0;transform:translateY(16px);transition:opacity 0.6s ease 0.2s,transform 0.6s ease 0.2s;
+               margin-bottom:24px;">
+        <div class="relative">
+          <!-- Track abu -->
+          <div style="position:absolute;top:48px;left:12.5%;right:12.5%;height:1px;
+                      background:rgba(255,255,255,0.08);z-index:0;"></div>
+          <!-- Garis neon container (dibatasi left–right agar tidak kebablasan) -->
+          <div style="position:absolute;top:47px;left:12.5%;right:12.5%;height:2px;z-index:1;overflow:hidden;">
+            <div id="hiw5-bar"
+              style="height:100%;width:0%;
+                     background:linear-gradient(90deg,#00F0FF,#C9B26D);
+                     box-shadow:0 0 10px rgba(0,240,255,0.6);
+                     position:relative;transition:none;">
+              <!-- Tip dot -->
+              <div id="hiw5-tip"
+                style="position:absolute;right:-4px;top:-3px;
+                       width:8px;height:8px;border-radius:50%;
+                       background:#fff;box-shadow:0 0 12px #00F0FF,0 0 4px rgba(0,240,255,0.8);">
+              </div>
+            </div>
+          </div>
+          <!-- 4 icons desktop -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;z-index:2;">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">
+              <div style="position:relative;">
+                <div id="hiw5-c1" style="width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.25);transition:all 0.5s ease;">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <span style="position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.58rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">01</span>
+              </div>
+              <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.08em;color:#fff;">KONSULTASI</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">
+              <div style="position:relative;">
+                <div id="hiw5-c2" style="width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.25);transition:all 0.5s ease;">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </div>
+                <span style="position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.58rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">02</span>
+              </div>
+              <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.08em;color:#fff;">BRIEF &amp; DEAL</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">
+              <div style="position:relative;">
+                <div id="hiw5-c3" style="width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.25);transition:all 0.5s ease;">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                </div>
+                <span style="position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.58rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">03</span>
+              </div>
+              <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.08em;color:#fff;">PROSES</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">
+              <div style="position:relative;">
+                <div id="hiw5-c4" style="width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.25);transition:all 0.5s ease;">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span style="position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.58rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">04</span>
+              </div>
+              <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.08em;color:#fff;">DELIVER</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MOBILE: 4 icon kecil horizontal ══ -->
+      <div id="hiw-mobile-icons"
+        style="opacity:0;transform:translateY(12px);transition:opacity 0.5s ease 0.15s,transform 0.5s ease 0.15s;
+               align-items:center;justify-content:space-between;
+               margin-bottom:20px;position:relative;padding:0 8px;">
+        <!-- Track mobile -->
+        <div style="position:absolute;top:28px;left:44px;right:44px;height:1px;background:rgba(255,255,255,0.08);z-index:0;"></div>
+        <!-- Garis mobile -->
+        <div style="position:absolute;top:27px;left:44px;right:44px;height:2px;z-index:1;overflow:hidden;">
+          <div id="hiw5-mbar"
+            style="height:100%;width:0%;background:linear-gradient(90deg,#00F0FF,#C9B26D);
+                   box-shadow:0 0 8px rgba(0,240,255,0.5);transition:none;">
+          </div>
+        </div>
+        <!-- 4 icon kecil -->
+        <div style="display:flex;justify-content:space-between;width:100%;position:relative;z-index:2;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="hiw5-mc1" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.25);transition:all 0.4s ease;position:relative;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.42rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">01</span>
+            </div>
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.42rem;letter-spacing:0.06em;color:rgba(255,255,255,0.6);">KONSULTASI</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="hiw5-mc2" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.25);transition:all 0.4s ease;position:relative;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.42rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">02</span>
+            </div>
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.42rem;letter-spacing:0.06em;color:rgba(255,255,255,0.6);">BRIEF</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="hiw5-mc3" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.25);transition:all 0.4s ease;position:relative;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+              <span style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.42rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">03</span>
+            </div>
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.42rem;letter-spacing:0.06em;color:rgba(255,255,255,0.6);">PROSES</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div id="hiw5-mc4" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.25);transition:all 0.4s ease;position:relative;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.42rem;background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">04</span>
+            </div>
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.42rem;letter-spacing:0.06em;color:rgba(255,255,255,0.6);">DELIVER</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DESKTOP: 4 cards ══ -->
+      <div id="hiw-cards-desktop">
+        <div class="hiw-card-v5 cyan-card" id="hiw5-d1">
+          <div style="width:7px;height:7px;border-radius:50%;background:#00F0FF;box-shadow:0 0 8px rgba(0,240,255,0.9);margin-bottom:10px;"></div>
+          <p style="font-size:0.82rem;line-height:1.6;color:rgba(255,255,255,0.65);margin:0 0 12px;">Ceritakan kebutuhan kamu. <strong style="color:#00F0FF;">Gratis, tanpa komitmen.</strong> Tim siap mendengar via WhatsApp atau tatap muka.</p>
+          <div style="border-top:1px solid rgba(0,240,255,0.08);padding-top:10px;">
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:rgba(0,240,255,0.5);">RESPONS &lt; 1 JAM</span>
+          </div>
+        </div>
+        <div class="hiw-card-v5 gold-card" id="hiw5-d2">
+          <div style="width:7px;height:7px;border-radius:50%;background:#C9B26D;box-shadow:0 0 8px rgba(201,178,109,0.9);margin-bottom:10px;"></div>
+          <p style="font-size:0.82rem;line-height:1.6;color:rgba(255,255,255,0.65);margin:0 0 12px;">Kami siapkan brief, timeline, dan harga. <strong style="color:#C9B26D;">Transparan, tidak ada biaya tersembunyi.</strong></p>
+          <div style="border-top:1px solid rgba(201,178,109,0.08);padding-top:10px;">
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:rgba(201,178,109,0.5);">NO HIDDEN COST</span>
+          </div>
+        </div>
+        <div class="hiw-card-v5 cyan-card" id="hiw5-d3">
+          <div style="width:7px;height:7px;border-radius:50%;background:#00F0FF;box-shadow:0 0 8px rgba(0,240,255,0.9);margin-bottom:10px;"></div>
+          <p style="font-size:0.82rem;line-height:1.6;color:rgba(255,255,255,0.65);margin:0 0 12px;">Tim kami mulai bekerja. Kamu dapat <strong style="color:#00F0FF;">update progress berkala</strong> — tidak perlu nunggu bingung.</p>
+          <div style="border-top:1px solid rgba(0,240,255,0.08);padding-top:10px;">
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:rgba(0,240,255,0.5);">UPDATE REALTIME VIA WA</span>
+          </div>
+        </div>
+        <div class="hiw-card-v5 gold-card" id="hiw5-d4">
+          <div style="width:7px;height:7px;border-radius:50%;background:#C9B26D;box-shadow:0 0 8px rgba(201,178,109,0.9);margin-bottom:10px;"></div>
+          <p style="font-size:0.82rem;line-height:1.6;color:rgba(255,255,255,0.65);margin:0 0 12px;">Hasil jadi dikirim tepat waktu. <strong style="color:#C9B26D;">Revisi gratis 2x.</strong> Kamu puas, kami senang.</p>
+          <div style="border-top:1px solid rgba(201,178,109,0.08);padding-top:10px;">
+            <span style="font-family:'Orbitron',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:rgba(201,178,109,0.5);">GARANSI REVISI 2X</span>
+          </div>
+        </div>
+      </div>
+
+     <!-- ══ MOBILE: 1 card aktif ══ -->
+<div id="hiw-cards-mobile">
+  <div id="hiw-mobile-inner">
+
+    <!-- Dot trail vertikal kiri -->
+    <div id="hiw-dot-trail">
+      <div class="trail-dot active" id="hiw-td0"></div>
+      <div class="trail-line"><div class="trail-line-fill" id="hiw-tl01"></div></div>
+      <div class="trail-dot" id="hiw-td1"></div>
+      <div class="trail-line"><div class="trail-line-fill" id="hiw-tl12"></div></div>
+      <div class="trail-dot" id="hiw-td2"></div>
+      <div class="trail-line"><div class="trail-line-fill" id="hiw-tl23"></div></div>
+      <div class="trail-dot" id="hiw-td3"></div>
+    </div>
+
+    <!-- Step counter -->
+    <div id="hiw-step-counter">
+      <div id="hiw-step-num">
+        <span class="current" id="hiw-sc-current">01</span><span class="total"> / 04</span>
+      </div>
+      <div id="hiw-step-label">KONSULTASI</div>
+    </div>
+
+    <!-- Segmented progress bar -->
+    <div id="hiw-seg-bar">
+      <div class="hiw-seg cyan" id="hiw-seg0"><div class="hiw-seg-fill"></div></div>
+      <div class="hiw-seg gold" id="hiw-seg1"><div class="hiw-seg-fill"></div></div>
+      <div class="hiw-seg cyan" id="hiw-seg2"><div class="hiw-seg-fill"></div></div>
+      <div class="hiw-seg gold" id="hiw-seg3"><div class="hiw-seg-fill"></div></div>
+    </div>
+
+    <!-- Slide viewport -->
+    <div id="hiw-slide-viewport"></div>
+
+    <!-- Nudge teks -->
+    <div id="hiw-next-nudge">↓ SCROLL UNTUK LANJUT</div>
+
+    <!-- Scroll hint: dot + panah bounce -->
+    <div id="hiw-scroll-hint">
+      <div class="hint-text">SCROLL</div>
+      <div style="position:relative;width:6px;height:28px;overflow:hidden;border-radius:3px;background:rgba(0,240,255,0.1);">
+        <div style="position:absolute;top:-100%;left:0;right:0;height:40%;border-radius:3px;background:linear-gradient(180deg,transparent,#00F0FF);animation:hiwDotTrailAnim 1.3s ease-in-out infinite;"></div>
+      </div>
+      <svg class="hint-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <!-- Step dots -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;">
+        <span class="hiw-sdot active" id="hiw5-dot0"></span>
+        <span class="hiw-sdot" id="hiw5-dot1"></span>
+        <span class="hiw-sdot" id="hiw5-dot2"></span>
+        <span class="hiw-sdot" id="hiw5-dot3"></span>
+      </div>
+
+    </div><!-- tutup hiw-mobile-inner -->
+  </div><!-- tutup hiw-cards-mobile -->
+
+  </div><!-- tutup container -->
+</div><!-- tutup hiw-sticky-panel -->
+</div><!-- tutup hiw-scroll-space -->
+
+<style>
+/* ── Override mobile display ── */
+#hiw-cards-mobile { display: none; }
+@media (max-width: 767px) { #hiw-cards-mobile { display: block; } }
+
+#hiw-mobile-inner {
+  position: relative;
+  padding-left: 36px;
+}
+
+/* ── Dot trail kiri ── */
+#hiw-dot-trail {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#hiw-dot-trail .trail-line {
+  width: 1px; flex: 1;
+  background: rgba(255,255,255,0.07);
+  position: relative; overflow: hidden;
+}
+#hiw-dot-trail .trail-line-fill {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 0%;
+  background: linear-gradient(180deg, #00F0FF, #C9B26D);
+  transition: height 0.5s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 0 6px rgba(0,240,255,0.5);
+}
+#hiw-dot-trail .trail-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: transparent;
+  flex-shrink: 0;
+  transition: all 0.4s ease;
+  position: relative; z-index: 1;
+}
+#hiw-dot-trail .trail-dot.active {
+  border-color: #00F0FF;
+  background: rgba(0,240,255,0.2);
+  box-shadow: 0 0 8px rgba(0,240,255,0.7);
+}
+#hiw-dot-trail .trail-dot.done {
+  border-color: #C9B26D;
+  background: rgba(201,178,109,0.3);
+  box-shadow: 0 0 6px rgba(201,178,109,0.5);
+}
+
+/* ── Step counter ── */
+#hiw-step-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 0 2px;
+}
+#hiw-step-num {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  line-height: 1;
+}
+#hiw-step-num .current {
+  font-size: 1.6rem;
+  background: linear-gradient(105deg, #fff 0%, #00F0FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#hiw-step-num .total {
+  color: rgba(255,255,255,0.25);
+  font-size: 0.9rem;
+  font-family: 'Orbitron', sans-serif;
+}
+#hiw-step-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.35);
+}
+
+/* ── Segmented progress bar ── */
+#hiw-seg-bar {
+  display: flex; gap: 5px;
+  margin-bottom: 16px;
+}
+.hiw-seg {
+  flex: 1; height: 2px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.hiw-seg-fill {
+  height: 100%; width: 0%;
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.hiw-seg.cyan .hiw-seg-fill { background: #00F0FF; box-shadow: 0 0 6px rgba(0,240,255,0.7); }
+.hiw-seg.gold .hiw-seg-fill { background: #C9B26D; box-shadow: 0 0 6px rgba(201,178,109,0.7); }
+
+/* ── Slide viewport ── */
+#hiw-slide-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  min-height: 160px;
+}
+.hiw-slide-card {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 18px 20px;
+  border-radius: 14px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+.hiw-slide-card.slide-active {
+  opacity: 1; transform: translateX(0);
+  position: relative; pointer-events: all;
+}
+.hiw-slide-card.slide-exit-left {
+  opacity: 0; transform: translateX(-60px);
+}
+.hiw-slide-card.cyan-card { background: rgba(0,240,255,0.04); border: 1px solid rgba(0,240,255,0.12); }
+.hiw-slide-card.gold-card  { background: rgba(201,178,109,0.04); border: 1px solid rgba(201,178,109,0.12); }
+
+/* ── Nudge + hint ── */
+#hiw-next-nudge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.5rem; letter-spacing: 0.15em;
+  color: rgba(0,240,255,0.4);
+  text-align: center;
+  margin-top: 10px;
+  transition: opacity 0.3s ease;
+}
+#hiw-scroll-hint {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  margin-top: 18px;
+  animation: hiwHintFade 2s ease-in-out infinite;
+}
+#hiw-scroll-hint.hint-hidden { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+.hint-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.48rem; letter-spacing: 0.22em;
+  color: rgba(0,240,255,0.5);
+}
+.hint-arrow { animation: hiwArrowBounce 1.2s ease-in-out infinite; }
+
+@keyframes hiwArrowBounce {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(6px); }
+}
+@keyframes hiwHintFade {
+  0%,100% { opacity: 0.7; }
+  50%     { opacity: 1; }
+}
+@keyframes hiwDotTrailAnim {
+  0%   { top: -100%; }
+  100% { top:  150%; }
+}
+</style>
+
+<script>
+(function(){
+  var DATA = [
+    { color:'cyan', dot:'#00F0FF', dotShadow:'rgba(0,240,255,0.9)', bg:'rgba(0,240,255,0.04)', border:'rgba(0,240,255,0.12)', divider:'rgba(0,240,255,0.08)', labelColor:'rgba(0,240,255,0.5)', label:'RESPONS &lt; 1 JAM', stepLabel:'KONSULTASI', text:'Ceritakan kebutuhan kamu. <strong style="color:#00F0FF;">Gratis, tanpa komitmen.</strong> Tim kami siap mendengar via WhatsApp atau tatap muka.' },
+    { color:'gold', dot:'#C9B26D', dotShadow:'rgba(201,178,109,0.9)', bg:'rgba(201,178,109,0.04)', border:'rgba(201,178,109,0.12)', divider:'rgba(201,178,109,0.08)', labelColor:'rgba(201,178,109,0.5)', label:'NO HIDDEN COST', stepLabel:'BRIEF &amp; DEAL', text:'Kami siapkan brief, timeline, dan harga. <strong style="color:#C9B26D;">Transparan, tidak ada biaya tersembunyi.</strong>' },
+    { color:'cyan', dot:'#00F0FF', dotShadow:'rgba(0,240,255,0.9)', bg:'rgba(0,240,255,0.04)', border:'rgba(0,240,255,0.12)', divider:'rgba(0,240,255,0.08)', labelColor:'rgba(0,240,255,0.5)', label:'UPDATE REALTIME VIA WA', stepLabel:'PROSES', text:'Tim kami mulai bekerja. Kamu dapat <strong style="color:#00F0FF;">update progress berkala</strong> — tidak perlu nunggu bingung.' },
+    { color:'gold', dot:'#C9B26D', dotShadow:'rgba(201,178,109,0.9)', bg:'rgba(201,178,109,0.04)', border:'rgba(201,178,109,0.12)', divider:'rgba(201,178,109,0.08)', labelColor:'rgba(201,178,109,0.5)', label:'GARANSI REVISI 2X', stepLabel:'DELIVER', text:'Hasil jadi dikirim tepat waktu. <strong style="color:#C9B26D;">Revisi gratis 2x.</strong> Kamu puas, kami senang.' },
+  ];
+
+  function buildMobileSlides(){
+    var vp = document.getElementById('hiw-slide-viewport');
+    if(!vp) return;
+    vp.innerHTML = '';
+    DATA.forEach(function(d,i){
+      var c = document.createElement('div');
+      c.className = 'hiw-slide-card ' + (d.color==='cyan'?'cyan-card':'gold-card');
+      c.id = 'hiw-slide-'+i;
+      c.innerHTML =
+        '<div style="width:7px;height:7px;border-radius:50%;background:'+d.dot+';box-shadow:0 0 8px '+d.dotShadow+';margin-bottom:10px;"></div>'
+        +'<p style="font-size:0.85rem;line-height:1.65;color:rgba(255,255,255,0.7);margin:0 0 12px;">'+d.text+'</p>'
+        +'<div style="border-top:1px solid '+d.divider+';padding-top:10px;">'
+        +'<span style="font-family:\'Orbitron\',sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:'+d.labelColor+';">'+d.label+'</span>'
+        +'</div>';
+      vp.appendChild(c);
+    });
+    var first = document.getElementById('hiw-slide-0');
+    if(first) first.classList.add('slide-active');
+  }
+
+  var curStep = 0;
+
+  function setMobileStep(step){
+    if(step === curStep) return;
+    var old = curStep; curStep = step;
+    var oldCard = document.getElementById('hiw-slide-'+old);
+    if(oldCard){
+      oldCard.classList.remove('slide-active');
+      oldCard.classList.add('slide-exit-left');
+      setTimeout(function(){ if(oldCard){ oldCard.classList.remove('slide-exit-left'); oldCard.style.transform='translateX(60px)'; } },420);
+    }
+    var newCard = document.getElementById('hiw-slide-'+step);
+    if(newCard){ newCard.style.transform='translateX(60px)'; newCard.style.opacity='0'; newCard.getBoundingClientRect(); newCard.classList.add('slide-active'); }
+    updateMobileUI(step);
+  }
+
+  function updateMobileUI(step){
+    var d = DATA[step];
+    var sc = document.getElementById('hiw-sc-current');
+    var sl = document.getElementById('hiw-step-label');
+    if(sc) sc.textContent = String(step+1).padStart(2,'0');
+    if(sl) sl.innerHTML = d.stepLabel;
+
+    for(var i=0;i<4;i++){
+      var seg = document.getElementById('hiw-seg'+i);
+      var fill = seg ? seg.querySelector('.hiw-seg-fill') : null;
+      if(!fill) continue;
+      fill.style.width = i<=step ? '100%' : '0%';
+    }
+
+    ['hiw-td0','hiw-td1','hiw-td2','hiw-td3'].forEach(function(id,i){
+      var dot = document.getElementById(id); if(!dot) return;
+      dot.classList.remove('active','done');
+      if(i<step)  dot.classList.add('done');
+      if(i===step) dot.classList.add('active');
+    });
+    ['hiw-tl01','hiw-tl12','hiw-tl23'].forEach(function(id,i){
+      var f = document.getElementById(id); if(!f) return;
+      f.style.height = i<step ? '100%' : '0%';
+    });
+    ['hiw5-dot0','hiw5-dot1','hiw5-dot2','hiw5-dot3'].forEach(function(id,i){
+      var dot = document.getElementById(id); if(!dot) return;
+      dot.classList.toggle('active', i===step);
+    });
+
+    var nudge = document.getElementById('hiw-next-nudge');
+    var hint  = document.getElementById('hiw-scroll-hint');
+    if(nudge) nudge.textContent = step<3 ? '↓ SCROLL UNTUK LANJUT' : '✓ SEMUA LANGKAH SELESAI';
+    if(hint)  hint.classList.toggle('hint-hidden', step===3);
+  }
+
+  function init(){
+    if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined'){ setTimeout(init,150); return; }
+
+    var isMobile = window.innerWidth < 768;
+    var space    = document.getElementById('hiw-scroll-space');
+    var hdr      = document.getElementById('hiw-hdr5');
+    var deskIco  = document.getElementById('hiw-desktop-icons');
+    var mobIco   = document.getElementById('hiw-mobile-icons');
+    var bar      = document.getElementById('hiw5-bar');
+    var mbar     = document.getElementById('hiw5-mbar');
+    var tip      = document.getElementById('hiw5-tip');
+    var dCircles = ['hiw5-c1','hiw5-c2','hiw5-c3','hiw5-c4'].map(function(id){ return document.getElementById(id); });
+    var mCircles = ['hiw5-mc1','hiw5-mc2','hiw5-mc3','hiw5-mc4'].map(function(id){ return document.getElementById(id); });
+    var dDescs   = ['hiw5-d1','hiw5-d2','hiw5-d3','hiw5-d4'].map(function(id){ return document.getElementById(id); });
+    var glows    = ['0 0 0 2px #00F0FF,0 0 28px rgba(0,240,255,0.6)','0 0 0 2px #C9B26D,0 0 28px rgba(201,178,109,0.6)','0 0 0 2px #00F0FF,0 0 28px rgba(0,240,255,0.6)','0 0 0 2px #C9B26D,0 0 28px rgba(201,178,109,0.6)'];
+    var thresholds = [0.05,0.35,0.60,0.85];
+    var activeStep = -1;
+
+    if(isMobile){ buildMobileSlides(); updateMobileUI(0); }
+
+    function applyProgress(rawP){
+      var startP = 0.05;
+      var pct = rawP<=startP ? 0 : Math.min(100,(rawP-startP)/(1-startP)*100);
+      if(bar)  bar.style.width  = pct.toFixed(2)+'%';
+      if(mbar) mbar.style.width = pct.toFixed(2)+'%';
+      if(tip)  tip.style.opacity = pct>=99 ? '0' : '1';
+
+      var step = -1;
+      for(var i=0;i<thresholds.length;i++){ if(rawP>=thresholds[i]) step=i; }
+      if(step===activeStep) return;
+      activeStep = step;
+
+      dCircles.forEach(function(c,i){ if(!c) return; gsap.to(c, i<=step ? {boxShadow:glows[i],scale:1.1,duration:0.4,ease:'power2.out'} : {boxShadow:'none',scale:1,duration:0.3,ease:'power2.out'}); });
+      mCircles.forEach(function(c,i){ if(!c) return; gsap.to(c, i<=step ? {boxShadow:glows[i],scale:1.12,duration:0.4,ease:'power2.out'} : {boxShadow:'none',scale:1,duration:0.3,ease:'power2.out'}); });
+      dDescs.forEach(function(d,i){ if(!d) return; d.classList.toggle('show', i<=step); });
+      if(step>=0 && isMobile) setMobileStep(step);
+    }
+
+    ScrollTrigger.create({
+      trigger: space, start:'top 80%',
+      onEnter: function(){
+        hdr.style.opacity='1'; hdr.style.transform='translateY(0)';
+        var ico = isMobile ? mobIco : deskIco;
+        setTimeout(function(){ if(ico){ ico.style.opacity='1'; ico.style.transform='translateY(0)'; } },180);
+        if(isMobile && !document.getElementById('hiw-slide-0')){ buildMobileSlides(); updateMobileUI(0); }
+      },
+      onLeaveBack: function(){
+        hdr.style.opacity='0'; hdr.style.transform='translateY(24px)';
+        if(deskIco){ deskIco.style.opacity='0'; deskIco.style.transform='translateY(16px)'; }
+        if(mobIco) { mobIco.style.opacity='0';  mobIco.style.transform='translateY(12px)'; }
+        applyProgress(0);
+      },
+    });
+
+    ScrollTrigger.create({
+      trigger:space, start:'top top', end:'bottom bottom', scrub:0.8,
+      onUpdate: function(self){ applyProgress(self.progress); },
+      onLeaveBack: function(){ applyProgress(0); },
+    });
+  }
+
+ document.readyState==='loading' ? document.addEventListener('DOMContentLoaded',init) : setTimeout(init,300);
+})();
+</script>
+
+  </div>
+</div>
+
+
+<!-- ═══════════ BLOK A — MULAI ═══════════ -->
+<section id="kalkulator" class="section relative overflow-hidden" style="background:linear-gradient(160deg,#060910 0%,#0B1220 50%,#070A14 100%);">
  
-  <!-- Decorative -->
-  <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image:linear-gradient(rgba(201,178,109,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(201,178,109,0.5) 1px,transparent 1px);background-size:50px 50px;"></div>
+  <!-- Background grid gold -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.04]"
+    style="background-image:linear-gradient(rgba(201,178,109,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(201,178,109,0.8) 1px,transparent 1px);background-size:44px 44px;">
+  </div>
+  <!-- Glow orb kiri -->
+  <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 rounded-full pointer-events-none opacity-10"
+    style="background:radial-gradient(circle,rgba(0,240,255,0.4) 0%,transparent 70%);filter:blur(80px);">
+  </div>
+  <!-- Glow orb kanan -->
+  <div class="absolute top-1/3 right-0 w-80 h-80 rounded-full pointer-events-none opacity-10"
+    style="background:radial-gradient(circle,rgba(201,178,109,0.5) 0%,transparent 70%);filter:blur(80px);">
+  </div>
  
   <div class="container relative z-10">
  
-    <div class="section-header gsap-hidden mb-16" id="hiw-header">
-      <span class="section-header__eyebrow">⬡ Cara Kerja</span>
+    <!-- Section Header -->
+    <div class="section-header gsap-hidden mb-12" id="calc-header">
+      <span class="section-header__eyebrow">⬡ Estimasi Biaya</span>
       <div class="cyber-divider--sm"></div>
       <h2 class="section-header__title font-tech">
-        Dari <span class="text-gradient-gold">Ide</span> Hingga <span class="text-gradient-gold">Hasil</span>
+        Kalkulator <span class="text-gradient-gold">Harga Realtime</span>
       </h2>
       <p class="section-header__desc">
-        Proses yang simpel, transparan, dan terstruktur — supaya kamu tahu persis apa yang terjadi di setiap tahap.
+        Pilih produk dan spesifikasi kamu — harga estimasi muncul seketika. Transparan, tanpa syarat tersembunyi.
       </p>
     </div>
  
-    <!-- Steps -->
-    <div class="relative gsap-hidden" id="hiw-steps">
+    <!-- Calculator Widget -->
+    <div class="max-w-3xl mx-auto gsap-hidden" id="calc-widget">
+      <div class="relative rounded-2xl overflow-hidden"
+        style="
+          background:rgba(13,19,43,0.7);
+          border:1px solid rgba(0,240,255,0.12);
+          backdrop-filter:blur(28px);
+          box-shadow:0 0 60px rgba(0,240,255,0.05), 0 30px 80px rgba(0,0,0,0.6);
+        ">
  
-      <!-- Connector line (desktop) -->
-      <div class="hidden lg:block absolute top-12 left-0 right-0 h-px" style="background:linear-gradient(90deg,transparent 5%,rgba(0,240,255,0.15) 20%,rgba(201,178,109,0.2) 50%,rgba(0,240,255,0.15) 80%,transparent 95%);z-index:0;"></div>
+        <!-- Top bar warna gradient -->
+        <div class="h-0.5 w-full" style="background:linear-gradient(90deg,rgba(0,240,255,0.6),rgba(201,178,109,0.6),rgba(0,240,255,0.6));"></div>
  
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+        <div class="p-8">
  
-        <!-- Step 1 -->
-        <div class="flex flex-col items-center text-center gap-5">
-          <div class="relative">
-            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.08);">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <!-- Row 1: Pilih Produk -->
+          <div class="mb-7">
+            <label class="block font-tech text-xs tracking-widest mb-3" style="color:#C9B26D;font-size:0.62rem;letter-spacing:0.18em;">
+              01 — JENIS PRODUK
+            </label>
+            <div class="grid grid-cols-3 gap-3" id="product-tabs">
+              <button onclick="alfCalc.setProduct('kaos',this)"
+                class="calc-tab active-tab py-3 px-4 rounded-xl font-tech text-xs transition-all duration-200"
+                style="font-size:0.62rem;letter-spacing:0.12em;">
+                <span style="font-size:1.1rem;display:block;margin-bottom:4px;">👕</span>KAOS
+              </button>
+              <button onclick="alfCalc.setProduct('banner',this)"
+                class="calc-tab py-3 px-4 rounded-xl font-tech text-xs transition-all duration-200"
+                style="font-size:0.62rem;letter-spacing:0.12em;">
+                <span style="font-size:1.1rem;display:block;margin-bottom:4px;">🪧</span>BANNER
+              </button>
+              <button onclick="alfCalc.setProduct('stiker',this)"
+                class="calc-tab py-3 px-4 rounded-xl font-tech text-xs transition-all duration-200"
+                style="font-size:0.62rem;letter-spacing:0.12em;">
+                <span style="font-size:1.1rem;display:block;margin-bottom:4px;">🏷️</span>STIKER
+              </button>
             </div>
-            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">01</span>
           </div>
-          <div>
-            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">KONSULTASI</h4>
-            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Ceritakan kebutuhan kamu. Gratis, tanpa komitmen. Tim kami siap mendengar via WhatsApp atau tatap muka.</p>
-          </div>
-        </div>
  
-        <!-- Step 2 -->
-        <div class="flex flex-col items-center text-center gap-5">
-          <div class="relative">
-            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.08);">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <!-- Row 2: Input Jumlah (dinamis label) -->
+          <div class="mb-7">
+            <label class="block font-tech text-xs tracking-widest mb-3" style="color:#C9B26D;font-size:0.62rem;letter-spacing:0.18em;" id="qty-label">
+              02 — JUMLAH (PCS) — MIN. 12 PCS
+            </label>
+            <div class="flex items-center gap-4">
+              <!-- Minus -->
+              <button onclick="alfCalc.changeQty(-1)"
+                class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="border:1px solid rgba(0,240,255,0.2);background:rgba(0,240,255,0.04);color:#00F0FF;"
+                onmouseover="this.style.background='rgba(0,240,255,0.12)'"
+                onmouseout="this.style.background='rgba(0,240,255,0.04)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <!-- Input number -->
+              <input
+                id="qty-input"
+                type="number"
+                value="24"
+                min="1"
+                max="9999"
+                oninput="alfCalc.onQtyInput(this.value)"
+                class="flex-1 text-center font-tech font-black text-2xl rounded-xl py-3 px-4 outline-none"
+                style="
+                  background:rgba(255,255,255,0.04);
+                  border:1px solid rgba(255,255,255,0.08);
+                  color:#FFFFFF;
+                  font-size:1.5rem;
+                  transition:border-color 0.2s ease;
+                "
+                onfocus="this.style.borderColor='rgba(0,240,255,0.4)'"
+                onblur="this.style.borderColor='rgba(255,255,255,0.08)'"
+              />
+              <!-- Plus -->
+              <button onclick="alfCalc.changeQty(1)"
+                class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200"
+                style="border:1px solid rgba(0,240,255,0.2);background:rgba(0,240,255,0.04);color:#00F0FF;"
+                onmouseover="this.style.background='rgba(0,240,255,0.12)'"
+                onmouseout="this.style.background='rgba(0,240,255,0.04)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
             </div>
-            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">02</span>
+            <!-- Tier info -->
+            <p id="tier-info" class="mt-2 font-tech text-xs" style="font-size:0.58rem;letter-spacing:0.1em;color:rgba(0,240,255,0.6);"></p>
           </div>
-          <div>
-            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">BRIEF & DEAL</h4>
-            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Kami siapkan brief, timeline, dan penawaran harga. Transparan, tidak ada biaya tersembunyi.</p>
-          </div>
-        </div>
  
-        <!-- Step 3 -->
-        <div class="flex flex-col items-center text-center gap-5">
-          <div class="relative">
-            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);box-shadow:0 0 30px rgba(0,240,255,0.08);">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          <!-- Row 3: Spesifikasi tambahan (dinamis per produk) -->
+          <div class="mb-8" id="spec-container">
+            <label class="block font-tech text-xs tracking-widest mb-3" style="color:#C9B26D;font-size:0.62rem;letter-spacing:0.18em;">
+              03 — SPESIFIKASI TAMBAHAN
+            </label>
+            <div id="spec-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Diisi oleh JS -->
             </div>
-            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">03</span>
           </div>
-          <div>
-            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">PROSES</h4>
-            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Tim kami mulai bekerja. Kamu dapat update progress secara berkala — tidak perlu nunggu bingung.</p>
-          </div>
-        </div>
  
-        <!-- Step 4 -->
-        <div class="flex flex-col items-center text-center gap-5">
-          <div class="relative">
-            <div class="w-24 h-24 rounded-full flex items-center justify-center" style="background:rgba(201,178,109,0.06);border:1px solid rgba(201,178,109,0.2);box-shadow:0 0 30px rgba(201,178,109,0.08);">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <!-- Divider -->
+          <div class="h-px mb-6" style="background:linear-gradient(90deg,transparent,rgba(0,240,255,0.15),rgba(201,178,109,0.2),rgba(0,240,255,0.15),transparent);"></div>
+ 
+          <!-- Result Area -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+ 
+            <div>
+              <p class="font-tech text-xs tracking-widest mb-1" style="color:rgba(255,255,255,0.35);font-size:0.58rem;letter-spacing:0.18em;">ESTIMASI BIAYA TOTAL</p>
+              <div class="flex items-baseline gap-2">
+                <span class="font-tech font-black" id="calc-price-display"
+                  style="font-size:clamp(1.8rem,4vw,2.8rem);background:linear-gradient(105deg,#FFFFFF,#E2CC8E,#C9B26D);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;">
+                  Rp 0
+                </span>
+              </div>
+              <p id="calc-unit-info" class="mt-1 text-xs" style="color:rgba(255,255,255,0.3);font-size:0.65rem;"></p>
+              <p id="calc-error" class="mt-1 font-tech text-xs" style="color:#FF6B6B;font-size:0.6rem;letter-spacing:0.1em;display:none;"></p>
             </div>
-            <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center font-tech font-black text-xs" style="background:linear-gradient(135deg,#C9B26D,#E2CC8E);color:#070A14;">04</span>
-          </div>
-          <div>
-            <h4 class="font-tech font-bold text-white mb-2" style="font-size:0.85rem;letter-spacing:0.08em;">DELIVER</h4>
-            <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.5);">Hasil jadi dikirimkan tepat waktu. Revisi gratis 2x. Kamu puas, kami senang.</p>
-          </div>
-        </div>
  
-      </div>
-    </div>
+            <!-- WA Button -->
+            <button onclick="alfCalc.orderWA()"
+              class="flex-shrink-0 flex items-center gap-3 px-6 py-4 rounded-xl font-tech font-bold transition-all duration-200"
+              style="
+                background:linear-gradient(135deg,#25D366,#128C7E);
+                color:#FFFFFF;
+                font-size:0.65rem;
+                letter-spacing:0.1em;
+                box-shadow:0 4px 24px rgba(37,211,102,0.3);
+                border:none;
+              "
+              onmouseover="this.style.boxShadow='0 6px 30px rgba(37,211,102,0.5)';this.style.transform='translateY(-2px)';"
+              onmouseout="this.style.boxShadow='0 4px 24px rgba(37,211,102,0.3)';this.style.transform='none';">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.057 23.882l6.168-1.448A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.576-.49-5.075-1.345l-.363-.216-3.763.883.938-3.658-.236-.376A9.957 9.957 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+              </svg>
+              KONSULTASI VIA WHATSAPP
+            </button>
+ 
+          </div>
+ 
+        </div><!-- /p-8 -->
+ 
+        <!-- Bottom glow strip -->
+        <div class="h-0.5 w-full" style="background:linear-gradient(90deg,transparent,rgba(201,178,109,0.4),transparent);"></div>
+ 
+      </div><!-- /rounded panel -->
+    </div><!-- /max-w-3xl -->
  
   </div>
 </section>
+ 
+<!-- STYLE kalkulator -->
+<style>
+.calc-tab {
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.45);
+}
+.calc-tab:hover {
+  border-color: rgba(0,240,255,0.25);
+  color: #00F0FF;
+  background: rgba(0,240,255,0.06);
+}
+.calc-tab.active-tab {
+  border-color: rgba(201,178,109,0.5);
+  background: rgba(201,178,109,0.1);
+  color: #C9B26D;
+  box-shadow: 0 0 16px rgba(201,178,109,0.1);
+}
+.calc-spec-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.calc-spec-check:hover {
+  border-color: rgba(0,240,255,0.2);
+  background: rgba(0,240,255,0.04);
+}
+.calc-spec-check.checked {
+  border-color: rgba(201,178,109,0.4);
+  background: rgba(201,178,109,0.07);
+}
+.calc-spec-check .check-box {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.calc-spec-check.checked .check-box {
+  border-color: #C9B26D;
+  background: rgba(201,178,109,0.2);
+}
+ 
+/* Animasi angka berubah */
+@keyframes priceFlash {
+  0%  { opacity:0.4; transform:scale(0.97); }
+  60% { opacity:1;   transform:scale(1.03); }
+  100%{ opacity:1;   transform:scale(1);    }
+}
+.price-animate {
+  animation: priceFlash 0.35s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+</style>
+ 
+<!-- SCRIPT kalkulator -->
+<script>
+(function(){
+  /* ─── DATA HARGA ─── */
+  const HARGA = {
+    kaos: {
+      tiers: [
+        { min:12,  max:50,  price:65000 },
+        { min:51,  max:100, price:60000 },
+        { min:101, max:Infinity, price:55000 },
+      ],
+      minQty: 12,
+      qtyLabel: '02 — JUMLAH (PCS) — MIN. 12 PCS',
+      unitLabel: 'pcs',
+      specs: [
+        { id:'sablonBlk', label:'Sablon Belakang',  extra: 10000, per:'pcs' },
+        { id:'sablonLen', label:'Sablon Lengan',    extra:  5000, per:'pcs' },
+      ]
+    },
+    banner: {
+      tiers: null,
+      basePrice: 25000,
+      minQty: 1,
+      qtyLabel: '02 — LUAS (M²)',
+      unitLabel: 'm²',
+      specs: [
+        { id:'bahan',   label:'Bahan Fleksi Korea Premium', extra:15000, per:'unit' },
+        { id:'matayam', label:'Finishing Mata Ayam',        extra: 2000, per:'meter' },
+      ]
+    },
+    stiker: {
+      tiers: [
+        { min:1,  max:10,  price:15000 },
+        { min:11, max:50,  price:12000 },
+        { min:51, max:Infinity, price:10000 },
+      ],
+      minQty: 1,
+      qtyLabel: '02 — JUMLAH (LEMBAR A3+)',
+      unitLabel: 'lembar',
+      specs: [
+        { id:'laminasi', label:'Laminasi Glossy / Doff', extra:3000, per:'unit' },
+      ]
+    }
+  };
+ 
+  let state = {
+    product: 'kaos',
+    qty: 24,
+    specs: {}
+  };
+ 
+  /* ─── FORMAT RUPIAH ─── */
+  function formatRp(n){
+    return 'Rp ' + n.toLocaleString('id-ID');
+  }
+ 
+  /* ─── RENDER SPEC OPTIONS ─── */
+  function renderSpecs(){
+    const container = document.getElementById('spec-options');
+    const data = HARGA[state.product];
+    if(!container || !data) return;
+ 
+    // Reset specs untuk produk ini
+    const newSpecs = {};
+    data.specs.forEach(function(s){ newSpecs[s.id] = state.specs[s.id] || false; });
+    state.specs = newSpecs;
+ 
+    container.innerHTML = data.specs.map(function(s){
+      const checked = state.specs[s.id] ? 'checked' : '';
+      const perLabel = s.per === 'pcs' || s.per === 'unit' || s.per === 'meter' ? '/ ' + s.per : '';
+      return '<div class="calc-spec-check ' + checked + '" id="spec-' + s.id + '" onclick="alfCalc.toggleSpec(\'' + s.id + '\')">'
+        + '<div class="check-box" id="cb-' + s.id + '">'
+        + (state.specs[s.id] ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '')
+        + '</div>'
+        + '<div class="flex-1">'
+        + '<p class="text-sm text-white font-medium" style="font-size:0.8rem;">' + s.label + '</p>'
+        + '<p class="font-tech text-xs" style="font-size:0.58rem;color:rgba(201,178,109,0.7);letter-spacing:0.08em;">+ ' + formatRp(s.extra) + ' ' + perLabel + '</p>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+  }
+ 
+  /* ─── HITUNG HARGA ─── */
+  function calculate(){
+    const data   = HARGA[state.product];
+    const qty    = state.qty;
+    const errEl  = document.getElementById('calc-error');
+    const unitEl = document.getElementById('calc-unit-info');
+ 
+    // Validasi min
+    if(qty < data.minQty){
+      if(errEl){ errEl.style.display='block'; errEl.textContent = '⚠ Minimum order ' + data.minQty + ' ' + data.unitLabel + ' untuk produk ini.'; }
+      animatePrice(0);
+      if(unitEl) unitEl.textContent = '';
+      return;
+    }
+    if(errEl) errEl.style.display = 'none';
+ 
+    let baseTotal = 0;
+    let tierText  = '';
+    let unitPrice = 0;
+ 
+    if(data.tiers){
+      /* Produk dengan tier qty */
+      const tier = data.tiers.find(function(t){ return qty >= t.min && qty <= t.max; });
+      unitPrice = tier ? tier.price : data.tiers[data.tiers.length-1].price;
+      baseTotal = qty * unitPrice;
+      tierText  = formatRp(unitPrice) + ' / ' + data.unitLabel + ' (tier saat ini)';
+    } else {
+      /* Banner: flat per unit */
+      unitPrice = data.basePrice;
+      baseTotal = qty * unitPrice;
+      tierText  = formatRp(unitPrice) + ' / ' + data.unitLabel;
+    }
+ 
+    /* Hitung extras */
+    let extraTotal = 0;
+    data.specs.forEach(function(s){
+      if(!state.specs[s.id]) return;
+      if(s.per === 'pcs' || s.per === 'unit'){
+        extraTotal += s.extra * qty;
+      } else if(s.per === 'meter'){
+        /* Banner: mata ayam per meter sisi → pakai sqrt(qty) sebagai approx keliling */
+        extraTotal += s.extra * (Math.sqrt(qty) * 4);
+      }
+    });
+ 
+    const total = baseTotal + extraTotal;
+    animatePrice(total);
+    if(unitEl) unitEl.textContent = tierText + (extraTotal > 0 ? (' + ' + formatRp(extraTotal) + ' addons') : '');
+    document.getElementById('tier-info').textContent = tierText;
+  }
+ 
+  /* ─── ANIMASI PRICE ─── */
+  let _animFrame = null;
+  let _currentDisplayVal = 0;
+  function animatePrice(target){
+    const el = document.getElementById('calc-price-display');
+    if(!el) return;
+    if(_animFrame) cancelAnimationFrame(_animFrame);
+    const start    = _currentDisplayVal;
+    const diff     = target - start;
+    const duration = 400;
+    const startT   = performance.now();
+    function step(now){
+      const t   = Math.min((now - startT) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const val  = Math.round(start + diff * ease);
+      _currentDisplayVal = val;
+      el.textContent = formatRp(val);
+      if(t < 1){ _animFrame = requestAnimationFrame(step); }
+      else {
+        _currentDisplayVal = target;
+        el.textContent = formatRp(target);
+        el.classList.add('price-animate');
+        setTimeout(function(){ el.classList.remove('price-animate'); }, 400);
+      }
+    }
+    _animFrame = requestAnimationFrame(step);
+  }
+ 
+  /* ─── PUBLIC API ─── */
+  window.alfCalc = {
+ 
+    setProduct: function(prod, btn){
+      state.product = prod;
+      // Update qty minimum
+      const data = HARGA[prod];
+      if(state.qty < data.minQty) state.qty = data.minQty;
+      document.getElementById('qty-input').value = state.qty;
+      document.getElementById('qty-label').textContent = data.qtyLabel;
+ 
+      // Update tab style
+      document.querySelectorAll('.calc-tab').forEach(function(b){ b.classList.remove('active-tab'); });
+      if(btn) btn.classList.add('active-tab');
+ 
+      renderSpecs();
+      calculate();
+    },
+ 
+    changeQty: function(delta){
+      const data = HARGA[state.product];
+      let newVal = state.qty + delta;
+      if(newVal < 1) newVal = 1;
+      state.qty = newVal;
+      document.getElementById('qty-input').value = newVal;
+      calculate();
+    },
+ 
+    onQtyInput: function(val){
+      const n = parseInt(val, 10);
+      if(!isNaN(n) && n > 0){ state.qty = n; }
+      calculate();
+    },
+ 
+    toggleSpec: function(id){
+      state.specs[id] = !state.specs[id];
+      // Update UI check box
+      const wrap = document.getElementById('spec-' + id);
+      const cb   = document.getElementById('cb-' + id);
+      if(wrap) wrap.classList.toggle('checked', state.specs[id]);
+      if(cb){
+        cb.innerHTML = state.specs[id]
+          ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C9B26D" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+          : '';
+      }
+      calculate();
+    },
+ 
+    orderWA: function(){
+      const data    = HARGA[state.product];
+      const priceEl = document.getElementById('calc-price-display');
+      const total   = priceEl ? priceEl.textContent : '-';
+      const specs   = Object.keys(state.specs)
+        .filter(function(k){ return state.specs[k]; })
+        .map(function(k){
+          const s = data.specs.find(function(x){ return x.id === k; });
+          return s ? s.label : k;
+        }).join(', ') || 'Tidak ada';
+ 
+      const msg = encodeURIComponent(
+        '🛍 Halo Alfirama! Saya ingin melakukan order:\n\n'
+        + '📦 Produk : ' + state.product.toUpperCase() + '\n'
+        + '🔢 Jumlah : ' + state.qty + ' ' + data.unitLabel + '\n'
+        + '⚙️ Spesifikasi : ' + specs + '\n'
+        + '💰 Estimasi Biaya : ' + total + '\n\n'
+        + 'Mohon konfirmasi ketersediaan dan detail pengiriman. Terima kasih!'
+      );
+      window.open('https://wa.me/6285135602885?text=' + msg, '_blank');
+    }
+  };
+ 
+  /* ─── INIT ─── */
+  document.addEventListener('DOMContentLoaded', function(){
+    renderSpecs();
+    calculate();
+ 
+    // GSAP scroll animation
+    if(typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined'){
+      gsap.to('#calc-header', {
+        scrollTrigger:{ trigger:'#calc-header', start:'top 85%', toggleActions:'play none none none' },
+        opacity:1, y:0, duration:0.8, ease:'power3.out'
+      });
+      gsap.to('#calc-widget', {
+        scrollTrigger:{ trigger:'#calc-widget', start:'top 80%', toggleActions:'play none none none' },
+        opacity:1, y:0, duration:0.9, ease:'power3.out'
+      });
+    }
+  });
+ 
+})();
+</script>
+<!-- ═══════════ BLOK A — SELESAI ═══════════ -->
+ 
 
     <!-- ============================================================
          5. STATISTIK SECTION — Pencapaian
@@ -940,12 +2161,45 @@ if(!localStorage.getItem('alfirama_cookie')){
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gsap-hidden" id="stats-grid">
 
-          <!-- Stat 1 -->
-          <div class="stat-card corner-tl corner-br relative text-center py-10 px-8">
-            <div class="stat-number mb-3">50<span style="color:#00F0FF;">+</span></div>
-            <p class="font-tech text-sm tracking-wider mb-2" style="color:#C9B26D; font-size:0.7rem; letter-spacing:0.15em;">KLIEN AKTIF</p>
-            <p class="text-muted text-sm">Klien Kreatif &amp; UMKM yang telah dilayani dengan solusi branding &amp; retail.</p>
-          </div>
+          <!-- ═══════════ BLOK B — MULAI ═══════════ -->
+<!-- Stat 1 — LIVE VISITOR COUNTER -->
+<div class="stat-card corner-tl corner-br relative text-center py-10 px-8" id="live-visitor-card">
+ 
+  <!-- Pulse ring animasi di belakang angka -->
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);width:120px;height:120px;border-radius:50%;border:1px solid rgba(0,240,255,0.08);animation:lvcPulse 2.5s ease-in-out infinite;pointer-events:none;"></div>
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);width:90px;height:90px;border-radius:50%;border:1px solid rgba(0,240,255,0.05);animation:lvcPulse 2.5s ease-in-out infinite 0.8s;pointer-events:none;"></div>
+ 
+  <!-- Status dot + label atas -->
+  <div class="flex items-center justify-center gap-2 mb-3 relative z-10">
+    <span style="width:7px;height:7px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px rgba(0,255,136,0.8);animation:lvcDot 1.6s ease-in-out infinite;flex-shrink:0;"></span>
+    <span class="font-tech" style="font-size:0.52rem;letter-spacing:0.18em;color:rgba(0,255,136,0.7);">LIVE</span>
+  </div>
+ 
+  <!-- Angka counter -->
+  <div class="stat-number mb-1 relative z-10" id="visitor-count-display">
+    <span id="vc-number">—</span><span style="color:#00F0FF;"> Kreator</span>
+  </div>
+ 
+  <!-- Label -->
+  <p class="font-tech text-sm tracking-wider mb-2 relative z-10" style="color:#C9B26D;font-size:0.7rem;letter-spacing:0.15em;">SEDANG ONLINE</p>
+  <p class="text-muted text-sm relative z-10">Pengguna aktif yang sedang menjelajahi ekosistem Alfirama.ID saat ini.</p>
+ 
+  <!-- Last update indicator -->
+  <p id="vc-last-update" class="mt-3 font-tech relative z-10" style="font-size:0.52rem;letter-spacing:0.1em;color:rgba(0,240,255,0.3);">Menghubungkan...</p>
+ 
+</div>
+ 
+<style>
+@keyframes lvcPulse {
+  0%,100% { transform:translate(-50%,-60%) scale(1);   opacity:0.6; }
+  50%      { transform:translate(-50%,-60%) scale(1.18); opacity:0; }
+}
+@keyframes lvcDot {
+  0%,100% { opacity:1;   transform:scale(1); }
+  50%      { opacity:0.4; transform:scale(0.7); }
+}
+</style>
+<!-- ═══════════ BLOK B — SELESAI ═══════════ -->
 
           <!-- Stat 2 -->
           <div class="stat-card corner-tl corner-br relative text-center py-10 px-8">
@@ -964,7 +2218,7 @@ if(!localStorage.getItem('alfirama_cookie')){
         </div>
       </div>
     </section>
-    <section id="portfolio" class="section cyber-bg">
+     <section id="portfolio" class="section cyber-bg">
   <div class="container">
  
     <div class="section-header gsap-hidden mb-12" id="porto-header">
@@ -1160,6 +2414,9 @@ if(!localStorage.getItem('alfirama_cookie')){
  
   </div>
 </section>
+
+
+   
  
 <script>
 function filterPorto(cat, btn){
@@ -1415,8 +2672,6 @@ function filterPorto(cat, btn){
  
   </div>
   <!-- /Member 4 -->
- 
-</div>
 </div>  <!-- TUTUP team-grid -->
   </div>  <!-- TUTUP container -->
 </section>  <!-- TUTUP section #team -->
@@ -1464,7 +2719,7 @@ function filterPorto(cat, btn){
               </div>
               <div>
                 <p class="font-tech text-xs tracking-wider mb-1" style="color:#C9B26D; font-size:0.6rem; letter-spacing:0.18em;">KONTAK</p>
-                <a href="https://wa.me/6285135602885" class="text-white hover:text-neon-cyan transition-colors" style="--tw-text-opacity:1;">+62 812-XXXX-XXXX</a><br />
+                <a href="https://wa.me/6285135602885" class="text-white hover:text-neon-cyan transition-colors" style="--tw-text-opacity:1;">+62 851-3560-2885</a><br />
                 <a href="mailto:hello@alfirama.id" class="text-white hover:text-neon-cyan transition-colors" style="font-size:0.9rem;">hello@alfirama.id</a>
               </div>
             </div>
@@ -1546,23 +2801,23 @@ function filterPorto(cat, btn){
 
           <!-- Google Maps Embed -->
           <div class="map-wrapper rounded-xl overflow-hidden" style="height:420px; border:1px solid rgba(0,240,255,0.12); box-shadow: 0 0 40px rgba(0,240,255,0.07), 0 20px 60px rgba(0,0,0,0.5);">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.1!2d106.0!3d-6.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zVlZQRytKWEMsIEthbWFzYW4sIEtlYy4gQ2luYW5na2EsIEthYnVwYXRlbiBTZXJhbmcsIEJhbnRlbiA0MjE2Nw!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid"
-              width="100%"
-              height="100%"
-              style="border:0; filter:invert(90%) hue-rotate(180deg) saturate(0.8) brightness(0.85);"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Lokasi Alfirama.ID — Kamasan, Cinangka, Kabupaten Serang, Banten"
-            ></iframe>
-          </div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7934.201382930593!2d105.87659254126342!3d-6.117146125477895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sVVPG%20JXC%2C%20Kamasan%2C%20Kec.%20Cinangka%2C%20Kabupaten%20Serang%2C%20Banten%2042167!5e0!3m2!1sid!2sid!4v1779888786583!5m2!1sid!2sid"
+    width="100%"
+    height="100%"
+    style="border:0; filter:invert(90%) hue-rotate(180deg) saturate(0.8) brightness(0.85);"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Lokasi Alfirama.ID — Kamasan, Cinangka, Kabupaten Serang, Banten"
+  ></iframe>
+</div>
 
         </div>
       </div>
     </section>
 
-  </main><!-- /main -->
+  
 
 
 <section id="testimoni" class="section relative overflow-hidden" style="background:linear-gradient(160deg, #0A0F1D 0%, #070A14 100%);">
@@ -1613,7 +2868,7 @@ function filterPorto(cat, btn){
  
         <!-- Profil klien -->
         <div class="flex items-center gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,0.06);">
-          <div class="w-10 h-10 rounded-full flex items-center justify-content:center flex-shrink-0 flex items-center justify-center font-tech font-bold text-sm"
+          <div class="w-10 h-10 rounded-full flex items-center flex-shrink-0 flex items-center justify-center font-tech font-bold text-sm font-bold text-sm"
             style="background:linear-gradient(135deg,rgba(0,240,255,0.2),rgba(0,240,255,0.08)); border:1px solid rgba(0,240,255,0.25); color:#00F0FF;">
             RH
           </div>
@@ -1945,6 +3200,7 @@ function filterPorto(cat, btn){
   </div>
 </section>
 <!-- /SECTION FAQ -->
+ </main><!-- /main -->
 
 
   <!-- ============================================================
@@ -2412,24 +3668,35 @@ gsap.to('#faq-footer', {
 });
   </script>
   <script>
+// BUGFIX #1: Unifikasi sistem tema — index.html sekarang menggunakan mekanisme
+// yang sama dengan profile.html (class 'dark' di <html>, key 'alfirama_theme').
+// Sebelumnya index.html memakai class 'light-mode' di <body> yang tidak terbaca
+// oleh profile.html, sehingga tema selalu reset saat berpindah halaman.
 function toggleTheme(){
-  const body = document.body;
+  const html = document.documentElement;
   const moon = document.getElementById('icon-moon');
   const sun  = document.getElementById('icon-sun');
-  body.classList.toggle('light-mode');
-  const isLight = body.classList.contains('light-mode');
-  moon.style.display = isLight ? 'none'  : 'block';
-  sun.style.display  = isLight ? 'block' : 'none';
-  localStorage.setItem('alfirama_theme', isLight ? 'light' : 'dark');
+  html.classList.toggle('dark');
+  const isDark = html.classList.contains('dark');
+  // Sinkronkan icon toggle
+  if (moon) moon.style.display = isDark ? 'block' : 'none';
+  if (sun)  sun.style.display  = isDark ? 'none'  : 'block';
+  // Tulis ke localStorage dengan key & nilai yang seragam
+  localStorage.setItem('alfirama_theme', isDark ? 'dark' : 'light');
+  // Sinkronkan class body untuk light-mode CSS overrides yang sudah ada
+  document.body.classList.toggle('light-mode', !isDark);
 }
-// Restore saved theme
-if(localStorage.getItem('alfirama_theme') === 'light'){
-  document.body.classList.add('light-mode');
-  const moon = document.getElementById('icon-moon');
-  const sun  = document.getElementById('icon-sun');
-  if(moon) moon.style.display = 'none';
-  if(sun)  sun.style.display  = 'block';
-}
+// Restore saved theme on page load
+(function(){
+  var saved = localStorage.getItem('alfirama_theme') || 'dark';
+  var isDark = saved === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.body.classList.toggle('light-mode', !isDark);
+  var moon = document.getElementById('icon-moon');
+  var sun  = document.getElementById('icon-sun');
+  if (moon) moon.style.display = isDark ? 'block' : 'none';
+  if (sun)  sun.style.display  = isDark ? 'none'  : 'block';
+})();
 </script>
 
   <!-- ============================================================
@@ -2489,6 +3756,725 @@ if(localStorage.getItem('alfirama_theme') === 'light'){
        BGM PLAYER — Hidden Audio Element
        ============================================================ -->
   <audio id="bgm-player" src="assets/global/bgm-cyber.mp3" loop preload="auto"></audio>
+
+  <!-- ============================================================
+     LENIS SMOOTH SCROLL INITIALIZATION
+     Harus setelah GSAP dimuat, sebelum Firebase module
+     ============================================================ -->
+<script>
+(function () {
+  // Pastikan Lenis sudah dimuat
+  if (typeof Lenis === 'undefined') return;
+
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
+  });
+
+  // Sinkronisasi Lenis dengan GSAP ScrollTrigger agar animasi tidak desync
+  lenis.on('scroll', function () {
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.update();
+    }
+  });
+
+  // RAF loop
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Expose ke window agar bisa dipanggil dari luar jika perlu
+  window._lenis = lenis;
+})();
+</script>
+
+  <!-- ============================================================
+       FITUR PREMIUM SESI 1 — TYPED + TILT 3D + MAGNETIC BUTTON
+       ============================================================ -->
+  <script>
+  (function(){
+
+    /* =============================================================
+       FITUR 07 — TYPED.JS EFFECT (Vanilla, tanpa library)
+       Teks berganti-ganti seolah diketik real-time
+       ============================================================= */
+    const typedEl     = document.getElementById('typed-text');
+    const typedCursor = document.getElementById('typed-cursor');
+
+    if (typedEl) {
+      const phrases = [
+        'studio desain eksklusif.',
+        'percetakan premium.',
+        'grosir retail lokal.',
+        'hub komunitas kreatif Banten.',
+        'satu ekosistem digital.',
+      ];
+      let phraseIndex = 0;
+      let charIndex   = 0;
+      let isDeleting  = false;
+      let typingTimer = null;
+
+      function typeLoop() {
+        const currentPhrase = phrases[phraseIndex];
+
+        if (!isDeleting) {
+          /* Mengetik */
+          typedEl.textContent = currentPhrase.slice(0, charIndex + 1);
+          charIndex++;
+          if (charIndex === currentPhrase.length) {
+            /* Selesai mengetik — jeda sebelum hapus */
+            isDeleting = true;
+            typingTimer = setTimeout(typeLoop, 1800);
+            return;
+          }
+          typingTimer = setTimeout(typeLoop, 65);
+        } else {
+          /* Menghapus */
+          typedEl.textContent = currentPhrase.slice(0, charIndex - 1);
+          charIndex--;
+          if (charIndex === 0) {
+            /* Selesai hapus — pindah ke phrase berikutnya */
+            isDeleting  = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typingTimer = setTimeout(typeLoop, 400);
+            return;
+          }
+          typingTimer = setTimeout(typeLoop, 35);
+        }
+      }
+
+      /* Mulai setelah splash screen selesai (~2.5 detik) */
+      setTimeout(typeLoop, 2500);
+    }
+
+
+    /* =============================================================
+       FITUR 06 — TILT 3D CARD EFFECT (Vanilla, tanpa VanillaTilt.js)
+       Berlaku untuk .service-card dan .team-card
+       ============================================================= */
+    function initTilt(selector, maxTilt, gloss) {
+      const cards = document.querySelectorAll(selector);
+      cards.forEach(function(card) {
+
+        card.addEventListener('mousemove', function(e) {
+          const rect   = card.getBoundingClientRect();
+          const centerX = rect.left + rect.width  / 2;
+          const centerY = rect.top  + rect.height / 2;
+          const dx      = e.clientX - centerX;
+          const dy      = e.clientY - centerY;
+          const tiltX   = -(dy / (rect.height / 2)) * maxTilt;
+          const tiltY   =  (dx / (rect.width  / 2)) * maxTilt;
+
+          card.style.transform    = 'perspective(900px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) translateZ(8px)';
+          card.style.transition   = 'transform 0.1s ease';
+
+          /* Gloss highlight mengikuti mouse */
+          if (gloss) {
+            const glossX = ((dx / rect.width)  + 0.5) * 100;
+            const glossY = ((dy / rect.height) + 0.5) * 100;
+            card.style.backgroundImage =
+              'radial-gradient(circle at ' + glossX + '% ' + glossY + '%, rgba(0,240,255,0.06) 0%, transparent 65%)';
+          }
+        });
+
+        card.addEventListener('mouseleave', function() {
+          card.style.transform    = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+          card.style.transition   = 'transform 0.5s cubic-bezier(0.22,1,0.36,1)';
+          if (gloss) card.style.backgroundImage = '';
+        });
+
+      });
+    }
+
+    /* Terapkan ke service card (gloss on) dan team card (gloss off) */
+    initTilt('.service-card', 8,  true);
+    initTilt('.team-card',    6,  false);
+
+
+    /* =============================================================
+       FITUR 04 — MAGNETIC BUTTON EFFECT
+       Tombol bergerak mendekati cursor saat mouse dalam radius
+       ============================================================= */
+    const magnetBtns = document.querySelectorAll('.magnetic-btn');
+
+    magnetBtns.forEach(function(btn) {
+      const RADIUS   = 90;   /* radius dalam px — di luar ini tidak ada efek */
+      const STRENGTH = 0.38; /* seberapa kuat tarikan — 0.0 sampai 1.0 */
+
+      btn.addEventListener('mousemove', function(e) {
+        const rect    = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width  / 2;
+        const centerY = rect.top  + rect.height / 2;
+        const dx      = e.clientX - centerX;
+        const dy      = e.clientY - centerY;
+        const dist    = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < RADIUS) {
+          const moveX = dx * STRENGTH;
+          const moveY = dy * STRENGTH;
+          btn.style.transform  = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+          btn.style.transition = 'transform 0.15s ease';
+        }
+      });
+
+      btn.addEventListener('mouseleave', function() {
+        btn.style.transform  = 'translate(0px, 0px)';
+        btn.style.transition = 'transform 0.5s cubic-bezier(0.22,1,0.36,1)';
+      });
+
+      /* Pastikan wrapper flex tidak terpotong saat tombol bergerak */
+      btn.style.display = 'inline-flex';
+    });
+
+  })();
+  </script>
+
+  <!-- ============================================================
+       FITUR PREMIUM — CUSTOM CURSOR + SCROLL PROGRESS + PARTICLES
+       ============================================================ -->
+  <script>
+  (function () {
+
+    const dot  = document.getElementById('cyber-cursor-dot');
+    const ring = document.getElementById('cyber-cursor-ring');
+
+    if (dot && ring) {
+      let mouseX = -100, mouseY = -100;
+      let ringX  = -100, ringY  = -100;
+
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top  = mouseY + 'px';
+      });
+
+      document.addEventListener('mouseleave', function () {
+        dot.style.opacity  = '0';
+        ring.style.opacity = '0';
+      });
+      document.addEventListener('mouseenter', function () {
+        dot.style.opacity  = '1';
+        ring.style.opacity = '1';
+      });
+
+      document.addEventListener('mousedown', function () {
+        ring.classList.add('cursor-click');
+      });
+      document.addEventListener('mouseup', function () {
+        ring.classList.remove('cursor-click');
+      });
+
+      const hoverSelectors = 'a, button, .service-card, .team-card, .porto-card-inner, .faq-trigger, input, textarea, select, label, [role="button"]';
+
+      document.addEventListener('mouseover', function (e) {
+        if (e.target.closest(hoverSelectors)) {
+          ring.classList.add('cursor-hover');
+          dot.style.background = '#C9B26D';
+          dot.style.boxShadow  = '0 0 8px rgba(201,178,109,0.9)';
+        }
+      });
+
+      document.addEventListener('mouseout', function (e) {
+        if (e.target.closest(hoverSelectors)) {
+          ring.classList.remove('cursor-hover');
+          dot.style.background = '#00F0FF';
+          dot.style.boxShadow  = '0 0 8px rgba(0,240,255,0.9)';
+        }
+      });
+
+      function animateCursor() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        ring.style.left = ringX + 'px';
+        ring.style.top  = ringY + 'px';
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+    }
+
+    const progressBar = document.getElementById('scroll-progress-bar');
+    if (progressBar) {
+      function updateScrollProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const pct       = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = Math.min(pct, 100).toFixed(2) + '%';
+      }
+      window.addEventListener('scroll', updateScrollProgress, { passive: true });
+      window.addEventListener('load', function () {
+        if (window._lenis) window._lenis.on('scroll', updateScrollProgress);
+        updateScrollProgress();
+      });
+    }
+
+    const canvas = document.getElementById('hero-particles');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      const CFG = {
+        COUNT        : 72,
+        MAX_SPEED    : 0.45,
+        CONNECT_DIST : 130,
+        MOUSE_REPEL  : 100,
+        REPEL_STR    : 2.5,
+        COLORS       : ['#00F0FF','#00D4E8','#C9B26D','#E2CC8E','rgba(255,255,255,0.7)'],
+      };
+      let W = 0, H = 0;
+      let mousePos = { x: -9999, y: -9999 };
+      let particles = [];
+
+      function resizeCanvas() {
+        const hero = canvas.parentElement;
+        W = canvas.width  = hero ? hero.offsetWidth  : window.innerWidth;
+        H = canvas.height = hero ? hero.offsetHeight : window.innerHeight;
+      }
+
+      function createParticle() {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * CFG.MAX_SPEED + 0.1;
+        return {
+          x    : Math.random() * W,
+          y    : Math.random() * H,
+          vx   : Math.cos(angle) * speed,
+          vy   : Math.sin(angle) * speed,
+          r    : Math.random() * 1.8 + 0.6,
+          color: CFG.COLORS[Math.floor(Math.random() * CFG.COLORS.length)],
+          alpha: Math.random() * 0.5 + 0.3,
+        };
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < CFG.COUNT; i++) particles.push(createParticle());
+      }
+
+      function updateParticle(p) {
+        const dx   = p.x - mousePos.x;
+        const dy   = p.y - mousePos.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CFG.MOUSE_REPEL && dist > 0) {
+          const force = (CFG.MOUSE_REPEL - dist) / CFG.MOUSE_REPEL;
+          p.vx += (dx / dist) * force * CFG.REPEL_STR * 0.05;
+          p.vy += (dy / dist) * force * CFG.REPEL_STR * 0.05;
+        }
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > CFG.MAX_SPEED * 3) {
+          p.vx = (p.vx / spd) * CFG.MAX_SPEED * 3;
+          p.vy = (p.vy / spd) * CFG.MAX_SPEED * 3;
+        }
+        p.vx *= 0.995;
+        p.vy *= 0.995;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        if (p.x < -10)   p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10)   p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+      }
+
+      function drawParticle(p) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle   = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx   = particles[i].x - particles[j].x;
+            const dy   = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CFG.CONNECT_DIST) {
+              const a = (1 - dist / CFG.CONNECT_DIST) * 0.35;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(0,240,255,' + a + ')';
+              ctx.lineWidth   = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+        drawConnections();
+        particles.forEach(function (p) { updateParticle(p); drawParticle(p); });
+        requestAnimationFrame(animate);
+      }
+
+      const heroSection = canvas.parentElement;
+      if (heroSection) {
+        heroSection.addEventListener('mousemove', function (e) {
+          const rect = heroSection.getBoundingClientRect();
+          mousePos.x = e.clientX - rect.left;
+          mousePos.y = e.clientY - rect.top;
+        }, { passive: true });
+        heroSection.addEventListener('mouseleave', function () {
+          mousePos.x = -9999;
+          mousePos.y = -9999;
+        });
+      }
+
+      resizeCanvas();
+      initParticles();
+      animate();
+
+      if (typeof ResizeObserver !== 'undefined') {
+        const ro = new ResizeObserver(resizeCanvas);
+        if (heroSection) ro.observe(heroSection);
+      } else {
+        window.addEventListener('resize', resizeCanvas);
+      }
+    }
+
+  })();
+  </script>
+
+  <!-- ============================================================
+       AUTH STATE LISTENER — Update tombol nav jika user sudah login
+       ============================================================ -->
+  <script type="module">
+    import { initializeApp }        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+      authDomain:        "alfirama-id.firebaseapp.com",
+      projectId:         "alfirama-id",
+      storageBucket:     "alfirama-id.firebasestorage.app",
+      messagingSenderId: "1036820056484",
+      appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
+      measurementId:     "G-V3QGL2R207"
+    };
+
+    const app  = initializeApp(firebaseConfig, 'auth-listener');
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      // Seleksi semua tombol/link yang mengarah ke login.html
+      const loginLinks = document.querySelectorAll('a[href="login.html"]');
+      loginLinks.forEach(link => {
+        if (user) {
+          // User sudah login → arahkan ke Dashboard profil
+          link.textContent = '⚡ Dashboard';
+          link.href        = 'profile.html';
+        }
+        // Jika belum login, biarkan seperti semula (Masuk / Daftar → login.html)
+      });
+    });
+  </script>
+  <!-- ═══════════ BLOK C — MULAI ═══════════ -->
+ 
+<!-- Container Toast (pojok kiri bawah) -->
+<div id="toast-container"
+  aria-live="polite"
+  aria-atomic="true"
+  style="
+    position:fixed;
+    bottom:90px;
+    left:24px;
+    z-index:9997;
+    pointer-events:none;
+  ">
+</div>
+ 
+<style>
+/* Toast card */
+.alfi-toast {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(7,10,20,0.92);
+  border: 1px solid rgba(0,240,255,0.15);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  max-width: 320px;
+  width: 320px;
+  pointer-events: all;
+  position: relative;
+  overflow: hidden;
+ 
+  /* State awal: tersembunyi di bawah */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.4s cubic-bezier(0.22,1,0.36,1),
+    transform 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+ 
+/* Glow di belakang toast */
+.alfi-toast::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  background: transparent;
+  box-shadow: 0 0 40px rgba(0,240,255,0.2), 0 0 80px rgba(0,240,255,0.06);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+ 
+/* State masuk */
+.alfi-toast.toast-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.alfi-toast.toast-in::before {
+  opacity: 1;
+}
+ 
+/* State keluar */
+.alfi-toast.toast-out {
+  opacity: 0;
+  transform: translateY(12px);
+}
+ 
+/* Progress bar bawah */
+.alfi-toast-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #00F0FF, #C9B26D);
+  transform-origin: left;
+  animation: toastBar 6s linear forwards;
+}
+@keyframes toastBar {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+ 
+/* Avatar initial */
+.toast-avatar {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(0,240,255,0.05));
+  border: 1px solid rgba(0,240,255,0.2);
+  color: #00F0FF;
+}
+ 
+/* Text dalam toast */
+.toast-name {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+}
+.toast-product {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.toast-time {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: rgba(0,240,255,0.5);
+  margin-top: 4px;
+}
+ 
+/* Badge kiri atas toast */
+.toast-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.45rem;
+  letter-spacing: 0.15em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: rgba(0,240,255,0.08);
+  border: 1px solid rgba(0,240,255,0.15);
+  color: rgba(0,240,255,0.6);
+}
+</style>
+ 
+<script>
+(function(){
+ 
+  /* ─── CURATED DATA PESANAN ─── */
+  var toastData = [
+    { nama:'Aldi',      asal:'Serang',     produk:'80 Pcs Kaos Komunitas',      emoji:'👕', waktu:'3 menit yang lalu'   },
+    { nama:'Rian',      asal:'Cilegon',    produk:'3 m² Banner Agen Sembako',   emoji:'🪧', waktu:'10 menit yang lalu'  },
+    { nama:'Siti',      asal:'Tangerang',  produk:'15 Lembar Stiker Custom',    emoji:'🏷️', waktu:'1 jam yang lalu'     },
+    { nama:'Budi',      asal:'Pandeglang', produk:'50 Pcs Kaos Seragam Desa',  emoji:'👕', waktu:'25 menit yang lalu'  },
+    { nama:'Dewi',      asal:'Lebak',      produk:'5 m² Banner Grand Opening', emoji:'🪧', waktu:'45 menit yang lalu'  },
+    { nama:'Fajar',     asal:'Serang',     produk:'100 Pcs Kaos OSIS SMA',     emoji:'👕', waktu:'2 jam yang lalu'     },
+    { nama:'Nanda',     asal:'Cilegon',    produk:'30 Lembar Stiker Motor',    emoji:'🏷️', waktu:'15 menit yang lalu'  },
+    { nama:'Hendra',    asal:'Tangerang',  produk:'120 Pcs Hoodie Komunitas',  emoji:'🧥', waktu:'5 menit yang lalu'   },
+    { nama:'Yusuf',     asal:'Serang',     produk:'8 m² Banner Toko Baju',     emoji:'🪧', waktu:'30 menit yang lalu'  },
+    { nama:'Lestari',   asal:'Pandeglang', produk:'25 Pcs Kaos Posyandu',      emoji:'👕', waktu:'1.5 jam yang lalu'   },
+    { nama:'Rahmat',    asal:'Lebak',      produk:'60 Lembar Stiker Packaging',emoji:'🏷️', waktu:'50 menit yang lalu'  },
+    { nama:'Mira',      asal:'Cilegon',    produk:'40 Pcs Polo Shirt Pabrik',  emoji:'👔', waktu:'20 menit yang lalu'  },
+  ];
+ 
+  var lastIndex = -1;
+  var container = document.getElementById('toast-container');
+ 
+  function getNextToast(){
+    /* Acak tapi hindari angka yang sama berturut-turut */
+    var next;
+    do { next = Math.floor(Math.random() * toastData.length); }
+    while(next === lastIndex && toastData.length > 1);
+    lastIndex = next;
+    return toastData[next];
+  }
+ 
+  function showToast(){
+    if(!container) return;
+    var d = getNextToast();
+ 
+    /* Buat elemen toast */
+    var toast = document.createElement('div');
+    toast.className = 'alfi-toast';
+    toast.innerHTML =
+      '<div class="toast-avatar">' + d.nama.charAt(0).toUpperCase() + '</div>'
+      + '<div style="flex:1;min-width:0;">'
+      + '<div class="toast-name">🛍 ' + d.nama + ' <span style="color:rgba(255,255,255,0.35);font-weight:400;">dari</span> ' + d.asal + '</div>'
+      + '<div class="toast-product">' + d.emoji + ' ' + d.produk + '</div>'
+      + '<div class="toast-time">⏱ ' + d.waktu + '</div>'
+      + '</div>'
+      + '<span class="toast-badge">BARU</span>'
+      + '<div class="alfi-toast-bar"></div>';
+ 
+    container.appendChild(toast);
+ 
+    /* Trigger masuk */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        toast.classList.add('toast-in');
+      });
+    });
+ 
+    /* Auto dismiss setelah 6 detik */
+    setTimeout(function(){
+      toast.classList.remove('toast-in');
+      toast.classList.add('toast-out');
+      setTimeout(function(){
+        if(toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 500);
+    }, 6000);
+  }
+ 
+  /* ─── INISIASI: tampil pertama kali setelah 4 detik, lalu tiap 30 detik ─── */
+  setTimeout(function(){
+    showToast();
+    setInterval(showToast, 30000);
+  }, 4000);
+ 
+})();
+</script>
+<!-- ═══════════ BLOK C — SELESAI ═══════════ -->
+ 
+
+ 
+<!-- ═══════════ BLOK D — SCRIPT MODULE FIREBASE RTDB ═══════════ -->
+<script type="module">
+  import { initializeApp }                      from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import { getDatabase, ref, push, onValue,
+           onDisconnect, serverTimestamp,
+           remove }                              from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+ 
+const firebaseConfigRTDB = {
+  apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+  authDomain:        "alfirama-id.firebaseapp.com",
+  projectId:         "alfirama-id",
+  storageBucket:     "alfirama-id.firebasestorage.app",
+  messagingSenderId: "1036820056484",
+  appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
+  databaseURL:       "https://alfirama-id-default-rtdb.asia-southeast1.firebasedatabase.app",
+  measurementId:     "G-V3QGL2R207"
+};
+ 
+  /* Pakai nama app berbeda agar tidak konflik dengan instance lain */
+  const rtdbApp = initializeApp(firebaseConfigRTDB, 'rtdb-visitor');
+  const rtdb    = getDatabase(rtdbApp);
+ 
+  /* ─── 1. DAFTARKAN SESSION USER INI ─── */
+  const visitorsRef  = ref(rtdb, 'online_visitors');
+  const mySessionRef = push(visitorsRef, {
+    joined: serverTimestamp(),
+    ua: navigator.userAgent.substring(0, 80)
+  });
+ 
+  /* Hapus otomatis saat tab ditutup / koneksi putus */
+  onDisconnect(mySessionRef).remove();
+ 
+  /* Juga hapus saat halaman unload (backup) */
+  window.addEventListener('beforeunload', function(){
+    remove(mySessionRef);
+  });
+ 
+  /* ─── 2. LISTEN perubahan jumlah visitor ─── */
+  onValue(visitorsRef, function(snapshot){
+    const count  = snapshot.exists() ? snapshot.size : 0;
+    const numEl  = document.getElementById('vc-number');
+    const infoEl = document.getElementById('vc-last-update');
+ 
+    if(numEl){
+      /* Animasikan angka */
+      const prev = parseInt(numEl.getAttribute('data-val') || '0', 10);
+      animateVCNumber(numEl, prev, count);
+      numEl.setAttribute('data-val', count);
+    }
+ 
+    if(infoEl){
+      const now = new Date();
+      const hh  = String(now.getHours()).padStart(2,'0');
+      const mm  = String(now.getMinutes()).padStart(2,'0');
+      const ss  = String(now.getSeconds()).padStart(2,'0');
+      infoEl.textContent = 'DIPERBARUI ' + hh + ':' + mm + ':' + ss + ' WIB';
+    }
+  });
+ 
+  /* ─── ANIMASI ANGKA COUNTER ─── */
+  function animateVCNumber(el, from, to){
+    const duration = 700;
+    const start    = performance.now();
+    function tick(now){
+      const t    = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1-t, 3);
+      const val  = Math.round(from + (to - from) * ease);
+      el.textContent = val;
+      if(t < 1) requestAnimationFrame(tick);
+      else el.textContent = to;
+    }
+    requestAnimationFrame(tick);
+  }
+</script>
+<!-- ═══════════ BLOK D — SELESAI ═══════════ -->
+ 
+
 
 </body>
 </html>
