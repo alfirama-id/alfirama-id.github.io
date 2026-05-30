@@ -102,6 +102,16 @@ body.light-mode .stat-card {
 }
 body.light-mode footer { background: #D8DCE8 !important; }
 body.light-mode #mobile-menu { background: rgba(240,242,248,0.98) !important; }
+@media (max-width: 767px) {
+  #navbar,
+  #mobile-menu,
+  #cookie-banner,
+  .alfi-toast {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(7,10,20,0.97) !important;
+  }
+}
 
 </style>
  
@@ -3767,13 +3777,13 @@ function toggleTheme(){
   if (typeof Lenis === 'undefined') return;
 
   const lenis = new Lenis({
-    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     direction: 'vertical',
     gestureDirection: 'vertical',
     smooth: true,
     mouseMultiplier: 1,
     smoothTouch: false,
+    duration: window.innerWidth < 768 ? 0.6 : 1.2,
     touchMultiplier: 2,
     infinite: false,
   });
@@ -4020,10 +4030,11 @@ function toggleTheme(){
     const canvas = document.getElementById('hero-particles');
     if (canvas) {
       const ctx = canvas.getContext('2d');
+      const isMobile = window.innerWidth < 768;
       const CFG = {
-        COUNT        : 72,
+        COUNT        : isMobile ? 20 : 72,
         MAX_SPEED    : 0.45,
-        CONNECT_DIST : 130,
+        CONNECT_DIST : isMobile ? 0  : 130,
         MOUSE_REPEL  : 100,
         REPEL_STR    : 2.5,
         COLORS       : ['#00F0FF','#00D4E8','#C9B26D','#E2CC8E','rgba(255,255,255,0.7)'],
