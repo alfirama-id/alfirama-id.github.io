@@ -2216,9 +2216,9 @@
       const snap = await getDocs(q);
       snap.forEach(docSnap => {
         const data = docSnap.data();
-        if (data.templateId && data.fileLink) {
-          window.unlockDownloadCard(data.templateId, data.fileLink);
-        }
+        if (data.templateId && data.fileUrl) {
+  window.unlockDownloadCard(data.templateId, data.fileUrl);
+}
       });
     } catch (err) {
       console.warn('[Alfirama] checkUserDownloads error:', err.message);
@@ -2271,22 +2271,23 @@ window.initiateMidtransPayment = async function (item) {
 
     window.snap.pay(snapToken, {
       onSuccess: async function (result) {
-        try {
-          const downloadDocRef = doc(db, 'user_downloads', uid + '_' + item.id);
-          await setDoc(downloadDocRef, {
-            userId: uid, userName, userEmail,
-            templateId: item.id, templateTitle: item.title, templatePrice: item.price,
-            status: 'paid', fileLink: item.fileUrl || '',
-            orderId: result.order_id || '', transactionId: result.transaction_id || '',
-            paymentType: result.payment_type || '', timestamp: serverTimestamp(),
-          }, { merge: true });
-          window.unlockDownloadCard(item.id, item.fileUrl || '');
-        } catch (e) {
-          showToast('warning', 'CATATAN', 'Pembayaran sukses tapi gagal simpan data. Hubungi support.', 8000);
-        }
-        // Tampilkan success modal dengan animasi
-        window.showSuccessModal(item.title, item.fileUrl || '');
-      },
+  // Tunggu sebentar biar webhook sempat proses duluan
+  await new Promise(r => setTimeout(r, 3000));
+
+  // Ambil fileUrl dari user_downloads (sudah diisi oleh webhook)
+  try {
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const downloadKey = uid.slice(0, 6).toUpperCase() + '_' + item.id;
+    const snap = await getDoc(doc(db, 'user_downloads', downloadKey));
+    const fileUrl = snap.exists() ? snap.data().fileUrl : '';
+
+    window.unlockDownloadCard(item.id, fileUrl);
+    window.showSuccessModal(item.title, fileUrl);
+  } catch (e) {
+    window.showSuccessModal(item.title, '');
+    showToast('warning', 'CATATAN', 'Pembayaran sukses! Refresh halaman jika link belum muncul.', 8000);
+  }
+},
       onPending: function () {
         showToast('warning', 'MENUNGGU PEMBAYARAN', 'Selesaikan pembayaran QRIS kamu.', 7000);
       },
