@@ -2250,6 +2250,7 @@ window.initiateMidtransPayment = async function (item) {
     let snapToken = null;
     try {
       const orderId = 'ALF-' + uid.slice(0, 6).toUpperCase() + '-' + item.id.toUpperCase() + '-' + Date.now();
+localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: item.id, templateTitle: item.title }));
       const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
          ? 'http://localhost:3001' : 'https://alfirama-backend-production.up.railway.app';
         const response = await fetch(API_BASE + '/api/midtrans/create-token', {
@@ -2271,8 +2272,33 @@ window.initiateMidtransPayment = async function (item) {
 
     window.snap.pay(snapToken, {
       onSuccess: async function (result) {
-  // Tunggu sebentar biar webhook sempat proses duluan
   await new Promise(r => setTimeout(r, 3000));
+
+  try {
+    const { collection: col, query: q2, where, getDocs, limit: lim }
+      = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+
+    const snap = await getDocs(
+      q2(col(db, 'user_downloads'),
+         where('orderId', '==', orderId),
+         lim(1))
+    );
+
+    if (!snap.empty) {
+      const data = snap.docs[0].data();
+      window.unlockDownloadCard(item.id, data.fileUrl || '');
+      window.showSuccessModal(item.title, data.fileUrl || '');
+      localStorage.removeItem('alfirama_pending');
+    } else {
+      window.showSuccessModal(item.title, '');
+      showToast('warning', 'HAMPIR SELESAI',
+        'Pembayaran sukses! Link download akan muncul dalam beberapa detik.', 8000);
+    }
+  } catch (e) {
+    console.error('[onSuccess] query error:', e);
+    window.showSuccessModal(item.title, '');
+  }
+},
 
   // Ambil fileUrl dari user_downloads (sudah diisi oleh webhook)
   try {
@@ -2527,6 +2553,22 @@ window.initiateMidtransPayment = async function (item) {
      (dibutuhkan oleh renderProducts saat user login belakangan)
   ───────────────────────────────────────────── */
   window._checkUserDownloads = checkUserDownloads;
+  async function checkPendingOrder() {
+  const raw = localStorage.getItem('alfirama_pending');
+  if (!raw) return;
+  const { orderId, templateId, templateTitle } = JSON.parse(raw);
+  try {
+    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const userId6 = orderId.split('-')[1];
+    const snap = await getDoc(doc(db, 'user_downloads', `${userId6}_${templateId}`));
+    if (snap.exists() && snap.data().status === 'paid') {
+      window.unlockDownloadCard(templateId, snap.data().fileUrl);
+      window.showSuccessModal(templateTitle, snap.data().fileUrl);
+      localStorage.removeItem('alfirama_pending');
+    }
+  } catch(e) {}
+}
+window.addEventListener('focus', checkPendingOrder);
 </script>
 
 </body>
