@@ -2271,49 +2271,6 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     hidePaymentLoading();
 
     window.snap.pay(snapToken, {
-      onSuccess: async function (result) {
-  await new Promise(r => setTimeout(r, 3000));
-
-  try {
-    const { collection: col, query: q2, where, getDocs, limit: lim }
-      = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-
-    const snap = await getDocs(
-      q2(col(db, 'user_downloads'),
-         where('orderId', '==', orderId),
-         lim(1))
-    );
-
-    if (!snap.empty) {
-      const data = snap.docs[0].data();
-      window.unlockDownloadCard(item.id, data.fileUrl || '');
-      window.showSuccessModal(item.title, data.fileUrl || '');
-      localStorage.removeItem('alfirama_pending');
-    } else {
-      window.showSuccessModal(item.title, '');
-      showToast('warning', 'HAMPIR SELESAI',
-        'Pembayaran sukses! Link download akan muncul dalam beberapa detik.', 8000);
-    }
-  } catch (e) {
-    console.error('[onSuccess] query error:', e);
-    window.showSuccessModal(item.title, '');
-  }
-},
-
-  // Ambil fileUrl dari user_downloads (sudah diisi oleh webhook)
-  try {
-    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    const downloadKey = uid.slice(0, 6).toUpperCase() + '_' + item.id;
-    const snap = await getDoc(doc(db, 'user_downloads', downloadKey));
-    const fileUrl = snap.exists() ? snap.data().fileUrl : '';
-
-    window.unlockDownloadCard(item.id, fileUrl);
-    window.showSuccessModal(item.title, fileUrl);
-  } catch (e) {
-    window.showSuccessModal(item.title, '');
-    showToast('warning', 'CATATAN', 'Pembayaran sukses! Refresh halaman jika link belum muncul.', 8000);
-  }
-},
       onPending: function () {
         showToast('warning', 'MENUNGGU PEMBAYARAN', 'Selesaikan pembayaran QRIS kamu.', 7000);
       },
