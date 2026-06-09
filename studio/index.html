@@ -6,7 +6,7 @@
        Sinkron dengan: index.html (root) — Master Design System
        Theme    : Futuristic Cyberpunk Workstation Aesthetic
        Palette  : #0A0F1D · #00F0FF (Neon Cyan) · #C9B26D (Gold)
-       Version  : 2.1.0 (Midtrans Snap QRIS Integrated)
+       Version  : 2.2.0 (Mobile UX Overhaul — 6 Fix Applied)
   ============================================================ -->
 
   <!-- Theme sync — jalankan PERTAMA sebelum render agar tidak ada flash -->
@@ -139,7 +139,7 @@
     #page-overlay.active { opacity: 1; pointer-events: all; }
 
     /* ================================================================
-       BACKGROUND DECORATORS — SINKRON DENGAN HERO INDEX.HTML
+       BACKGROUND DECORATORS
     ================================================================ */
     .hero-grid {
       background-image:
@@ -161,7 +161,7 @@
     }
 
     /* ================================================================
-       GRADIENT TEXT — SINKRON DENGAN text-gradient-gold GLOBAL
+       GRADIENT TEXT
     ================================================================ */
     .text-gold-grad {
       background: linear-gradient(105deg, #FFFFFF 0%, #E2CC8E 35%, #C9B26D 100%);
@@ -172,7 +172,7 @@
     .text-cyan { color: var(--blue); }
 
     /* ================================================================
-       NAVBAR — SINKRON DENGAN NAVBAR GLOBAL
+       NAVBAR
     ================================================================ */
     #studio-navbar {
       position: fixed;
@@ -235,7 +235,7 @@
     #mobile-menu-studio.open { transform: translateX(0); }
 
     /* ================================================================
-       BUTTONS — SINKRON DENGAN GLOBAL BUTTON SYSTEM
+       BUTTONS
     ================================================================ */
     .btn {
       display: inline-flex;
@@ -355,6 +355,7 @@
       font-family: var(--font-body);
     }
 
+    /* ── Hero Stats — desktop ── */
     .hero-stats {
       display: flex;
       align-items: center;
@@ -471,9 +472,30 @@
     }
 
     /* ================================================================
-       FILTER TABS
+       FILTER TABS + WRAPPER FADE
     ================================================================ */
-    .filter-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 48px; }
+    /* FIX 4: Wrapper dengan fade hint di kanan */
+    .filter-tabs-wrap {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .filter-tabs-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 6px;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, var(--bg));
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     .filter-tab {
       font-family: var(--font-tech);
@@ -523,7 +545,6 @@
     .product-card:hover {
       transform: translateY(-6px);
       border-color: rgba(0,240,255,0.3);
-      /* Glow DI BELAKANG elemen */
       box-shadow: 0 0 0 1px rgba(0,240,255,0.08),
                   0 20px 50px rgba(0,0,0,0.5),
                   0 0 40px rgba(0,240,255,0.08);
@@ -540,7 +561,6 @@
     }
     .product-card:hover::before { opacity: 1; }
 
-    /* Kartu yang sudah dibeli — state "paid" */
     .product-card.is-paid {
       border-color: rgba(0,230,118,0.25);
     }
@@ -645,7 +665,6 @@
     }
     .product-price-note { font-family: var(--font-body); font-size: 0.6rem; color: var(--text3); margin-top: 2px; }
 
-    /* Tombol Beli (state normal) */
     .btn-buy {
       font-family: var(--font-tech);
       font-size: 0.55rem;
@@ -660,6 +679,7 @@
       cursor: pointer;
       transition: all 0.25s ease;
       white-space: nowrap;
+      min-height: 36px;
     }
     .btn-buy:hover {
       background-position: 100% 0;
@@ -667,7 +687,6 @@
       transform: translateY(-1px);
     }
 
-    /* Tombol Download (state setelah bayar) */
     .btn-download {
       font-family: var(--font-tech);
       font-size: 0.5rem;
@@ -686,6 +705,7 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
+      min-height: 36px;
     }
     .btn-download:hover {
       background-position: 100% 0;
@@ -786,9 +806,10 @@
 
     .order-steps {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       position: relative;
+      justify-items: center;
     }
 
     .order-steps::before {
@@ -804,7 +825,7 @@
       .order-steps::before { display: block; }
     }
 
-    .order-step { text-align: center; padding: 32px 20px; }
+    .order-step { text-align: center; padding: 32px 20px; display: flex; flex-direction: column; align-items: center; }
     .step-circle {
       width: 72px; height: 72px;
       border-radius: 50%;
@@ -848,7 +869,7 @@
     }
 
     /* ================================================================
-       MODAL — CHECKOUT (legacy WA, tetap dipertahankan sebagai fallback)
+       BUY MODAL
     ================================================================ */
     #buy-modal {
       position: fixed; inset: 0; z-index: 2000;
@@ -859,31 +880,9 @@
       padding: 20px;
     }
     #buy-modal.open { display: flex; }
-    .modal-box {
-      background: var(--bg3);
-      border: 1px solid rgba(201,178,109,0.2);
-      border-radius: 20px;
-      padding: 40px 36px;
-      max-width: 480px;
-      width: 100%;
-      position: relative;
-      box-shadow: 0 0 60px rgba(201,178,109,0.08), 0 30px 80px rgba(0,0,0,0.6);
-    }
-    .modal-close {
-      position: absolute; top: 16px; right: 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius-sm);
-      color: rgba(255,255,255,0.5);
-      cursor: pointer;
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .modal-close:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
 
     /* ================================================================
-       TOAST NOTIFICATION SYSTEM — Cyberpunk Theme
+       TOAST NOTIFICATION SYSTEM
     ================================================================ */
     #toast-container {
       position: fixed;
@@ -914,16 +913,9 @@
       transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1),
                   transform 0.35s cubic-bezier(0.22,1,0.36,1);
     }
-    .toast.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .toast.hiding {
-      opacity: 0;
-      transform: translateX(40px);
-    }
+    .toast.visible { opacity: 1; transform: translateX(0); }
+    .toast.hiding  { opacity: 0; transform: translateX(40px); }
 
-    /* Toast scanning line decoration */
     .toast::after {
       content: '';
       position: absolute;
@@ -931,92 +923,37 @@
       height: 2px;
     }
 
-    /* Variants */
-    .toast--success {
-      background: rgba(0,30,15,0.92);
-      border: 1px solid rgba(0,230,118,0.3);
-      box-shadow: 0 0 30px rgba(0,230,118,0.1), 0 8px 32px rgba(0,0,0,0.5);
-    }
-    .toast--success::after {
-      background: linear-gradient(90deg, transparent, #00E676, transparent);
-    }
+    .toast--success { background: rgba(0,30,15,0.92); border: 1px solid rgba(0,230,118,0.3); box-shadow: 0 0 30px rgba(0,230,118,0.1), 0 8px 32px rgba(0,0,0,0.5); }
+    .toast--success::after { background: linear-gradient(90deg, transparent, #00E676, transparent); }
+    .toast--error   { background: rgba(30,5,10,0.92); border: 1px solid rgba(255,23,68,0.35); box-shadow: 0 0 30px rgba(255,23,68,0.1), 0 8px 32px rgba(0,0,0,0.5); }
+    .toast--error::after   { background: linear-gradient(90deg, transparent, #FF1744, transparent); }
+    .toast--warning { background: rgba(28,20,0,0.92); border: 1px solid rgba(255,180,0,0.3); box-shadow: 0 0 30px rgba(255,180,0,0.1), 0 8px 32px rgba(0,0,0,0.5); }
+    .toast--warning::after { background: linear-gradient(90deg, transparent, #FFB400, transparent); }
+    .toast--info    { background: rgba(0,15,28,0.92); border: 1px solid rgba(0,240,255,0.3); box-shadow: 0 0 30px rgba(0,240,255,0.1), 0 8px 32px rgba(0,0,0,0.5); }
+    .toast--info::after    { background: linear-gradient(90deg, transparent, #00F0FF, transparent); }
 
-    .toast--error {
-      background: rgba(30,5,10,0.92);
-      border: 1px solid rgba(255,23,68,0.35);
-      box-shadow: 0 0 30px rgba(255,23,68,0.1), 0 8px 32px rgba(0,0,0,0.5);
-    }
-    .toast--error::after {
-      background: linear-gradient(90deg, transparent, #FF1744, transparent);
-    }
-
-    .toast--warning {
-      background: rgba(28,20,0,0.92);
-      border: 1px solid rgba(255,180,0,0.3);
-      box-shadow: 0 0 30px rgba(255,180,0,0.1), 0 8px 32px rgba(0,0,0,0.5);
-    }
-    .toast--warning::after {
-      background: linear-gradient(90deg, transparent, #FFB400, transparent);
-    }
-
-    .toast--info {
-      background: rgba(0,15,28,0.92);
-      border: 1px solid rgba(0,240,255,0.3);
-      box-shadow: 0 0 30px rgba(0,240,255,0.1), 0 8px 32px rgba(0,0,0,0.5);
-    }
-    .toast--info::after {
-      background: linear-gradient(90deg, transparent, #00F0FF, transparent);
-    }
-
-    .toast-icon {
-      flex-shrink: 0;
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-    }
+    .toast-icon { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
     .toast--success .toast-icon { background: rgba(0,230,118,0.12); }
     .toast--error   .toast-icon { background: rgba(255,23,68,0.12); }
     .toast--warning .toast-icon { background: rgba(255,180,0,0.12); }
     .toast--info    .toast-icon { background: rgba(0,240,255,0.12); }
 
     .toast-content { flex: 1; }
-    .toast-title {
-      font-family: var(--font-tech);
-      font-size: 0.6rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      margin-bottom: 3px;
-    }
+    .toast-title { font-family: var(--font-tech); font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; margin-bottom: 3px; }
     .toast--success .toast-title { color: #00E676; }
     .toast--error   .toast-title { color: #FF5566; }
     .toast--warning .toast-title { color: #FFB400; }
     .toast--info    .toast-title { color: #00F0FF; }
 
-    .toast-msg {
-      font-family: var(--font-body);
-      font-size: 0.72rem;
-      color: var(--text2);
-      line-height: 1.5;
-    }
+    .toast-msg { font-family: var(--font-body); font-size: 0.72rem; color: var(--text2); line-height: 1.5; }
 
-    /* Progress bar */
-    .toast-progress {
-      position: absolute;
-      bottom: 0; left: 0;
-      height: 2px;
-      border-radius: 0 0 12px 12px;
-      animation: toastProgress linear forwards;
-    }
+    .toast-progress { position: absolute; bottom: 0; left: 0; height: 2px; border-radius: 0 0 12px 12px; animation: toastProgress linear forwards; }
     .toast--success .toast-progress { background: rgba(0,230,118,0.5); }
     .toast--error   .toast-progress { background: rgba(255,23,68,0.5); }
     .toast--warning .toast-progress { background: rgba(255,180,0,0.5); }
     .toast--info    .toast-progress { background: rgba(0,240,255,0.5); }
 
-    @keyframes toastProgress {
-      from { width: 100%; }
-      to   { width: 0%; }
-    }
+    @keyframes toastProgress { from { width: 100%; } to { width: 0%; } }
 
     /* ================================================================
        PAYMENT LOADING OVERLAY
@@ -1030,81 +967,31 @@
     }
     #payment-loading-overlay.active { display: flex; }
     .payment-loading-box {
-      text-align: center;
-      padding: 48px 40px;
-      border: 1px solid rgba(0,240,255,0.2);
-      border-radius: 20px;
+      text-align: center; padding: 48px 40px;
+      border: 1px solid rgba(0,240,255,0.2); border-radius: 20px;
       background: var(--bg3);
       box-shadow: 0 0 60px rgba(0,240,255,0.08), 0 30px 80px rgba(0,0,0,0.7);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-    .payment-loading-box::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--blue), transparent);
-    }
-    .pay-spinner {
-      width: 52px; height: 52px;
-      border: 2px solid rgba(0,240,255,0.1);
-      border-top-color: var(--blue);
-      border-right-color: rgba(0,240,255,0.4);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 20px;
-    }
-    .pay-loading-title {
-      font-family: var(--font-tech);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: var(--blue);
-      margin-bottom: 8px;
-    }
-    .pay-loading-sub {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      color: var(--text3);
-    }
+    .payment-loading-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+    .pay-spinner { width: 52px; height: 52px; border: 2px solid rgba(0,240,255,0.1); border-top-color: var(--blue); border-right-color: rgba(0,240,255,0.4); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
+    .pay-loading-title { font-family: var(--font-tech); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; color: var(--blue); margin-bottom: 8px; }
+    .pay-loading-sub { font-family: var(--font-body); font-size: 0.75rem; color: var(--text3); }
 
     /* ================================================================
-       FOOTER — SINKRON DENGAN FOOTER GLOBAL
+       FOOTER
     ================================================================ */
     #studio-footer {
       background: #040609;
       border-top: 1px solid rgba(0,240,255,0.07);
       padding: 40px 32px;
     }
-    .footer-top-line {
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), rgba(201,178,109,0.3), rgba(0,240,255,0.2), transparent);
-      margin-bottom: 40px;
-    }
-    .footer-link {
-      font-family: var(--font-tech);
-      font-size: 0.58rem;
-      letter-spacing: 0.15em;
-      color: rgba(255,255,255,0.3);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
+    .footer-top-line { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), rgba(201,178,109,0.3), rgba(0,240,255,0.2), transparent); margin-bottom: 40px; }
+    .footer-link { font-family: var(--font-tech); font-size: 0.58rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s ease; }
     .footer-link:hover { color: var(--gold-light); }
 
-    .social-icon {
-      display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 9px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color: rgba(255,255,255,0.4);
-      text-decoration: none;
-      transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-    .social-icon:hover {
-      color: var(--blue);
-      border-color: rgba(0,240,255,0.4);
-      background: rgba(0,240,255,0.07);
-      box-shadow: 0 0 14px rgba(0,240,255,0.3);
-    }
+    .social-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+    .social-icon:hover { color: var(--blue); border-color: rgba(0,240,255,0.4); background: rgba(0,240,255,0.07); box-shadow: 0 0 14px rgba(0,240,255,0.3); }
 
     /* ================================================================
        FLOATING BUTTONS
@@ -1131,28 +1018,14 @@
       box-shadow: 0 4px 24px rgba(37,211,102,0.35), 0 2px 8px rgba(0,0,0,0.4);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    #wa-float:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 28px rgba(37,211,102,0.5), 0 2px 8px rgba(0,0,0,0.4);
-    }
-    .wa-pulse {
-      position: absolute; inset: -6px; border-radius: 20px;
-      border: 2px solid rgba(37,211,102,0.4);
-      animation: waPulse 2s ease-in-out infinite;
-    }
-    @keyframes waPulse {
-      0%,100% { transform: scale(1); opacity: 0.6; }
-      50%      { transform: scale(1.15); opacity: 0; }
-    }
+    #wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5), 0 2px 8px rgba(0,0,0,0.4); }
+    .wa-pulse { position: absolute; inset: -6px; border-radius: 20px; border: 2px solid rgba(37,211,102,0.4); animation: waPulse 2s ease-in-out infinite; }
+    @keyframes waPulse { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 0; } }
 
     /* ================================================================
        ENTRANCE ANIMATIONS
     ================================================================ */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
     .fd-1 { transition-delay: 0.1s; }
     .fd-2 { transition-delay: 0.2s; }
@@ -1161,23 +1034,247 @@
     .fd-5 { transition-delay: 0.5s; }
 
     /* ================================================================
-       RESPONSIVE MOBILE
+       RESPONSIVE MOBILE — FULL OVERHAUL
     ================================================================ */
     @media (max-width: 768px) {
-      #studio-navbar { padding: 16px 20px; }
+      /* ── NAVBAR ── */
+      #studio-navbar { padding: 14px 16px; }
       .nav-links .nav-link { display: none; }
-      .section { padding: 70px 20px; }
-      #hero { padding: 100px 20px 60px; }
-      .hero-stats { gap: 20px; }
-      .hero-stats .divider-v { display: none; }
-      #products-grid { grid-template-columns: 1fr; }
-      .services-grid { grid-template-columns: 1fr; }
-      .order-steps { grid-template-columns: 1fr 1fr; }
+
+      /* ── SECTION PADDING ── */
+      .section { padding: 56px 16px; }
+      .container { padding: 0; }
+
+      /* ── HERO ── */
+      #hero { padding: 96px 16px 52px; }
+      .hero-title { font-size: clamp(1.3rem, 7vw, 2rem); margin-bottom: 16px; }
+      .hero-subtitle { font-size: 0.78rem; line-height: 1.7; margin-bottom: 32px; }
+      .hero-eyebrow { font-size: 0.45rem; letter-spacing: 0.2em; padding: 5px 12px; }
+      .gold-rule { margin-bottom: 20px; }
+      .corner-deco-tl, .corner-deco-br { display: none; }
+
+      /* ── FIX 2: Hero CTA — stacked vertikal, primary full-width ── */
+      .hero-cta-wrap {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .hero-cta-wrap .btn-gold--lg {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.65rem !important;
+        padding: 16px 20px !important;
+      }
+      .hero-cta-wrap .btn-outline-gold {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.58rem !important;
+        padding: 13px 16px !important;
+      }
+
+      /* ── FIX 3: Hero Stats — grid 2×2 dengan mini-card ── */
+      .hero-stats {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        margin-top: 28px !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+      }
+      .hero-stats .divider-v { display: none !important; }
+      .hero-stats > div:not(.divider-v) {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 10px;
+        padding: 12px 10px;
+        text-align: left;
+      }
+      .hero-stat-val { font-size: 1.4rem; }
+      .hero-stat-label { font-size: 0.48rem; }
+
+      /* ── MARQUEE ── */
+      .m-item { font-size: 0.48rem; padding: 0 16px; letter-spacing: 0.15em; }
+
+      /* ── SECTION HEADERS ── */
+      .section-eyebrow { font-size: 0.45rem; letter-spacing: 0.22em; }
+      .section-title { font-size: clamp(1.2rem, 6vw, 1.8rem); }
+      .section-desc { font-size: 0.78rem; }
+      .divider-gold { margin: 12px 0 16px; }
+
+      /* ── FIX 4: Filter Tabs — horizontal scroll + fade hint ── */
+      .filter-tabs-wrap {
+        margin-bottom: 20px;
+      }
+      .filter-tabs-wrap::after {
+        background: linear-gradient(90deg, transparent, var(--bg));
+        width: 48px;
+      }
+      .filter-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .filter-tabs::-webkit-scrollbar { display: none; }
+      .filter-tab {
+        /* FIX 1: Font size minimum terbaca */
+        font-size: 0.52rem !important;
+        padding: 7px 14px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      /* ── PRODUCT GRID — 2 kolom compact ── */
+      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .product-card { border-radius: 12px; }
+      .product-img-wrap { aspect-ratio: 4/3; }
+
+      /* FIX 5: Product body padding yang lebih konsisten ── */
+      .product-body { padding: 12px 11px 11px; }
+      .product-title {
+        font-size: 0.62rem;
+        letter-spacing: 0.03em;
+        line-height: 1.35;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .product-desc { display: none; }
+      .product-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding-top: 8px;
+      }
+      .product-price { font-size: 0.85rem; }
+      .product-price-note { font-size: 0.48rem; }
+
+      /* FIX 1 + 5: Tombol beli/download — font terbaca, tap target layak ── */
+      .btn-buy {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        font-size: 0.52rem !important;
+        padding: 10px 10px !important;
+        letter-spacing: 0.08em;
+        border-radius: 6px;
+        min-height: 36px;
+      }
+      .btn-download {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.5rem !important;
+        padding: 10px 8px !important;
+        min-height: 36px;
+      }
+
+      /* FIX 1: Cat tag & badge — minimum terbaca ── */
+      .cat-tag {
+        font-size: 0.52rem !important;
+        padding: 3px 7px;
+        letter-spacing: 0.1em;
+      }
+      .badge-new, .badge-hot {
+        font-size: 0.45rem !important;
+        padding: 2px 6px;
+        top: 8px; right: 8px;
+      }
+
+      /* ── JASA CUSTOM ── */
+      .services-grid { grid-template-columns: 1fr; gap: 12px; }
+      .service-card { padding: 20px; }
+      .service-icon { width: 42px; height: 42px; margin-bottom: 14px; }
+      .service-title { font-size: 0.72rem; margin-bottom: 8px; }
+      .service-desc { font-size: 0.72rem; line-height: 1.6; margin-bottom: 14px; }
+      .service-price-badge { font-size: 0.5rem; padding: 3px 8px; }
+
+      /* ── SERVICES HEADER ── */
+      #services-header {
+        flex-direction: column !important;
+        gap: 20px !important;
+        margin-bottom: 32px !important;
+      }
+      #services-header .btn-gold { width: 100%; justify-content: center; }
+
+      /* ── HOW TO ORDER ── */
+      #order-header { margin-bottom: 32px !important; }
+      .order-steps { grid-template-columns: 1fr 1fr; gap: 12px; justify-items: center; }
+      .order-step { padding: 20px 10px; }
+      .step-circle { width: 56px; height: 56px; margin-bottom: 14px; }
+      .step-number { width: 20px; height: 20px; font-size: 0.5rem; }
+      .step-title { font-size: 0.6rem; letter-spacing: 0.08em; margin-bottom: 6px; }
+      .step-desc { font-size: 0.65rem; line-height: 1.55; }
+
+      /* ── CTA SECTION ── */
+      #cta-section .section-title { font-size: clamp(1.3rem, 6vw, 2rem) !important; }
+      #cta-section p { font-size: 0.78rem !important; }
+      .cta-btn-wrap {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .cta-btn-wrap .btn-gold--lg {
+        font-size: 0.6rem !important;
+        padding: 14px 20px !important;
+        width: 100%;
+        justify-content: center;
+      }
+      .cta-btn-wrap .btn-outline-cyan {
+        font-size: 0.58rem !important;
+        padding: 13px 18px !important;
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* ── FOOTER ── */
+      #studio-footer { padding: 32px 16px; }
+      #studio-footer .container > div:first-child {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+      }
+      #studio-footer nav { gap: 12px !important; flex-wrap: wrap !important; }
+      .footer-link { font-size: 0.5rem; }
+      .footer-top-line { margin-bottom: 24px; }
+      #studio-footer .container > div:last-child {
+        flex-direction: column !important;
+        gap: 8px !important;
+        align-items: flex-start !important;
+      }
+
+      /* ── FLOATING BUTTONS ── */
+      #back-to-top { bottom: 80px; right: 16px; width: 38px; height: 38px; }
+      #wa-float { bottom: 16px; right: 16px; width: 46px; height: 46px; }
+
+      /* FIX 6: Hamburger button — beri border sebagai area klik ── */
+      #ham-btn {
+        background: rgba(255,255,255,0.04) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        border-radius: 8px !important;
+        padding: 6px 8px !important;
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      /* ── TOAST ── */
       #toast-container { right: 12px; left: 12px; top: 80px; }
       .toast { min-width: unset; max-width: unset; }
     }
+
+    /* ── 480px ke bawah ── */
     @media (max-width: 480px) {
-      .order-steps { grid-template-columns: 1fr; }
+      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .order-steps { grid-template-columns: 1fr 1fr; }
+      .product-title { font-size: 0.56rem; }
+      .product-price { font-size: 0.78rem; }
+      .hero-stat-val { font-size: 1.2rem; }
+      .step-circle { width: 48px; height: 48px; }
+      .step-title { font-size: 0.55rem; }
+      .step-desc { font-size: 0.6rem; }
     }
   </style>
 </head>
@@ -1187,9 +1284,7 @@
 <!-- PAGE TRANSITION OVERLAY -->
 <div id="page-overlay" aria-hidden="true"></div>
 
-<!-- ============================================================
-     PAYMENT LOADING OVERLAY
-============================================================ -->
+<!-- PAYMENT LOADING OVERLAY -->
 <div id="payment-loading-overlay" aria-hidden="true">
   <div class="payment-loading-box">
     <div class="pay-spinner"></div>
@@ -1198,21 +1293,15 @@
   </div>
 </div>
 
-<!-- ============================================================
-     TOAST NOTIFICATION CONTAINER
-============================================================ -->
+<!-- TOAST CONTAINER -->
 <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
 
-<!-- ============================================================
-     FLOATING: BACK TO TOP
-============================================================ -->
+<!-- BACK TO TOP -->
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<!-- ============================================================
-     FLOATING: WHATSAPP
-============================================================ -->
+<!-- FLOATING WHATSAPP -->
 <a id="wa-float" href="https://wa.me/6285135602885?text=Halo%20Alfirama%20Studio!%20Saya%20tertarik%20dengan%20template%2Fjasa%20desain..." target="_blank" rel="noopener noreferrer" aria-label="Chat WhatsApp" style="position:fixed;bottom:24px;right:24px;z-index:1000;">
   <span class="wa-pulse"></span>
   <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
@@ -1221,10 +1310,7 @@
   </svg>
 </a>
 
-<!-- ============================================================
-     BUY MODAL — CHECKOUT WA FALLBACK (tetap aktif)
-============================================================ -->
-<!-- PRODUCT PREVIEW MODAL -->
+<!-- BUY MODAL -->
 <div id="buy-modal" role="dialog" aria-modal="true" aria-label="Konfirmasi Pembelian"
   style="position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;
          background:rgba(4,6,9,0.88);backdrop-filter:blur(16px);padding:20px;">
@@ -1232,11 +1318,9 @@
               max-width:520px;width:100%;position:relative;overflow:hidden;
               box-shadow:0 0 80px rgba(201,178,109,0.08),0 40px 100px rgba(0,0,0,0.7);">
 
-    <!-- Top gold line -->
     <div style="position:absolute;top:0;left:0;right:0;height:2px;
                 background:linear-gradient(90deg,transparent,#C9B26D,transparent);"></div>
 
-    <!-- Close -->
     <button onclick="closeBuyModal()" aria-label="Tutup"
       style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);
              border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.5);
@@ -1244,12 +1328,9 @@
              transition:all 0.2s ease;z-index:1;"
       onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.3)'"
       onmouseout="this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='rgba(255,255,255,0.1)'">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6 6 18M6 6l12 12"/>
-      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
 
-    <!-- Product image -->
     <div id="modal-img-wrap" style="width:100%;aspect-ratio:16/8;overflow:hidden;background:linear-gradient(135deg,#0D1526,#13192B);">
       <img id="modal-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;" />
       <div id="modal-img-placeholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
@@ -1260,7 +1341,6 @@
       </div>
     </div>
 
-    <!-- Content -->
     <div style="padding:28px 32px 32px;">
       <span id="modal-cat-tag" style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.2em;
         padding:3px 10px;border-radius:6px;font-weight:700;display:inline-block;margin-bottom:12px;
@@ -1273,7 +1353,6 @@
         background:linear-gradient(105deg,#E2CC8E,#C9B26D);-webkit-background-clip:text;
         background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;"></p>
 
-      <!-- Deskripsi produk -->
       <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
                   border-radius:12px;padding:16px;margin-bottom:20px;">
         <p style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.15em;
@@ -1282,7 +1361,6 @@
                   line-height:1.7;"></p>
       </div>
 
-      <!-- Info badges -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
         <span style="font-family:var(--font-tech);font-size:0.48rem;letter-spacing:0.12em;
           padding:4px 10px;border-radius:6px;background:rgba(0,230,118,0.08);
@@ -1295,7 +1373,6 @@
           color:#C9B26D;border:1px solid rgba(201,178,109,0.2);">✓ PEMBAYARAN AMAN</span>
       </div>
 
-      <!-- CTA Button -->
       <button id="modal-pay-btn" onclick="proceedToPayment()"
         style="width:100%;font-family:var(--font-tech);font-size:0.65rem;font-weight:800;
                letter-spacing:0.15em;padding:16px;border-radius:12px;border:none;cursor:pointer;
@@ -1308,7 +1385,7 @@
   </div>
 </div>
 
-<!-- SUCCESS MODAL — muncul setelah bayar -->
+<!-- SUCCESS MODAL -->
 <div id="success-modal" role="dialog" aria-modal="true"
   style="position:fixed;inset:0;z-index:4000;display:none;align-items:center;justify-content:center;
          background:rgba(0,10,5,0.92);backdrop-filter:blur(20px);padding:20px;">
@@ -1317,25 +1394,20 @@
               position:relative;overflow:hidden;
               box-shadow:0 0 80px rgba(0,230,118,0.12),0 40px 100px rgba(0,0,0,0.8);">
 
-    <!-- Animated top line -->
     <div style="position:absolute;top:0;left:0;right:0;height:2px;
                 background:linear-gradient(90deg,transparent,#00E676,transparent);"></div>
 
-    <!-- Corner decorations -->
     <div style="position:absolute;top:20px;left:20px;width:30px;height:30px;
                 border-top:1px solid rgba(0,230,118,0.3);border-left:1px solid rgba(0,230,118,0.3);"></div>
     <div style="position:absolute;bottom:20px;right:20px;width:30px;height:30px;
                 border-bottom:1px solid rgba(0,230,118,0.3);border-right:1px solid rgba(0,230,118,0.3);"></div>
 
-    <!-- Animated checkmark -->
     <div id="success-check-wrap" style="width:80px;height:80px;border-radius:50%;
       background:rgba(0,230,118,0.1);border:2px solid rgba(0,230,118,0.4);
       display:flex;align-items:center;justify-content:center;margin:0 auto 24px;
       animation:successPulse 2s ease-in-out infinite;">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
+        stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
 
     <div style="font-family:var(--font-tech);font-size:0.55rem;letter-spacing:0.3em;
@@ -1349,7 +1421,6 @@
     <p id="success-product-name" style="font-family:var(--font-tech);font-weight:700;font-size:0.85rem;
               color:#00E676;margin-bottom:24px;letter-spacing:0.05em;"></p>
 
-    <!-- Download box -->
     <div style="background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);
                 border-radius:14px;padding:20px;margin-bottom:24px;">
       <p style="font-family:var(--font-tech);font-size:0.52rem;letter-spacing:0.15em;
@@ -1393,7 +1464,7 @@
 </style>
 
 <!-- ============================================================
-     NAVBAR — SINKRON DENGAN GLOBAL
+     NAVBAR
 ============================================================ -->
 <header id="studio-navbar">
 
@@ -1415,8 +1486,14 @@
     </a>
   </nav>
 
+  <!-- FIX 6: Hamburger dengan border jelas sebagai area klik -->
   <button id="ham-btn" aria-label="Toggle menu" aria-expanded="false"
-    style="display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:36px;height:36px;background:transparent;border:none;cursor:pointer;"
+    style="display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+           width:40px;height:40px;
+           background:rgba(255,255,255,0.04);
+           border:1px solid rgba(255,255,255,0.12);
+           border-radius:8px;
+           cursor:pointer;padding:6px 8px;"
     onclick="toggleMobileMenu()">
     <span id="ham-l1" style="display:block;width:22px;height:2px;background:#fff;transition:all 0.3s ease;transform-origin:center;"></span>
     <span id="ham-l2" style="display:block;width:22px;height:2px;background:#fff;transition:all 0.3s ease;"></span>
@@ -1496,7 +1573,8 @@
       Template digital premium siap pakai — mulai dari kit media sosial, logo pack, hingga animasi motion graphic. Plus jasa desain custom: branding, konveksi, dan identitas visual yang dibangun khusus untuk kebutuhan bisnis kamu.
     </p>
 
-    <div class="fade-up fd-3" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+    <!-- FIX 2: hero-cta-wrap class untuk override mobile -->
+    <div class="fade-up fd-3 hero-cta-wrap" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
       <a href="brief.html" class="btn btn-gold btn-gold--lg" style="text-decoration:none;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         PESAN DESAIN CUSTOM ➔
@@ -1507,6 +1585,7 @@
       </a>
     </div>
 
+    <!-- FIX 3: hero-stats dengan grid 2x2 di mobile via CSS -->
     <div class="hero-stats fade-up fd-4">
       <div>
         <div class="hero-stat-val">50+</div>
@@ -1533,9 +1612,7 @@
 </section>
 
 
-<!-- ============================================================
-     MARQUEE BAND
-============================================================ -->
+<!-- MARQUEE BAND -->
 <div id="services-band">
   <div class="marquee-wrap">
     <span class="m-item m-item--gold">LOGO & BRAND IDENTITY</span>
@@ -1584,7 +1661,7 @@
 
 
 <!-- ============================================================
-     MARKETPLACE — KATALOG PRODUK DIGITAL
+     MARKETPLACE
 ============================================================ -->
 <section id="marketplace" class="section" style="background:var(--bg);">
   <div class="container">
@@ -1600,20 +1677,20 @@
       </p>
     </div>
 
-    <!-- Filter Tabs -->
-    <div class="filter-tabs fade-up" id="filter-tabs">
-      <button class="filter-tab active" onclick="filterProducts('all', this)">SEMUA</button>
-      <button class="filter-tab" onclick="filterProducts('psd', this)">PSD</button>
-      <button class="filter-tab" onclick="filterProducts('vector', this)">VEKTOR</button>
-      <button class="filter-tab" onclick="filterProducts('ae', this)">AFTER EFFECTS</button>
-      <button class="filter-tab" onclick="filterProducts('smkit', this)">SOCIAL MEDIA KIT</button>
-      <button class="filter-tab" onclick="filterProducts('logo', this)">LOGO PACK</button>
-      <button class="filter-tab" onclick="filterProducts('brand', this)">BRANDING</button>
+    <!-- FIX 4: filter-tabs-wrap untuk fade hint -->
+    <div class="filter-tabs-wrap fade-up">
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" onclick="filterProducts('all', this)">SEMUA</button>
+        <button class="filter-tab" onclick="filterProducts('psd', this)">PSD</button>
+        <button class="filter-tab" onclick="filterProducts('vector', this)">VEKTOR</button>
+        <button class="filter-tab" onclick="filterProducts('ae', this)">AFTER EFFECTS</button>
+        <button class="filter-tab" onclick="filterProducts('smkit', this)">SOCIAL MEDIA KIT</button>
+        <button class="filter-tab" onclick="filterProducts('logo', this)">LOGO PACK</button>
+        <button class="filter-tab" onclick="filterProducts('brand', this)">BRANDING</button>
+      </div>
     </div>
 
-    <!-- Products Grid — diisi oleh Firestore onSnapshot -->
     <div id="products-grid">
-
       <div id="products-loading">
         <div class="loading-spinner"></div>
         <p style="font-family:var(--font-tech);font-size:0.6rem;letter-spacing:0.2em;color:var(--text3);">MEMUAT KATALOG...</p>
@@ -1626,7 +1703,6 @@
         <p style="font-family:var(--font-tech);font-size:0.65rem;letter-spacing:0.15em;color:var(--text3);margin-bottom:8px;">BELUM ADA PRODUK DI KATEGORI INI</p>
         <p style="font-family:var(--font-body);font-size:0.75rem;color:var(--text3);">Coba filter lain atau hubungi kami untuk kebutuhan custom.</p>
       </div>
-
     </div>
   </div>
 </section>
@@ -1796,7 +1872,9 @@
       <p style="font-family:var(--font-body);font-size:0.9rem;color:var(--text2);line-height:1.75;max-width:520px;margin:0 auto 40px;">
         Satu ekosistem kreatif — dari ide visual hingga produk jadi. Konsultasi gratis, tanpa komitmen. Tim Alfirama Studio siap merespons dalam kurang dari 1 jam.
       </p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px;">
+
+      <!-- FIX 2 (CTA): cta-btn-wrap class untuk stacked vertikal di mobile -->
+      <div class="cta-btn-wrap" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px;">
         <a href="brief.html" class="btn btn-gold btn-gold--lg" style="text-decoration:none;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           MULAI BRIEFING SEKARANG
@@ -1806,6 +1884,7 @@
           Chat WhatsApp
         </a>
       </div>
+
       <div style="display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:8px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.7"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -1873,7 +1952,7 @@
       <div style="display:flex;align-items:center;gap:16px;">
         <a href="../privacy.html" class="footer-link">PRIVACY POLICY</a>
         <a href="../terms.html"   class="footer-link">TERMS</a>
-        <span style="font-family:var(--font-tech);font-size:0.52rem;color:rgba(0,240,255,0.25);letter-spacing:0.1em;">STUDIO v2.1.0</span>
+        <span style="font-family:var(--font-tech);font-size:0.52rem;color:rgba(0,240,255,0.25);letter-spacing:0.1em;">STUDIO v2.2.0</span>
       </div>
     </div>
   </div>
@@ -1881,28 +1960,22 @@
 
 
 <!-- ============================================================
-     SCRIPTS — NATIVE JS (UI, Navbar, Animasi, Toast, Midtrans)
+     SCRIPTS — NATIVE JS
 ============================================================ -->
 <script>
 
-  /* ─────────────────────────────────────────────
-     1. NAVBAR SCROLL
-  ───────────────────────────────────────────── */
+  /* ── 1. NAVBAR SCROLL ── */
   const navbar = document.getElementById('studio-navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
-  /* ─────────────────────────────────────────────
-     2. BACK TO TOP
-  ───────────────────────────────────────────── */
+  /* ── 2. BACK TO TOP ── */
   window.addEventListener('scroll', () => {
     document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
 
-  /* ─────────────────────────────────────────────
-     3. MOBILE MENU
-  ───────────────────────────────────────────── */
+  /* ── 3. MOBILE MENU ── */
   let mobileOpen = false;
   function toggleMobileMenu() {
     mobileOpen = !mobileOpen;
@@ -1935,9 +2008,7 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileOpen) toggleMobileMenu(); });
 
-  /* ─────────────────────────────────────────────
-     4. PAGE TRANSITION
-  ───────────────────────────────────────────── */
+  /* ── 4. PAGE TRANSITION ── */
   const overlay = document.getElementById('page-overlay');
   document.querySelectorAll('a[href]:not([target="_blank"]):not([href^="#"]):not([href^="https://wa"]):not([href^="mailto"]):not([href^="tel"])').forEach(link => {
     link.addEventListener('click', function (e) {
@@ -1950,9 +2021,7 @@
   });
   window.addEventListener('pageshow', () => overlay.classList.remove('active'));
 
-  /* ─────────────────────────────────────────────
-     5. FADE-UP INTERSECTION OBSERVER
-  ───────────────────────────────────────────── */
+  /* ── 5. FADE-UP INTERSECTION OBSERVER ── */
   const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1966,9 +2035,7 @@
   heroEls.forEach((el, i) => setTimeout(() => el.classList.add('visible'), 200 + i * 150));
   document.querySelectorAll('.fade-up:not(#hero .fade-up)').forEach(el => fadeObserver.observe(el));
 
-  /* ─────────────────────────────────────────────
-     6. PRODUCT FILTER
-  ───────────────────────────────────────────── */
+  /* ── 6. PRODUCT FILTER ── */
   let currentFilter = 'all';
   window.filterProducts = function (cat, btn) {
     currentFilter = cat;
@@ -1985,26 +2052,20 @@
     if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
   };
 
-  /* ─────────────────────────────────────────────
-     7. BUY MODAL (WA fallback)
-  ───────────────────────────────────────────── */
-  /* ── Current item yang akan dibayar ── */
+  /* ── 7. BUY MODAL ── */
   let _currentPayItem = null;
 
   window.openBuyModal = function (item) {
     _currentPayItem = item;
     const modal = document.getElementById('buy-modal');
 
-    // Isi konten modal
     document.getElementById('modal-title').textContent = item.title || '';
     document.getElementById('modal-price').textContent = item.price || '';
     document.getElementById('modal-desc').textContent  = item.description || 'Template digital premium siap pakai.';
 
-    // Category tag
     const catEl = document.getElementById('modal-cat-tag');
     if (catEl) catEl.textContent = item.catLabel || item.category?.toUpperCase() || 'TEMPLATE';
 
-    // Image
     const imgEl = document.getElementById('modal-img');
     const imgPh = document.getElementById('modal-img-placeholder');
     const imgSrc = item.imageFile || item.imageUrl || '';
@@ -2058,21 +2119,14 @@
     if (e.key === 'Escape') { closeBuyModal(); closeSuccessModal(); }
   });
 
-  /* ─────────────────────────────────────────────
-     8. TOAST NOTIFICATION SYSTEM — Cyberpunk Theme
-     Tipe: 'success' | 'error' | 'warning' | 'info'
-  ───────────────────────────────────────────── */
+  /* ── 8. TOAST SYSTEM ── */
   const TOAST_ICONS = {
-    success: '✦',
-    error:   '⊗',
-    warning: '⚠',
-    info:    '◈',
+    success: '✦', error: '⊗', warning: '⚠', info: '◈',
   };
 
   window.showToast = function (type, title, message, duration) {
     duration = duration || 4500;
     const container = document.getElementById('toast-container');
-
     const toast = document.createElement('div');
     toast.className = 'toast toast--' + type;
     toast.setAttribute('role', 'alert');
@@ -2084,21 +2138,17 @@
       </div>
       <div class="toast-progress" style="animation-duration:${duration}ms;width:100%;"></div>
     `;
-
     container.appendChild(toast);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => toast.classList.add('visible'));
     });
-
     setTimeout(() => {
       toast.classList.add('hiding');
       toast.addEventListener('transitionend', () => toast.remove(), { once: true });
     }, duration);
   };
 
-  /* ─────────────────────────────────────────────
-     9. PAYMENT LOADING OVERLAY HELPERS
-  ───────────────────────────────────────────── */
+  /* ── 9. PAYMENT LOADING OVERLAY ── */
   window.showPaymentLoading = function () {
     const el = document.getElementById('payment-loading-overlay');
     el.classList.add('active');
@@ -2112,18 +2162,13 @@
     document.body.style.overflow = '';
   };
 
-  /* ─────────────────────────────────────────────
-     10. UNLOCK DOWNLOAD — ubah tampilan kartu produk
-         secara real-time setelah pembayaran sukses
-  ───────────────────────────────────────────── */
+  /* ── 10. UNLOCK DOWNLOAD CARD ── */
   window.unlockDownloadCard = function (templateId, fileLink) {
     const card = document.querySelector('.product-card[data-id="' + templateId + '"]');
     if (!card) return;
 
-    // Tandai kartu sebagai sudah dibeli
     card.classList.add('is-paid');
 
-    // Ganti tombol Beli → tombol Download
     const buyBtn = card.querySelector('.btn-buy');
     if (buyBtn) {
       const downloadBtn = document.createElement('a');
@@ -2143,7 +2188,6 @@
       buyBtn.parentNode.replaceChild(downloadBtn, buyBtn);
     }
 
-    // Update price note
     const priceNote = card.querySelector('.product-price-note');
     if (priceNote) {
       priceNote.textContent = '✦ Sudah dibeli — akses selamanya';
@@ -2155,8 +2199,7 @@
 
 
 <!-- ============================================================
-     FIREBASE MODULE — FIRESTORE REALTIME CATALOG (onSnapshot)
-     Collection: studio_templates
+     FIREBASE MODULE — FIRESTORE REALTIME CATALOG
 ============================================================ -->
 <script type="module">
   import { initializeApp }
@@ -2166,7 +2209,6 @@
   import { getAuth, onAuthStateChanged }
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
-  /* ── Firebase Config ── */
   const firebaseConfig = {
     apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
     authDomain:        "alfirama-id.firebaseapp.com",
@@ -2181,14 +2223,13 @@
   const db   = getFirestore(app);
   const auth = getAuth(app);
 
-  /* ── State: user aktif saat ini ── */
   let currentUser = null;
   let authReady = false;
+
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     authReady = true;
 
-    /* Update nav portal link */
     const portalLinks = [
       document.getElementById('portal-link'),
       document.getElementById('portal-link-m'),
@@ -2200,13 +2241,11 @@
       link.href        = '../profile.html';
     });
 
-    /* Setelah user login, cek produk yang sudah dibeli dan unlock kartu-nya */
     if (user) {
       checkUserDownloads(user.uid);
     }
   });
 
-  /* ── Cek riwayat pembelian user dari Firestore ── */
   async function checkUserDownloads(uid) {
     try {
       const { collection: col, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
@@ -2217,20 +2256,15 @@
       snap.forEach(docSnap => {
         const data = docSnap.data();
         if (data.templateId && data.fileUrl) {
-  window.unlockDownloadCard(data.templateId, data.fileUrl);
-}
+          window.unlockDownloadCard(data.templateId, data.fileUrl);
+        }
       });
     } catch (err) {
       console.warn('[Alfirama] checkUserDownloads error:', err.message);
     }
   }
 
-  /* ─────────────────────────────────────────────
-     MIDTRANS SNAP PAYMENT — Entry point
-     Dipanggil dari tombol "BELI SEKARANG" tiap kartu
-     Parameter: item = { id, title, price, priceRaw, fileUrl }
-  ───────────────────────────────────────────── */
-window.initiateMidtransPayment = async function (item) {
+  window.initiateMidtransPayment = async function (item) {
 
     if (!authReady) {
       await new Promise((resolve) => {
@@ -2240,20 +2274,21 @@ window.initiateMidtransPayment = async function (item) {
       });
     }
 
-    // == SINKRONISASI JALUR PEMBELI UMUM / ANONIM ==
     const uid       = currentUser ? currentUser.uid : 'ANON-' + Math.random().toString(36).substring(2, 8).toUpperCase();
     const userName  = currentUser ? (currentUser.displayName || 'Pelanggan Alfirama') : 'Pembeli Umum';
     const userEmail = currentUser ? (currentUser.email || '') : 'anon@alfirama.id';
 
     showPaymentLoading();
-    
+
     let snapToken = null;
     try {
       const orderId = 'ALF-' + uid.slice(0, 6).toUpperCase() + '-' + item.id.toUpperCase() + '-' + Date.now();
-localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: item.id, templateTitle: item.title }));
+      localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: item.id, templateTitle: item.title }));
+
       const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
          ? 'http://localhost:3001' : 'https://alfirama-backend-production.up.railway.app';
-        const response = await fetch(API_BASE + '/api/midtrans/create-token', {
+
+      const response = await fetch(API_BASE + '/api/midtrans/create-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId, amount: item.priceRaw || 0, name: userName, email: userEmail, templateId: item.id, templateTitle: item.title }),
@@ -2274,17 +2309,26 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
       onPending: function () {
         showToast('warning', 'MENUNGGU PEMBAYARAN', 'Selesaikan pembayaran QRIS kamu.', 7000);
       },
+      onSuccess: function (result) {
+        const pending = JSON.parse(localStorage.getItem('alfirama_pending') || '{}');
+        localStorage.removeItem('alfirama_pending');
+        showToast('success', 'PEMBAYARAN BERHASIL!', 'Mengaktifkan akses download...', 6000);
+        if (pending.templateId) {
+          verifyAndUnlock(pending.orderId, pending.templateId, pending.templateTitle);
+        }
+      },
       onError: function () {
+        localStorage.removeItem('alfirama_pending');
         showToast('error', 'TRANSAKSI GAGAL', 'Pembayaran tidak dapat diproses.', 7000);
       },
       onClose: function () {
+        localStorage.removeItem('alfirama_pending');
         showToast('info', 'DIBATALKAN', 'Klik "Beli Sekarang" kapan saja untuk melanjutkan.', 5000);
       },
     });
   };
 
-  /* ─────────────────────────────────────────────
-     PLACEHOLDER PRODUK ───────────────────────────────────────────── */
+  /* ── Placeholder produk ── */
   const PLACEHOLDER_PRODUCTS = [
     {
       id: 'ph-1',
@@ -2348,7 +2392,6 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     },
   ];
 
-  /* ── Helpers ── */
   function getCatClass(cat) {
     return { psd:'cat-tag--psd', vector:'cat-tag--vector', ae:'cat-tag--ae', logo:'cat-tag--logo', smkit:'cat-tag--smkit', brand:'cat-tag--brand' }[cat] || 'cat-tag--psd';
   }
@@ -2359,7 +2402,6 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     return 'Rp ' + Number(num).toLocaleString('id-ID');
   }
 
-  /* ── Build HTML kartu produk ── */
   function buildCard(item) {
     const catClass   = item.catClass  || getCatClass(item.category);
     const catLabel   = item.catLabel  || getCatLabel(item.category);
@@ -2370,27 +2412,17 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     const titleSafe  = (item.title || '').replace(/'/g, "\\'");
     const descSafe   = (item.description || '');
 
-    /* Badge */
     const badgeHTML = item.badge === 'new'
       ? '<span class="badge-new">NEW</span>'
       : item.badge === 'hot'
       ? '<span class="badge-hot">🔥 HOT</span>'
       : '';
 
-    /* Image */
     const imgHTML = imgSrc
       ? `<img src="${imgSrc}" alt="${item.title}" loading="lazy"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />`
       : '';
 
-    /*
-      data-attributes yang dipakai oleh initiateMidtransPayment:
-        data-id       = id produk (dipakai sebagai templateId)
-        data-price    = harga teks (contoh: "Rp 75.000")
-        data-priceraw = harga angka (dipakai untuk amount Midtrans)
-        data-title    = judul produk
-        data-fileurl  = link Google Drive / URL download
-    */
     return `
       <div class="product-card"
            data-category="${item.category || 'psd'}"
@@ -2444,7 +2476,6 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     `;
   }
 
-  /* ── Render produk ke grid ── */
   function renderProducts(items) {
     const grid    = document.getElementById('products-grid');
     const loading = document.getElementById('products-loading');
@@ -2467,22 +2498,16 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     });
     grid.appendChild(fragment);
 
-    /* Re-apply filter aktif */
     if (currentFilter && currentFilter !== 'all') {
       const activeBtn = document.querySelector('.filter-tab.active');
       if (activeBtn) filterProducts(currentFilter, activeBtn);
     }
 
-    /* Jika user sudah login, unlock kartu yang sudah dibeli */
     if (currentUser) {
       checkUserDownloads(currentUser.uid);
     }
   }
 
-  /* ─────────────────────────────────────────────
-     onSnapshot — Realtime listener ke Firestore
-     Collection: studio_templates (ordered by createdAt desc)
-  ───────────────────────────────────────────── */
   try {
     const q = query(
       collection(db, 'studio_templates'),
@@ -2505,27 +2530,20 @@ localStorage.setItem('alfirama_pending', JSON.stringify({ orderId, templateId: i
     renderProducts(PLACEHOLDER_PRODUCTS);
   }
 
-  /* ─────────────────────────────────────────────
-     Expose checkUserDownloads ke scope global
-     (dibutuhkan oleh renderProducts saat user login belakangan)
-  ───────────────────────────────────────────── */
   window._checkUserDownloads = checkUserDownloads;
-  async function checkPendingOrder() {
-  const raw = localStorage.getItem('alfirama_pending');
-  if (!raw) return;
-  const { orderId, templateId, templateTitle } = JSON.parse(raw);
-  try {
-    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-    const userId6 = orderId.split('-')[1];
-    const snap = await getDoc(doc(db, 'user_downloads', `${userId6}_${templateId}`));
-    if (snap.exists() && snap.data().status === 'paid') {
-      window.unlockDownloadCard(templateId, snap.data().fileUrl);
-      window.showSuccessModal(templateTitle, snap.data().fileUrl);
-      localStorage.removeItem('alfirama_pending');
+
+  async function verifyAndUnlock(orderId, templateId, templateTitle) {
+    if (!orderId || !templateId) return;
+    try {
+      const snap = await getDoc(doc(db, 'user_downloads', orderId));
+      if (snap.exists() && snap.data().status === 'paid' && snap.data().orderId === orderId) {
+        window.unlockDownloadCard(templateId, snap.data().fileUrl);
+        window.showSuccessModal(templateTitle, snap.data().fileUrl);
+      }
+    } catch(e) {
+      console.warn('[Alfirama] verifyAndUnlock error:', e.message);
     }
-  } catch(e) {}
-}
-window.addEventListener('focus', checkPendingOrder);
+  }
 </script>
 
 </body>
