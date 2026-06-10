@@ -11,9 +11,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
 <style>
-/* ══════════════════════════════════════════════════════════════
-   PILAR 1 — MASTER CSS VARIABLES (identik dengan index.html)
-══════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -44,6 +41,7 @@
   --text2:        rgba(230,237,243,0.55);
   --text3:        rgba(230,237,243,0.28);
   --sidebar-w:    230px;
+  --sidebar-w-collapsed: 60px;
   --font-tech:    'Orbitron', sans-serif;
   --font-body:    'Montserrat', sans-serif;
   --radius-sm:    8px;
@@ -60,9 +58,23 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Grid background — identik dashboard */
+/* LIGHT MODE */
+body.light-mode {
+  --bg: #f0f4fc; --bg2: #e6ecf7; --bg3: #dde4f2;
+  --surface: rgba(0,0,0,0.03); --surface2: rgba(0,0,0,0.05);
+  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
+  --text: #0d1326; --text2: rgba(13,19,38,0.65); --text3: rgba(13,19,38,0.35);
+  --blue-glow: rgba(58,176,255,0.1); --gold-glow: rgba(201,178,109,0.14);
+  --green-glow: rgba(63,185,80,0.1); --red-glow: rgba(248,81,73,0.1);
+  --cyan-glow: rgba(0,212,200,0.1);
+}
+body.light-mode .sidebar { background: rgba(230,236,247,0.97); }
+body.light-mode .top-header { background: rgba(240,244,252,0.95); }
+body.light-mode #confirm-box { background: var(--bg3); }
+
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -73,30 +85,20 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ── AUTH GATE (identik dashboard) ── */
+/* AUTH GATE */
 #auth-gate {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--bg2);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 20px;
 }
-.spinner {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 2px solid rgba(58,176,255,0.1);
-  border-top-color: var(--blue);
-  animation: spin 0.75s linear infinite;
-}
+.spinner { width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(58,176,255,0.1); border-top-color: var(--blue); animation: spin 0.75s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-#auth-gate p {
-  font-family: var(--font-tech); font-size: 0.44rem;
-  letter-spacing: 0.26em; color: rgba(58,176,255,0.5);
-}
+#auth-gate p { font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.26em; color: rgba(58,176,255,0.5); }
 
 #app { display: none; position: relative; z-index: 1; min-height: 100vh; }
 
-/* ══════════════════════════════════════════════════════════════
-   SIDEBAR — copy-exact dari dashboard index.html
-══════════════════════════════════════════════════════════════ */
+/* SIDEBAR */
 .sidebar {
   position: fixed; top: 0; left: 0; bottom: 0;
   width: var(--sidebar-w);
@@ -105,20 +107,29 @@ body::before {
   backdrop-filter: blur(24px);
   display: flex; flex-direction: column;
   z-index: 100; overflow: hidden;
+  transition: width 0.28s cubic-bezier(0.22,1,0.36,1);
 }
+.sidebar.collapsed { width: var(--sidebar-w-collapsed); }
+.sidebar.collapsed .sidebar-logo-text,
+.sidebar.collapsed .sidebar-admin-badge,
+.sidebar.collapsed .nav-section-label,
+.sidebar.collapsed .nav-item > span,
+.sidebar.collapsed .div-link > span,
+.sidebar.collapsed .sidebar-bottom > div > span,
+.sidebar.collapsed .btn-logout > span,
+.sidebar.collapsed .collapse-label { display: none; }
+.sidebar.collapsed .nav-item,
+.sidebar.collapsed .div-link { justify-content: center; padding: 9px 0; }
+.sidebar.collapsed .btn-logout { padding: 9px 0; justify-content: center; }
+.sidebar.collapsed .sidebar-bottom { padding: 12px 6px; }
+.sidebar.collapsed .sidebar-nav { padding: 14px 6px; }
+.sidebar.collapsed .sidebar-divlinks { padding: 10px 6px; }
+.sidebar.collapsed .admin-badge-inner { justify-content: center; padding: 9px; }
+.main-wrap { transition: margin-left 0.28s cubic-bezier(0.22,1,0.36,1); }
 
-.sidebar-logo {
-  height: 60px; flex-shrink: 0;
-  display: flex; align-items: center;
-  padding: 0 20px; border-bottom: 1px solid var(--border); gap: 10px;
-}
-.sidebar-logo-icon {
-  width: 28px; height: 28px; border-radius: 7px;
-  background: rgba(58,176,255,0.08);
-  border: 1px solid rgba(58,176,255,0.2);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.sidebar-logo-text { font-family: var(--font-tech); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.12em; line-height: 1; }
+.sidebar-logo { height: 60px; flex-shrink: 0; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border); gap: 10px; }
+.sidebar-logo-icon { width: 28px; height: 28px; border-radius: 7px; background: rgba(58,176,255,0.08); border: 1px solid rgba(58,176,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sidebar-logo-text { font-family: var(--font-tech); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.12em; line-height: 1; white-space: nowrap; }
 .sidebar-logo-text .w { color: var(--text); }
 .sidebar-logo-text .b { color: var(--blue); }
 
@@ -126,62 +137,36 @@ body::before {
 .admin-badge-inner { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border-radius: var(--radius-sm); background: var(--blue-glow); border: 1px solid rgba(58,176,255,0.15); }
 .admin-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 6px rgba(58,176,255,0.8); flex-shrink: 0; animation: pulse-dot 2s ease-in-out infinite; }
 @keyframes pulse-dot { 0%,100%{box-shadow:0 0 4px rgba(58,176,255,0.5);}50%{box-shadow:0 0 10px rgba(58,176,255,0.9);} }
-.admin-badge-inner span { font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.18em; color: var(--blue-dim); }
+.admin-badge-inner span { font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.18em; color: var(--blue-dim); white-space: nowrap; }
 
 .sidebar-nav { flex: 1; overflow-y: auto; scrollbar-width: none; padding: 14px 12px; }
 .sidebar-nav::-webkit-scrollbar { display: none; }
 
-.nav-section-label { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.24em; color: var(--text3); text-transform: uppercase; padding: 0 8px; margin: 10px 0 6px; }
+.nav-section-label { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.24em; color: var(--text3); text-transform: uppercase; padding: 0 8px; margin: 10px 0 6px; white-space: nowrap; }
 .nav-section-label:first-child { margin-top: 0; }
 
-.nav-item {
-  display: flex; align-items: center; gap: 9px;
-  padding: 9px 10px; border-radius: var(--radius-sm);
-  font-size: 0.76rem; font-weight: 500; color: var(--text3);
-  cursor: pointer; transition: all 0.18s ease;
-  border: 1px solid transparent; margin-bottom: 2px;
-  text-decoration: none; background: none; width: 100%; text-align: left;
-}
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: var(--radius-sm); font-size: 0.76rem; font-weight: 500; color: var(--text3); cursor: pointer; transition: all 0.18s ease; border: 1px solid transparent; margin-bottom: 2px; text-decoration: none; background: none; width: 100%; text-align: left; white-space: nowrap; }
 .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text2); border-color: var(--border); }
 .nav-item.active { background: var(--blue-glow); color: var(--blue); border-color: rgba(58,176,255,0.18); }
 .nav-item svg { flex-shrink: 0; opacity: 0.7; }
 .nav-item.active svg { opacity: 1; }
 
 .sidebar-divlinks { flex-shrink: 0; padding: 10px 12px; border-top: 1px solid var(--border); }
-.div-link {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 10px; border-radius: var(--radius-sm);
-  font-size: 0.74rem; font-weight: 500; color: var(--text3);
-  text-decoration: none; transition: all 0.18s ease;
-  border: 1px solid transparent; margin-bottom: 4px;
-}
+.div-link { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: var(--radius-sm); font-size: 0.74rem; font-weight: 500; color: var(--text3); text-decoration: none; transition: all 0.18s ease; border: 1px solid transparent; margin-bottom: 4px; white-space: nowrap; }
 .div-link:hover { background: var(--gold-glow); color: var(--gold); border-color: rgba(201,178,109,0.2); }
-/* Studio Panel aktif di sidebar divlinks */
 .div-link.active-div { background: var(--gold-glow); color: var(--gold); border-color: rgba(201,178,109,0.25); }
 .div-link.active-div svg { opacity: 1; }
 .div-link:last-child { margin-bottom: 0; }
 
 .sidebar-bottom { flex-shrink: 0; padding: 12px; border-top: 1px solid var(--border); }
-.btn-logout {
-  width: 100%; display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 9px 14px; border-radius: var(--radius-sm);
-  font-family: var(--font-tech); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.14em;
-  cursor: pointer; transition: all 0.2s ease;
-  border: 1px solid rgba(248,81,73,0.2); background: rgba(248,81,73,0.05); color: var(--red-dim);
-}
+.btn-logout { width: 100%; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 14px; border-radius: var(--radius-sm); font-family: var(--font-tech); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.14em; cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(248,81,73,0.2); background: rgba(248,81,73,0.05); color: var(--red-dim); }
 .btn-logout:hover { background: rgba(248,81,73,0.12); border-color: rgba(248,81,73,0.4); color: var(--red); }
 
-/* ── MAIN WRAP ── */
+/* MAIN WRAP */
 .main-wrap { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; }
 
-/* ── TOP HEADER (identik dashboard) ── */
-.top-header {
-  position: sticky; top: 0; z-index: 50; height: 60px;
-  background: rgba(10,15,29,0.9); border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px; flex-shrink: 0;
-}
+/* TOP HEADER */
+.top-header { position: sticky; top: 0; z-index: 50; height: 60px; background: rgba(10,15,29,0.9); border-bottom: 1px solid var(--border); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; }
 .header-title-group { display: flex; flex-direction: column; gap: 2px; }
 .header-eyebrow { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.26em; color: rgba(58,176,255,0.45); }
 .header-title { font-family: var(--font-tech); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text); line-height: 1; }
@@ -192,24 +177,31 @@ body::before {
 .header-user-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--gold-glow); border: 1px solid rgba(201,178,109,0.25); display: flex; align-items: center; justify-content: center; }
 .header-user-name { font-size: 0.72rem; font-weight: 600; color: var(--text2); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* ── PAGE CONTENT ── */
+/* PAGE CONTENT */
 .page-content { flex: 1; padding: 28px 32px 40px; }
 
-/* ── SECTION HEAD ── */
-.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+/* BREADCRUMB */
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.64rem; color: var(--text3); margin-bottom: 20px; }
+.breadcrumb a { color: var(--text3); text-decoration: none; transition: color 0.15s; }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb-sep { color: var(--border2); }
+.breadcrumb-current { color: var(--text2); font-weight: 500; }
+
+/* SECTION HEAD */
+.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
 .section-eyebrow { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.24em; color: rgba(58,176,255,0.45); margin-bottom: 3px; }
 .section-title { font-family: var(--font-tech); font-size: 0.82rem; font-weight: 800; color: var(--text); letter-spacing: 0.04em; }
 .section-title .accent { color: var(--gold); }
 
-/* ── GLASS CARD (identik dashboard) ── */
+/* GLASS CARD */
 .glass { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); backdrop-filter: blur(12px); }
 .glass-inner { padding: 22px 24px; }
 
-/* ── KPI ROW ── */
+/* KPI ROW */
 .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
-.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; cursor: default; }
 .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(201,178,109,0.18),transparent); }
-.kpi-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+.kpi-card:hover { border-color: rgba(201,178,109,0.25); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(201,178,109,0.06); }
 .kpi-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
 .kpi-icon.blue  { background: var(--blue-glow);  border: 1px solid rgba(58,176,255,0.15); }
 .kpi-icon.gold  { background: var(--gold-glow);  border: 1px solid rgba(201,178,109,0.15); }
@@ -223,7 +215,7 @@ body::before {
 .kpi-value.cyan  { color: var(--cyan); }
 .kpi-sub { margin-top: 6px; font-size: 0.6rem; color: var(--text3); }
 
-/* ── FORM ── */
+/* FORM */
 .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .form-group { display: flex; flex-direction: column; gap: 7px; }
 .form-group.full { grid-column: 1/-1; }
@@ -247,161 +239,107 @@ body::before {
 .form-input:focus, .form-select:focus { border-color: rgba(201,178,109,0.4); box-shadow: 0 0 0 3px rgba(201,178,109,0.07); }
 textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
 
-.form-hint {
-  font-size: 0.64rem; color: var(--text3); line-height: 1.55;
-  padding: 10px 12px; border-radius: 7px;
-  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-  grid-column: 1/-1;
-}
+.form-hint { font-size: 0.64rem; color: var(--text3); line-height: 1.55; padding: 10px 12px; border-radius: 7px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); grid-column: 1/-1; }
 .form-hint strong { color: rgba(201,178,109,0.75); font-weight: 600; }
 .form-hint code { font-family:'Courier New',monospace; font-size:0.68rem; color:var(--blue-dim); background:rgba(58,176,255,0.06); padding:1px 5px; border-radius:4px; }
-/* ── CLOUDINARY UPLOAD ── */
-.upload-zone {
-  width: 100%; aspect-ratio: 16/9;
-  border-radius: 10px; border: 2px dashed rgba(201,178,109,0.18);
-  background: rgba(0,0,0,0.25);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-  margin-top: 8px;
-}
-.upload-zone:hover { border-color: rgba(201,178,109,0.4); background: rgba(201,178,109,0.03); }
-.upload-zone.dragover { border-color: var(--cyan); background: rgba(0,212,200,0.05); }
-.upload-zone.uploading { pointer-events: none; }
-.upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.upload-progress {
-  position: absolute; bottom: 0; left: 0; height: 3px;
-  background: linear-gradient(90deg, var(--cyan), var(--blue));
-  transition: width 0.3s; width: 0%;
-}
-/* ── PRICE PREVIEW ── */
+
+/* TABS */
+.form-tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+.form-tab { padding: 9px 16px; font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.14em; color: var(--text3); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; transition: all 0.18s; margin-bottom: -1px; }
+.form-tab:hover { color: var(--text2); }
+.form-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-panel { display: none; }
+.tab-panel.active { display: contents; }
+
+/* STATUS BADGE */
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 99px; font-family: var(--font-tech); font-size: 0.36rem; font-weight: 700; letter-spacing: 0.1em; }
+.status-badge.published { background:rgba(63,185,80,0.1); color:var(--green); border:1px solid rgba(63,185,80,0.2); }
+.status-badge.draft { background:rgba(230,237,243,0.05); color:var(--text3); border:1px solid var(--border2); }
+.status-badge.archived { background:rgba(248,81,73,0.08); color:var(--red-dim); border:1px solid rgba(248,81,73,0.15); }
+.status-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+
+/* FEATURED TOGGLE */
+.featured-toggle { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); background: rgba(201,178,109,0.04); border: 1px solid rgba(201,178,109,0.12); cursor: pointer; transition: all 0.2s; }
+.featured-toggle:hover { background: rgba(201,178,109,0.08); border-color: rgba(201,178,109,0.25); }
+.featured-toggle.active { background: rgba(201,178,109,0.1); border-color: rgba(201,178,109,0.3); }
+.toggle-switch { width: 32px; height: 18px; border-radius: 9px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:var(--text3); transition:transform 0.2s, background 0.2s; }
+.featured-toggle.active .toggle-switch { background: rgba(201,178,109,0.25); border-color: rgba(201,178,109,0.4); }
+.featured-toggle.active .toggle-switch::after { transform: translateX(14px); background: var(--gold); }
+
+/* BULK ACTIONS BAR */
+.bulk-bar { display: none; align-items: center; gap: 10px; padding: 10px 16px; border-radius: var(--radius-sm); background: rgba(58,176,255,0.07); border: 1px solid rgba(58,176,255,0.18); margin-bottom: 12px; }
+.bulk-bar.show { display: flex; }
+.bulk-count { font-family: var(--font-tech); font-size: 0.44rem; letter-spacing: 0.14em; color: var(--blue); white-space: nowrap; }
+.bulk-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+.bulk-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 6px; font-family: var(--font-tech); font-size: 0.4rem; letter-spacing: 0.1em; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
+.bulk-btn.danger { border: 1px solid rgba(248,81,73,0.25); background: rgba(248,81,73,0.06); color: var(--red-dim); }
+.bulk-btn.danger:hover { background: rgba(248,81,73,0.14); color: var(--red); border-color: rgba(248,81,73,0.5); }
+.bulk-btn.neutral { border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); }
+.bulk-btn.neutral:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+.bulk-btn.success { border: 1px solid rgba(63,185,80,0.25); background: rgba(63,185,80,0.06); color: var(--green-dim); }
+.bulk-btn.success:hover { background: rgba(63,185,80,0.14); color: var(--green); border-color: rgba(63,185,80,0.45); }
+
+/* CHECKBOX */
+.row-checkbox { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); cursor: pointer; appearance: none; flex-shrink: 0; position: relative; transition: all 0.15s; }
+.row-checkbox:checked { background: var(--blue); border-color: var(--blue); }
+.row-checkbox:checked::after { content: ''; position: absolute; top: 2px; left: 5px; width: 5px; height: 8px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); }
+.row-checkbox:hover { border-color: var(--blue); }
+
+/* PRICE PREVIEW */
 #price-preview { font-family: var(--font-tech); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--cyan); margin-top: 5px; }
 
-/* ── IMAGE PREVIEW ── */
-#img-preview-wrap {
-  width: 100%; aspect-ratio: 16/9;
-  border-radius: 10px; border: 1px dashed rgba(201,178,109,0.18);
-  background: rgba(0,0,0,0.25);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; margin-top: 8px;
-}
-#img-preview-wrap img { width: 100%; height: 100%; object-fit: cover; }
-
-/* ── FORM FOOTER ── */
-.form-footer {
-  display: flex; align-items: center; justify-content: flex-end;
-  gap: 10px; margin-top: 20px; padding-top: 18px;
-  border-top: 1px solid var(--border);
-}
-.form-status {
-  display: none; align-items: center; gap: 8px;
-  padding: 9px 13px; border-radius: var(--radius-sm);
-  font-size: 0.7rem; font-weight: 500; line-height: 1.45;
-}
+/* FORM FOOTER */
+.form-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+.form-status { display: none; align-items: center; gap: 8px; padding: 9px 13px; border-radius: var(--radius-sm); font-size: 0.7rem; font-weight: 500; line-height: 1.45; }
 .form-status.show { display: flex; }
 .form-status.success { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.25); color: var(--green); }
 .form-status.error   { background: var(--red-glow);   border: 1px solid rgba(248,81,73,0.25);  color: var(--red); }
 
-/* ── EDIT BANNER ── */
-.edit-banner {
-  display: none; align-items: flex-start; gap: 10px;
-  padding: 11px 14px; border-radius: 8px;
-  background: rgba(201,178,109,0.07); border: 1px solid rgba(201,178,109,0.2);
-  margin-bottom: 16px;
-}
+/* EDIT BANNER */
+.edit-banner { display: none; align-items: flex-start; gap: 10px; padding: 11px 14px; border-radius: 8px; background: rgba(201,178,109,0.07); border: 1px solid rgba(201,178,109,0.2); margin-bottom: 16px; }
 .edit-banner.show { display: flex; }
-.edit-banner-cancel {
-  padding: 5px 12px; border-radius: 99px;
-  border: 1px solid rgba(248,81,73,0.25); background: rgba(248,81,73,0.06);
-  color: rgba(248,81,73,0.7);
-  font-family: var(--font-tech); font-size: 0.4rem; letter-spacing: 0.12em;
-  cursor: pointer; transition: all 0.18s; white-space: nowrap;
-}
+.edit-banner-cancel { padding: 5px 12px; border-radius: 99px; border: 1px solid rgba(248,81,73,0.25); background: rgba(248,81,73,0.06); color: rgba(248,81,73,0.7); font-family: var(--font-tech); font-size: 0.4rem; letter-spacing: 0.12em; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
 .edit-banner-cancel:hover { background: rgba(248,81,73,0.14); color: var(--red); border-color: rgba(248,81,73,0.5); }
 
-/* ── BUTTONS (identik dashboard) ── */
-.btn-primary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 11px 22px; border-radius: 22px;
-  font-family: var(--font-tech); font-size: 0.54rem; font-weight: 700;
-  letter-spacing: 0.14em; cursor: pointer; transition: all 0.2s; border: none;
-  background: linear-gradient(105deg, #c9b26d, #e2cc8e);
-  color: #0A0F1D; box-shadow: 0 0 18px rgba(201,178,109,0.22);
-  position: relative; overflow: hidden;
-}
+/* BUTTONS */
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 22px; border-radius: 22px; font-family: var(--font-tech); font-size: 0.54rem; font-weight: 700; letter-spacing: 0.14em; cursor: pointer; transition: all 0.2s; border: none; background: linear-gradient(105deg, #c9b26d, #e2cc8e); color: #0A0F1D; box-shadow: 0 0 18px rgba(201,178,109,0.22); position: relative; overflow: hidden; }
 .btn-primary:hover:not(:disabled) { opacity: 0.88; box-shadow: 0 0 28px rgba(201,178,109,0.45); transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
 .btn-primary.danger-btn { background: linear-gradient(105deg,#f85149,#ff6b6b); color: #fff; box-shadow: 0 0 18px rgba(248,81,73,0.22); }
 .btn-primary.ghost-btn { background: transparent; color: var(--text2); border: 1px solid var(--border2); box-shadow: none; }
 .btn-primary.ghost-btn:hover:not(:disabled) { background: rgba(255,255,255,0.04); box-shadow: none; }
-.btn-spinner {
-  display: none; width: 12px; height: 12px; border-radius: 50%;
-  border: 2px solid rgba(10,15,29,0.2); border-top-color: #0A0F1D;
-  animation: spin 0.7s linear infinite; flex-shrink: 0;
-}
-.btn-icon-sm {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 28px; height: 28px; border-radius: 6px;
-  cursor: pointer; transition: all 0.18s; flex-shrink: 0;
-}
+.btn-primary.cyan-btn { background: linear-gradient(105deg,#00d4c8,#3ab0ff); color: #0A0F1D; }
+.btn-spinner { display: none; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(10,15,29,0.2); border-top-color: #0A0F1D; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+.btn-icon-sm { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; transition: all 0.18s; flex-shrink: 0; }
 
-/* ── FILTER BAR ── */
+/* FILTER BAR */
 .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
-.filter-input {
-  flex: 1; min-width: 180px; max-width: 280px;
-  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: var(--radius-sm); padding: 8px 12px;
-  font-family: var(--font-body); font-size: 0.76rem; color: var(--text);
-  outline: none; transition: border-color 0.2s;
-}
+.filter-input { flex: 1; min-width: 180px; max-width: 280px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 8px 12px; font-family: var(--font-body); font-size: 0.76rem; color: var(--text); outline: none; transition: border-color 0.2s; }
 .filter-input::placeholder { color: var(--text3); }
 .filter-input:focus { border-color: rgba(201,178,109,0.35); }
-.filter-select {
-  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: var(--radius-sm); padding: 8px 30px 8px 12px;
-  font-family: var(--font-body); font-size: 0.76rem; color: var(--text2);
-  outline: none; cursor: pointer; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='rgba(230,237,243,0.3)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 10px center;
-}
+.filter-select { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 8px 30px 8px 12px; font-family: var(--font-body); font-size: 0.76rem; color: var(--text2); outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='rgba(230,237,243,0.3)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
 .filter-select option { background: #0D1326; }
 .filter-select:focus { border-color: rgba(201,178,109,0.35); outline: none; }
 
-.btn-export {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px; border-radius: var(--radius-sm);
-  font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.12em; font-weight: 700;
-  cursor: pointer; border: 1px solid rgba(63,185,80,0.25);
-  background: rgba(63,185,80,0.06); color: rgba(63,185,80,0.7);
-  transition: all 0.18s; white-space: nowrap;
-}
+.btn-export { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm); font-family: var(--font-tech); font-size: 0.42rem; letter-spacing: 0.12em; font-weight: 700; cursor: pointer; border: 1px solid rgba(63,185,80,0.25); background: rgba(63,185,80,0.06); color: rgba(63,185,80,0.7); transition: all 0.18s; white-space: nowrap; }
 .btn-export:hover { background: rgba(63,185,80,0.14); border-color: rgba(63,185,80,0.45); color: var(--green); }
 
-/* ── DATA TABLE (identik live-log dashboard) ── */
-.live-log-head {
-  display: grid; padding: 10px 18px;
-  border-bottom: 1px solid var(--border);
-}
-.live-log-head span {
-  font-family: var(--font-tech); font-size: 0.38rem;
-  letter-spacing: 0.2em; color: var(--text3);
-}
-.log-row {
-  display: grid; padding: 12px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  transition: background 0.15s;
-}
+/* SEARCH HIGHLIGHT */
+mark.search-hl { background: rgba(201,178,109,0.25); color: var(--gold); border-radius: 3px; padding: 0 2px; }
+
+/* DATA TABLE */
+.live-log-head { display: grid; padding: 10px 18px; border-bottom: 1px solid var(--border); }
+.live-log-head span { font-family: var(--font-tech); font-size: 0.38rem; letter-spacing: 0.2em; color: var(--text3); }
+.log-row { display: grid; padding: 11px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.15s; align-items: center; }
 .log-row:last-child { border-bottom: none; }
 .log-row:hover { background: rgba(255,255,255,0.015); }
 .log-cell { font-size: 0.7rem; color: var(--text2); display: flex; align-items: center; }
 .log-cell.mono { font-family:'Courier New',monospace; font-size:0.66rem; color:var(--text3); }
 .log-empty { padding:36px 18px; text-align:center; font-family:var(--font-tech); font-size:0.44rem; letter-spacing:0.16em; color:var(--text3); }
 
-/* ── BADGES (identik dashboard) ── */
-.badge {
-  display: inline-flex; align-items: center; gap:4px;
-  padding: 3px 9px; border-radius: 99px;
-  font-family: var(--font-tech); font-size:0.4rem; font-weight:700; letter-spacing:0.1em;
-}
+/* BADGES */
+.badge { display: inline-flex; align-items: center; gap:4px; padding: 3px 9px; border-radius: 99px; font-family: var(--font-tech); font-size:0.4rem; font-weight:700; letter-spacing:0.1em; }
 .badge.blue    { background:var(--blue-glow);  color:var(--blue);  border:1px solid rgba(58,176,255,0.2); }
 .badge.gold    { background:var(--gold-glow);  color:var(--gold);  border:1px solid rgba(201,178,109,0.2); }
 .badge.green   { background:var(--green-glow); color:var(--green); border:1px solid rgba(63,185,80,0.2); }
@@ -409,158 +347,148 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
 .badge.neutral { background:rgba(255,255,255,0.04); color:var(--text3); border:1px solid var(--border); }
 .badge.cyan    { background:var(--cyan-glow);  color:var(--cyan);  border:1px solid rgba(0,212,200,0.2); }
 
-/* ── GRID VIEW CARDS ── */
+/* GRID VIEW CARDS */
 #grid-view { display: none; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
 #grid-view.active { display: grid; }
-.prod-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md); overflow: hidden;
-  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
-}
+.prod-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; position: relative; }
 .prod-card:hover { transform: translateY(-4px); border-color: rgba(201,178,109,0.25); box-shadow:0 12px 32px rgba(0,0,0,0.4); }
 .prod-card-img { width:100%; aspect-ratio:16/10; object-fit:cover; background:var(--bg2); display:block; }
-.prod-card-img-ph {
-  width:100%; aspect-ratio:16/10;
-  background:linear-gradient(135deg,var(--bg2),var(--bg3));
-  display:flex; align-items:center; justify-content:center; opacity:0.4;
-}
+.prod-card-img-ph { width:100%; aspect-ratio:16/10; background:linear-gradient(135deg,var(--bg2),var(--bg3)); display:flex; align-items:center; justify-content:center; opacity:0.4; }
 .prod-card-body { padding:14px 16px; }
 .prod-card-footer { padding:10px 16px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 
-/* ── CONFIRM DELETE MODAL ── */
-#confirm-overlay {
-  position:fixed; inset:0; z-index:600;
-  background:rgba(4,6,9,0.88); backdrop-filter:blur(10px);
-  display:flex; align-items:center; justify-content:center; padding:20px;
-  opacity:0; pointer-events:none; transition:opacity 0.2s;
-}
+/* SKELETON LOADER */
+@keyframes skeleton-wave { 0%{background-position:-400px 0;}100%{background-position:400px 0;} }
+.skeleton { border-radius: 6px; background: linear-gradient(90deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.09) 40%,rgba(255,255,255,0.04) 80%); background-size: 800px 100%; animation: skeleton-wave 1.5s infinite linear; display: inline-block; }
+.skeleton-row { display: grid; grid-template-columns: 20px 0.25fr 1.6fr 0.8fr 0.8fr 1fr 0.6fr 0.55fr; align-items: center; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.03); gap: 12px; }
+.skeleton-row > span { height: 14px; display: block; border-radius: 6px; }
+
+/* EMPTY STATE */
+.empty-state-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 20px; gap: 18px; text-align: center; }
+.empty-icon-ring { width: 80px; height: 80px; border-radius: 50%; border: 2px dashed rgba(201,178,109,0.18); display: flex; align-items: center; justify-content: center; animation: pulse-ring 3s ease-in-out infinite; }
+@keyframes pulse-ring { 0%,100%{box-shadow:0 0 0 0 rgba(201,178,109,0.08);}50%{box-shadow:0 0 0 12px rgba(201,178,109,0);} }
+
+/* ANALYTICS MINI */
+.analytics-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+.analytics-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; transition: border-color 0.2s; }
+.analytics-card:hover { border-color: var(--border2); }
+.analytics-label { font-size: 0.62rem; color: var(--text3); margin-bottom: 5px; }
+.analytics-value { font-family: var(--font-tech); font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em; }
+
+/* CONFIRM DELETE MODAL */
+#confirm-overlay { position:fixed; inset:0; z-index:600; background:rgba(4,6,9,0.88); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.2s; }
 #confirm-overlay.open { opacity:1; pointer-events:all; }
-#confirm-box {
-  background:var(--bg3); border:1px solid rgba(248,81,73,0.2);
-  border-radius: var(--radius-lg); padding:28px; max-width:400px; width:100%;
-  transform:scale(0.95); transition:transform 0.25s;
-}
+#confirm-box { background:var(--bg3); border:1px solid rgba(248,81,73,0.2); border-radius: var(--radius-lg); padding:28px; max-width:400px; width:100%; transform:scale(0.95); transition:transform 0.25s; }
 #confirm-overlay.open #confirm-box { transform:scale(1); }
 
-/* ── TOAST (identik dashboard) ── */
-#toast {
-  position:fixed; bottom:28px; right:28px; z-index:9000;
-  padding:12px 18px; border-radius:var(--radius-md);
-  font-family:var(--font-body); font-size:0.8rem; font-weight:500;
-  background:rgba(4,12,28,0.97); border:1px solid var(--border2);
-  color:var(--text); backdrop-filter:blur(20px);
-  opacity:0; transform:translateY(8px);
-  transition:opacity 0.22s, transform 0.22s;
-  pointer-events:none; box-shadow:0 8px 32px rgba(0,0,0,0.6); max-width:320px;
-}
+/* CATEGORY MODAL */
+#cat-modal-overlay { position:fixed; inset:0; z-index:700; background:rgba(4,6,9,0.88); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+#cat-modal-overlay.open { opacity:1; pointer-events:all; }
+#cat-modal-box { background:var(--bg3); border:1px solid rgba(201,178,109,0.2); border-radius:var(--radius-lg); padding:28px; max-width:480px; width:100%; transform:scale(0.95); transition:transform 0.25s; max-height:80vh; overflow-y:auto; }
+#cat-modal-overlay.open #cat-modal-box { transform:scale(1); }
+
+/* VERSION HISTORY DRAWER */
+#history-drawer { position:fixed; top:0; right:0; bottom:0; width:380px; z-index:500; background:rgba(7,11,22,0.97); border-left:1px solid var(--border2); backdrop-filter:blur(24px); overflow-y:auto; padding:28px 24px; transform:translateX(100%); transition:transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+#history-drawer.open { transform:translateX(0); }
+.history-entry { padding:12px 14px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface); margin-bottom:8px; }
+.history-entry:hover { border-color:var(--border2); }
+
+/* PREVIEW MODAL */
+#preview-modal-overlay { position:fixed; inset:0; z-index:800; background:rgba(4,6,9,0.92); backdrop-filter:blur(16px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+#preview-modal-overlay.open { opacity:1; pointer-events:all; }
+#preview-modal-box { background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius-lg); padding:0; max-width:600px; width:100%; transform:scale(0.95); transition:transform 0.25s; overflow:hidden; max-height:90vh; overflow-y:auto; }
+#preview-modal-overlay.open #preview-modal-box { transform:scale(1); }
+
+/* TOAST */
+#toast { position:fixed; bottom:28px; right:28px; z-index:9000; padding:12px 18px; border-radius:var(--radius-md); font-family:var(--font-body); font-size:0.8rem; font-weight:500; background:rgba(4,12,28,0.97); border:1px solid var(--border2); color:var(--text); backdrop-filter:blur(20px); opacity:0; transform:translateY(8px); transition:opacity 0.22s, transform 0.22s; pointer-events:none; box-shadow:0 8px 32px rgba(0,0,0,0.6); max-width:320px; }
 #toast.show { opacity:1; transform:translateY(0); }
 
-/* ── VIEW TOGGLE PILL ── */
+/* VIEW TOGGLE PILL */
 .view-toggle { display:flex; border:1px solid var(--border2); border-radius:22px; overflow:hidden; background:rgba(0,0,0,0.2); }
 .view-toggle-btn { padding:7px 14px; font-family:var(--font-tech); font-size:0.42rem; letter-spacing:0.12em; font-weight:700; cursor:pointer; border:none; background:none; color:var(--text3); transition:all 0.18s; display:flex;align-items:center;gap:5px; }
 .view-toggle-btn.active { background:var(--gold-glow); color:var(--gold); }
 
-/* ── REALTIME DOT ── */
+/* REALTIME DOT */
 .realtime-dot { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:99px; background:var(--green-glow); border:1px solid rgba(63,185,80,0.15); font-family:var(--font-tech); font-size:0.38rem; letter-spacing:0.16em; color:var(--green-dim); }
 .rt-blink { width:5px; height:5px; border-radius:50%; background:var(--green); box-shadow:0 0 5px rgba(63,185,80,0.8); animation:blink-rt 1.6s ease-in-out infinite; }
 @keyframes blink-rt { 0%,100%{opacity:1;}50%{opacity:0.25;} }
 
-/* ── THUMBNAIL ── */
+/* THUMBNAIL */
 .prod-thumb { width:48px; height:36px; border-radius:6px; object-fit:cover; border:1px solid rgba(255,255,255,0.07); background:var(--bg2); flex-shrink:0; }
 .prod-thumb-ph { width:48px; height:36px; border-radius:6px; background:rgba(201,178,109,0.05); border:1px dashed rgba(201,178,109,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-/* ── MOBILE HAMBURGER ── */
-.mobile-menu-btn {
-  display:none; align-items:center; justify-content:center;
-  width:36px; height:36px; border-radius:var(--radius-sm);
-  border:1px solid var(--border2); background:var(--surface2);
-  color:var(--text2); cursor:pointer; flex-shrink:0; transition:all 0.18s;
-}
+/* MULTI-IMAGE UPLOAD */
+.multi-upload-zone { width:100%; border-radius:10px; border:2px dashed rgba(201,178,109,0.18); background:rgba(0,0,0,0.25); padding:24px; cursor:pointer; transition:all 0.2s; position:relative; margin-top:8px; }
+.multi-upload-zone:hover, .multi-upload-zone.dragover { border-color:rgba(0,212,200,0.5); background:rgba(0,212,200,0.04); }
+.multi-upload-zone.uploading { pointer-events:none; opacity:0.7; }
+.img-strip { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; min-height:0; }
+.img-strip:empty { display:none; }
+.img-thumb-wrap { position:relative; width:90px; height:68px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); flex-shrink:0; cursor:grab; transition:transform 0.2s, box-shadow 0.2s; }
+.img-thumb-wrap:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.5); }
+.img-thumb-wrap.dragging { opacity:0.4; cursor:grabbing; }
+.img-thumb-wrap.drag-over { border-color:var(--cyan); box-shadow:0 0 0 2px rgba(0,212,200,0.4); }
+.img-thumb-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
+.img-thumb-wrap:first-child::before { content:'COVER'; position:absolute; bottom:0; left:0; right:0; background:rgba(201,178,109,0.85); color:#0A0F1D; font-family:'Orbitron',sans-serif; font-size:0.34rem; font-weight:800; letter-spacing:0.14em; text-align:center; padding:2px 0; }
+.img-thumb-remove { position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:50%; background:rgba(248,81,73,0.85); border:none; color:#fff; font-size:10px; line-height:18px; text-align:center; cursor:pointer; display:none; align-items:center; justify-content:center; transition:background 0.15s; padding:0; }
+.img-thumb-wrap:hover .img-thumb-remove { display:flex; }
+.img-thumb-remove:hover { background:var(--red); }
+.multi-upload-progress-bar { position:absolute; bottom:0; left:0; height:3px; border-radius:0 0 8px 8px; background:linear-gradient(90deg,var(--cyan),var(--blue)); transition:width 0.3s; width:0%; }
+.multi-upload-hint { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:8px 0; }
+.multi-upload-hint p { font-family:'Orbitron',sans-serif; font-size:0.42rem; letter-spacing:0.12em; color:var(--text3); text-align:center; }
+.multi-upload-hint small { font-size:0.6rem; color:var(--text3); }
+#multi-upload-status { font-family:'Orbitron',sans-serif; font-size:0.4rem; letter-spacing:0.14em; color:var(--cyan); margin-top:8px; min-height:16px; }
+.drag-hint { font-family:'Orbitron',sans-serif; font-size:0.38rem; letter-spacing:0.1em; color:var(--text3); text-align:right; margin-top:6px; }
+
+/* MOBILE HAMBURGER */
+.mobile-menu-btn { display:none; align-items:center; justify-content:center; width:36px; height:36px; border-radius:var(--radius-sm); border:1px solid var(--border2); background:var(--surface2); color:var(--text2); cursor:pointer; flex-shrink:0; transition:all 0.18s; }
 .mobile-menu-btn:hover { background:var(--gold-glow); border-color:rgba(201,178,109,0.3); color:var(--gold); }
 .sidebar-overlay { display:none; position:fixed; inset:0; z-index:99; background:rgba(0,0,0,0.35); pointer-events:none; }
 .sidebar-overlay.show { pointer-events:auto; display:block; }
 
-/* ── ANIMATIONS ── */
+/* LIVE PREVIEW PANEL */
+#live-preview-panel { display:none; position:fixed; top:0; right:0; bottom:0; width:420px; z-index:300; background:rgba(7,11,22,0.97); border-left:1px solid var(--border2); backdrop-filter:blur(24px); overflow-y:auto; padding:28px 24px; transition:transform 0.3s cubic-bezier(0.22,1,0.36,1); transform:translateX(100%); }
+#live-preview-panel.open { display:block; transform:translateX(0); }
+.preview-card { background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius-lg); overflow:hidden; }
+#price-preview { font-family:var(--font-tech); font-size:0.6rem; letter-spacing:0.08em; color:var(--cyan); margin-top:5px; }
+
+/* ANIMATIONS */
 @keyframes fadeInUp { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
 .fade-in { animation:fadeInUp 0.42s cubic-bezier(0.22,1,0.36,1) both; }
 
-/* ── SCROLLBAR ── */
+/* SCROLLBAR */
 ::-webkit-scrollbar { width:5px; }
 ::-webkit-scrollbar-track { background:var(--bg2); }
 ::-webkit-scrollbar-thumb { background:rgba(201,178,109,0.15); border-radius:10px; }
-.input-style {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all .2s ease;
-}
-.input-style:focus {
-  outline: none;
-  border-color: rgba(0,212,255,0.5);
-  box-shadow: 0 0 0 4px rgba(0,212,255,0.08);
-}
-/* ── LIVE PREVIEW PANEL ── */
-.preview-glow {
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 20px 50px rgba(0,0,0,0.5), 0 0 60px rgba(0,212,200,0.08);
-}
-#live-preview-panel {
-  display: none;
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: 420px; z-index: 300;
-  background: rgba(7,11,22,0.97);
-  border-left: 1px solid var(--border2);
-  backdrop-filter: blur(24px);
-  overflow-y: auto; padding: 28px 24px;
-  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
-  transform: translateX(100%);
-}
-#live-preview-panel.open {
-  display: block;
-  transform: translateX(0);
-}
-.preview-card {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media (max-width:860px) {
   :root { --sidebar-w:0px; }
-  .sidebar { transform:translateX(-100%); transition:transform 0.28s cubic-bezier(0.22,1,0.36,1); width:260px; z-index:200; }
+  .sidebar { transform:translateX(-100%); transition:transform 0.28s cubic-bezier(0.22,1,0.36,1),width 0.28s; width:260px; z-index:200; }
   .sidebar.mobile-open { transform:translateX(0); box-shadow:12px 0 48px rgba(0,0,0,0.7); }
   .mobile-menu-btn { display:flex; }
-  .main-wrap { margin-left:0; }
+  .main-wrap { margin-left:0 !important; }
   .top-header { padding:0 14px; gap:8px; height:54px; }
   .header-eyebrow { display:none; }
   .header-title { font-size:0.62rem; }
   .header-clock { display:none; }
-  .top-header .header-right > a,
-  .top-header .header-right > button.desktop-only { display:none; }
-  .header-user { padding:4px 8px; }
-  .header-user-name { max-width:90px; font-size:0.6rem; }
+  .header-user { display: none; }
   .page-content { padding:14px 12px 40px; }
   .form-grid-2 { grid-template-columns:1fr; gap:14px; }
   .kpi-row { grid-template-columns:1fr 1fr; gap:10px; }
+  .analytics-row { grid-template-columns:1fr 1fr; }
   .section-head { flex-direction:column; align-items:flex-start; gap:8px; }
   .filter-bar { flex-wrap:wrap; }
   .filter-input { max-width:100%; flex:1 1 100%; }
   .glass-inner { padding:16px; }
-  /* Tabel: sembunyikan kolom tidak penting */
-  .live-log-head span:nth-child(n+5),
-  .log-row .log-cell:nth-child(n+5) { display:none; }
-  .live-log-head, .log-row { grid-template-columns: 0.3fr 1.2fr 0.8fr 0.7fr 0.6fr !important; }
   #grid-view { grid-template-columns:1fr 1fr; }
+  #history-drawer, #live-preview-panel { width:100vw; }
 }
 @media (max-width:480px) {
   .kpi-row { grid-template-columns:1fr 1fr; gap:8px; }
   .kpi-card { padding:12px; }
   .kpi-value { font-size:1.1rem; }
-  .header-user { display:none; }
   #grid-view { grid-template-columns:1fr; }
-  .live-log-head span:nth-child(n+4),
-  .log-row .log-cell:nth-child(n+4) { display:none; }
-  .live-log-head, .log-row { grid-template-columns: 0.3fr 1.3fr 0.9fr 0.6fr !important; }
+  .analytics-row { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -585,13 +513,13 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div style="width:40px;height:40px;border-radius:10px;background:var(--red-glow);border:1px solid rgba(248,81,73,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
       </div>
-      <h3 style="font-family:var(--font-tech);font-size:0.8rem;letter-spacing:0.06em;color:#fff;">KONFIRMASI HAPUS</h3>
+      <h3 style="font-family:var(--font-tech);font-size:0.8rem;letter-spacing:0.06em;color:#fff;" id="confirm-title">KONFIRMASI HAPUS</h3>
     </div>
-    <p style="font-size:0.85rem;color:var(--text2);margin-bottom:8px;">Kamu yakin ingin menghapus template ini?</p>
+    <p id="confirm-body" style="font-size:0.85rem;color:var(--text2);margin-bottom:8px;">Kamu yakin ingin menghapus template ini?</p>
     <p id="confirm-name" style="font-size:0.8rem;color:#fff;font-weight:600;margin-bottom:16px;padding:10px 14px;background:var(--red-glow);border-radius:8px;border:1px solid rgba(248,81,73,0.15);"></p>
     <p style="font-size:0.72rem;color:var(--red-dim);margin-bottom:20px;">⚠ Dokumen Firestore yang dihapus tidak dapat dikembalikan.</p>
     <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button class="btn-primary ghost-btn btn-sm" onclick="closeConfirm()" style="padding:8px 18px;border-radius:22px;font-size:0.5rem;">Batal</button>
+      <button class="btn-primary ghost-btn" onclick="closeConfirm()" style="padding:8px 18px;border-radius:22px;font-size:0.5rem;">Batal</button>
       <button class="btn-primary danger-btn" id="confirm-delete-exec" style="padding:8px 18px;border-radius:22px;font-size:0.5rem;">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
         Ya, Hapus Sekarang
@@ -600,16 +528,73 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
   </div>
 </div>
 
+<!-- CATEGORY MANAGEMENT MODAL -->
+<div id="cat-modal-overlay" role="dialog" aria-modal="true">
+  <div id="cat-modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.28em;color:rgba(201,178,109,0.5);margin-bottom:3px;">⬡ MANAJEMEN</p>
+        <h3 style="font-family:var(--font-tech);font-size:0.78rem;font-weight:800;color:var(--text);">Kelola Kategori</h3>
+      </div>
+      <button onclick="closeCatModal()" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Add category -->
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <input id="new-cat-input" type="text" class="form-input" placeholder="Nama kategori baru..." style="flex:1;" onkeydown="if(event.key==='Enter')addCategory()"/>
+      <button class="btn-primary" onclick="addCategory()" style="padding:10px 18px;border-radius:22px;font-size:0.48rem;white-space:nowrap;">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Tambah
+      </button>
+    </div>
+    <!-- Category list -->
+    <div id="cat-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+    <p style="font-size:0.62rem;color:var(--text3);margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">Kategori default: PSD, VEKTOR, AFTER EFFECTS, CANVA, PREMIERE PRO, ILLUSTRATOR, FIGMA</p>
+  </div>
+</div>
+
+<!-- VERSION HISTORY DRAWER -->
+<div id="history-drawer">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+    <div>
+      <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.28em;color:rgba(201,178,109,0.5);margin-bottom:3px;">⬡ RIWAYAT</p>
+      <h3 style="font-family:var(--font-tech);font-size:0.72rem;font-weight:800;color:var(--text);">Version History</h3>
+    </div>
+    <button onclick="closeHistoryDrawer()" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div id="history-doc-title" style="padding:10px 14px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);margin-bottom:16px;font-size:0.76rem;font-weight:600;color:var(--text);"></div>
+  <div id="history-list"></div>
+</div>
+
+<!-- PREVIEW AS CUSTOMER MODAL -->
+<div id="preview-modal-overlay" role="dialog" aria-modal="true">
+  <div id="preview-modal-box">
+    <!-- Header bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.3);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="padding:4px 10px;border-radius:99px;background:var(--cyan-glow);border:1px solid rgba(0,212,200,0.2);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.14em;color:var(--cyan);">PREVIEW MODE</div>
+        <span style="font-size:0.7rem;color:var(--text3);">Tampilan seperti pelanggan melihat</span>
+      </div>
+      <button onclick="closePreviewModal()" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Preview content -->
+    <div id="preview-modal-content" style="padding:0;"></div>
+  </div>
+</div>
+
 <!-- MOBILE SIDEBAR OVERLAY -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
 
-<!-- ══════════════════════════════════════════════
-     APP SHELL
-══════════════════════════════════════════════ -->
+<!-- ══ APP SHELL ══ -->
 <div id="app">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="main-sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">
         <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
@@ -623,7 +608,7 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
     <div class="sidebar-admin-badge">
       <div class="admin-badge-inner">
         <div class="admin-dot"></div>
-        <span>STUDIO PANEL — ADMIN ACCESS</span>
+        <span>STUDIO PANEL — ADMIN</span>
       </div>
     </div>
 
@@ -631,49 +616,64 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
       <p class="nav-section-label">NAVIGASI UTAMA</p>
       <a href="index.html" class="nav-item">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Central Command
+        <span>Central Command</span>
       </a>
       <a href="index.html#orders" class="nav-item">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        Kelola Order
+        <span>Kelola Order</span>
       </a>
       <a href="index.html#invoices" class="nav-item">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        Invoice Generator
+        <span>Invoice Generator</span>
       </a>
       <p class="nav-section-label" style="margin-top:14px;">DIVISI</p>
     </nav>
 
     <div class="sidebar-divlinks">
-      <!-- Studio Panel aktif -->
       <a href="studio-panel.html" class="div-link active-div">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 17l10 5 10-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M2 12l10 5 10-5"/></svg>
-        Studio Panel
+        <span>Studio Panel</span>
       </a>
       <a href="mart-panel.html" class="div-link">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-        AlfiraMart Panel
+        <span>AlfiraMart Panel</span>
       </a>
       <a href="../studio/index.html" target="_blank" class="div-link" style="margin-top:8px;border-top:1px solid var(--border);padding-top:12px;">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        Lihat Etalase Studio
+        <span>Lihat Etalase Studio</span>
       </a>
     </div>
 
     <div class="sidebar-bottom">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 2px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 2px;">
         <span style="font-size:0.6rem;color:var(--text3);">Admin</span>
         <span style="font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.1em;color:rgba(201,178,109,0.35);" id="sidebar-email-display">—</span>
       </div>
+      <!-- Collapse + Theme row -->
+      <div style="display:flex;gap:7px;margin-bottom:8px;">
+        <button onclick="toggleSidebar()" title="Collapse sidebar"
+          style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);cursor:pointer;font-family:var(--font-tech);font-size:0.4rem;letter-spacing:0.1em;transition:all .18s;"
+          onmouseover="this.style.borderColor='rgba(201,178,109,0.3)';this.style.color='var(--gold)'"
+          onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text3)'">
+          <svg id="collapse-icon" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+          <span class="collapse-label">COLLAPSE</span>
+        </button>
+        <button onclick="toggleTheme()" title="Toggle dark/light"
+          style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface2);color:var(--text3);cursor:pointer;transition:all .18s;flex-shrink:0;"
+          onmouseover="this.style.borderColor='rgba(201,178,109,0.3)';this.style.color='var(--gold)'"
+          onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text3)'">
+          <svg id="theme-icon" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+      </div>
       <button onclick="doSignOut()" class="btn-logout">
         <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/></svg>
-        SIGN OUT
+        <span>SIGN OUT</span>
       </button>
     </div>
   </aside>
 
   <!-- MAIN WRAP -->
-  <div class="main-wrap">
+  <div class="main-wrap" id="main-wrap">
 
     <!-- TOP HEADER -->
     <header class="top-header">
@@ -686,11 +686,11 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
       </div>
       <div class="header-right">
         <div class="header-clock" id="header-clock">--:--:-- WIB</div>
-        <a href="index.html" class="desktop-only" style="display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(230,237,243,0.35);font-family:var(--font-body);font-size:0.62rem;font-weight:500;text-decoration:none;transition:all .2s;white-space:nowrap;"
+        <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:rgba(230,237,243,0.35);font-family:var(--font-body);font-size:0.62rem;font-weight:500;text-decoration:none;transition:all .2s;white-space:nowrap;"
           onmouseover="this.style.borderColor='rgba(201,178,109,0.3)';this.style.color='rgba(230,237,243,0.8)';"
           onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='rgba(230,237,243,0.35)';">
           <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-          BACK TO DASHBOARD
+          BACK
         </a>
         <div class="header-user">
           <div class="header-user-avatar">
@@ -698,17 +698,20 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
           </div>
           <span class="header-user-name" id="header-email-display">Loading...</span>
         </div>
-        <button onclick="doSignOut()" class="desktop-only" style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--radius-sm);border:1px solid rgba(248,81,73,0.2);background:rgba(248,81,73,0.05);color:rgba(248,81,73,0.6);font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.12em;cursor:pointer;transition:all .2s;"
-          onmouseover="this.style.background='rgba(248,81,73,0.12)';this.style.color='var(--red)';this.style.borderColor='rgba(248,81,73,0.4)'"
-          onmouseout="this.style.background='rgba(248,81,73,0.05)';this.style.color='rgba(248,81,73,0.6)';this.style.borderColor='rgba(248,81,73,0.2)'">
-          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7"/></svg>
-          KELUAR
-        </button>
       </div>
     </header>
 
     <!-- PAGE CONTENT -->
     <div class="page-content">
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb fade-in">
+        <a href="index.html">Dashboard</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="#">Divisi Studio</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Studio Panel</span>
+      </div>
 
       <!-- KPI ROW -->
       <div class="kpi-row fade-in">
@@ -738,21 +741,41 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
         </div>
       </div>
 
+      <!-- ANALYTICS ROW -->
+      <div class="analytics-row fade-in">
+        <div class="analytics-card">
+          <div class="analytics-label">Total Views</div>
+          <div class="analytics-value" style="color:var(--blue);" id="kpi-views">—</div>
+          <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">Across all templates</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-label">Featured Templates</div>
+          <div class="analytics-value" style="color:var(--gold);" id="kpi-featured">—</div>
+          <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">Pinned di halaman utama</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-label">Draft Templates</div>
+          <div class="analytics-value" style="color:var(--text3);" id="kpi-drafts">—</div>
+          <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">Belum dipublish</div>
+        </div>
+      </div>
+
       <!-- FORM SECTION -->
       <div class="section-head fade-in">
         <div>
           <p class="section-eyebrow">⬡ MANAJEMEN KONTEN</p>
           <h2 class="section-title">Form <span class="accent">Tambah / Edit Template</span></h2>
         </div>
-        <div class="realtime-dot"><div class="rt-blink"></div>FIRESTORE LIVE</div>
-        <button onclick="togglePreviewPanel()" id="btn-preview-toggle"
-  style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:22px;border:1px solid rgba(0,212,200,0.25);background:rgba(0,212,200,0.06);color:rgba(0,212,200,0.7);font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.12em;cursor:pointer;transition:all 0.18s;"
-  onmouseover="this.style.background='rgba(0,212,200,0.14)';this.style.color='var(--cyan)'"
-  onmouseout="this.style.background='rgba(0,212,200,0.06)';this.style.color='rgba(0,212,200,0.7)'">
-  <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-  LIVE PREVIEW
-</button>
-        
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div class="realtime-dot"><div class="rt-blink"></div>FIRESTORE LIVE</div>
+          <button onclick="togglePreviewPanel()" id="btn-preview-toggle"
+            style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:22px;border:1px solid rgba(0,212,200,0.25);background:rgba(0,212,200,0.06);color:rgba(0,212,200,0.7);font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.12em;cursor:pointer;transition:all 0.18s;"
+            onmouseover="this.style.background='rgba(0,212,200,0.14)';this.style.color='var(--cyan)'"
+            onmouseout="this.style.background='rgba(0,212,200,0.06)';this.style.color='rgba(0,212,200,0.7)'">
+            <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            LIVE PREVIEW
+          </button>
+        </div>
       </div>
 
       <div class="glass fade-in" style="margin-bottom:28px;">
@@ -765,85 +788,158 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
               <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:3px;">MODE EDIT AKTIF</p>
               <p style="font-size:0.66rem;color:var(--text3);">Mengedit dokumen: <code id="edit-doc-id" style="font-family:'Courier New';font-size:0.68rem;color:rgba(58,176,255,0.7);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">—</code></p>
             </div>
+            <button onclick="openHistoryDrawer(editingId)" style="padding:5px 12px;border-radius:99px;border:1px solid rgba(201,178,109,0.2);background:rgba(201,178,109,0.05);color:rgba(201,178,109,0.6);font-family:var(--font-tech);font-size:0.4rem;letter-spacing:0.1em;cursor:pointer;transition:all .18s;margin-right:6px;"
+              onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,178,109,0.1)'"
+              onmouseout="this.style.color='rgba(201,178,109,0.6)';this.style.background='rgba(201,178,109,0.05)'">
+              HISTORY
+            </button>
             <button class="edit-banner-cancel" onclick="cancelEdit()">BATAL EDIT</button>
           </div>
 
-          <div style="margin-bottom:18px;">
-            <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.2em;color:rgba(201,178,109,0.5);margin-bottom:4px;" id="form-mode-label">FORM — TAMBAH TEMPLATE BARU</p>
-            <p style="font-size:0.66rem;color:var(--text3);">Isi field di bawah lalu klik <strong style="color:var(--text2);">SIMPAN TEMPLATE</strong> — data langsung ditulis ke collection <code style="font-family:'Courier New';font-size:0.68rem;color:var(--blue-dim);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">studio_templates</code> di Firestore secara real-time.</p>
+          <!-- FORM TABS -->
+          <div class="form-tabs">
+            <button class="form-tab active" onclick="switchTab('basic')">⬡ Info Dasar</button>
+            <button class="form-tab" onclick="switchTab('seo')">⬡ SEO & Meta</button>
+            <button class="form-tab" onclick="switchTab('settings')">⬡ Pengaturan</button>
           </div>
 
-          <!-- Pilar 3: field names sesuai skema Firestore live -->
+          <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.2em;color:rgba(201,178,109,0.5);margin-bottom:4px;" id="form-mode-label">FORM — TAMBAH TEMPLATE BARU</p>
+
           <div class="form-grid-2">
 
-            <div class="form-group full">
-              <label class="form-label" for="f-title">NAMA PRODUK (title) *</label>
-              <input id="f-title" type="text" class="form-input" placeholder='Template Feed Instagram Minimal Luxury v1'/>
-            </div>
+            <!-- TAB: BASIC -->
+            <div class="tab-panel active" id="tab-basic" style="display:contents;">
+              <div class="form-group full">
+                <label class="form-label" for="f-title">NAMA PRODUK (title) *</label>
+                <input id="f-title" type="text" class="form-input" placeholder='Template Feed Instagram Minimal Luxury v1'/>
+              </div>
 
-            <div class="form-group">
-              <!-- Pilar 3: field 'price' bukan 'priceRaw' -->
-              <label class="form-label" for="f-price">HARGA (price — angka murni, tanpa Rp/titik) *</label>
-              <input id="f-price" type="number" class="form-input" placeholder="50000" min="0" step="1000"
-                oninput="updatePricePreview(this.value)"/>
-              <p id="price-preview"></p>
-            </div>
+              <div class="form-group">
+                <label class="form-label" for="f-price">HARGA (price) *</label>
+                <input id="f-price" type="number" class="form-input" placeholder="50000" min="0" step="1000" oninput="updatePricePreview(this.value)"/>
+                <p id="price-preview"></p>
+              </div>
 
-            <div class="form-group">
-              <!-- Pilar 3: field 'category' -->
-              <label class="form-label" for="f-category">KATEGORI (category) *</label>
-              <select id="f-category" class="form-select">
-                <option value="">— Pilih Kategori —</option>
-                <option value="PSD">PSD</option>
-                <option value="VEKTOR">VEKTOR</option>
-                <option value="AFTER EFFECTS">AFTER EFFECTS</option>
-                <option value="CANVA">CANVA</option>
-                <option value="PREMIERE PRO">PREMIERE PRO</option>
-                <option value="ILLUSTRATOR">ILLUSTRATOR</option>
-                <option value="FIGMA">FIGMA</option>
-              </select>
-            </div>
+              <div class="form-group">
+                <label class="form-label" for="f-category">KATEGORI *</label>
+                <select id="f-category" class="form-select">
+                  <option value="">- Pilih Kategori -</option>
+                </select>
+              </div>
 
-            <div class="form-group full">
-              <!-- Pilar 3: field 'description' -->
-              <label class="form-label" for="f-desc">DESKRIPSI SINGKAT (description)</label>
-              <textarea id="f-desc" class="form-input" placeholder="Deskripsi singkat produk..."></textarea>
-            </div>
+              <div class="form-group full">
+                <label class="form-label" for="f-desc">DESKRIPSI SINGKAT</label>
+                <textarea id="f-desc" class="form-input" placeholder="Deskripsi singkat produk..."></textarea>
+              </div>
 
-            <div class="form-group full">
-              <!-- Pilar 3: field 'imageUrl' — BUKAN 'imageFile' -->
-             <label class="form-label" for="f-img-file">UPLOAD GAMBAR MOCKUP (imageUrl)</label>
-              <div class="upload-zone" id="upload-zone" onclick="document.getElementById('f-img-file').click()">
-  <input type="file" id="f-img-file" accept="image/png,image/jpeg,image/webp" style="display:none;" onchange="handleImageUpload(this.files[0])"/>
-  <input type="hidden" id="f-imageurl" value=""/>
-  <div id="upload-placeholder" style="text-align:center;">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.4)" stroke-width="1.2" style="margin:0 auto 8px;display:block;"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-    <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.12em;color:var(--text3);">KLIK ATAU DRAG GAMBAR</p>
-    <p style="font-size:0.62rem;color:var(--text3);margin-top:4px;">PNG, JPG, WEBP — maks 5MB</p>
-  </div>
-  <img id="upload-preview-img" src="" alt="Preview" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"/>
-  <div id="upload-status" style="display:none;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);padding:4px 12px;border-radius:99px;background:rgba(0,0,0,0.7);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.14em;color:var(--cyan);white-space:nowrap;"></div>
-  <div class="upload-progress" id="upload-progress"></div>
-</div>
-            </div>
+              <!-- MULTI-IMAGE UPLOAD -->
+              <div class="form-group full">
+                <label class="form-label">UPLOAD GAMBAR PRODUK
+                  <span style="color:var(--cyan);font-size:0.36rem;margin-left:6px;">MAKS 10 FOTO · GAMBAR PERTAMA = COVER</span>
+                </label>
+                <div class="multi-upload-zone" id="multi-upload-zone">
+                  <input type="file" id="f-img-files" accept="image/png,image/jpeg,image/webp" multiple style="display:none;" onchange="handleMultiImageUpload(this.files)"/>
+                  <input type="hidden" id="f-imageurl" value=""/>
+                  <div class="multi-upload-hint" id="multi-hint">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.35)" stroke-width="1.2" style="display:block;">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    <p>KLIK ATAU DRAG GAMBAR KE SINI</p>
+                    <small>PNG, JPG, WEBP — maks 5MB per file, hingga 10 foto</small>
+                  </div>
+                  <div class="img-strip" id="img-strip"></div>
+                  <div id="add-more-row" style="display:none;margin-top:8px;">
+                    <button type="button" onclick="document.getElementById('f-img-files').click()"
+                      style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid rgba(0,212,200,0.25);background:rgba(0,212,200,0.05);color:rgba(0,212,200,0.7);font-family:'Orbitron',sans-serif;font-size:0.4rem;letter-spacing:0.12em;cursor:pointer;transition:all 0.18s;"
+                      onmouseover="this.style.background='rgba(0,212,200,0.12)';this.style.color='var(--cyan)'"
+                      onmouseout="this.style.background='rgba(0,212,200,0.05)';this.style.color='rgba(0,212,200,0.7)'">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      TAMBAH FOTO LAGI
+                    </button>
+                    <span style="margin-left:10px;font-size:0.6rem;color:var(--text3);" id="img-count-label">0 foto</span>
+                  </div>
+                  <div id="multi-upload-status"></div>
+                  <div class="multi-upload-progress-bar" id="multi-upload-progress"></div>
+                </div>
+                <p class="drag-hint" id="drag-reorder-hint" style="display:none;">↕ Drag thumbnail untuk mengurutkan ulang · Gambar pertama jadi COVER</p>
+              </div>
 
-            <div class="form-group full">
-              <!-- Pilar 3: field 'fileUrl' — BUKAN 'imageFile' -->
-              <label class="form-label" for="f-fileurl">URL FILE MENTAHAN RAHASIA (fileUrl)</label>
-              <input id="f-fileurl" type="url" class="form-input" placeholder="https://www.canva.com/design/... atau Google Drive link"/>
+              <div class="form-group full">
+                <label class="form-label" for="f-fileurl">URL FILE MENTAHAN RAHASIA (fileUrl)</label>
+                <input id="f-fileurl" type="url" class="form-input" placeholder="https://www.canva.com/design/..."/>
+              </div>
             </div>
+            <!-- /TAB BASIC -->
 
-            <div class="form-group">
-              <!-- Pilar 3: field 'createdAt' -->
-              <label class="form-label" for="f-createdat">TANGGAL DIBUAT (createdAt)</label>
-              <input id="f-createdat" type="date" class="form-input"/>
+            <!-- TAB: SEO -->
+            <div class="tab-panel" id="tab-seo">
+              <div class="form-group full">
+                <label class="form-label" for="f-meta-title">META TITLE (SEO)</label>
+                <input id="f-meta-title" type="text" class="form-input" placeholder="Beli Template Canva Instagram Premium | Alfirama.ID" maxlength="60"/>
+                <p id="meta-title-count" style="font-size:0.6rem;color:var(--text3);margin-top:4px;">0/60 karakter</p>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="f-meta-desc">META DESCRIPTION</label>
+                <textarea id="f-meta-desc" class="form-input" placeholder="Download template desain profesional untuk konten Instagram, Feed, Story, Reels..." maxlength="160" style="min-height:70px;"></textarea>
+                <p id="meta-desc-count" style="font-size:0.6rem;color:var(--text3);margin-top:4px;">0/160 karakter</p>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="f-keywords">KEYWORDS (pisah dengan koma)</label>
+                <input id="f-keywords" type="text" class="form-input" placeholder="template canva, instagram feed, desain premium"/>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" for="f-og-image">OG:IMAGE URL</label>
+                <input id="f-og-image" type="url" class="form-input" placeholder="https://res.cloudinary.com/..."/>
+                <p style="font-size:0.62rem;color:var(--text3);margin-top:4px;">Biarkan kosong untuk otomatis pakai gambar cover.</p>
+              </div>
+              <div class="form-hint full">
+                <strong>💡 SEO Tips:</strong> Meta title ideal 50–60 karakter. Meta desc ideal 120–160 karakter. Keywords pisah koma tanpa spasi lebih. OG:Image ideal ukuran 1200×630px.
+              </div>
             </div>
+            <!-- /TAB SEO -->
 
-            <div class="form-hint">
-              <strong>🔒 Keamanan Pilar 5:</strong> Field <code>fileUrl</code> tidak akan pernah tampil di halaman publik etalase Studio. Link ini hanya di-unlock via JavaScript setelah status transaksi klien terverifikasi sukses. Pastikan URL <code>imageUrl</code> adalah URL publik (Cloudinary / hosting lain) — bukan Drive private.
+            <!-- TAB: SETTINGS -->
+            <div class="tab-panel" id="tab-settings">
+              <div class="form-group">
+                <label class="form-label" for="f-badge">BADGE</label>
+                <select id="f-badge" class="form-select">
+                  <option value="">— Tidak Ada —</option>
+                  <option value="new">NEW</option>
+                  <option value="hot">HOT 🔥</option>
+                  <option value="sale">SALE</option>
+                  <option value="exclusive">EXCLUSIVE</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-status">STATUS PUBLISH</label>
+                <select id="f-status" class="form-select">
+                  <option value="published">Published — Tampil publik</option>
+                  <option value="draft">Draft — Tersimpan, tidak tampil</option>
+                  <option value="archived">Archived — Disembunyikan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-createdat">TANGGAL DIBUAT</label>
+                <input id="f-createdat" type="date" class="form-input"/>
+              </div>
+              <div class="form-group full">
+                <label class="form-label" style="margin-bottom:6px;">FEATURED — PIN KE HALAMAN UTAMA</label>
+                <div class="featured-toggle" id="featured-toggle" onclick="toggleFeatured()">
+                  <div class="toggle-switch"></div>
+                  <div>
+                    <p style="font-size:0.76rem;font-weight:600;color:var(--text2);">Tampilkan sebagai Featured Template</p>
+                    <p style="font-size:0.64rem;color:var(--text3);margin-top:2px;">Template akan di-pin di bagian atas halaman etalase Studio</p>
+                  </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" style="margin-left:auto;opacity:0.5;flex-shrink:0;"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                </div>
+              </div>
+              <div class="form-hint full">
+                <strong>📋 Status Guide:</strong> <code>Published</code> = tampil di etalase publik. <code>Draft</code> = hanya admin yang bisa lihat. <code>Archived</code> = disembunyikan dari semua tampilan.
+              </div>
             </div>
+            <!-- /TAB SETTINGS -->
 
-          </div>
+          </div><!-- /form-grid-2 -->
 
           <div class="form-footer">
             <div class="form-status" id="form-status-msg">
@@ -866,8 +962,14 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
           <p class="section-eyebrow">⬡ KATALOG DATABASE</p>
           <h2 class="section-title">Daftar <span class="accent">Template</span></h2>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <div class="realtime-dot"><div class="rt-blink"></div>LIVE SYNC</div>
+          <button onclick="openCatModal()" style="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--radius-sm);border:1px solid rgba(201,178,109,0.2);background:rgba(201,178,109,0.05);color:rgba(201,178,109,0.6);font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.1em;cursor:pointer;transition:all .18s;"
+            onmouseover="this.style.background='rgba(201,178,109,0.12)';this.style.color='var(--gold)'"
+            onmouseout="this.style.background='rgba(201,178,109,0.05)';this.style.color='rgba(201,178,109,0.6)'">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+            KATEGORI
+          </button>
           <div class="view-toggle">
             <button class="view-toggle-btn active" id="btn-table-view" onclick="setView('table')">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -880,23 +982,22 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
           </div>
           <button class="btn-export" onclick="exportCSV()">
             <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            EXPORT CSV
+            CSV
           </button>
         </div>
       </div>
 
-      <!-- Filter Bar -->
+      <!-- FILTER BAR -->
       <div class="filter-bar fade-in">
-        <input type="text" class="filter-input" id="search-input" placeholder="🔍 Cari nama template..." oninput="applyFilters()"/>
+        <input type="text" class="filter-input" id="search-input" placeholder="🔍 Cari nama template..." oninput="window._debouncedSearch && window._debouncedSearch()"/>
         <select class="filter-select" id="filter-cat" onchange="applyFilters()">
           <option value="">Semua Kategori</option>
-          <option value="PSD">PSD</option>
-          <option value="VEKTOR">VEKTOR</option>
-          <option value="AFTER EFFECTS">AFTER EFFECTS</option>
-          <option value="CANVA">CANVA</option>
-          <option value="PREMIERE PRO">PREMIERE PRO</option>
-          <option value="ILLUSTRATOR">ILLUSTRATOR</option>
-          <option value="FIGMA">FIGMA</option>
+        </select>
+        <select class="filter-select" id="filter-status" onchange="applyFilters()">
+          <option value="">Semua Status</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="archived">Archived</option>
         </select>
         <select class="filter-select" id="sort-select" onchange="applyFilters()">
           <option value="newest">Terbaru</option>
@@ -908,10 +1009,35 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
         <span style="font-size:0.62rem;color:var(--text3);font-family:var(--font-tech);letter-spacing:0.08em;" id="result-count"></span>
       </div>
 
+      <!-- BULK ACTIONS BAR -->
+      <div class="bulk-bar" id="bulk-bar">
+        <span class="bulk-count" id="bulk-count-label">0 dipilih</span>
+        <div class="bulk-actions">
+          <button class="bulk-btn success" onclick="bulkPublish()">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            Set Published
+          </button>
+          <button class="bulk-btn neutral" onclick="bulkDraft()">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/></svg>
+            Set Draft
+          </button>
+          <button class="bulk-btn neutral" onclick="bulkExport()">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Export Selected
+          </button>
+          <button class="bulk-btn danger" onclick="bulkDelete()">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            Hapus Terpilih
+          </button>
+          <button class="bulk-btn neutral" onclick="clearSelection()">✕ Batalkan</button>
+        </div>
+      </div>
+
       <!-- TABLE VIEW -->
       <div class="glass fade-in" id="table-view">
-        <div class="live-log-head" style="grid-template-columns:0.25fr 1.8fr 0.8fr 0.8fr 1fr 0.6fr 0.55fr;">
-          <span>IMG</span><span>NAMA PRODUK (title)</span><span>KATEGORI</span><span>HARGA (price)</span><span>DESKRIPSI</span><span>TANGGAL</span><span>AKSI</span>
+        <div class="live-log-head" style="grid-template-columns:20px 0.25fr 1.6fr 0.8fr 0.7fr 0.7fr 0.6fr 0.6fr;">
+          <span><input type="checkbox" class="row-checkbox" id="check-all" onchange="toggleSelectAll(this.checked)" style="margin:0;"/></span>
+          <span>IMG</span><span>NAMA PRODUK</span><span>KATEGORI</span><span>HARGA</span><span>STATUS</span><span>TANGGAL</span><span>AKSI</span>
         </div>
         <div id="table-body">
           <div class="log-empty">MEMUAT DATA DARI FIRESTORE...</div>
@@ -922,81 +1048,88 @@ textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
       <div id="grid-view"></div>
 
       <!-- EMPTY STATE -->
-      <div id="empty-state" style="display:none;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;text-align:center;">
-        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.2)" stroke-width="1"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <p style="font-family:var(--font-tech);font-size:0.7rem;letter-spacing:0.12em;color:var(--text3);" id="empty-msg">BELUM ADA TEMPLATE</p>
-        <p style="font-size:0.8rem;color:var(--text3);">Gunakan form di atas untuk menambahkan template pertama.</p>
+      <div id="empty-state" class="empty-state-wrap" style="display:none;">
+        <div class="empty-icon-ring">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.3)" stroke-width="1.2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <p style="font-family:var(--font-tech);font-size:0.72rem;letter-spacing:0.14em;color:var(--text2);margin-bottom:6px;" id="empty-msg">BELUM ADA TEMPLATE</p>
+          <p style="font-size:0.78rem;color:var(--text3);line-height:1.6;max-width:320px;">Katalog masih kosong. Gunakan form di atas untuk menambahkan template pertama.</p>
+        </div>
+        <button onclick="document.getElementById('f-title').focus();document.querySelector('.glass').scrollIntoView({behavior:'smooth',block:'start'});"
+          style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:22px;background:var(--gold-glow);border:1px solid rgba(201,178,109,0.25);color:var(--gold);font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.14em;cursor:pointer;transition:all .2s;"
+          onmouseover="this.style.background='rgba(201,178,109,0.18)'"
+          onmouseout="this.style.background='var(--gold-glow)'">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          TAMBAH TEMPLATE PERTAMA
+        </button>
       </div>
 
     </div><!-- /page-content -->
   </div><!-- /main-wrap -->
+
   <!-- LIVE PREVIEW PANEL -->
-<div id="live-preview-panel">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-    <div>
-      <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.28em;color:rgba(0,212,200,0.5);margin-bottom:3px;">⬡ LIVE PREVIEW</p>
-      <h3 style="font-family:var(--font-tech);font-size:0.72rem;font-weight:800;color:var(--text);">Marketplace Card</h3>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="realtime-dot"><div class="rt-blink"></div>LIVE</div>
-      <button onclick="togglePreviewPanel()" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;">
-        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- AUTO SLUG -->
-  <div style="margin-bottom:16px;padding:10px 14px;border-radius:var(--radius-sm);background:rgba(0,212,200,0.05);border:1px solid rgba(0,212,200,0.12);">
-    <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.2em;color:rgba(0,212,200,0.5);margin-bottom:3px;">AUTO SLUG</p>
-    <p style="font-size:0.72rem;color:var(--cyan);">/product/<span id="pv-slug">your-product-slug</span></p>
-  </div>
-
-  <!-- PREVIEW CARD -->
-  <div class="preview-card preview-glow">
-    <div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg2);position:relative;">
-      <img id="pv-image" src="" alt="Preview"
-        style="width:100%;height:100%;object-fit:cover;display:none;"
-        onerror="this.style.display='none';document.getElementById('pv-img-ph').style.display='flex';">
-      <div id="pv-img-ph" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg3));">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.2)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+  <div id="live-preview-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.28em;color:rgba(0,212,200,0.5);margin-bottom:3px;">⬡ LIVE PREVIEW</p>
+        <h3 style="font-family:var(--font-tech);font-size:0.72rem;font-weight:800;color:var(--text);">Marketplace Card</h3>
       </div>
-      <div style="position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:99px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.18em;color:var(--cyan);">PREMIUM</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="realtime-dot"><div class="rt-blink"></div>LIVE</div>
+        <button onclick="togglePreviewPanel()" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
     </div>
-    <div style="padding:20px;">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px;">
-        <div style="flex:1;">
-          <h4 id="pv-title" style="font-weight:700;font-size:0.95rem;color:var(--text);line-height:1.35;margin-bottom:6px;">—</h4>
-          <p id="pv-desc" style="font-size:0.72rem;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">—</p>
+    <div style="margin-bottom:16px;padding:10px 14px;border-radius:var(--radius-sm);background:rgba(0,212,200,0.05);border:1px solid rgba(0,212,200,0.12);">
+      <p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.2em;color:rgba(0,212,200,0.5);margin-bottom:3px;">AUTO SLUG</p>
+      <p style="font-size:0.72rem;color:var(--cyan);">/product/<span id="pv-slug">your-product-slug</span></p>
+    </div>
+    <div class="preview-card">
+      <div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg2);position:relative;">
+        <img id="pv-image" src="" alt="Preview" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none';document.getElementById('pv-img-ph').style.display='flex';">
+        <div id="pv-img-ph" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg3));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.2)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div style="position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:99px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.18em;color:var(--cyan);">PREMIUM</div>
+      </div>
+      <div style="padding:20px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px;">
+          <div style="flex:1;">
+            <h4 id="pv-title" style="font-weight:700;font-size:0.95rem;color:var(--text);line-height:1.35;margin-bottom:6px;">—</h4>
+            <p id="pv-desc" style="font-size:0.72rem;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">—</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);">
+          <div>
+            <p style="font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:3px;">Price</p>
+            <p id="pv-price" style="font-family:var(--font-tech);font-size:1.15rem;font-weight:800;color:var(--gold);">—</p>
+          </div>
+          <div style="padding:9px 18px;border-radius:22px;background:linear-gradient(105deg,#00d4c8,#3ab0ff);color:#0A0F1D;font-size:0.7rem;font-weight:700;">View Product</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);">
-        <div>
-          <p style="font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:3px;">Price</p>
-          <p id="pv-price" style="font-family:var(--font-tech);font-size:1.15rem;font-weight:800;color:var(--gold);">—</p>
-        </div>
-        <div style="padding:9px 18px;border-radius:22px;background:linear-gradient(105deg,#00d4c8,#3ab0ff);color:#0A0F1D;font-size:0.7rem;font-weight:700;">View Product</div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;">
+      <div style="flex:1;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">
+        <p style="font-family:var(--font-tech);font-size:0.36rem;letter-spacing:0.16em;color:var(--text3);margin-bottom:3px;">TITLE</p>
+        <p id="pv-title-count" style="font-family:var(--font-tech);font-size:0.65rem;color:var(--text2);">0 / 60</p>
+      </div>
+      <div style="flex:1;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">
+        <p style="font-family:var(--font-tech);font-size:0.36rem;letter-spacing:0.16em;color:var(--text3);margin-bottom:3px;">DESC</p>
+        <p id="pv-desc-count" style="font-family:var(--font-tech);font-size:0.65rem;color:var(--text2);">0 / 160</p>
       </div>
     </div>
   </div>
 
-  <!-- CHAR COUNTERS -->
-  <div style="margin-top:14px;display:flex;gap:10px;">
-    <div style="flex:1;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">
-      <p style="font-family:var(--font-tech);font-size:0.36rem;letter-spacing:0.16em;color:var(--text3);margin-bottom:3px;">TITLE</p>
-      <p id="pv-title-count" style="font-family:var(--font-tech);font-size:0.65rem;color:var(--text2);">0 / 60</p>
-    </div>
-    <div style="flex:1;padding:10px 12px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">
-      <p style="font-family:var(--font-tech);font-size:0.36rem;letter-spacing:0.16em;color:var(--text3);margin-bottom:3px;">DESC</p>
-      <p id="pv-desc-count" style="font-family:var(--font-tech);font-size:0.65rem;color:var(--text2);">0 / 160</p>
-    </div>
-  </div>
-</div>
 </div><!-- /app -->
 
 
-<!-- ══════════════════════════════════════════════
-     SCRIPTS NON-MODULE
-══════════════════════════════════════════════ -->
+<!-- ══ SCRIPTS ══ -->
 
 <!-- Clock -->
 <script>
@@ -1022,154 +1155,120 @@ function showToast(msg,dur){
 window.showToast=showToast;
 </script>
 
-<!-- Mobile Sidebar -->
+<!-- Debounce + Highlight -->
 <script>
+function debounce(fn,ms){ var timer; return function(){ var args=arguments; clearTimeout(timer); timer=setTimeout(function(){ fn.apply(this,args); },ms); }; }
+function highlightText(text,query){ if(!query||!text) return text||''; var escaped=query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); return text.replace(new RegExp('('+escaped+')','gi'),'<mark class="search-hl">$1</mark>'); }
+window.debounce=debounce; window.highlightText=highlightText;
+</script>
+
+<!-- Sidebar + Theme + Skeleton + Mobile -->
+<script>
+/* SIDEBAR COLLAPSE */
+var _sidebarCollapsed=false;
+function toggleSidebar(){
+  var sb=document.querySelector('.sidebar');
+  var mw=document.getElementById('main-wrap');
+  _sidebarCollapsed=!_sidebarCollapsed;
+  sb.classList.toggle('collapsed',_sidebarCollapsed);
+  if(mw) mw.style.marginLeft=_sidebarCollapsed?'var(--sidebar-w-collapsed)':'var(--sidebar-w)';
+  var icon=document.getElementById('collapse-icon');
+  if(icon){
+    var d=_sidebarCollapsed?'M9 5l7 7-7 7':'M15 19l-7-7 7-7';
+    icon.querySelector('path') ? icon.querySelector('path').setAttribute('d',d) : null;
+  }
+  try{ localStorage.setItem('sb-collapsed',_sidebarCollapsed?'1':'0'); }catch(e){}
+}
+window.toggleSidebar=toggleSidebar;
+document.addEventListener('DOMContentLoaded',function(){
+  try{
+    if(localStorage.getItem('sb-collapsed')==='1'){
+      _sidebarCollapsed=true;
+      document.querySelector('.sidebar').classList.add('collapsed');
+      var mw=document.getElementById('main-wrap');
+      if(mw) mw.style.marginLeft='var(--sidebar-w-collapsed)';
+    }
+  }catch(e){}
+});
+
+/* THEME TOGGLE */
+function toggleTheme(){
+  var isLight=document.body.classList.toggle('light-mode');
+  updateThemeIcon(isLight);
+  try{ localStorage.setItem('theme',isLight?'light':'dark'); }catch(e){}
+}
+function updateThemeIcon(isLight){
+  var icon=document.getElementById('theme-icon');
+  if(!icon) return;
+  if(isLight){
+    icon.innerHTML='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  } else {
+    icon.innerHTML='<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+  }
+}
+window.toggleTheme=toggleTheme;
+document.addEventListener('DOMContentLoaded',function(){
+  try{
+    var saved=localStorage.getItem('theme');
+    if(saved==='light'){ document.body.classList.add('light-mode'); updateThemeIcon(true); }
+  }catch(e){}
+});
+
+/* SKELETON */
+function showSkeleton(){
+  var tbody=document.getElementById('table-body');
+  if(!tbody) return;
+  tbody.innerHTML=[1,2,3,4,5].map(function(){
+    return '<div class="skeleton-row">'
+      +'<span class="skeleton" style="width:16px;height:16px;border-radius:4px;"></span>'
+      +'<span class="skeleton" style="width:48px;height:36px;border-radius:6px;"></span>'
+      +'<span class="skeleton" style="width:80%;"></span>'
+      +'<span class="skeleton" style="width:60%;"></span>'
+      +'<span class="skeleton" style="width:70%;"></span>'
+      +'<span class="skeleton" style="width:55%;"></span>'
+      +'<span class="skeleton" style="width:50%;"></span>'
+      +'<span class="skeleton" style="width:40px;height:28px;border-radius:6px;"></span>'
+      +'</div>';
+  }).join('');
+}
+window.showSkeleton=showSkeleton;
+
+/* DEBOUNCED SEARCH */
+document.addEventListener('DOMContentLoaded',function(){
+  window._debouncedSearch=debounce(function(){ if(window.applyFilters) window.applyFilters(); },280);
+});
+
+/* MOBILE SIDEBAR */
 function toggleMobileSidebar(){
   var sb=document.querySelector('.sidebar');
+  var ov=document.getElementById('sidebar-overlay');
   var isOpen=sb.classList.contains('mobile-open');
-  if(isOpen){ sb.classList.remove('mobile-open'); }
-  else { sb.classList.add('mobile-open'); }
+  sb.classList.toggle('mobile-open',!isOpen);
+  ov.classList.toggle('show',!isOpen);
 }
 window.toggleMobileSidebar=toggleMobileSidebar;
 </script>
 
-<!-- Confirm Modal helpers -->
+<!-- Confirm Modal -->
 <script>
 var _confirmCallback=null;
-function openConfirm(name,cb){
+function openConfirm(name,cb,title,body){
   _confirmCallback=cb;
   document.getElementById('confirm-name').textContent=name||'—';
+  document.getElementById('confirm-title').textContent=title||'KONFIRMASI HAPUS';
+  document.getElementById('confirm-body').textContent=body||'Kamu yakin ingin menghapus template ini?';
   document.getElementById('confirm-overlay').classList.add('open');
-  document.getElementById('confirm-delete-exec').onclick=function(){
-    if(_confirmCallback) _confirmCallback();
-    closeConfirm();
-  };
+  document.getElementById('confirm-delete-exec').onclick=function(){ if(_confirmCallback) _confirmCallback(); closeConfirm(); };
 }
-function closeConfirm(){
-  document.getElementById('confirm-overlay').classList.remove('open');
-  _confirmCallback=null;
-}
-window.openConfirm=openConfirm;
-window.closeConfirm=closeConfirm;
+function closeConfirm(){ document.getElementById('confirm-overlay').classList.remove('open'); _confirmCallback=null; }
+window.openConfirm=openConfirm; window.closeConfirm=closeConfirm;
 document.getElementById('confirm-overlay').addEventListener('click',function(e){ if(e.target===this) closeConfirm(); });
-document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeConfirm(); });
-</script>
-
-<!-- Image Preview -->
-<script>
-var _imgTimer=null;
-function scheduleImgPreview(url){
-  clearTimeout(_imgTimer);
-  if(!url){ resetImgPreview(); return; }
-  _imgTimer=setTimeout(function(){ updateImgPreview(url); },600);
-}
-function updateImgPreview(url){
-  var ph=document.getElementById('img-placeholder');
-  var img=document.getElementById('img-preview');
-  if(!url){ resetImgPreview(); return; }
-  img.onload=function(){ ph.style.display='none'; img.style.display='block'; };
-  img.onerror=function(){ resetImgPreview(); };
-  img.src=url;
-}
-function resetImgPreview(){
-  var ph=document.getElementById('img-placeholder');
-  var img=document.getElementById('img-preview');
-  if(ph) ph.style.display='block';
-  if(img){ img.style.display='none'; img.src=''; }
-}
-window.scheduleImgPreview=scheduleImgPreview;
-window.resetImgPreview=resetImgPreview;
-</script>
-<!-- Cloudinary Upload -->
-<script>
-const CLOUD_NAME    = 'dt4vktmo6';
-const UPLOAD_PRESET = 'Alfirama.ID';
-
-async function handleImageUpload(file){
-  if(!file) return;
-  if(file.size > 5 * 1024 * 1024){ showToast('⚠️ Ukuran gambar maks 5MB'); return; }
-
-  const zone    = document.getElementById('upload-zone');
-  const status  = document.getElementById('upload-status');
-  const progress= document.getElementById('upload-progress');
-  const prevImg = document.getElementById('upload-preview-img');
-  const ph      = document.getElementById('upload-placeholder');
-
-  zone.classList.add('uploading');
-  status.style.display = 'block';
-  status.textContent   = 'MENGUPLOAD...';
-  progress.style.width = '30%';
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', UPLOAD_PRESET);
-
-  try {
-    progress.style.width = '60%';
-    const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-      method: 'POST', body: formData
-    });
-    const data = await res.json();
-
-    if(data.secure_url){
-      progress.style.width = '100%';
-      status.textContent   = '✓ UPLOAD BERHASIL';
-
-      // Simpan URL ke input hidden & tampilkan preview
-      let urlInput = document.getElementById('f-imageurl');
-      if(!urlInput){
-        urlInput = document.createElement('input');
-        urlInput.type = 'hidden'; urlInput.id = 'f-imageurl';
-        document.body.appendChild(urlInput);
-      }
-      urlInput.value = data.secure_url;
-
-      prevImg.src            = data.secure_url;
-      prevImg.style.display  = 'block';
-      ph.style.display       = 'none';
-
-      // Sync ke live preview
-      if(window.syncPreview) syncPreview();
-      if(window.saveDraft)   saveDraft();
-
-      showToast('✅ Gambar berhasil diupload ke Cloudinary!');
-      setTimeout(()=>{ status.style.display='none'; progress.style.width='0%'; }, 2000);
-    } else {
-      throw new Error(data.error?.message || 'Upload gagal');
-    }
-  } catch(err){
-    status.textContent   = '✗ GAGAL';
-    progress.style.width = '0%';
-    showToast('❌ Upload gagal: ' + err.message, 5000);
-    console.error('Cloudinary error:', err);
-  } finally {
-    zone.classList.remove('uploading');
-  }
-}
-
-// Drag & drop support
-document.addEventListener('DOMContentLoaded', function(){
-  const zone = document.getElementById('upload-zone');
-  if(!zone) return;
-  zone.addEventListener('dragover',  (e)=>{ e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', ()=>{ zone.classList.remove('dragover'); });
-  zone.addEventListener('drop', (e)=>{
-    e.preventDefault(); zone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if(file) handleImageUpload(file);
-  });
-});
-window.handleImageUpload = handleImageUpload;
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ closeConfirm(); closeCatModal(); closeHistoryDrawer(); closePreviewModal(); } });
 </script>
 
 <!-- Price Preview -->
 <script>
-function updatePricePreview(val){
-  var el=document.getElementById('price-preview');
-  if(!el) return;
-  var num=Number(val);
-  el.textContent=num>0?'→ Rp '+num.toLocaleString('id-ID'):'';
-}
+function updatePricePreview(val){ var el=document.getElementById('price-preview'); if(!el) return; var num=Number(val); el.textContent=num>0?'→ Rp '+num.toLocaleString('id-ID'):''; }
 window.updatePricePreview=updatePricePreview;
 </script>
 
@@ -1182,286 +1281,503 @@ function setView(mode){
   var grd=document.getElementById('grid-view');
   var btnT=document.getElementById('btn-table-view');
   var btnG=document.getElementById('btn-grid-view');
-  if(mode==='grid'){
-    tbl.style.display='none'; grd.classList.add('active');
-    btnT.classList.remove('active'); btnG.classList.add('active');
-  } else {
-    tbl.style.display=''; grd.classList.remove('active');
-    btnT.classList.add('active'); btnG.classList.remove('active');
-  }
+  if(mode==='grid'){ tbl.style.display='none'; grd.classList.add('active'); btnT.classList.remove('active'); btnG.classList.add('active'); }
+  else { tbl.style.display=''; grd.classList.remove('active'); btnT.classList.add('active'); btnG.classList.remove('active'); }
   if(window._renderAll) window._renderAll(window._filteredCache||[]);
 }
 window.setView=setView;
 </script>
-<!-- Live Preview Logic -->
+
+<!-- FORM TABS -->
 <script>
-var _previewOpen = false;
-
-function togglePreviewPanel(){
-  var panel = document.getElementById('live-preview-panel');
-  _previewOpen = !_previewOpen;
-  if(_previewOpen){
-    panel.style.display = 'block';
-    setTimeout(function(){ panel.classList.add('open'); }, 10);
-    syncPreview();
-  } else {
-    panel.classList.remove('open');
-    setTimeout(function(){ panel.style.display = 'none'; }, 300);
-  }
-}
-window.togglePreviewPanel = togglePreviewPanel;
-
-function generateSlug(text){
-  return text.toLowerCase().trim()
-    .replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-') || 'your-product-slug';
-}
-
-function syncPreview(){
-  if(!_previewOpen) return;
-  var title = (document.getElementById('f-title')?.value||'').trim();
-  var price = document.getElementById('f-price')?.value||'0';
-  var desc  = (document.getElementById('f-desc')?.value||'').trim();
-  var imgUrl= (document.getElementById('f-imageurl')?.value||'').trim();
-
-  var pvTitle = document.getElementById('pv-title');
-  var pvPrice = document.getElementById('pv-price');
-  var pvDesc  = document.getElementById('pv-desc');
-  var pvImg   = document.getElementById('pv-image');
-  var pvImgPh = document.getElementById('pv-img-ph');
-  var pvSlug  = document.getElementById('pv-slug');
-  var pvTCount= document.getElementById('pv-title-count');
-  var pvDCount= document.getElementById('pv-desc-count');
-
-  if(pvTitle) pvTitle.textContent = title || '—';
-  if(pvSlug)  pvSlug.textContent  = title ? generateSlug(title) : 'your-product-slug';
-  if(pvDesc)  pvDesc.textContent  = desc  || '—';
-  if(pvTCount) pvTCount.textContent = (title.length)+' / 60';
-  if(pvDCount) pvDCount.textContent = (desc.length)+' / 160';
-
-  var num = Number(price);
-  if(pvPrice) pvPrice.textContent = num>0 ? 'Rp '+num.toLocaleString('id-ID') : '—';
-
-  if(imgUrl && pvImg && pvImgPh){
-    pvImg.src = imgUrl;
-    pvImg.style.display = 'block';
-    pvImgPh.style.display = 'none';
-  } else if(pvImg && pvImgPh){
-    pvImg.style.display = 'none';
-    pvImgPh.style.display = 'flex';
-  }
-}
-window.syncPreview = syncPreview;
-const STORAGE_KEY = 'alfirama-studio-draft';
-
-function saveDraft(){
-  const data = {
-    title:    document.getElementById('f-title')?.value || '',
-    price:    document.getElementById('f-price')?.value || '',
-    category: document.getElementById('f-category')?.value || '',
-    desc:     document.getElementById('f-desc')?.value || '',
-    imageUrl: document.getElementById('f-imageurl')?.value || '',
-    fileUrl:  document.getElementById('f-fileurl')?.value || '',
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function loadDraft(){
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if(!saved) return;
-    const data = JSON.parse(saved);
-    if(data.title)    document.getElementById('f-title').value    = data.title;
-    if(data.price)    document.getElementById('f-price').value    = data.price;
-    if(data.category) document.getElementById('f-category').value = data.category;
-    if(data.desc)     document.getElementById('f-desc').value     = data.desc;
-    if(data.imageUrl) document.getElementById('f-imageurl').value = data.imageUrl;
-    if(data.fileUrl)  document.getElementById('f-fileurl').value  = data.fileUrl;
-    syncPreview();
-    updatePricePreview(data.price);
-    if(data.imageUrl) scheduleImgPreview(data.imageUrl);
-  } catch(e){}
-}
-window.saveDraft = saveDraft;
-window.loadDraft = loadDraft;
-
-// Attach input listeners untuk sync real-time
-document.addEventListener('DOMContentLoaded', function(){
-  ['f-title','f-price','f-desc','f-imageurl','f-fileurl','f-category'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el){
-      el.addEventListener('input', syncPreview);
-      el.addEventListener('input', saveDraft);
-      el.addEventListener('change', saveDraft);
-    }
+function switchTab(tab){
+  document.querySelectorAll('.form-tab').forEach(function(b,i){ b.classList.toggle('active',['basic','seo','settings'][i]===tab); });
+  ['basic','seo','settings'].forEach(function(t){
+    var el=document.getElementById('tab-'+t);
+    if(!el) return;
+    if(t===tab){ el.classList.add('active'); el.style.display='contents'; }
+    else { el.classList.remove('active'); el.style.display='none'; }
   });
-  loadDraft();
+}
+window.switchTab=switchTab;
+document.addEventListener('DOMContentLoaded',function(){
+  switchTab('basic');
+  /* SEO char counters */
+  document.getElementById('f-meta-title')?.addEventListener('input',function(){ document.getElementById('meta-title-count').textContent=(this.value.length)+'/60 karakter'; });
+  document.getElementById('f-meta-desc')?.addEventListener('input',function(){ document.getElementById('meta-desc-count').textContent=(this.value.length)+'/160 karakter'; });
 });
 </script>
 
-<!-- ══════════════════════════════════════════════
-     FIREBASE MODULE — Auth + Firestore CRUD
-     Pilar 4: instance 'db' Firestore, 'auth' Auth
-     Pilar 3: field names title/price/category/
-              description/imageUrl/fileUrl/createdAt
-     Pilar 5: ADMIN_EMAILS guard, bukan UID whitelist
-              agar selaras dengan dashboard index.html
-══════════════════════════════════════════════ -->
+<!-- Featured Toggle -->
+<script>
+var _isFeatured=false;
+function toggleFeatured(){
+  _isFeatured=!_isFeatured;
+  document.getElementById('featured-toggle').classList.toggle('active',_isFeatured);
+}
+window.toggleFeatured=toggleFeatured;
+</script>
+
+<!-- LIVE PREVIEW -->
+<script>
+var _previewOpen=false;
+function togglePreviewPanel(){
+  var panel=document.getElementById('live-preview-panel');
+  _previewOpen=!_previewOpen;
+  if(_previewOpen){ panel.style.display='block'; setTimeout(function(){ panel.classList.add('open'); },10); syncPreview(); }
+  else { panel.classList.remove('open'); setTimeout(function(){ panel.style.display='none'; },300); }
+}
+window.togglePreviewPanel=togglePreviewPanel;
+function generateSlug(text){ return text.toLowerCase().trim().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/--+/g,'-')||'your-product-slug'; }
+function syncPreview(){
+  if(!_previewOpen) return;
+  var title=(document.getElementById('f-title')?.value||'').trim();
+  var price=document.getElementById('f-price')?.value||'0';
+  var desc=(document.getElementById('f-desc')?.value||'').trim();
+  var imgUrl=(document.getElementById('f-imageurl')?.value||'').trim();
+  if(document.getElementById('pv-title')) document.getElementById('pv-title').textContent=title||'—';
+  if(document.getElementById('pv-slug')) document.getElementById('pv-slug').textContent=title?generateSlug(title):'your-product-slug';
+  if(document.getElementById('pv-desc')) document.getElementById('pv-desc').textContent=desc||'—';
+  if(document.getElementById('pv-title-count')) document.getElementById('pv-title-count').textContent=title.length+' / 60';
+  if(document.getElementById('pv-desc-count')) document.getElementById('pv-desc-count').textContent=desc.length+' / 160';
+  var num=Number(price);
+  if(document.getElementById('pv-price')) document.getElementById('pv-price').textContent=num>0?'Rp '+num.toLocaleString('id-ID'):'—';
+  var pvImg=document.getElementById('pv-image'), pvPh=document.getElementById('pv-img-ph');
+  if(imgUrl&&pvImg&&pvPh){ pvImg.src=imgUrl; pvImg.style.display='block'; pvPh.style.display='none'; }
+  else if(pvImg&&pvPh){ pvImg.style.display='none'; pvPh.style.display='flex'; }
+}
+window.syncPreview=syncPreview;
+document.addEventListener('DOMContentLoaded',function(){
+  ['f-title','f-price','f-desc','f-imageurl','f-fileurl','f-category'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){ el.addEventListener('input',syncPreview); }
+  });
+});
+</script>
+
+<!-- CATEGORY MODAL -->
+<script>
+var DEFAULT_CATS=['PSD','VEKTOR','AFTER EFFECTS','CANVA','PREMIERE PRO','ILLUSTRATOR','FIGMA'];
+var _customCats=[];
+
+function loadCats(){
+  try{ var s=localStorage.getItem('alfirama-cats'); if(s) _customCats=JSON.parse(s); }catch(e){}
+}
+function saveCats(){
+  try{ localStorage.setItem('alfirama-cats',JSON.stringify(_customCats)); }catch(e){}
+}
+function getAllCats(){ return DEFAULT_CATS.concat(_customCats.filter(function(c){ return !DEFAULT_CATS.includes(c); })); }
+
+function rebuildCatSelects(){
+  var cats=getAllCats();
+  ['f-category','filter-cat'].forEach(function(id){
+    var sel=document.getElementById(id);
+    if(!sel) return;
+    var cur=sel.value;
+    while(sel.options.length>0) sel.remove(0);
+    if(id==='filter-cat'){ var opt=document.createElement('option'); opt.value=''; opt.textContent='Semua Kategori'; sel.appendChild(opt); }
+    else { var opt=document.createElement('option'); opt.value=''; opt.textContent='— Pilih Kategori —'; sel.appendChild(opt); }
+    cats.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+    if(cur) sel.value=cur;
+  });
+}
+
+function openCatModal(){
+  loadCats();
+  renderCatList();
+  document.getElementById('cat-modal-overlay').classList.add('open');
+}
+function closeCatModal(){ document.getElementById('cat-modal-overlay').classList.remove('open'); }
+window.openCatModal=openCatModal; window.closeCatModal=closeCatModal;
+
+function renderCatList(){
+  var all=getAllCats();
+  var list=document.getElementById('cat-list');
+  if(!list) return;
+  list.innerHTML=all.map(function(c){
+    var isDefault=DEFAULT_CATS.includes(c);
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">'
+      +'<span style="font-size:0.76rem;color:var(--text2);">'+esc(c)+'</span>'
+      +(isDefault
+        ? '<span style="font-size:0.6rem;color:var(--text3);">default</span>'
+        : '<button onclick="deleteCat(\''+esc(c)+'\')" style="padding:3px 10px;border-radius:6px;border:1px solid rgba(248,81,73,0.2);background:rgba(248,81,73,0.05);color:var(--red-dim);font-size:0.64rem;cursor:pointer;transition:all .15s;" onmouseover="this.style.color=\'var(--red)\'" onmouseout="this.style.color=\'var(--red-dim)\'">hapus</button>')
+      +'</div>';
+  }).join('');
+}
+
+function addCategory(){
+  var inp=document.getElementById('new-cat-input');
+  var val=(inp.value||'').trim().toUpperCase();
+  if(!val){ showToast('⚠️ Nama kategori tidak boleh kosong'); return; }
+  if(getAllCats().includes(val)){ showToast('⚠️ Kategori sudah ada'); return; }
+  _customCats.push(val);
+  saveCats();
+  inp.value='';
+  renderCatList();
+  rebuildCatSelects();
+  showToast('✅ Kategori "'+val+'" ditambahkan');
+}
+window.addCategory=addCategory;
+
+function deleteCat(c){
+  _customCats=_customCats.filter(function(x){ return x!==c; });
+  saveCats();
+  renderCatList();
+  rebuildCatSelects();
+  showToast('🗑️ Kategori dihapus');
+}
+window.deleteCat=deleteCat;
+
+document.addEventListener('DOMContentLoaded',function(){ loadCats(); rebuildCatSelects(); });
+</script>
+
+<!-- VERSION HISTORY DRAWER -->
+<script>
+var editingId=null;
+function openHistoryDrawer(docId){
+  if(!docId){ showToast('⚠️ Pilih template dulu'); return; }
+  document.getElementById('history-drawer').classList.add('open');
+  var titleEl=document.getElementById('history-doc-title');
+  var listEl=document.getElementById('history-list');
+  if(titleEl) titleEl.textContent='Loading...';
+  if(listEl) listEl.innerHTML='<div style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.14em;color:var(--text3);padding:20px 0;text-align:center;">MEMUAT RIWAYAT...</div>';
+  /* Load from Firestore via exposed function */
+  if(window._loadHistory) window._loadHistory(docId);
+}
+function closeHistoryDrawer(){ document.getElementById('history-drawer').classList.remove('open'); }
+window.openHistoryDrawer=openHistoryDrawer;
+window.closeHistoryDrawer=closeHistoryDrawer;
+</script>
+
+<!-- PREVIEW AS CUSTOMER MODAL -->
+<script>
+function openPreviewModal(t){
+  var box=document.getElementById('preview-modal-content');
+  if(!box) return;
+  var imgs=Array.isArray(t.images)&&t.images.length>0?t.images:(t.imageUrl?[t.imageUrl]:[]);
+  var cover=imgs[0]||'';
+  var statusColor={'published':'var(--green)','draft':'var(--text3)','archived':'var(--red-dim)'}[t.status||'published']||'var(--green)';
+  box.innerHTML='<div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg2);position:relative;">'
+    +(cover?'<img src="'+esc(cover)+'" style="width:100%;height:100%;object-fit:cover;" alt="Cover">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg3));"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.2)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>')
+    +'<div style="position:absolute;top:12px;left:12px;display:flex;gap:6px;">'
+    +(t.badge?'<span style="padding:3px 10px;border-radius:99px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.14em;color:var(--gold);">'+esc(t.badge.toUpperCase())+'</span>':'')
+    +'<span style="padding:3px 10px;border-radius:99px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.14em;color:var(--cyan);">PREMIUM</span>'
+    +'</div></div>'
+    +'<div style="padding:24px;">'
+    +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;">'
+    +'<div style="flex:1;">'
+    +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
+    +'<span class="badge '+(catBadge(t.category))+'">'+esc(t.category||'—')+'</span>'
+    +'</div>'
+    +'<h2 style="font-weight:700;font-size:1.1rem;color:var(--text);line-height:1.35;margin-bottom:8px;">'+esc(t.title||'—')+'</h2>'
+    +'<p style="font-size:0.8rem;color:var(--text2);line-height:1.65;">'+esc(t.description||'—')+'</p>'
+    +'</div></div>'
+    +(imgs.length>1?'<div style="display:flex;gap:6px;margin:14px 0;flex-wrap:wrap;">'+imgs.map(function(u,i){ return '<img src="'+esc(u)+'" style="width:64px;height:48px;border-radius:6px;object-fit:cover;border:1px solid '+(i===0?'var(--gold)':'rgba(255,255,255,0.1)')+'" alt="img'+i+'">'}).join('')+'</div>':'')
+    +'<div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);margin-top:16px;">'
+    +'<div><p style="font-size:0.6rem;color:var(--text3);letter-spacing:0.15em;margin-bottom:4px;">HARGA</p>'
+    +'<p style="font-family:var(--font-tech);font-size:1.4rem;font-weight:800;color:var(--gold);">'+formatRp(t.price)+'</p></div>'
+    +'<div style="display:flex;gap:10px;">'
+    +'<div style="padding:11px 20px;border-radius:22px;background:linear-gradient(105deg,#00d4c8,#3ab0ff);color:#0A0F1D;font-size:0.76rem;font-weight:700;cursor:pointer;">Beli Sekarang</div>'
+    +'</div></div>'
+    +(t.metaTitle||t.metaDescription?'<div style="margin-top:16px;padding:12px 14px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);">'
+      +'<p style="font-family:var(--font-tech);font-size:0.38rem;letter-spacing:0.18em;color:var(--text3);margin-bottom:8px;">SEO METADATA</p>'
+      +(t.metaTitle?'<p style="font-size:0.7rem;color:var(--blue);margin-bottom:4px;">'+esc(t.metaTitle)+'</p>':'')
+      +(t.metaDescription?'<p style="font-size:0.66rem;color:var(--text3);">'+esc(t.metaDescription)+'</p>':'')
+      +'</div>':'')
+    +'</div>';
+  document.getElementById('preview-modal-overlay').classList.add('open');
+}
+function closePreviewModal(){ document.getElementById('preview-modal-overlay').classList.remove('open'); }
+window.openPreviewModal=openPreviewModal;
+window.closePreviewModal=closePreviewModal;
+
+/* esc + catBadge + formatRp available globally before firebase module */
+function esc(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+function catBadge(cat){ return ['PSD','VEKTOR','CANVA','FIGMA'].includes(cat)?'cyan':'gold'; }
+function formatRp(val){ var n=Number(val); return (!n&&n!==0)?'—':'Rp '+n.toLocaleString('id-ID'); }
+window.esc=esc; window.catBadge=catBadge; window.formatRp=formatRp;
+</script>
+
+<!-- BULK ACTIONS -->
+<script>
+var _selectedIds=new Set();
+function updateBulkBar(){
+  var bar=document.getElementById('bulk-bar');
+  var lbl=document.getElementById('bulk-count-label');
+  var chkAll=document.getElementById('check-all');
+  if(!bar||!lbl) return;
+  var n=_selectedIds.size;
+  bar.classList.toggle('show',n>0);
+  lbl.textContent=n+' dipilih';
+  if(chkAll){
+    var total=(window._filteredCache||[]).length;
+    chkAll.checked=n>0&&n===total;
+    chkAll.indeterminate=n>0&&n<total;
+  }
+}
+function toggleSelectAll(checked){
+  var list=window._filteredCache||[];
+  if(checked){ list.forEach(function(t){ _selectedIds.add(t.id); }); }
+  else { _selectedIds.clear(); }
+  updateBulkBar();
+  if(window._renderAll) window._renderAll(list);
+}
+window.toggleSelectAll=toggleSelectAll;
+
+function toggleRowSelect(id){
+  if(_selectedIds.has(id)) _selectedIds.delete(id); else _selectedIds.add(id);
+  updateBulkBar();
+}
+window.toggleRowSelect=toggleRowSelect;
+
+function clearSelection(){ _selectedIds.clear(); updateBulkBar(); if(window._renderAll) window._renderAll(window._filteredCache||[]); }
+window.clearSelection=clearSelection;
+
+function bulkPublish(){ bulkSetStatus('published'); }
+function bulkDraft()   { bulkSetStatus('draft'); }
+window.bulkPublish=bulkPublish; window.bulkDraft=bulkDraft;
+
+function bulkSetStatus(status){
+  var ids=Array.from(_selectedIds);
+  if(!ids.length) return;
+  openConfirm(ids.length+' template', function(){
+    if(window._bulkUpdateStatus) window._bulkUpdateStatus(ids,status);
+  }, 'UBAH STATUS', 'Set '+ids.length+' template menjadi "'+status+'"?');
+}
+
+function bulkExport(){
+  var ids=Array.from(_selectedIds);
+  if(!ids.length){ showToast('⚠️ Pilih template dulu'); return; }
+  var list=(window._allTemplates||[]).filter(function(t){ return ids.includes(t.id); });
+  if(window._doExportCSV) window._doExportCSV(list);
+  showToast('✅ Mengexport '+list.length+' template...');
+  clearSelection();
+}
+window.bulkExport=bulkExport;
+
+function bulkDelete(){
+  var ids=Array.from(_selectedIds);
+  if(!ids.length) return;
+  openConfirm(ids.length+' template terpilih', function(){
+    if(window._bulkDelete) window._bulkDelete(ids);
+  }, 'HAPUS MASSAL', 'Hapus '+ids.length+' template sekaligus? Tindakan ini tidak dapat diurungkan.');
+}
+window.bulkDelete=bulkDelete;
+</script>
+
+<!-- CLOUDINARY MULTI-IMAGE -->
+<script>
+var CLOUD_NAME='dt4vktmo6';
+var UPLOAD_PRESET='Alfirama.ID';
+var _uploadedImages=[];
+
+window.getImagesArray=function(){ return _uploadedImages.slice(); };
+function syncCoverUrl(){
+  var urlInput=document.getElementById('f-imageurl');
+  if(urlInput) urlInput.value=_uploadedImages[0]||'';
+  if(window.syncPreview) syncPreview();
+}
+function renderStrip(){
+  var strip=document.getElementById('img-strip');
+  var hint=document.getElementById('multi-hint');
+  var addRow=document.getElementById('add-more-row');
+  var drHint=document.getElementById('drag-reorder-hint');
+  var countLb=document.getElementById('img-count-label');
+  if(!strip) return;
+  strip.innerHTML='';
+  if(_uploadedImages.length===0){ if(hint) hint.style.display='flex'; if(addRow) addRow.style.display='none'; if(drHint) drHint.style.display='none'; return; }
+  if(hint) hint.style.display='none';
+  if(addRow) addRow.style.display='flex';
+  if(drHint) drHint.style.display=_uploadedImages.length>1?'block':'none';
+  if(countLb) countLb.textContent=_uploadedImages.length+' foto';
+  _uploadedImages.forEach(function(url,idx){
+    var wrap=document.createElement('div'); wrap.className='img-thumb-wrap'; wrap.draggable=true; wrap.dataset.idx=idx;
+    var errSvg="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='68'><rect fill='%230d1326' width='90' height='68'/><text x='45' y='34' fill='%23555' text-anchor='middle' dy='.3em' font-size='8'>ERR</text></svg>";
+    wrap.innerHTML='<img src="'+url+'" alt="Gambar '+(idx+1)+'" loading="lazy" onerror="this.src=\''+errSvg+'\'">'+'<button class="img-thumb-remove" type="button" onclick="removeImage('+idx+')" title="Hapus foto ini"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>';
+    wrap.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain',idx); wrap.classList.add('dragging'); });
+    wrap.addEventListener('dragend',function(){ wrap.classList.remove('dragging'); strip.querySelectorAll('.img-thumb-wrap').forEach(function(el){ el.classList.remove('drag-over'); }); });
+    wrap.addEventListener('dragover',function(e){ e.preventDefault(); strip.querySelectorAll('.img-thumb-wrap').forEach(function(el){ el.classList.remove('drag-over'); }); wrap.classList.add('drag-over'); });
+    wrap.addEventListener('drop',function(e){ e.preventDefault(); var fromIdx=parseInt(e.dataTransfer.getData('text/plain')); var toIdx=parseInt(wrap.dataset.idx); if(fromIdx!==toIdx){ var moved=_uploadedImages.splice(fromIdx,1)[0]; _uploadedImages.splice(toIdx,0,moved); renderStrip(); syncCoverUrl(); } });
+    strip.appendChild(wrap);
+  });
+}
+window.removeImage=function(idx){ _uploadedImages.splice(idx,1); renderStrip(); syncCoverUrl(); showToast('🗑️ Foto dihapus'); };
+window.handleMultiImageUpload=async function(files){
+  if(!files||files.length===0) return;
+  var zone=document.getElementById('multi-upload-zone');
+  var status=document.getElementById('multi-upload-status');
+  var progress=document.getElementById('multi-upload-progress');
+  var MAX_EACH=5*1024*1024, MAX_TOTAL=10;
+  var remaining=MAX_TOTAL-_uploadedImages.length;
+  if(remaining<=0){ showToast('⚠️ Maksimal 10 foto sudah tercapai'); return; }
+  var filesToUpload=Array.from(files).slice(0,remaining);
+  var validFiles=filesToUpload.filter(function(f){ return f.size<=MAX_EACH; });
+  if(filesToUpload.length>validFiles.length) showToast('⚠️ '+(filesToUpload.length-validFiles.length)+' file melebihi 5MB');
+  if(!validFiles.length) return;
+  zone.classList.add('uploading');
+  var done=0;
+  for(var i=0;i<validFiles.length;i++){
+    var file=validFiles[i];
+    if(status) status.textContent='MENGUPLOAD '+(i+1)+'/'+validFiles.length+'...';
+    if(progress) progress.style.width=Math.round(((i+0.5)/validFiles.length)*100)+'%';
+    try{
+      var fd=new FormData(); fd.append('file',file); fd.append('upload_preset',UPLOAD_PRESET);
+      var res=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
+      var data=await res.json();
+      if(data.secure_url){ _uploadedImages.push(data.secure_url); done++; renderStrip(); syncCoverUrl(); }
+    }catch(err){ console.error('Cloudinary error:',err); }
+  }
+  if(progress) progress.style.width='100%';
+  if(status) status.textContent=done>0?'✓ '+done+' foto berhasil diupload':'✗ Upload gagal';
+  zone.classList.remove('uploading');
+  var fi=document.getElementById('f-img-files'); if(fi) fi.value='';
+  if(done>0) showToast('✅ '+done+' foto berhasil diupload!');
+  setTimeout(function(){ if(status) status.textContent=''; if(progress) progress.style.width='0%'; },3000);
+};
+
+document.addEventListener('DOMContentLoaded',function(){
+  var zone=document.getElementById('multi-upload-zone');
+  if(!zone) return;
+  zone.addEventListener('click',function(e){ if(e.target.closest('.img-thumb-wrap')||e.target.closest('#add-more-row')) return; document.getElementById('f-img-files').click(); });
+  zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave',function(e){ if(!zone.contains(e.relatedTarget)) zone.classList.remove('dragover'); });
+  zone.addEventListener('drop',function(e){ e.preventDefault(); zone.classList.remove('dragover'); if(e.dataTransfer.files.length>0) handleMultiImageUpload(e.dataTransfer.files); });
+});
+window._loadImagesForEdit=function(t){ _uploadedImages=Array.isArray(t.images)&&t.images.length>0?t.images.slice():t.imageUrl?[t.imageUrl]:[]; renderStrip(); syncCoverUrl(); };
+window._resetImages=function(){ _uploadedImages=[]; renderStrip(); syncCoverUrl(); };
+window._getDraftImages=function(){ return _uploadedImages.slice(); };
+window._setDraftImages=function(arr){ if(Array.isArray(arr)&&arr.length>0){ _uploadedImages=arr.slice(); renderStrip(); syncCoverUrl(); } };
+</script>
+
+
+<!-- ══ FIREBASE MODULE ══ -->
 <script type="module">
 import { initializeApp }                            from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, onAuthStateChanged, signOut }     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import {
   getFirestore, collection, doc,
-  addDoc, updateDoc, deleteDoc, setDoc,
-  query, orderBy, onSnapshot, serverTimestamp
+  addDoc, updateDoc, deleteDoc, setDoc, writeBatch,
+  query, orderBy, onSnapshot, serverTimestamp, getDocs, where
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-/* ── CONFIG (sama dengan dashboard) ── */
 const firebaseConfig = {
-  apiKey:            "AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
-  authDomain:        "alfirama-id.firebaseapp.com",
-  projectId:         "alfirama-id",
-  storageBucket:     "alfirama-id.firebasestorage.app",
-  messagingSenderId: "1036820056484",
-  appId:             "1:1036820056484:web:9eb5143a06077b3039d931",
-  measurementId:     "G-V3QGL2R207"
+  apiKey:"AIzaSyBQaj7hxcLnrrrr1lQeBqAebel0O5hZ_48",
+  authDomain:"alfirama-id.firebaseapp.com",
+  projectId:"alfirama-id",
+  storageBucket:"alfirama-id.firebasestorage.app",
+  messagingSenderId:"1036820056484",
+  appId:"1:1036820056484:web:9eb5143a06077b3039d931",
+  measurementId:"G-V3QGL2R207"
 };
 
-/* ── Pilar 5: Auth guard — ADMIN_EMAILS (selaras dashboard) ── */
-const ADMIN_EMAILS = ["alfirama1945@gmail.com","alfirama.id@gmail.com"];
-function isAdmin(email){ return email && ADMIN_EMAILS.map(e=>e.trim().toLowerCase()).includes(email.trim().toLowerCase()); }
+const ADMIN_EMAILS=["alfirama1945@gmail.com","alfirama.id@gmail.com"];
+function isAdmin(email){ return email&&ADMIN_EMAILS.map(e=>e.trim().toLowerCase()).includes(email.trim().toLowerCase()); }
 
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);   /* Pilar 4: instance 'auth' */
-const db   = getFirestore(app); /* Pilar 4: instance 'db' */
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-/* ── STATE ── */
-let allTemplates  = [];
-let filteredCache = [];
-let editingId     = null;
-let unsubSnap     = null;
+let allTemplates=[]; let filteredCache=[]; let unsubSnap=null;
 
-/* ── AUTH STATE (onAuthStateChanged) ── */
-onAuthStateChanged(auth, (user) => {
-  if (!user || !isAdmin(user.email)) {
-    signOut(auth).catch(()=>{});
-    window.location.href = 'login.html';
-    return;
-  }
-  /* Admin OK */
-  document.getElementById('auth-gate').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  const em = user.email || '—';
-  const e1 = document.getElementById('header-email-display');
-  const e2 = document.getElementById('sidebar-email-display');
-  if(e1) e1.textContent = em;
-  if(e2) e2.textContent = em.split('@')[0].toUpperCase();
+/* ── expose for global scripts ── */
+window._allTemplates = allTemplates;
 
-  /* Set default date */
-  const todayStr = new Date().toISOString().split('T')[0];
-  const dateEl = document.getElementById('f-createdat');
-  if(dateEl) dateEl.value = todayStr;
-
+onAuthStateChanged(auth,(user)=>{
+  if(!user||!isAdmin(user.email)){ signOut(auth).catch(()=>{}); window.location.href='login.html'; return; }
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  const em=user.email||'—';
+  const e1=document.getElementById('header-email-display');
+  const e2=document.getElementById('sidebar-email-display');
+  if(e1) e1.textContent=em;
+  if(e2) e2.textContent=em.split('@')[0].toUpperCase();
+  const todayStr=new Date().toISOString().split('T')[0];
+  const dateEl=document.getElementById('f-createdat');
+  if(dateEl) dateEl.value=todayStr;
   bootPanel();
 });
 
-window.doSignOut = async function(){
-  if(unsubSnap) unsubSnap();
-  await signOut(auth);
-  window.location.href = 'login.html';
-};
+window.doSignOut=async function(){ if(unsubSnap) unsubSnap(); await signOut(auth); window.location.href='login.html'; };
 
-/* ══════════════════════════════════════
-   BOOT — onSnapshot realtime (Pilar 4)
-   Terisolasi bersih, auto-resync
-══════════════════════════════════════ */
 function bootPanel(){
-  const q = query(collection(db, 'studio_templates'), orderBy('createdAt','desc'));
-  unsubSnap = onSnapshot(q, (snap) => {
-    /* Pilar 3: mapping field names case-sensitive sesuai Firestore live */
-    allTemplates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  if(window.showSkeleton) window.showSkeleton();
+  const q=query(collection(db,'studio_templates'),orderBy('createdAt','desc'));
+  unsubSnap=onSnapshot(q,(snap)=>{
+    allTemplates=snap.docs.map(d=>({id:d.id,...d.data()}));
+    window._allTemplates=allTemplates;
     applyFilters();
     updateKPIs();
-  }, (err) => {
-    console.error('onSnapshot error:', err);
-    showToast('⚠️ Koneksi Firestore bermasalah: ' + err.message, 5000);
-    showEmptyState('KONEKSI BERMASALAH — Coba refresh halaman.');
+  },(err)=>{
+    console.error('onSnapshot error:',err);
+    showToast('⚠️ Koneksi Firestore bermasalah: '+err.message,5000);
   });
 }
 
-/* ══════════════════════════════════════
-   FILTER + SORT + RENDER
-══════════════════════════════════════ */
-window.applyFilters = function(){
-  const search  = (document.getElementById('search-input')?.value||'').toLowerCase().trim();
-  const catFil  = document.getElementById('filter-cat')?.value || '';
-  const sortVal = document.getElementById('sort-select')?.value || 'newest';
-
-  let list = [...allTemplates];
-
-  if(search) list = list.filter(t=>(t.title||'').toLowerCase().includes(search));
-  if(catFil) list = list.filter(t=>t.category===catFil);
-
+window.applyFilters=function(){
+  const search=(document.getElementById('search-input')?.value||'').toLowerCase().trim();
+  const catFil=document.getElementById('filter-cat')?.value||'';
+  const statusFil=document.getElementById('filter-status')?.value||'';
+  const sortVal=document.getElementById('sort-select')?.value||'newest';
+  let list=[...allTemplates];
+  if(search) list=list.filter(t=>(t.title||'').toLowerCase().includes(search));
+  if(catFil) list=list.filter(t=>t.category===catFil);
+  if(statusFil) list=list.filter(t=>(t.status||'published')===statusFil);
   switch(sortVal){
-    case 'oldest':     list.sort((a,b)=>(a.createdAt||'')>(b.createdAt||'')?1:-1); break;
-    case 'price-high': list.sort((a,b)=>(Number(b.price)||0)-(Number(a.price)||0)); break;
-    case 'price-low':  list.sort((a,b)=>(Number(a.price)||0)-(Number(b.price)||0)); break;
-    case 'name-az':    list.sort((a,b)=>(a.title||'').localeCompare(b.title||'')); break;
-    default:           list.sort((a,b)=>(a.createdAt||'')<(b.createdAt||'')?1:-1);
+    case 'oldest':    list.sort((a,b)=>(a.createdAt||'')>(b.createdAt||'')?1:-1); break;
+    case 'price-high':list.sort((a,b)=>(Number(b.price)||0)-(Number(a.price)||0)); break;
+    case 'price-low': list.sort((a,b)=>(Number(a.price)||0)-(Number(b.price)||0)); break;
+    case 'name-az':   list.sort((a,b)=>(a.title||'').localeCompare(b.title||'')); break;
+    default:          list.sort((a,b)=>(a.createdAt||'')<(b.createdAt||'')?1:-1);
   }
-
-  filteredCache = list;
-  window._filteredCache = list;
-
-  const countEl = document.getElementById('result-count');
-  if(countEl) countEl.textContent = `${list.length} / ${allTemplates.length}`;
-
+  filteredCache=list; window._filteredCache=list;
+  const countEl=document.getElementById('result-count');
+  if(countEl) countEl.textContent=list.length+' / '+allTemplates.length;
   renderAll(list);
-
-  const emptyEl    = document.getElementById('empty-state');
-  const tableView  = document.getElementById('table-view');
-  const gridView   = document.getElementById('grid-view');
-  if(list.length === 0){
-    emptyEl.style.display = 'flex';
-    tableView.style.display = 'none';
-    gridView.style.display  = 'none';
-    document.getElementById('empty-msg').textContent = search||catFil ? 'TIDAK ADA HASIL PENCARIAN' : 'BELUM ADA TEMPLATE';
+  const emptyEl=document.getElementById('empty-state');
+  const tableView=document.getElementById('table-view');
+  const gridView=document.getElementById('grid-view');
+  if(list.length===0){
+    emptyEl.style.display='flex'; tableView.style.display='none'; gridView.style.display='none';
+    document.getElementById('empty-msg').textContent=search||catFil?'TIDAK ADA HASIL':'BELUM ADA TEMPLATE';
   } else {
-    emptyEl.style.display = 'none';
+    emptyEl.style.display='none';
     if(_currentView==='grid'){ tableView.style.display='none'; gridView.style.display='grid'; }
     else { tableView.style.display=''; gridView.style.display='none'; }
   }
 };
 
-function renderAll(list){
-  renderTable(list);
-  renderGrid(list);
-}
-window._renderAll = renderAll;
+function renderAll(list){ renderTable(list); renderGrid(list); }
+window._renderAll=renderAll;
 
-/* ── TABLE RENDER ── */
 function renderTable(list){
-  const tbody = document.getElementById('table-body');
+  const tbody=document.getElementById('table-body');
   if(!tbody) return;
   if(list.length===0){ tbody.innerHTML=''; return; }
-  tbody.innerHTML = list.map(t=>`
-    <div class="log-row" style="grid-template-columns:0.25fr 1.8fr 0.8fr 0.8fr 1fr 0.6fr 0.55fr;align-items:center;">
-      <div class="log-cell">
-        ${t.imageUrl
-          ? `<img class="prod-thumb" src="${esc(t.imageUrl)}" alt="${esc(t.title)}" loading="lazy"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-             <div class="prod-thumb-ph" style="display:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.4)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>`
-          : `<div class="prod-thumb-ph"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.4)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>`
-        }
-      </div>
+  const searchQ=(document.getElementById('search-input')?.value||'').trim();
+  tbody.innerHTML=list.map(t=>{
+    const isSelected=_selectedIds.has(t.id);
+    const status=t.status||'published';
+    const statusBadge=`<span class="status-badge ${status}"><span class="status-dot"></span>${status}</span>`;
+    const nameHtml=searchQ?highlightText(esc(t.title||'—'),searchQ):esc(t.title||'—');
+    return `<div class="log-row" style="grid-template-columns:20px 0.25fr 1.6fr 0.8fr 0.7fr 0.7fr 0.6fr 0.6fr;">
+      <div class="log-cell"><input type="checkbox" class="row-checkbox" ${isSelected?'checked':''} onchange="toggleRowSelect('${t.id}')"/></div>
+      <div class="log-cell">${t.imageUrl?`<img class="prod-thumb" src="${esc(t.imageUrl)}" alt="${esc(t.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="prod-thumb-ph" style="display:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.4)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>`:`<div class="prod-thumb-ph"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.4)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>`}</div>
       <div class="log-cell" style="flex-direction:column;align-items:flex-start;gap:3px;">
-        <span style="font-weight:600;color:var(--text);font-size:0.78rem;line-height:1.35;">${esc(t.title||'—')}</span>
-        ${t.fileUrl?`<span style="font-size:0.58rem;color:var(--cyan-dim);">🔗 fileUrl tersedia</span>`:`<span style="font-size:0.58rem;color:var(--red-dim);">⚠ fileUrl kosong</span>`}
+        <span style="font-weight:600;color:var(--text);font-size:0.78rem;line-height:1.35;">${nameHtml}</span>
+        ${t.featured?'<span style="font-size:0.56rem;color:var(--gold);">⭐ FEATURED</span>':''}
+        ${t.fileUrl?'<span style="font-size:0.58rem;color:var(--cyan-dim);">🔗 file tersedia</span>':'<span style="font-size:0.58rem;color:var(--red-dim);">⚠ no file</span>'}
       </div>
       <div class="log-cell"><span class="badge ${catBadge(t.category)}">${esc(t.category||'—')}</span></div>
       <div class="log-cell" style="font-family:var(--font-tech);font-size:0.68rem;color:var(--gold);">${formatRp(t.price)}</div>
-      <div class="log-cell" style="max-width:180px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:0.72rem;">${esc(t.description||'—')}</div>
+      <div class="log-cell">${statusBadge}</div>
       <div class="log-cell mono">${esc(t.createdAt||'—')}</div>
-      <div class="log-cell" style="gap:5px;">
+      <div class="log-cell" style="gap:4px;">
+        <button class="btn-icon-sm" title="Preview" onclick="openPreviewModal(${JSON.stringify(t).replace(/"/g,'&quot;')})"
+          style="border:1px solid rgba(0,212,200,0.18);background:transparent;color:var(--cyan-dim);"
+          onmouseover="this.style.borderColor='rgba(0,212,200,0.5)';this.style.color='var(--cyan)';this.style.background='var(--cyan-glow)';"
+          onmouseout="this.style.borderColor='rgba(0,212,200,0.18)';this.style.color='var(--cyan-dim)';this.style.background='transparent';">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        </button>
         <button class="btn-icon-sm" title="Edit" onclick="loadEditForm('${t.id}')"
           style="border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text3);"
           onmouseover="this.style.borderColor='rgba(58,176,255,0.4)';this.style.color='var(--blue)';this.style.background='var(--blue-glow)';"
@@ -1475,33 +1791,38 @@ function renderTable(list){
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
         </button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-/* ── GRID RENDER ── */
 function renderGrid(list){
-  const grd = document.getElementById('grid-view');
+  const grd=document.getElementById('grid-view');
   if(!grd) return;
   if(list.length===0){ grd.innerHTML=''; return; }
-  grd.innerHTML = list.map(t=>`
-    <div class="prod-card">
-      ${t.imageUrl
-        ? `<img class="prod-card-img" src="${esc(t.imageUrl)}" alt="${esc(t.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-           <div class="prod-card-img-ph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`
-        : `<div class="prod-card-img-ph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`
-      }
+  grd.innerHTML=list.map(t=>{
+    const status=t.status||'published';
+    return `<div class="prod-card">
+      ${t.imageUrl?`<img class="prod-card-img" src="${esc(t.imageUrl)}" alt="${esc(t.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="prod-card-img-ph" style="display:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`
+      :`<div class="prod-card-img-ph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(201,178,109,0.3)" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>`}
       <div class="prod-card-body">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
           <span class="badge ${catBadge(t.category)}">${esc(t.category||'—')}</span>
-          <span style="font-family:var(--font-tech);font-size:0.66rem;color:var(--gold);">${formatRp(t.price)}</span>
+          <span class="status-badge ${status}"><span class="status-dot"></span>${status}</span>
         </div>
         <h4 style="font-weight:700;font-size:0.8rem;color:var(--text);line-height:1.35;margin-bottom:5px;">${esc(t.title||'—')}</h4>
         <p style="font-size:0.7rem;color:var(--text2);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${esc(t.description||'—')}</p>
+        ${t.featured?'<p style="font-size:0.6rem;color:var(--gold);margin-top:5px;">⭐ Featured</p>':''}
       </div>
       <div class="prod-card-footer">
-        <span style="font-size:0.62rem;color:var(--text3);">${esc(t.createdAt||'')}</span>
+        <span style="font-family:var(--font-tech);font-size:0.68rem;color:var(--gold);">${formatRp(t.price)}</span>
         <div style="display:flex;gap:5px;">
+          <button class="btn-icon-sm" title="Preview" onclick="openPreviewModal(${JSON.stringify(t).replace(/"/g,'&quot;')})"
+            style="border:1px solid rgba(0,212,200,0.18);background:transparent;color:var(--cyan-dim);"
+            onmouseover="this.style.borderColor='rgba(0,212,200,0.5)';this.style.color='var(--cyan)';this.style.background='var(--cyan-glow)';"
+            onmouseout="this.style.borderColor='rgba(0,212,200,0.18)';this.style.color='var(--cyan-dim)';this.style.background='transparent';">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
           <button class="btn-icon-sm" title="Edit" onclick="loadEditForm('${t.id}')"
             style="border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text3);"
             onmouseover="this.style.borderColor='rgba(58,176,255,0.4)';this.style.color='var(--blue)';this.style.background='var(--blue-glow)';"
@@ -1516,202 +1837,216 @@ function renderGrid(list){
           </button>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
-/* ══════════════════════════════════════
-   KPI UPDATE
-══════════════════════════════════════ */
 function updateKPIs(){
-  const total    = allTemplates.length;
-  const maxItem  = allTemplates.reduce((mx,t)=>Number(t.price||0)>Number(mx.price||0)?t:mx, {price:0});
-  const cats     = new Set(allTemplates.map(t=>t.category).filter(Boolean)).size;
-  const totalVal = allTemplates.reduce((s,t)=>s+(Number(t.price)||0),0);
-
-  const el = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
-  el('kpi-total', total || '—');
-  el('kpi-max',   maxItem.price ? formatRp(maxItem.price) : '—');
-  el('kpi-max-title', maxItem.title ? truncate(maxItem.title,22) : '—');
-  el('kpi-cats',  cats || '—');
-  el('kpi-total-val', totalVal ? formatRp(totalVal) : '—');
+  const total=allTemplates.length;
+  const maxItem=allTemplates.reduce((mx,t)=>Number(t.price||0)>Number(mx.price||0)?t:mx,{price:0});
+  const cats=new Set(allTemplates.map(t=>t.category).filter(Boolean)).size;
+  const totalVal=allTemplates.reduce((s,t)=>s+(Number(t.price)||0),0);
+  const totalViews=allTemplates.reduce((s,t)=>s+(Number(t.views)||0),0);
+  const featured=allTemplates.filter(t=>t.featured).length;
+  const drafts=allTemplates.filter(t=>(t.status||'published')==='draft').length;
+  const el=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+  el('kpi-total',total||'—');
+  el('kpi-max',maxItem.price?formatRp(maxItem.price):'—');
+  el('kpi-max-title',maxItem.title?maxItem.title.substring(0,22)+(maxItem.title.length>22?'…':''):'—');
+  el('kpi-cats',cats||'—');
+  el('kpi-total-val',totalVal?formatRp(totalVal):'—');
+  el('kpi-views',totalViews>0?totalViews.toLocaleString('id-ID'):'0');
+  el('kpi-featured',featured||'0');
+  el('kpi-drafts',drafts||'0');
+  window._rebuildCatSelects && rebuildCatSelects();
 }
 
-/* ══════════════════════════════════════
-   FORM — CREATE / UPDATE (Pilar 3)
-   Field names: title, price (Number),
-   category, description, imageUrl,
-   fileUrl, createdAt
-══════════════════════════════════════ */
-window.submitForm = async function(){
-  const title       = document.getElementById('f-title').value.trim();
-  const priceInput  = document.getElementById('f-price').value.trim();
-  const category    = document.getElementById('f-category').value.trim();
-  const description = document.getElementById('f-desc').value.trim();
- const imageUrl    = (document.getElementById('f-imageurl')?.value || '').trim();
-  const fileUrl     = document.getElementById('f-fileurl').value.trim();
-  const createdAt   = document.getElementById('f-createdat').value.trim();
+/* ── SUBMIT FORM ── */
+window.submitForm=async function(){
+  const title=document.getElementById('f-title').value.trim();
+  const priceInput=document.getElementById('f-price').value.trim();
+  const category=document.getElementById('f-category').value.trim();
+  const description=document.getElementById('f-desc').value.trim();
+  const imageUrl=(document.getElementById('f-imageurl')?.value||'').trim();
+  const fileUrl=document.getElementById('f-fileurl').value.trim();
+  const createdAt=document.getElementById('f-createdat').value.trim();
+  const images=window.getImagesArray?window.getImagesArray():(imageUrl?[imageUrl]:[]);
+  const metaTitle=document.getElementById('f-meta-title')?.value.trim()||'';
+  const metaDescription=document.getElementById('f-meta-desc')?.value.trim()||'';
+  const keywords=document.getElementById('f-keywords')?.value.trim()||'';
+  const ogImage=document.getElementById('f-og-image')?.value.trim()||'';
+  const status=document.getElementById('f-status')?.value||'published';
+  const badge=document.getElementById('f-badge')?.value||'';
 
-  if(!title)    { showToast('⚠️ Nama produk (title) wajib diisi.'); return; }
-  if(!priceInput){ showToast('⚠️ Harga (price) wajib diisi.'); return; }
-  if(!category) { showToast('⚠️ Kategori wajib dipilih.'); return; }
-
-  /* Pilar 3: price disimpan sebagai Number murni */
-  const price = Number(priceInput);
-  if(isNaN(price)||price<0){ showToast('⚠️ Harga harus angka positif.'); return; }
+  if(!title){ showToast('⚠️ Nama produk wajib diisi'); return; }
+  if(!priceInput){ showToast('⚠️ Harga wajib diisi'); return; }
+  if(!category){ showToast('⚠️ Kategori wajib dipilih'); return; }
+  const price=Number(priceInput);
+  if(isNaN(price)||price<0){ showToast('⚠️ Harga harus angka positif'); return; }
 
   setBtnLoading(true);
-
-  /* Pilar 3: payload WAJIB gunakan nama field sesuai Firestore live */
-  const payload = {
-    title,
-    price,        /* Number — bukan 'priceRaw' */
-    category,
-    description,
-    imageUrl,     /* bukan 'imageFile' */
-    fileUrl,
-    createdAt: createdAt || new Date().toISOString().split('T')[0],
+  const payload={
+    title, price, category, description, imageUrl, images, fileUrl, badge,
+    status, featured: _isFeatured,
+    metaTitle, metaDescription, keywords, ogImage,
+    createdAt: createdAt||new Date().toISOString().split('T')[0],
     updatedAt: serverTimestamp(),
   };
 
-  try {
+  try{
     if(editingId){
-      await updateDoc(doc(db,'studio_templates',editingId), payload);
-      if(fileUrl) {
-      await setDoc(doc(db,'template_files',editingId), { fileUrl }, { merge: true });
-    }
+      /* Save version snapshot before overwrite */
+      const oldData=allTemplates.find(x=>x.id===editingId);
+      if(oldData){
+        await addDoc(collection(db,'studio_templates',editingId,'history'),{
+          ...oldData, savedAt: serverTimestamp(), savedBy:'admin'
+        });
+      }
+      await updateDoc(doc(db,'studio_templates',editingId),payload);
+      if(fileUrl) await setDoc(doc(db,'template_files',editingId),{fileUrl},{merge:true});
       showFormStatus('success','✅ Template berhasil diupdate!');
-      showToast('✅ Perubahan tersimpan — Firestore update real-time');
+      showToast('✅ Perubahan tersimpan');
       cancelEdit();
     } else {
-      payload.createdServer = serverTimestamp();
-      const newDocRef = await addDoc(collection(db,'studio_templates'), payload);
-if(fileUrl) {
-  await setDoc(doc(db,'template_files',newDocRef.id), { fileUrl });
-}
-      showFormStatus('success','✅ Template baru berhasil ditambahkan!');
-      showToast('✅ Template tersimpan — katalog update otomatis');
+      payload.createdServer=serverTimestamp();
+      const newDocRef=await addDoc(collection(db,'studio_templates'),payload);
+      if(fileUrl) await setDoc(doc(db,'template_files',newDocRef.id),{fileUrl});
+      showFormStatus('success','✅ Template baru ditambahkan!');
+      showToast('✅ Template tersimpan ke Firestore');
       clearForm();
     }
-  } catch(err){
-    console.error('Firestore write error:', err);
+  }catch(err){
+    console.error('Firestore write error:',err);
     showFormStatus('error','❌ Gagal: '+err.message);
-    showToast('❌ Gagal menyimpan: '+err.message, 5000);
-  } finally {
+    showToast('❌ Gagal menyimpan: '+err.message,5000);
+  }finally{
     setBtnLoading(false);
   }
 };
 
 /* ── LOAD EDIT ── */
-window.loadEditForm = function(id){
-  const t = allTemplates.find(x=>x.id===id);
+window.loadEditForm=function(id){
+  const t=allTemplates.find(x=>x.id===id);
   if(!t){ showToast('⚠️ Data tidak ditemukan'); return; }
-
-  editingId = id;
-  document.getElementById('f-title').value     = t.title       || '';
-  document.getElementById('f-price').value     = t.price       ?? '';
-  document.getElementById('f-category').value  = t.category    || '';
-  document.getElementById('f-desc').value      = t.description || '';
-  document.getElementById('f-imageurl').value  = t.imageUrl    || '';
-  document.getElementById('f-fileurl').value   = t.fileUrl     || '';
-  document.getElementById('f-createdat').value = t.createdAt   || '';
-
+  editingId=id; window.editingId=id;
+  document.getElementById('f-title').value=t.title||'';
+  document.getElementById('f-price').value=t.price??'';
+  document.getElementById('f-category').value=t.category||'';
+  document.getElementById('f-desc').value=t.description||'';
+  document.getElementById('f-imageurl').value=t.imageUrl||'';
+  document.getElementById('f-fileurl').value=t.fileUrl||'';
+  document.getElementById('f-createdat').value=t.createdAt||'';
+  if(document.getElementById('f-badge')) document.getElementById('f-badge').value=t.badge||'';
+  if(document.getElementById('f-status')) document.getElementById('f-status').value=t.status||'published';
+  if(document.getElementById('f-meta-title')) document.getElementById('f-meta-title').value=t.metaTitle||'';
+  if(document.getElementById('f-meta-desc')) document.getElementById('f-meta-desc').value=t.metaDescription||'';
+  if(document.getElementById('f-keywords')) document.getElementById('f-keywords').value=t.keywords||'';
+  if(document.getElementById('f-og-image')) document.getElementById('f-og-image').value=t.ogImage||'';
+  _isFeatured=t.featured||false;
+  document.getElementById('featured-toggle').classList.toggle('active',_isFeatured);
   updatePricePreview(t.price);
- if(t.imageUrl){
-    const prevImg = document.getElementById('upload-preview-img');
-    const ph      = document.getElementById('upload-placeholder');
-    if(prevImg){ prevImg.src=t.imageUrl; prevImg.style.display='block'; }
-    if(ph) ph.style.display='none';
-    let urlInput = document.getElementById('f-imageurl');
-    if(!urlInput){
-      urlInput = document.createElement('input');
-      urlInput.type='hidden'; urlInput.id='f-imageurl';
-      document.body.appendChild(urlInput);
-    }
-    urlInput.value = t.imageUrl;
-  } else {
-    const prevImg = document.getElementById('upload-preview-img');
-    const ph      = document.getElementById('upload-placeholder');
-    if(prevImg){ prevImg.style.display='none'; prevImg.src=''; }
-    if(ph) ph.style.display='block';
-  }
-
+  if(window._loadImagesForEdit) window._loadImagesForEdit(t);
   document.getElementById('edit-banner').classList.add('show');
-  document.getElementById('edit-doc-id').textContent = id;
-  document.getElementById('form-mode-label').textContent = 'FORM — EDIT TEMPLATE';
-  document.getElementById('btn-submit-label').textContent = 'SIMPAN PERUBAHAN';
-
-  /* Scroll ke form */
+  document.getElementById('edit-doc-id').textContent=id;
+  document.getElementById('form-mode-label').textContent='FORM — EDIT TEMPLATE';
+  document.getElementById('btn-submit-label').textContent='SIMPAN PERUBAHAN';
   document.querySelector('.glass').scrollIntoView({behavior:'smooth',block:'start'});
-  showToast('✏️ Mode edit aktif — ubah data lalu klik SIMPAN PERUBAHAN');
+  showToast('✏️ Mode edit aktif');
 };
 
-/* ── CANCEL EDIT ── */
-window.cancelEdit = function(){
-  editingId = null;
+window.cancelEdit=function(){
+  editingId=null; window.editingId=null;
   clearForm();
   document.getElementById('edit-banner').classList.remove('show');
-  document.getElementById('form-mode-label').textContent = 'FORM — TAMBAH TEMPLATE BARU';
-  document.getElementById('btn-submit-label').textContent = 'SIMPAN TEMPLATE';
+  document.getElementById('form-mode-label').textContent='FORM — TAMBAH TEMPLATE BARU';
+  document.getElementById('btn-submit-label').textContent='SIMPAN TEMPLATE';
+  if(window._resetImages) window._resetImages();
+  _isFeatured=false;
+  document.getElementById('featured-toggle').classList.remove('active');
 };
 
 /* ── DELETE ── */
-window.confirmDelete = function(id, name){
-  openConfirm(name, async ()=>{
+window.confirmDelete=function(id,name){
+  openConfirm(name,async()=>{
     try{
       await deleteDoc(doc(db,'studio_templates',id));
       showToast('🗑️ Template berhasil dihapus');
-    } catch(err){
-      showToast('❌ Gagal menghapus: '+err.message, 5000);
-      console.error('Delete error:',err);
-    }
+    }catch(err){ showToast('❌ Gagal menghapus: '+err.message,5000); }
   });
 };
 
-/* ══════════════════════════════════════
-   EXPORT CSV
-══════════════════════════════════════ */
-window.exportCSV = function(){
-  if(!allTemplates.length){ showToast('⚠️ Belum ada data untuk di-export'); return; }
-  const headers = ['ID','title','price','category','description','imageUrl','fileUrl','createdAt'];
-  const rows = allTemplates.map(t=>[t.id,t.title||'',t.price||0,t.category||'',t.description||'',t.imageUrl||'',t.fileUrl||'',t.createdAt||'']);
-  const csv = [headers,...rows].map(r=>r.map(c=>{const s=String(c).replace(/"/g,'""');return (s.includes(',')||s.includes('"')||s.includes('\n'))?'"'+s+'"':s;}).join(',')).join('\r\n');
-  const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'studio_templates_'+new Date().toISOString().split('T')[0]+'.csv';
-  a.click();
+/* ── BULK OPS ── */
+window._bulkUpdateStatus=async function(ids,status){
+  const batch=writeBatch(db);
+  ids.forEach(id=>{ batch.update(doc(db,'studio_templates',id),{status,updatedAt:serverTimestamp()}); });
+  try{ await batch.commit(); clearSelection(); showToast('✅ '+ids.length+' template diupdate ke "'+status+'"'); }
+  catch(err){ showToast('❌ Bulk update gagal: '+err.message,5000); }
+};
+window._bulkDelete=async function(ids){
+  const batch=writeBatch(db);
+  ids.forEach(id=>{ batch.delete(doc(db,'studio_templates',id)); });
+  try{ await batch.commit(); clearSelection(); showToast('🗑️ '+ids.length+' template dihapus'); }
+  catch(err){ showToast('❌ Bulk delete gagal: '+err.message,5000); }
+};
+
+/* ── VERSION HISTORY ── */
+window._loadHistory=async function(docId){
+  const t=allTemplates.find(x=>x.id===docId);
+  const titleEl=document.getElementById('history-doc-title');
+  const listEl=document.getElementById('history-list');
+  if(titleEl) titleEl.textContent=t?t.title:'—';
+  try{
+    const snap=await getDocs(query(collection(db,'studio_templates',docId,'history'),orderBy('savedAt','desc')));
+    if(snap.empty){ if(listEl) listEl.innerHTML='<div style="font-size:0.72rem;color:var(--text3);padding:20px 0;text-align:center;">Belum ada riwayat edit tersimpan.</div>'; return; }
+    listEl.innerHTML=snap.docs.map((d,i)=>{
+      const h=d.data();
+      const ts=h.savedAt?.toDate?h.savedAt.toDate().toLocaleString('id-ID'):'—';
+      return `<div class="history-entry">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-family:var(--font-tech);font-size:0.4rem;letter-spacing:0.14em;color:var(--text3);">v${snap.docs.length-i} · ${ts}</span>
+          <button onclick="restoreVersion('${docId}','${d.id}')"
+            style="padding:3px 10px;border-radius:6px;border:1px solid rgba(58,176,255,0.2);background:rgba(58,176,255,0.05);color:var(--blue-dim);font-size:0.6rem;cursor:pointer;transition:all .15s;"
+            onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--blue-dim)'">Restore</button>
+        </div>
+        <p style="font-size:0.74rem;font-weight:600;color:var(--text);margin-bottom:3px;">${esc(h.title||'—')}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:0.6rem;color:var(--gold);">${formatRp(h.price)}</span>
+          <span class="badge ${catBadge(h.category)}" style="font-size:0.34rem;">${esc(h.category||'—')}</span>
+          <span class="status-badge ${h.status||'published'}" style="font-size:0.34rem;">${h.status||'published'}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ if(listEl) listEl.innerHTML='<div style="font-size:0.72rem;color:var(--red-dim);padding:16px;">Error: '+err.message+'</div>'; }
+};
+
+window.restoreVersion=async function(docId,historyId){
+  if(!confirm('Restore versi ini? Data saat ini akan ditimpa.')) return;
+  try{
+    const snap=await getDocs(collection(db,'studio_templates',docId,'history'));
+    const hDoc=snap.docs.find(d=>d.id===historyId);
+    if(!hDoc){ showToast('⚠️ Versi tidak ditemukan'); return; }
+    const data={...hDoc.data(),updatedAt:serverTimestamp()};
+    delete data.savedAt; delete data.savedBy; delete data.id;
+    await updateDoc(doc(db,'studio_templates',docId),data);
+    closeHistoryDrawer();
+    showToast('✅ Versi berhasil di-restore');
+  }catch(err){ showToast('❌ Restore gagal: '+err.message,5000); }
+};
+
+/* ── EXPORT CSV ── */
+function _doExportCSV(list){
+  if(!list||!list.length){ showToast('⚠️ Belum ada data'); return; }
+  const headers=['ID','title','price','category','status','description','imageUrl','images','fileUrl','metaTitle','metaDescription','keywords','featured','createdAt'];
+  const rows=list.map(t=>[t.id,t.title||'',t.price||0,t.category||'',t.status||'published',t.description||'',t.imageUrl||'',(Array.isArray(t.images)?t.images.join(' | '):''),t.fileUrl||'',t.metaTitle||'',t.metaDescription||'',t.keywords||'',t.featured?'true':'false',t.createdAt||'']);
+  const csv=[headers,...rows].map(r=>r.map(c=>{ const s=String(c).replace(/"/g,'""'); return (s.includes(',')||s.includes('"')||s.includes('\n'))?'"'+s+'"':s; }).join(',')).join('\r\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='studio_templates_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  showToast('✅ File CSV berhasil diunduh');
-};
-
-/* ══════════════════════════════════════
-   HELPERS
-══════════════════════════════════════ */
-/* Pilar 3: format harga via toLocaleString('id-ID') */
-function formatRp(val){
-  const n=Number(val);
-  return (!n&&n!==0)?'—':'Rp '+n.toLocaleString('id-ID');
 }
-function catBadge(cat){
-  const cyanCats=['PSD','VEKTOR','CANVA','FIGMA'];
-  return cyanCats.includes(cat)?'cyan':'gold';
-}
-function esc(str){ return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
-function truncate(str,n){ return !str?'—':str.length>n?str.substring(0,n)+'…':str; }
+window._doExportCSV=_doExportCSV;
+window.exportCSV=function(){ _doExportCSV(allTemplates); showToast('✅ CSV berhasil diunduh'); };
 
-function clearForm(){
-  ['f-title','f-price','f-category','f-desc','f-imageurl','f-fileurl'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  const dateEl=document.getElementById('f-createdat');
-  if(dateEl) dateEl.value=new Date().toISOString().split('T')[0];
-  document.getElementById('price-preview').textContent='';
-  document.getElementById('price-preview').textContent='';
-  resetImgPreview();
-  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
-}
-
+/* ── HELPERS ── */
 function setBtnLoading(loading){
   const btn=document.getElementById('btn-submit');
   const sp=document.getElementById('form-spinner');
@@ -1721,9 +2056,8 @@ function setBtnLoading(loading){
   btn.disabled=loading;
   if(sp) sp.style.display=loading?'block':'none';
   if(ic) ic.style.display=loading?'none':'block';
-  if(lb && loading) lb.textContent='MENYIMPAN...';
+  if(lb&&loading) lb.textContent='MENYIMPAN...';
 }
-
 function showFormStatus(type,msg){
   const box=document.getElementById('form-status-msg');
   const span=document.getElementById('form-status-text');
@@ -1732,17 +2066,18 @@ function showFormStatus(type,msg){
   span.textContent=msg;
   setTimeout(()=>box.classList.remove('show'),5000);
 }
-
-function showEmptyState(msg){
-  document.getElementById('empty-msg').textContent = msg||'BELUM ADA TEMPLATE';
-  document.getElementById('empty-state').style.display='flex';
-  document.getElementById('table-view').style.display='none';
-  document.getElementById('grid-view').style.display='none';
+function clearForm(){
+  ['f-title','f-price','f-category','f-desc','f-imageurl','f-fileurl','f-meta-title','f-meta-desc','f-keywords','f-og-image'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  const dateEl=document.getElementById('f-createdat'); if(dateEl) dateEl.value=new Date().toISOString().split('T')[0];
+  const pp=document.getElementById('price-preview'); if(pp) pp.textContent='';
+  if(document.getElementById('f-status')) document.getElementById('f-status').value='published';
+  if(document.getElementById('f-badge')) document.getElementById('f-badge').value='';
+  if(window._resetImages) window._resetImages();
+  _isFeatured=false;
+  document.getElementById('featured-toggle').classList.remove('active');
+  try{ localStorage.removeItem('alfirama-studio-draft'); }catch(e){}
 }
-
-/* Close confirm on ESC - wire from module */
-document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ cancelEdit(); } });
-
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') cancelEdit(); });
 </script>
 
 </body>
