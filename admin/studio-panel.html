@@ -788,7 +788,7 @@ mark.search-hl { background: rgba(201,178,109,0.25); color: var(--gold); border-
               <p style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.16em;color:var(--gold);margin-bottom:3px;">MODE EDIT AKTIF</p>
               <p style="font-size:0.66rem;color:var(--text3);">Mengedit dokumen: <code id="edit-doc-id" style="font-family:'Courier New';font-size:0.68rem;color:rgba(58,176,255,0.7);background:rgba(58,176,255,0.06);padding:1px 5px;border-radius:4px;">—</code></p>
             </div>
-            <button onclick="openHistoryDrawer(editingId)" style="padding:5px 12px;border-radius:99px;border:1px solid rgba(201,178,109,0.2);background:rgba(201,178,109,0.05);color:rgba(201,178,109,0.6);font-family:var(--font-tech);font-size:0.4rem;letter-spacing:0.1em;cursor:pointer;transition:all .18s;margin-right:6px;"
+            <button onclick="openHistoryDrawer(window.editingId)" style="padding:5px 12px;border-radius:99px;border:1px solid rgba(201,178,109,0.2);background:rgba(201,178,109,0.05);color:rgba(201,178,109,0.6);font-family:var(--font-tech);font-size:0.4rem;letter-spacing:0.1em;cursor:pointer;transition:all .18s;margin-right:6px;"
               onmouseover="this.style.color='var(--gold)';this.style.background='rgba(201,178,109,0.1)'"
               onmouseout="this.style.color='rgba(201,178,109,0.6)';this.style.background='rgba(201,178,109,0.05)'">
               HISTORY
@@ -1275,8 +1275,11 @@ window.updatePricePreview=updatePricePreview;
 <!-- View Toggle -->
 <script>
 var _currentView='table';
+var _currentView='table';
+window._currentView='table';
 function setView(mode){
   _currentView=mode;
+  window._currentView=mode;
   var tbl=document.getElementById('table-view');
   var grd=document.getElementById('grid-view');
   var btnT=document.getElementById('btn-table-view');
@@ -1433,9 +1436,10 @@ document.addEventListener('DOMContentLoaded',function(){ loadCats(); rebuildCatS
 
 <!-- VERSION HISTORY DRAWER -->
 <script>
-var editingId=null;
 function openHistoryDrawer(docId){
-  if(!docId){ showToast('⚠️ Pilih template dulu'); return; }
+  var resolvedId = docId || window.editingId || null;
+  if(!resolvedId){ showToast('⚠️ Pilih template dulu'); return; }
+  docId = resolvedId;
   document.getElementById('history-drawer').classList.add('open');
   var titleEl=document.getElementById('history-doc-title');
   var listEl=document.getElementById('history-list');
@@ -1741,7 +1745,8 @@ window.applyFilters=function(){
     document.getElementById('empty-msg').textContent=search||catFil?'TIDAK ADA HASIL':'BELUM ADA TEMPLATE';
   } else {
     emptyEl.style.display='none';
-    if(_currentView==='grid'){ tableView.style.display='none'; gridView.style.display='grid'; }
+   const activeView = window._currentView || 'table';
+    if(activeView==='grid'){ tableView.style.display='none'; gridView.style.display='grid'; }
     else { tableView.style.display=''; gridView.style.display='none'; }
   }
 };
@@ -1858,7 +1863,7 @@ function updateKPIs(){
   el('kpi-views',totalViews>0?totalViews.toLocaleString('id-ID'):'0');
   el('kpi-featured',featured||'0');
   el('kpi-drafts',drafts||'0');
-  window._rebuildCatSelects && rebuildCatSelects();
+  if(window.rebuildCatSelects) window.rebuildCatSelects();
 }
 
 /* ── SUBMIT FORM ── */
@@ -1883,6 +1888,9 @@ window.submitForm=async function(){
   if(!category){ showToast('⚠️ Kategori wajib dipilih'); return; }
   const price=Number(priceInput);
   if(isNaN(price)||price<0){ showToast('⚠️ Harga harus angka positif'); return; }
+  const urlPattern=/^https?:\/\/.+/;
+  if(fileUrl && !urlPattern.test(fileUrl)){ showToast('⚠️ URL file tidak valid, harus diawali https://'); return; }
+  if(imageUrl && !urlPattern.test(imageUrl)){ showToast('⚠️ URL gambar tidak valid, harus diawali https://'); return; }
 
   setBtnLoading(true);
   const payload={
@@ -1894,16 +1902,16 @@ window.submitForm=async function(){
   };
 
   try{
-    if(editingId){
+    if(window.editingId){
       /* Save version snapshot before overwrite */
-      const oldData=allTemplates.find(x=>x.id===editingId);
+      const oldData=allTemplates.find(x=>x.id===window.editingId);
       if(oldData){
         await addDoc(collection(db,'studio_templates',editingId,'history'),{
           ...oldData, savedAt: serverTimestamp(), savedBy:'admin'
         });
       }
-      await updateDoc(doc(db,'studio_templates',editingId),payload);
-      if(fileUrl) await setDoc(doc(db,'template_files',editingId),{fileUrl},{merge:true});
+      await updateDoc(doc(db,'studio_templates',window.editingId),payload);
+      if(fileUrl) await setDoc(doc(db,'template_files',window.editingId),{fileUrl},{merge:true});
       showFormStatus('success','✅ Template berhasil diupdate!');
       showToast('✅ Perubahan tersimpan');
       cancelEdit();
@@ -1928,7 +1936,7 @@ window.submitForm=async function(){
 window.loadEditForm=function(id){
   const t=allTemplates.find(x=>x.id===id);
   if(!t){ showToast('⚠️ Data tidak ditemukan'); return; }
-  editingId=id; window.editingId=id;
+  window.editingId=id;
   document.getElementById('f-title').value=t.title||'';
   document.getElementById('f-price').value=t.price??'';
   document.getElementById('f-category').value=t.category||'';
@@ -1955,7 +1963,7 @@ window.loadEditForm=function(id){
 };
 
 window.cancelEdit=function(){
-  editingId=null; window.editingId=null;
+  window.editingId=null;
   clearForm();
   document.getElementById('edit-banner').classList.remove('show');
   document.getElementById('form-mode-label').textContent='FORM — TAMBAH TEMPLATE BARU';
