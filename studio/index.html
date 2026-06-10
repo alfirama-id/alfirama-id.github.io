@@ -2685,9 +2685,10 @@
   const cards = Array.from(document.querySelectorAll('.product-card'));
   cards.forEach(card => {
     const title = card.dataset.title?.toLowerCase()||'';
-    const cat   = card.dataset.category?.toLowerCase()||'';
-    const show  = (!q || title.includes(q) || cat.includes(q))
-                  && (currentFilter==='all' || card.dataset.category===currentFilter);
+    const cat   = card.dataset.category?.toUpperCase()||'';
+    const filterMatch = currentFilter==='all' || card.dataset.category?.toUpperCase()===currentFilter.toUpperCase();
+    const searchMatch = !q || title.includes(q) || cat.includes(q.toUpperCase());
+    const show  = searchMatch && filterMatch;
     card.style.display = show ? '' : 'none';
   });
   if(srt !== 'default') {
@@ -2709,7 +2710,7 @@ window.filterProducts = function (cat, btn) {
     const cards = document.querySelectorAll('.product-card');
     let visible = 0;
     cards.forEach(card => {
-      const show = cat === 'all' || card.dataset.category === cat;
+      const show = cat === 'all' || (card.dataset.category?.toUpperCase()) === cat.toUpperCase();
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
@@ -3040,7 +3041,21 @@ window.unlockDownloadCard = function (templateId, fileLink) {
         localStorage.removeItem('alfirama_pending');
         showToast('success', 'PEMBAYARAN BERHASIL!', 'Mengaktifkan akses download...', 6000);
         if (pending.templateId) {
-          verifyAndUnlock(pending.orderId, pending.templateId, pending.templateTitle);
+          let retries = 0;
+          const maxRetries = 6;
+          const tryVerify = () => {
+            retries++;
+            verifyAndUnlock(pending.orderId, pending.templateId, pending.templateTitle)
+              .then(found => {
+                if (!found && retries < maxRetries) {
+                  setTimeout(tryVerify, 3000);
+                }
+              })
+              .catch(() => {
+                if (retries < maxRetries) setTimeout(tryVerify, 3000);
+              });
+          };
+          setTimeout(tryVerify, 2000);
         }
       },
       onError: function () {
@@ -3061,7 +3076,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'Social Media Kit — Brand Kuliner',
       description: 'Paket 30+ template feed Instagram, 10 story, dan 5 highlight cover. Bisa diedit sendiri via Canva Pro atau Adobe Illustrator.',
       price: 'Rp 75.000', priceRaw: 75000,
-      category: 'smkit', catLabel: 'SOCIAL MEDIA KIT', catClass: 'cat-tag--smkit',
+      category: 'SOCIAL MEDIA KIT', catLabel: 'SOCIAL MEDIA KIT', catClass: 'cat-tag--smkit',
       badge: 'hot',
       imageFile: '../assets/studio/smkit-kuliner.png',
       fileUrl: '',
@@ -3071,7 +3086,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'Logo Pack — Minimalist Modern (5 Konsep)',
       description: 'Paket 5 konsep logo minimal modern dalam format AI, EPS, SVG, PNG transparan, dan PDF. Cocok untuk UMKM, startup, dan personal branding.',
       price: 'Rp 150.000', priceRaw: 150000,
-      category: 'logo', catLabel: 'LOGO PACK', catClass: 'cat-tag--logo',
+      category: 'LOGO PACK', catLabel: 'LOGO PACK', catClass: 'cat-tag--logo',
       badge: 'new',
       imageFile: '../assets/studio/logo-pack-minimal.png',
       fileUrl: '',
@@ -3081,7 +3096,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'After Effects — Logo Reveal Neon Glow',
       description: 'Template intro video premium dengan efek neon glow dan partikel. Durasi 5 detik. Mudah dikustomisasi, no plugin, After Effects CS6+.',
       price: 'Rp 120.000', priceRaw: 120000,
-      category: 'ae', catLabel: 'AFTER EFFECTS', catClass: 'cat-tag--ae',
+      category: 'AFTER EFFECTS', catLabel: 'AFTER EFFECTS', catClass: 'cat-tag--ae',
       badge: null,
       imageFile: '../assets/studio/ae-logo-neon.png',
       fileUrl: '',
@@ -3091,7 +3106,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'PSD — Business Card Premium (10 Desain)',
       description: 'Template kartu nama bisnis premium dalam format PSD berlayer. Ukuran standar 9x5.5cm, 300dpi siap cetak. Includes mockup scene.',
       price: 'Rp 65.000', priceRaw: 65000,
-      category: 'psd', catLabel: 'PSD', catClass: 'cat-tag--psd',
+      category: 'PSD', catLabel: 'PSD', catClass: 'cat-tag--psd',
       badge: 'hot',
       imageFile: '../assets/studio/psd-bizcard.png',
       fileUrl: '',
@@ -3101,7 +3116,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'Brand Identity Kit — F&B Artisan',
       description: 'Paket identitas brand lengkap untuk usaha F&B artisan: logo, color system, tipografi, pattern, packaging mockup, dan brand guideline 20 halaman.',
       price: 'Rp 350.000', priceRaw: 350000,
-      category: 'brand', catLabel: 'BRANDING', catClass: 'cat-tag--brand',
+      category: 'BRANDING', catLabel: 'BRANDING', catClass: 'cat-tag--brand',
       badge: 'new',
       imageFile: '../assets/studio/brand-kit-fnb.png',
       fileUrl: '',
@@ -3111,7 +3126,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
       title: 'Vektor — Pattern Batik Modern (25 Motif)',
       description: 'Koleksi 25 motif batik kontemporer dalam format SVG dan AI. Ideal untuk brand fashion lokal, packaging, dan merchandise Indonesia.',
       price: 'Rp 90.000', priceRaw: 90000,
-      category: 'vector', catLabel: 'VEKTOR', catClass: 'cat-tag--vector',
+      category: 'VEKTOR', catLabel: 'VEKTOR', catClass: 'cat-tag--vector',
       badge: null,
       imageFile: '../assets/studio/vector-batik.png',
       fileUrl: '',
@@ -3315,15 +3330,18 @@ window.unlockDownloadCard = function (templateId, fileLink) {
   window._checkUserDownloads = checkUserDownloads;
 
   async function verifyAndUnlock(orderId, templateId, templateTitle) {
-    if (!orderId || !templateId) return;
+    if (!orderId || !templateId) return false;
     try {
       const snap = await getDoc(doc(db, 'user_downloads', orderId));
-      if (snap.exists() && snap.data().status === 'paid' && snap.data().orderId === orderId) {
+      if (snap.exists() && snap.data().status === 'paid') {
         window.unlockDownloadCard(templateId, snap.data().fileUrl);
         window.showSuccessModal(templateTitle, snap.data().fileUrl);
+        return true;
       }
+      return false;
     } catch(e) {
       console.warn('[Alfirama] verifyAndUnlock error:', e.message);
+      return false;
     }
   }
 </script>
