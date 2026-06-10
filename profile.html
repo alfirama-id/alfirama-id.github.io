@@ -66,6 +66,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .nav-tab.active .tab-dot{background:var(--blue)}
 [data-theme="light"] .nav-tab.active{color:var(--blue2);border-color:rgba(0,100,200,.2)}
 [data-theme="light"] .nav-tab.active .tab-dot{background:var(--blue2)}
+.nav-tab-ext{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.72rem;font-weight:500;cursor:pointer;transition:.2s;color:var(--text3);border:1px solid transparent;margin-bottom:2px;text-decoration:none;}
+.nav-tab-ext:hover{background:rgba(0,140,255,.05);color:var(--text2);border-color:rgba(0,140,255,.08)}
+.nav-tab-ext .ext-icon{margin-left:auto;opacity:0;transition:opacity .2s}
+.nav-tab-ext:hover .ext-icon{opacity:.4}
+[data-theme="light"] .nav-tab-ext:hover{background:rgba(0,100,200,.05)}
 .sidebar-actions{flex-shrink:0;padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:6px;}
 .btn-sidebar-action{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.6rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--text2);}
 .btn-sidebar-action:hover{background:rgba(0,140,255,.08);border-color:rgba(0,140,255,.2);color:var(--blue)}
@@ -73,12 +78,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-sidebar-logout:hover{background:rgba(0,100,255,.14);border-color:rgba(0,140,255,.45)}
 [data-theme="light"] .btn-sidebar-action{border-color:rgba(0,0,0,.1);color:var(--text2)}
 [data-theme="light"] .btn-sidebar-logout{border-color:rgba(0,100,200,.25);color:var(--blue2)}
-.sidebar-stats{flex-shrink:0;padding:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.stat-mini{background:rgba(0,140,255,.04);border:1px solid rgba(0,140,255,.1);border-radius:9px;padding:10px 9px;}
-[data-theme="light"] .stat-mini{background:rgba(0,100,200,.05);border-color:rgba(0,100,200,.13)}
-.stat-val{font-family:var(--font-tech);font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
-.stat-val.blue{color:var(--blue)}.stat-val.gold{color:var(--gold)}
-.stat-lbl{font-size:.58rem;color:var(--text3);margin-top:2px;font-weight:500}
 .main-wrap{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
 .hero-section{position:relative;padding:52px 40px 42px;overflow:hidden;flex-shrink:0;border-bottom:1px solid var(--border);}
 .hero-orb{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse at 50% 40%, rgba(0,130,255,0.22) 0%, rgba(0,80,200,0.08) 50%, transparent 72%);pointer-events:none;animation:glowPulse 5s ease-in-out infinite;border-radius:50%;}
@@ -167,6 +166,24 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .kpi-value.loading{color:transparent!important}
 [data-theme="light"] .day-progress-track{background:rgba(0,0,0,.07)!important}
 
+/* Download History */
+.dh-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;margin-bottom:8px;transition:.2s;}
+.dh-item:hover{border-color:rgba(0,240,255,0.2);background:rgba(0,240,255,0.04);}
+[data-theme="light"] .dh-item{background:rgba(0,100,200,0.04);border-color:rgba(0,100,200,0.1);}
+.btn-download-hist{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-tech);font-size:0.5rem;letter-spacing:0.1em;padding:7px 12px;border-radius:8px;background:linear-gradient(105deg,rgba(0,100,40,0.5),rgba(0,200,80,0.2));border:1px solid rgba(0,200,80,0.3);color:#00E676;text-decoration:none;transition:.2s;white-space:nowrap;}
+.btn-download-hist:hover{box-shadow:0 0 14px rgba(0,200,80,0.3);border-color:rgba(0,200,80,0.5);}
+
+/* Star Rating */
+.star-display{display:inline-flex;gap:2px;font-size:.9rem;}
+.star-display span{cursor:default;}
+.star-pick-wrap{display:flex;gap:4px;cursor:pointer;}
+.star-pick-wrap span{font-size:1.3rem;color:rgba(201,178,109,0.3);transition:.15s;}
+.star-pick-wrap span.lit{color:var(--gold);}
+
+/* Review card */
+.review-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+[data-theme="light"] .review-card{background:rgba(0,100,200,0.04);border-color:rgba(0,100,200,0.1);}
+
 /* ===== RESPONSIVE MOBILE ===== */
 @media (max-width: 768px) {
   :root { --sidebar-w: 0px; }
@@ -214,30 +231,14 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 [data-theme="light"] #mobile-bottom-nav { background: rgba(232,238,248,0.97) !important; }
 
 @media (max-width: 768px) {
-  #gallery-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-  #gallery-grid > div img {
-    width: 100%;
-    height: auto;
-  }
-  #gallery-grid > div > div:last-child {
-    padding: 10px !important;
-  }
-  #gallery-grid > div > div:last-child p:first-child {
-    font-size: .54rem !important;
-  }
-  #gallery-grid > div > div:last-child p:last-child {
-    font-size: .5rem !important;
-    margin-bottom: 7px !important;
-  }
+  #gallery-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  #gallery-grid > div img { width: 100%; height: auto; }
+  #gallery-grid > div > div:last-child { padding: 10px !important; }
+  #gallery-grid > div > div:last-child p:first-child { font-size: .54rem !important; }
+  #gallery-grid > div > div:last-child p:last-child { font-size: .5rem !important; margin-bottom: 7px !important; }
 }
-
 @media (max-width: 400px) {
-  #gallery-grid {
-    grid-template-columns: 1fr !important;
-  }
+  #gallery-grid { grid-template-columns: 1fr !important; }
 }
 </style>
 </head>
@@ -246,7 +247,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <canvas id="bg-canvas"></canvas>
 <div id="hero-glow"></div>
 
-<!-- Loading -->
 <div id="loading-overlay">
   <div style="text-align:center">
     <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.3rem;letter-spacing:.2em;margin-bottom:10px">
@@ -261,7 +261,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 </div>
 <script>(function(){var p=0,bar=document.getElementById('auth-bar'),iv=setInterval(function(){p+=Math.random()*18;if(p>=95){p=95;clearInterval(iv)}bar&&(bar.style.width=p+'%')},200)})();</script>
 
-<!-- Notif Panel -->
 <div id="notif-panel" style="position:fixed;top:0;right:-320px;width:310px;height:100vh;z-index:500;background:rgba(2,6,16,.97);border-left:1px solid rgba(0,140,255,.15);backdrop-filter:blur(24px);transition:right .3s ease;display:flex;flex-direction:column">
   <div style="padding:20px 18px 14px;border-bottom:1px solid rgba(0,140,255,.1);display:flex;align-items:center;justify-content:space-between">
     <span style="font-family:var(--font-tech);font-size:.68rem;font-weight:800;color:var(--text);letter-spacing:.1em">NOTIFIKASI</span>
@@ -305,6 +304,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <span style="color:#fff">ALFIRAMA</span><span style="color:#3ab0ff">.ID</span>
       </span>
     </div>
+
     <div class="sidebar-profile">
       <div style="position:relative;width:42px;height:42px;margin:0 auto 10px">
         <img id="avatar-img" src="https://ui-avatars.com/api/?name=Klien+Alfirama&background=1a3a6e&color=3ab0ff&bold=true&size=200" alt="Foto Profil" class="sidebar-avatar" onclick="document.getElementById('avatar-file').click()" title="Ganti foto"/>
@@ -335,39 +335,86 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         </div>
       </div>
     </div>
+
     <nav class="sidebar-nav">
       <p class="sidebar-label" style="margin-bottom:8px">NAVIGASI</p>
-      <div class="nav-tab active" onclick="switchTab('dashboard',this);closeMobileSidebar()">
+      <div class="nav-tab active" id="navtab-dashboard" onclick="switchTab('dashboard',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
         Overview
       </div>
-      <div class="nav-tab" onclick="switchTab('orders',this);closeMobileSidebar()">
+      <div class="nav-tab" id="navtab-orders" onclick="switchTab('orders',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Pesanan Saya
       </div>
-      <div class="nav-tab" onclick="switchTab('gallery',this);closeMobileSidebar()">
+      <div class="nav-tab" id="navtab-gallery" onclick="switchTab('gallery',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
         Gallery Aset
       </div>
-      <div class="nav-tab" onclick="switchTab('invoices',this);closeMobileSidebar()">
+      <div class="nav-tab" id="navtab-invoices" onclick="switchTab('invoices',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Invoice
       </div>
-      <div class="nav-tab" onclick="openNotifPanel();closeMobileSidebar()" id="notif-tab" style="position:relative">
+      <!-- ★ NEW: Riwayat Pembelian tab -->
+      <div class="nav-tab" id="navtab-purchases" onclick="switchTab('purchases',this);closeMobileSidebar()">
+        <span class="tab-dot"></span>
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        Riwayat Beli
+      </div>
+      <div class="nav-tab" id="navtab-notif" onclick="openNotifPanel();closeMobileSidebar()" style="position:relative">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
         Notifikasi
         <span id="notif-badge" style="display:none;position:absolute;right:8px;top:7px;background:#3ab0ff;color:#020810;font-family:var(--font-tech);font-size:.42rem;font-weight:800;padding:1px 5px;border-radius:99px;min-width:16px;text-align:center"></span>
       </div>
-      <div class="nav-tab" onclick="switchTab('settings',this);closeMobileSidebar()">
+      <div class="nav-tab" id="navtab-settings" onclick="switchTab('settings',this);closeMobileSidebar()">
         <span class="tab-dot"></span>
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
         Pengaturan
       </div>
+
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <p class="sidebar-label" style="margin-bottom:6px">EKOSISTEM</p>
+        <a href="../index.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Portal Utama
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../track.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          Track Order
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../studio/index.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          Studio
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../print/index.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Print & Konveksi
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../mart/index.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          Alfirama Mart
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../space/index.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Space & Library
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a href="../about.html" class="nav-tab-ext">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Tentang Kami
+          <svg class="ext-icon" width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+
       <div style="margin-top:14px;padding:8px 10px;background:rgba(0,140,255,0.03);border:1px solid var(--border);border-radius:8px">
         <p style="font-family:var(--font-tech);font-size:.38rem;letter-spacing:.12em;color:var(--text3);margin-bottom:3px">CLIENT ID</p>
         <div style="display:flex;align-items:center;gap:5px;margin-top:2px">
@@ -379,6 +426,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <p style="font-family:var(--font-tech);font-size:.36rem;letter-spacing:.08em;color:rgba(58,176,255,.28);margin-top:4px">SESI: <span id="session-clock">—</span></p>
       </div>
     </nav>
+
     <div class="sidebar-actions">
       <button onclick="toggleTheme()" class="btn-sidebar-action ripple-btn" title="Ganti tema">
         <svg id="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -390,6 +438,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         Keluar
       </button>
     </div>
+
     <div style="flex-shrink:0;padding:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px;">
       <div style="background:rgba(0,140,255,.03);border:1px solid var(--border);border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:5px;">
         <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -410,7 +459,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <svg width="11" height="11" viewBox="0 0 24 24" fill="#3fb950"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.848L.044 24l6.327-1.649A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.882 0-3.65-.518-5.17-1.42l-.371-.22-3.757.979.998-3.663-.242-.376A9.975 9.975 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
           Chat WA
         </a>
-        <button onclick="switchTab('settings',document.querySelectorAll('.nav-tab')[4]);closeMobileSidebar()" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,140,255,.06);color:var(--blue);" onmouseover="this.style.background='rgba(0,140,255,.14)'" onmouseout="this.style.background='rgba(0,140,255,.06)'">
+        <button onclick="switchTab('settings',document.getElementById('navtab-settings'));closeMobileSidebar()" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:9px;font-family:var(--font-body);font-size:.58rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid rgba(0,140,255,.2);background:rgba(0,140,255,.06);color:var(--blue);" onmouseover="this.style.background='rgba(0,140,255,.14)'" onmouseout="this.style.background='rgba(0,140,255,.06)'">
           <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
           Profil
         </button>
@@ -419,7 +468,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   </aside>
 
   <div class="main-wrap">
-    <!-- DASHBOARD TAB -->
+
+    <!-- ============ DASHBOARD TAB ============ -->
     <div class="tab-section active" id="tab-dashboard">
       <div class="hero-section">
         <div class="hero-orb"></div>
@@ -459,10 +509,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
           <div class="kpi-change neutral">Invoice</div>
         </div>
         <div class="kpi-card fade-up d5">
-          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue2)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg></div>
-          <div class="kpi-label">Aset Digital</div>
-          <div class="kpi-value blue" id="kpi-assets">0</div>
-          <div class="kpi-change neutral" id="kpi-assets-badge">Belum ada</div>
+          <div class="kpi-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--blue2)" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+          <div class="kpi-label">Template Dibeli</div>
+          <div class="kpi-value blue" id="kpi-purchases">0</div>
+          <div class="kpi-change neutral" id="kpi-purchases-badge">Digital assets</div>
         </div>
       </div>
       <div class="body-grid" style="border-top:1px solid var(--border)">
@@ -479,41 +529,36 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
               <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin:0 auto 14px;display:block;opacity:.3">
                 <rect x="12" y="8" width="40" height="48" rx="4" stroke="rgba(58,176,255,.8)" stroke-width="1.2"/>
                 <path d="M20 22h24M20 30h24M20 38h14" stroke="rgba(58,176,255,.6)" stroke-width="1.2" stroke-linecap="round"/>
-                <circle cx="48" cy="48" r="10" fill="rgba(2,8,16,1)" stroke="rgba(58,176,255,.5)" stroke-width="1.2"/>
-                <path d="M44 48h8M48 44v8" stroke="rgba(0,200,255,.8)" stroke-width="1.4" stroke-linecap="round"/>
               </svg>
               <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA PESANAN AKTIF</p>
-              <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.55">Hubungi tim Alfirama untuk memulai pesanan baru</p>
-              <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20membuat%20pesanan%20baru" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:7px 16px;border-radius:99px;background:rgba(0,140,255,.07);border:1px solid rgba(0,140,255,.2);color:var(--blue);font-family:var(--font-tech);font-size:.42rem;letter-spacing:.12em;text-decoration:none;transition:.2s" onmouseover="this.style.background='rgba(0,140,255,.14)'" onmouseout="this.style.background='rgba(0,140,255,.07)'">
-                <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20membuat%20pesanan%20baru" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:7px 16px;border-radius:99px;background:rgba(0,140,255,.07);border:1px solid rgba(0,140,255,.2);color:var(--blue);font-family:var(--font-tech);font-size:.42rem;letter-spacing:.12em;text-decoration:none;">
                 BUAT PESANAN BARU
               </a>
             </div>
             <div id="orders-container"></div>
           </div>
-        <div id="overview-assets-section" style="margin-top:22px;display:none">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-            <div>
-              <p class="sh-eyebrow">⬡ HASIL DESAIN</p>
-              <h2 class="sh-title">Aset <span class="accent">Digital Kamu</span></h2>
+          <div id="overview-assets-section" style="margin-top:22px;display:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div>
+                <p class="sh-eyebrow">⬡ HASIL DESAIN</p>
+                <h2 class="sh-title">Aset <span class="accent">Digital Kamu</span></h2>
+              </div>
+              <button onclick="switchTab('gallery',document.getElementById('navtab-gallery'))" class="badge badge-gold" style="cursor:pointer;background:none;border:1px solid rgba(201,178,109,.25);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.1em;color:var(--gold)">LIHAT SEMUA →</button>
             </div>
-            <button onclick="switchTab('gallery',document.querySelectorAll('.nav-tab')[2])" class="badge badge-gold" style="cursor:pointer;background:none;border:1px solid rgba(201,178,109,.25);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.1em;color:var(--gold)">LIHAT SEMUA →</button>
+            <div id="overview-assets-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px"></div>
           </div>
-          <div id="overview-assets-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px"></div>
-        </div>
         </div>
         <div class="right-panel">
           <div class="glass" style="padding:18px">
             <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:12px">⬡ Invoice Terbaru</p>
             <div id="invoice-summary"><div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:var(--text3)">MEMUAT...</p></div></div>
-            <button onclick="switchTab('invoices',document.querySelectorAll('.nav-tab')[2])" style="width:100%;text-align:center;font-family:var(--font-tech);font-size:.42rem;letter-spacing:.14em;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.04);cursor:pointer;background:none;border-bottom:none;border-left:none;border-right:none;transition:color .2s" onmouseover="this.style.color='rgba(58,176,255,.6)'" onmouseout="this.style.color='var(--text3)'">LIHAT SEMUA →</button>
+            <button onclick="switchTab('invoices',document.getElementById('navtab-invoices'))" style="width:100%;text-align:center;font-family:var(--font-tech);font-size:.42rem;letter-spacing:.14em;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.04);cursor:pointer;background:none;border-bottom:none;border-left:none;border-right:none;" onmouseover="this.style.color='rgba(58,176,255,.6)'" onmouseout="this.style.color='var(--text3)'">LIHAT SEMUA →</button>
           </div>
           <div id="assets-container" style="display:none"></div>
           <div class="glass-cyan" style="padding:18px">
             <p style="font-family:var(--font-tech);font-size:.42rem;letter-spacing:.2em;color:rgba(58,176,255,.5);text-transform:uppercase;margin-bottom:10px">⬡ Butuh Bantuan?</p>
             <p style="font-size:.68rem;color:var(--text3);margin-bottom:13px;line-height:1.6">Tim Alfirama.ID siap membantu via WhatsApp Business kapan saja.</p>
-            <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi..." target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:22px;background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.2);color:#3fb950;font-family:var(--font-body);font-size:.68rem;font-weight:600;text-decoration:none;transition:.2s" onmouseover="this.style.background='rgba(37,211,102,.13)';this.style.boxShadow='0 0 14px rgba(37,211,102,.18)'" onmouseout="this.style.background='rgba(37,211,102,.07)';this.style.boxShadow='none'">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="#3fb950"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.848L.044 24l6.327-1.649A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.882 0-3.65-.518-5.17-1.42l-.371-.22-3.757.979.998-3.663-.242-.376A9.975 9.975 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            <a href="https://wa.me/6285135602885?text=Halo%20Alfirama!%20Saya%20ingin%20konsultasi..." target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border-radius:22px;background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.2);color:#3fb950;font-family:var(--font-body);font-size:.68rem;font-weight:600;text-decoration:none;">
               Chat WhatsApp
             </a>
           </div>
@@ -521,7 +566,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
 
-    <!-- GALLERY TAB -->
+    <!-- ============ GALLERY TAB ============ -->
     <div class="tab-section" id="tab-gallery">
       <div class="hero-section" style="padding:36px 40px 28px">
         <div class="hero-orb" style="opacity:.6"></div>
@@ -532,38 +577,34 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <div style="padding:24px 40px 36px">
         <div id="gallery-empty" style="display:none;padding:48px 0;text-align:center">
           <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA ASET</p>
-          <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.5">Aset akan muncul setelah pesanan selesai</p>
         </div>
         <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px"></div>
       </div>
     </div>
 
-    <!-- ORDERS TAB -->
+    <!-- ============ ORDERS TAB ============ -->
     <div class="tab-section" id="tab-orders">
       <div class="hero-section" style="padding:36px 40px 28px">
         <div class="hero-orb" style="opacity:.6"></div>
         <p class="sh-eyebrow">⬡ RIWAYAT</p>
         <h2 class="sh-title" style="font-size:1.4rem">Semua <span class="accent">Pesanan</span></h2>
-        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Riwayat lengkap seluruh pesanan Anda</p>
       </div>
       <div style="padding:24px 40px 36px">
         <div class="glass" style="padding:0;overflow:hidden">
           <div style="padding:48px 20px;text-align:center" id="all-orders-empty">
             <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA DATA PESANAN</p>
-            <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.5">Riwayat pesanan Anda akan tampil di sini</p>
           </div>
           <div id="all-orders-container"></div>
         </div>
       </div>
     </div>
 
-    <!-- INVOICE TAB -->
+    <!-- ============ INVOICE TAB ============ -->
     <div class="tab-section" id="tab-invoices">
       <div class="hero-section" style="padding:36px 40px 28px">
         <div class="hero-orb" style="opacity:.6"></div>
         <p class="sh-eyebrow">⬡ KEUANGAN</p>
         <h2 class="sh-title" style="font-size:1.4rem">Riwayat <span class="accent">Invoice</span></h2>
-        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Semua tagihan dan status pembayaran Anda</p>
       </div>
       <div style="padding:24px 40px 36px">
         <div class="glass" style="padding:4px 22px 0">
@@ -572,13 +613,35 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       </div>
     </div>
 
-    <!-- SETTINGS TAB -->
+    <!-- ============ RIWAYAT PEMBELIAN TAB (NEW) ============ -->
+    <div class="tab-section" id="tab-purchases">
+      <div class="hero-section" style="padding:36px 40px 28px">
+        <div class="hero-orb" style="opacity:.6"></div>
+        <p class="sh-eyebrow">⬡ MARKETPLACE</p>
+        <h2 class="sh-title" style="font-size:1.4rem">Riwayat <span class="accent">Pembelian Template</span></h2>
+        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Semua template digital yang sudah kamu beli dari Alfirama Studio</p>
+      </div>
+      <div style="padding:24px 40px 36px;max-width:800px">
+        <div id="purchases-loading" style="text-align:center;padding:48px 0">
+          <div style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,160,255,.1);border-top-color:var(--blue);animation:spin .8s linear infinite;margin:0 auto 14px"></div>
+          <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">MEMUAT RIWAYAT...</p>
+        </div>
+        <div id="purchases-empty" style="display:none;text-align:center;padding:48px 0">
+          <div style="font-size:3rem;margin-bottom:14px;opacity:.3">🛒</div>
+          <p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA PEMBELIAN</p>
+          <p style="font-size:.62rem;color:var(--text3);margin-top:6px;opacity:.5">Kunjungi Studio untuk menemukan template premium</p>
+          <a href="../studio/index.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:9px 20px;border-radius:99px;background:rgba(201,178,109,.08);border:1px solid rgba(201,178,109,.2);color:var(--gold);font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;text-decoration:none;">BUKA STUDIO →</a>
+        </div>
+        <div id="dh-list"></div>
+      </div>
+    </div>
+
+    <!-- ============ SETTINGS TAB ============ -->
     <div class="tab-section" id="tab-settings">
       <div class="hero-section" style="padding:36px 40px 28px">
         <div class="hero-orb" style="opacity:.6"></div>
         <p class="sh-eyebrow">⬡ AKUN</p>
         <h2 class="sh-title" style="font-size:1.4rem">Pengaturan <span class="accent">Profil</span></h2>
-        <p style="font-size:.75rem;color:var(--text3);margin-top:6px">Kelola informasi akun dan preferensi Anda</p>
       </div>
       <div style="padding:24px 40px 36px">
         <div class="glass" style="padding:28px;max-width:460px">
@@ -617,24 +680,24 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
   <!-- MOBILE BOTTOM NAV -->
   <div id="mobile-bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;height:62px;background:rgba(2,5,14,0.97);border-top:1px solid var(--border);backdrop-filter:blur(24px);align-items:center;justify-content:space-around;padding:0 4px 4px">
-    <button class="mobile-nav-btn mob-active" id="mobnav-dashboard" onclick="switchTab('dashboard',document.querySelectorAll('.nav-tab')[0]);setMobNav('dashboard')">
+    <button class="mobile-nav-btn mob-active" id="mobnav-dashboard" onclick="switchTab('dashboard',document.getElementById('navtab-dashboard'));setMobNav('dashboard')">
       <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
       <span>Beranda</span>
     </button>
-    <button class="mobile-nav-btn" id="mobnav-orders" onclick="switchTab('orders',document.querySelectorAll('.nav-tab')[1]);setMobNav('orders')">
+    <button class="mobile-nav-btn" id="mobnav-orders" onclick="switchTab('orders',document.getElementById('navtab-orders'));setMobNav('orders')">
       <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
       <span>Pesanan</span>
     </button>
-    <button class="mobile-nav-btn" id="mobnav-invoices" onclick="switchTab('invoices',document.querySelectorAll('.nav-tab')[2]);setMobNav('invoices')">
-      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      <span>Invoice</span>
+    <button class="mobile-nav-btn" id="mobnav-purchases" onclick="switchTab('purchases',document.getElementById('navtab-purchases'));setMobNav('purchases')">
+      <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      <span>Beli</span>
     </button>
     <button class="mobile-nav-btn" id="mobnav-notif" onclick="openNotifPanel()" style="position:relative">
       <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
       <span id="mob-notif-count" style="display:none;position:absolute;top:2px;right:10px;background:#3ab0ff;color:#020810;font-family:var(--font-tech);font-size:.36rem;font-weight:800;padding:1px 4px;border-radius:99px;min-width:14px;text-align:center"></span>
       <span>Notif</span>
     </button>
-    <button class="mobile-nav-btn" id="mobnav-settings" onclick="switchTab('settings',document.querySelectorAll('.nav-tab')[4]);setMobNav('settings')">
+    <button class="mobile-nav-btn" id="mobnav-settings" onclick="switchTab('settings',document.getElementById('navtab-settings'));setMobNav('settings')">
       <svg width="19" height="19" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
       <span>Akun</span>
     </button>
@@ -733,9 +796,8 @@ window.setMobNav=setMobNav;
 <!-- FIREBASE + APP LOGIC -->
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-/* ✅ FIX #2: Import updateProfile dari firebase/auth */
 import{getAuth,onAuthStateChanged,signOut,updateProfile}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import{getFirestore,doc,getDoc,setDoc,updateDoc,onSnapshot,collection,query,orderBy,where,limit,getDocs,writeBatch}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import{getFirestore,doc,getDoc,setDoc,updateDoc,onSnapshot,collection,query,orderBy,where,limit,getDocs,writeBatch,addDoc}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import{getStorage}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
 
 const firebaseConfig={
@@ -755,13 +817,10 @@ const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
 const storage=getStorage(app);
-let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null,unsubNotif=null;
+let currentUser=null,unsubOrders=null,unsubInvoices=null,unsubProfile=null,unsubNotif=null,unsubNotifPanel=null;
 const processedPoints=new Set();
 
-/* ✅ FIX #3: Tambah variabel untuk listener panel notif agar bisa di-cleanup */
-let unsubNotifPanel=null;
-
-/* THEME */
+/* ── THEME ── */
 function toggleTheme(){
   const html=document.documentElement;
   const isDark=html.getAttribute('data-theme')==='dark';
@@ -781,7 +840,7 @@ function syncThemeIcons(){
 window.toggleTheme=toggleTheme;
 syncThemeIcons();
 
-/* TOAST */
+/* ── TOAST ── */
 function showToast(msg,dur=3000){
   const t=document.getElementById('toast');
   t.textContent=msg;
@@ -790,16 +849,22 @@ function showToast(msg,dur=3000){
 }
 window.showToast=showToast;
 
-/* TAB SWITCH */
+/* ── TAB SWITCH ── */
 function switchTab(name,el){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
   if(el)el.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
+  const tabEl=document.getElementById('tab-'+name);
+  if(tabEl)tabEl.classList.add('active');
+  // Lazy load purchases on first open
+  if(name==='purchases'&&currentUser&&!window._purchasesLoaded){
+    loadPurchaseHistory(currentUser.uid);
+    window._purchasesLoaded=true;
+  }
 }
 window.switchTab=switchTab;
 
-/* AUTH */
+/* ── AUTH ── */
 onAuthStateChanged(auth,user=>{
   const overlay=document.getElementById('loading-overlay');
   const appEl=document.getElementById('app');
@@ -819,7 +884,7 @@ onAuthStateChanged(auth,user=>{
   }
 });
 
-/* LOGOUT */
+/* ── LOGOUT ── */
 async function handleLogout(){
   const t=document.getElementById('toast');
   t.style.pointerEvents='all';
@@ -833,20 +898,19 @@ async function confirmLogout(){
   if(unsubInvoices)unsubInvoices();
   if(unsubProfile)unsubProfile();
   if(unsubNotif)unsubNotif();
-  if(unsubNotifPanel)unsubNotifPanel(); /* ✅ FIX #3: cleanup panel listener juga */
+  if(unsubNotifPanel)unsubNotifPanel();
   await signOut(auth);
   window.location.href='login.html';
 }
 window.handleLogout=handleLogout;
 window.confirmLogout=confirmLogout;
 
-/* INIT DASHBOARD */
+/* ── INIT DASHBOARD ── */
 function initDashboard(user){
-  ['kpi-orders','kpi-done','kpi-invoices','kpi-assets'].forEach(id=>{
+  ['kpi-orders','kpi-done','kpi-invoices','kpi-purchases'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){el.classList.add('loading','skeleton');el.style.width='48px';el.style.height='1.55rem';el.style.display='block';}
   });
-
   const navUid=document.getElementById('nav-uid');
   const sEmail=document.getElementById('settings-email');
   if(navUid)navUid.textContent=user.uid.substring(0,12).toUpperCase()+'...';
@@ -854,44 +918,27 @@ function initDashboard(user){
 
   const userRef=doc(db,'users',user.uid);
   unsubProfile=onSnapshot(userRef,async snap=>{
-    if(snap.exists()){
-      setProfileUI(snap.data(),user);
-    }else{
+    if(snap.exists()){setProfileUI(snap.data(),user);}
+    else{
       await setDoc(userRef,{
         displayName:user.displayName||'Klien Alfirama',
-        email:user.email,
-        tier:'Premium Member',
-        points:0,
-        whatsapp:'',
-        photoURL:user.photoURL||'',
-        createdAt:new Date()
+        email:user.email,tier:'Premium Member',
+        points:0,whatsapp:'',photoURL:user.photoURL||'',createdAt:new Date()
       });
     }
   },err=>console.error('Profile error:',err));
 
-  const ordersQ=query(
-    collection(db,'orders'),
-    where('userId','==',user.uid),
-    orderBy('createdAt','desc')
-  );
+  const ordersQ=query(collection(db,'orders'),where('userId','==',user.uid),orderBy('createdAt','desc'));
   unsubOrders=onSnapshot(ordersQ,snap=>{
     renderOrders(snap.docs.map(d=>({id:d.id,...d.data()})));
   },err=>console.error('Orders error:',err));
 
-  const invQ=query(
-    collection(db,'invoices'),
-    where('userId','==',user.uid),
-    orderBy('date','desc')
-  );
+  const invQ=query(collection(db,'invoices'),where('userId','==',user.uid),orderBy('date','desc'));
   unsubInvoices=onSnapshot(invQ,snap=>{
     renderInvoices(snap.docs.map(d=>({id:d.id,...d.data()})));
   },err=>console.error('Invoices error:',err));
 
-  const notifQ=query(
-    collection(db,'users',user.uid,'notifications'),
-    where('read','==',false),
-    limit(20)
-  );
+  const notifQ=query(collection(db,'users',user.uid,'notifications'),where('read','==',false),limit(20));
   unsubNotif=onSnapshot(notifQ,snap=>{
     const badge=document.getElementById('notif-badge');
     const mobDot=document.getElementById('mobile-notif-dot');
@@ -901,9 +948,223 @@ function initDashboard(user){
     if(mobDot){mobDot.style.display=n>0?'block':'none';}
     if(mobCount){mobCount.textContent=n>0?n:'';mobCount.style.display=n>0?'block':'none';}
   },err=>console.error('Notif badge error:',err));
+
+  // Load purchase count for KPI
+  loadPurchaseCount(user.uid);
 }
 
-/* PROFILE UI */
+/* ── PURCHASE COUNT FOR KPI ── */
+async function loadPurchaseCount(uid){
+  try{
+    const q=query(collection(db,'user_downloads'),where('userId','==',uid),where('status','==','paid'));
+    const snap=await getDocs(q);
+    const el=document.getElementById('kpi-purchases');
+    if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
+    animCounter('kpi-purchases',snap.size);
+    if(snap.size>0){
+      const badge=document.getElementById('kpi-purchases-badge');
+      if(badge){badge.className='kpi-change up';badge.innerHTML='<svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>'+snap.size+' template';}
+    }
+  }catch(e){console.warn('loadPurchaseCount:',e.message);}
+}
+
+/* ── ★ LOAD PURCHASE HISTORY ── */
+async function loadPurchaseHistory(uid){
+  const loadEl=document.getElementById('purchases-loading');
+  const emptyEl=document.getElementById('purchases-empty');
+  const listEl=document.getElementById('dh-list');
+  if(!listEl)return;
+
+  try{
+    const q=query(
+      collection(db,'user_downloads'),
+      where('userId','==',uid),
+      where('status','==','paid'),
+      orderBy('purchasedAt','desc')
+    );
+    const snap=await getDocs(q);
+
+    if(loadEl)loadEl.style.display='none';
+
+    if(snap.empty){
+      if(emptyEl)emptyEl.style.display='block';
+      return;
+    }
+
+    if(emptyEl)emptyEl.style.display='none';
+    listEl.innerHTML='';
+
+    // Check which items user has already reviewed
+    const reviewedSnap=await getDocs(
+      query(collection(db,'studio_reviews'),where('userId','==',uid))
+    );
+    const reviewedIds=new Set(reviewedSnap.docs.map(d=>d.data().templateId));
+
+    snap.forEach(docSnap=>{
+      const d=docSnap.data();
+      const date=d.purchasedAt?.toDate
+        ?d.purchasedAt.toDate().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})
+        :'—';
+      const hasReviewed=reviewedIds.has(d.templateId);
+
+      const item=document.createElement('div');
+      item.className='dh-item';
+      item.id='dh-'+docSnap.id;
+      item.innerHTML=`
+        <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0">
+          ${d.templateImage
+            ?`<img src="${escHtml(d.templateImage)}" style="width:52px;height:38px;object-fit:cover;border-radius:7px;flex-shrink:0;border:1px solid rgba(255,255,255,0.07)" onerror="this.style.display='none'">`
+            :`<div style="width:52px;height:38px;border-radius:7px;background:rgba(201,178,109,0.07);border:1px solid rgba(201,178,109,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;">🎨</div>`}
+          <div style="min-width:0">
+            <div style="font-family:var(--font-tech);font-size:.65rem;color:var(--text);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">${escHtml(d.templateTitle||'Template')}</div>
+            <div style="font-size:.6rem;color:var(--text3)">${date}</div>
+            ${hasReviewed
+              ?`<div id="review-stars-${docSnap.id}" style="margin-top:4px"></div>`
+              :''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;margin-left:10px">
+          ${d.fileUrl
+            ?`<a href="${escHtml(d.fileUrl)}" target="_blank" rel="noopener noreferrer" class="btn-download-hist">
+                <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                DOWNLOAD
+              </a>`
+            :`<span style="font-family:var(--font-tech);font-size:.5rem;color:var(--text3)">—</span>`}
+          ${!hasReviewed
+            ?`<button onclick="openReviewForm('${docSnap.id}','${escHtml(d.templateId)}','${escHtml(d.templateTitle||'Template')}')"
+                style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.08em;padding:5px 10px;border-radius:7px;background:rgba(201,178,109,0.08);border:1px solid rgba(201,178,109,0.2);color:var(--gold);cursor:pointer;transition:.2s;white-space:nowrap;"
+                onmouseover="this.style.background='rgba(201,178,109,0.15)'" onmouseout="this.style.background='rgba(201,178,109,0.08)'">
+                ★ BERI NILAI
+              </button>`
+            :`<span style="font-family:var(--font-tech);font-size:.44rem;color:rgba(63,185,80,0.7);letter-spacing:.08em;">✓ DIREVIEW</span>`}
+        </div>`;
+      listEl.appendChild(item);
+
+      // Load existing review stars
+      if(hasReviewed){
+        reviewedSnap.docs.forEach(rv=>{
+          if(rv.data().templateId===d.templateId){
+            const starsEl=document.getElementById('review-stars-'+docSnap.id);
+            if(starsEl){
+              const stars=rv.data().rating||0;
+              starsEl.innerHTML='<div class="star-display">'+'★'.repeat(stars)+'☆'.repeat(5-stars)+'</div>';
+              starsEl.querySelector('.star-display').style.cssText='display:inline-flex;gap:1px;font-size:.8rem;color:var(--gold)';
+            }
+          }
+        });
+      }
+    });
+  }catch(err){
+    console.error('loadPurchaseHistory:',err);
+    if(loadEl)loadEl.style.display='none';
+    if(listEl)listEl.innerHTML=`<div style="padding:32px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.5rem;color:rgba(255,80,80,0.6)">Gagal memuat riwayat. Coba refresh.</p></div>`;
+  }
+}
+window.loadPurchaseHistory=loadPurchaseHistory;
+
+/* ── ★ REVIEW FORM ── */
+let _reviewFormOpen=null;
+
+window.openReviewForm=function(purchaseId,templateId,templateTitle){
+  // Close any existing form
+  if(_reviewFormOpen){
+    const oldForm=document.getElementById('review-form-'+_reviewFormOpen);
+    if(oldForm)oldForm.remove();
+  }
+  _reviewFormOpen=purchaseId;
+
+  const itemEl=document.getElementById('dh-'+purchaseId);
+  if(!itemEl)return;
+
+  const formDiv=document.createElement('div');
+  formDiv.id='review-form-'+purchaseId;
+  formDiv.style.cssText='margin-top:12px;padding:14px 16px;background:rgba(201,178,109,0.05);border:1px solid rgba(201,178,109,0.18);border-radius:10px;';
+  formDiv.innerHTML=`
+    <div style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--gold);margin-bottom:10px">
+      ULASAN UNTUK "${escHtml(templateTitle)}"
+    </div>
+    <div class="star-pick-wrap" id="star-picker-${purchaseId}" data-val="0" style="margin-bottom:10px">
+      ${[1,2,3,4,5].map(i=>`<span data-val="${i}">☆</span>`).join('')}
+    </div>
+    <textarea id="review-text-${purchaseId}" rows="2" placeholder="Bagikan pengalamanmu dengan template ini..."
+      style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      border-radius:8px;padding:8px 10px;color:var(--text);font-family:var(--font-body);
+      font-size:.72rem;resize:vertical;outline:none;margin-bottom:8px;"></textarea>
+    <div style="display:flex;gap:8px">
+      <button onclick="submitReview('${purchaseId}','${templateId}','${escHtml(templateTitle)}')"
+        style="flex:1;font-family:var(--font-tech);font-size:.52rem;letter-spacing:.1em;padding:9px;border-radius:8px;
+        background:linear-gradient(105deg,rgba(160,130,50,0.4),rgba(201,178,109,0.25));border:1px solid rgba(201,178,109,0.4);
+        color:var(--gold2);cursor:pointer;transition:.2s">KIRIM ULASAN ★</button>
+      <button onclick="cancelReview('${purchaseId}')"
+        style="padding:9px 14px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+        color:var(--text3);font-family:var(--font-body);font-size:.62rem;cursor:pointer;">Batal</button>
+    </div>`;
+  itemEl.insertAdjacentElement('afterend',formDiv);
+
+  // Wire up star picker
+  const starWrap=document.getElementById('star-picker-'+purchaseId);
+  starWrap.querySelectorAll('span').forEach((s,i)=>{
+    s.onmouseover=()=>{starWrap.querySelectorAll('span').forEach((el,j)=>{el.textContent=j<=i?'★':'☆';el.classList.toggle('lit',j<=i);});};
+    s.onmouseout=()=>{const cur=parseInt(starWrap.dataset.val||0);starWrap.querySelectorAll('span').forEach((el,j)=>{el.textContent=j<cur?'★':'☆';el.classList.toggle('lit',j<cur);});};
+    s.onclick=()=>{starWrap.dataset.val=i+1;starWrap.querySelectorAll('span').forEach((el,j)=>{el.textContent=j<=i?'★':'☆';el.classList.toggle('lit',j<=i);});};
+  });
+};
+
+window.cancelReview=function(purchaseId){
+  const form=document.getElementById('review-form-'+purchaseId);
+  if(form)form.remove();
+  _reviewFormOpen=null;
+};
+
+window.submitReview=async function(purchaseId,templateId,templateTitle){
+  if(!currentUser){showToast('⚠️ Login diperlukan');return;}
+
+  const starWrap=document.getElementById('star-picker-'+purchaseId);
+  const rating=parseInt(starWrap?.dataset.val||0);
+  const text=(document.getElementById('review-text-'+purchaseId)?.value||'').trim();
+
+  if(rating===0){showToast('⚠️ Pilih rating bintang dulu!');return;}
+
+  try{
+    // Check if already reviewed
+    const existing=await getDocs(query(
+      collection(db,'studio_reviews'),
+      where('userId','==',currentUser.uid),
+      where('templateId','==',templateId)
+    ));
+    if(!existing.empty){showToast('ℹ️ Kamu sudah pernah review template ini.');cancelReview(purchaseId);return;}
+
+    await addDoc(collection(db,'studio_reviews'),{
+      userId:currentUser.uid,
+      userName:currentUser.displayName||'Klien Alfirama',
+      templateId,
+      templateTitle,
+      rating,
+      text,
+      createdAt:new Date()
+    });
+
+    showToast('✅ Ulasan berhasil dikirim! Terima kasih 🌟');
+    cancelReview(purchaseId);
+
+    // Update UI: replace button with "reviewed" state + stars
+    const itemEl=document.getElementById('dh-'+purchaseId);
+    if(itemEl){
+      const reviewBtn=itemEl.querySelector('button[onclick*="openReviewForm"]');
+      if(reviewBtn){
+        const span=document.createElement('span');
+        span.style.cssText='font-family:var(--font-tech);font-size:.44rem;color:rgba(63,185,80,0.7);letter-spacing:.08em;';
+        span.textContent='✓ DIREVIEW';
+        reviewBtn.replaceWith(span);
+      }
+    }
+  }catch(err){
+    console.error('submitReview:',err);
+    showToast('❌ Gagal mengirim ulasan: '+err.message);
+  }
+};
+
+/* ── PROFILE UI ── */
 function setProfileUI(data,user){
   const name=data.displayName||data.name||user.displayName||'Klien Alfirama';
   const $=id=>document.getElementById(id);
@@ -928,15 +1189,13 @@ function setProfileUI(data,user){
   if($('sidebar-since')&&data.createdAt){const d=data.createdAt.toDate?data.createdAt.toDate():new Date(data.createdAt);$('sidebar-since').textContent=d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
 }
 
-/* ORDERS */
+/* ── ORDERS ── */
 const STEPS=['Briefing','Desain','Produksi','Selesai'];
 const STEP_ICONS=['📋','🎨','🖨️','✅'];
-
 function getStepIndex(status){
   const map={briefing:0,desain:1,produksi:2,selesai:3,dikirim:3};
   return map[(status||'').toLowerCase()]??0;
 }
-
 function buildTimeline(cur){
   let h='<div style="display:flex;align-items:center;gap:0;margin-top:14px">';
   STEPS.forEach((s,i)=>{
@@ -951,7 +1210,6 @@ function buildTimeline(cur){
   h+=`</div><p style="font-family:var(--font-tech);font-size:.46rem;letter-spacing:.12em;color:var(--blue);margin-top:5px">${STEPS[cur].toUpperCase()}</p>`;
   return h;
 }
-
 function buildDayProgress(order){
   if(!order.startDate||!order.estDate)return'';
   const start=order.startDate.toDate?order.startDate.toDate():new Date(order.startDate);
@@ -975,21 +1233,13 @@ function buildDayProgress(order){
     <p style="font-size:.56rem;color:var(--text3);margin-top:4px">${sisaLabel}</p>
   </div>`;
 }
-
 function buildOrderCard(order){
   const step=getStepIndex(order.status);
   const isDone=step===3;
-  const badge=isDone
-    ?'<span class="badge badge-done">SELESAI</span>'
-    :(step>0?'<span class="badge badge-active">BERJALAN</span>':'<span class="badge badge-pending">PENDING</span>');
+  const badge=isDone?'<span class="badge badge-done">SELESAI</span>':(step>0?'<span class="badge badge-active">BERJALAN</span>':'<span class="badge badge-pending">PENDING</span>');
   const div=(order.division||'').toLowerCase();
   const icon=div==='apparel'?'👕':(div==='studio'?'🎨':'📦');
-
-  /* ✅ FIX #1: pakai formatDate() untuk estDate, bukan String() langsung */
-  const estLabel=order.estDate
-    ?(order.estDate.toDate?formatDate(order.estDate):(typeof order.estDate==='string'?order.estDate:formatDate(order.estDate)))
-    :'3 Hari Kerja';
-
+  const estLabel=order.estDate?(order.estDate.toDate?formatDate(order.estDate):(typeof order.estDate==='string'?order.estDate:formatDate(order.estDate))):'3 Hari Kerja';
   return`<div class="order-row">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
       <div style="display:flex;align-items:center;gap:11px">
@@ -1008,9 +1258,8 @@ function buildOrderCard(order){
     </div>
   </div>`;
 }
-
 function renderOrders(orders){
-  ['kpi-orders','kpi-done','kpi-assets'].forEach(id=>{
+  ['kpi-orders','kpi-done'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
   });
@@ -1021,13 +1270,11 @@ function renderOrders(orders){
   if($('orders-container'))$('orders-container').innerHTML=active.length?active.map(buildOrderCard).join(''):'';
   if($('all-orders-empty'))$('all-orders-empty').style.display=orders.length?'none':'block';
   if($('all-orders-container'))$('all-orders-container').innerHTML=orders.length?orders.map(buildOrderCard).join(''):'';
-  animCounter('stat-orders',orders.length);
   animCounter('kpi-orders',orders.length);
-  animCounter('stat-done',orders.filter(o=>getStepIndex(o.status)===3).length);
   const doneCount=orders.filter(o=>getStepIndex(o.status)===3).length;
-animCounter('kpi-done',doneCount);
-const doneBadge=document.getElementById('kpi-done-badge');
-if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.innerHTML='<svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>'+doneCount+' selesai';}else{doneBadge.className='kpi-change neutral';doneBadge.textContent='Belum ada';}}
+  animCounter('kpi-done',doneCount);
+  const doneBadge=document.getElementById('kpi-done-badge');
+  if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.innerHTML='<svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>'+doneCount+' selesai';}else{doneBadge.className='kpi-change neutral';doneBadge.textContent='Belum ada';}}
   if($('kpi-orders-active'))$('kpi-orders-active').textContent=active.length+' aktif';
   renderAssets(orders.filter(o=>getStepIndex(o.status)===3&&o.downloadUrl));
   orders.forEach(async o=>{
@@ -1040,7 +1287,7 @@ if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.inne
         const curPts=uSnap.data().points||0;
         await updateDoc(uRef,{points:curPts+poinDapat});
         await updateDoc(doc(db,'orders',o.id),{pointsAwarded:true});
-        await addDoc(collection(db,'notifications'),{userId:currentUser.uid,
+        await addDoc(collection(db,'users',currentUser.uid,'notifications'),{
           message:`🏆 Kamu dapat +${poinDapat} poin dari order "${o.title||'Pesanan'}"!`,
           createdAt:new Date(),read:false
         });
@@ -1049,7 +1296,7 @@ if(doneBadge){if(doneCount>0){doneBadge.className='kpi-change up';doneBadge.inne
   });
 }
 
-/* INVOICES */
+/* ── INVOICES ── */
 function downloadInvoicePDF(invJson){
   let inv;
   try{inv=JSON.parse(invJson);}catch(e){showToast('❌ Data invoice tidak valid');return;}
@@ -1075,11 +1322,7 @@ function downloadInvoicePDF(invJson){
   pdoc.setFont('helvetica','normal');pdoc.setFontSize(8);
   pdoc.setTextColor(100,130,160);
   const rows=[['No. Invoice',inv.id||'—'],['Tanggal',inv.date||'—'],['Untuk',inv.clientName||'Klien Alfirama']];
-  rows.forEach((r,i)=>{
-    pdoc.text(r[0],14,54+(i*8));
-    pdoc.setTextColor(200,220,240);pdoc.text(r[1],60,54+(i*8));
-    pdoc.setTextColor(100,130,160);
-  });
+  rows.forEach((r,i)=>{pdoc.text(r[0],14,54+(i*8));pdoc.setTextColor(200,220,240);pdoc.text(r[1],60,54+(i*8));pdoc.setTextColor(100,130,160);});
   pdoc.setFillColor(4,12,26);pdoc.roundedRect(14,80,120,28,2,2,'F');
   pdoc.setDrawColor(0,80,160);pdoc.setLineWidth(.2);pdoc.roundedRect(14,80,120,28,2,2,'S');
   pdoc.setFont('helvetica','bold');pdoc.setFontSize(9);
@@ -1103,16 +1346,12 @@ function downloadInvoicePDF(invJson){
 window.downloadInvoicePDF=downloadInvoicePDF;
 
 function renderInvoices(invoices){
-  ['kpi-invoices'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
-  });
-  const $=id=>document.getElementById(id);
+  const el=document.getElementById('kpi-invoices');
+  if(el){el.classList.remove('loading','skeleton');el.style.width='';el.style.height='';el.style.display='';}
   const getAmt=inv=>inv.total??inv.amount??0;
-  animCounter('stat-invoices',invoices.length);
   animCounter('kpi-invoices',invoices.length);
   invoices.forEach(async inv=>{
-    const amt=inv.total??inv.amount??0;
+    const amt=getAmt(inv);
     const poinDapat=Math.floor(amt/10000);
     if(inv.paid&&!inv.pointsAwarded&&poinDapat>0&&currentUser&&!processedPoints.has('inv_'+inv.id)){
       const uRef=doc(db,'users',currentUser.uid);
@@ -1125,16 +1364,10 @@ function renderInvoices(invoices){
       }
     }
   });
+  const $=id=>document.getElementById(id);
   if($('invoices-list')){
     $('invoices-list').innerHTML=invoices.length?invoices.map(inv=>{
-      const pdfData=JSON.stringify({
-        id:inv.invoiceId||inv.id,
-        title:inv.title||'Invoice',
-        amount:getAmt(inv),
-        date:formatDate(inv.date),
-        paid:!!inv.paid,
-        clientName:inv.clientName||''
-      }).replace(/'/g,'&#39;');
+      const pdfData=JSON.stringify({id:inv.invoiceId||inv.id,title:inv.title||'Invoice',amount:getAmt(inv),date:formatDate(inv.date),paid:!!inv.paid,clientName:inv.clientName||''}).replace(/'/g,'&#39;');
       return`<div class="inv-row">
         <div>
           <p style="font-family:var(--font-tech);font-size:.64rem;font-weight:700;color:var(--text);letter-spacing:.03em">${escHtml(inv.title||'Invoice')}</p>
@@ -1148,8 +1381,7 @@ function renderInvoices(invoices){
           </button>
         </div>
       </div>`;
-    }).join('')
-    :'<div style="padding:48px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA INVOICE</p></div>';
+    }).join(''):'<div style="padding:48px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.48rem;letter-spacing:.15em;color:var(--text3)">BELUM ADA INVOICE</p></div>';
   }
   if($('invoice-summary')){
     $('invoice-summary').innerHTML=invoices.length
@@ -1159,29 +1391,23 @@ function renderInvoices(invoices){
 }
 
 function renderAssets(orders){
-  animCounter('stat-assets',orders.length);
-  animCounter('kpi-assets',orders.length);
   const overviewSection=document.getElementById('overview-assets-section');
   const overviewGrid=document.getElementById('overview-assets-grid');
   if(overviewSection&&overviewGrid){
     overviewSection.style.display=orders.length?'block':'none';
     overviewGrid.innerHTML=orders.map(o=>`
       <div style="background:rgba(4,12,26,.75);border:1px solid rgba(0,140,255,.13);border-radius:14px;overflow:hidden;transition:.25s;backdrop-filter:blur(12px)" onmouseover="this.style.borderColor='rgba(0,160,255,.35)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,140,255,.13)';this.style.transform='translateY(0)'">
-        ${o.previewUrl
-          ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:auto;display:block" onerror="this.style.display='none'">`
-          :`<div style="padding:28px;text-align:center;font-size:2.2rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</div>`
-        }
+        ${o.previewUrl?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:auto;display:block" onerror="this.style.display='none'">`:
+        `<div style="padding:28px;text-align:center;font-size:2.2rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</div>`}
         <div style="padding:12px 14px">
           <p style="font-family:var(--font-tech);font-size:.6rem;font-weight:700;color:var(--text);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px">${escHtml(o.title||'Aset Digital')}</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
-            ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+            ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center">⬇ Unduh</a>`:''}
             ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
           </div>
         </div>
       </div>`).join('');
   }
-  const assetBadge=document.getElementById('kpi-assets-badge');
-  if(assetBadge){if(orders.length>0){assetBadge.className='kpi-change neutral';assetBadge.textContent='Siap unduh';}else{assetBadge.className='kpi-change neutral';assetBadge.textContent='Belum ada';}}
   const gallery=document.getElementById('gallery-grid');
   const galleryEmpty=document.getElementById('gallery-empty');
   if(gallery){
@@ -1191,59 +1417,36 @@ function renderAssets(orders){
       gallery.innerHTML=orders.map(o=>`
         <div style="background:rgba(4,12,26,.75);border:1px solid rgba(0,140,255,.13);border-radius:14px;overflow:hidden;transition:.25s;backdrop-filter:blur(12px);" onmouseover="this.style.borderColor='rgba(0,160,255,.35)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(0,140,255,.13)';this.style.transform='translateY(0)'">
           <div style="background:linear-gradient(135deg,rgba(0,80,200,.15),rgba(0,140,255,.08));display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(0,140,255,.1);overflow:hidden;min-height:80px;">
-            ${o.previewUrl
-              ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:100%;object-fit:cover;transition:.3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><span style="display:none;font-size:2.8rem;width:100%;height:100%;align-items:center;justify-content:center">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</span>`
-              :`<span style="font-size:2.8rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</span>`
-            }
+            ${o.previewUrl?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />`:`<span style="font-size:2.8rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</span>`}
           </div>
           <div style="padding:14px">
             <p style="font-family:var(--font-tech);font-size:.62rem;font-weight:700;color:var(--text);letter-spacing:.03em;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(o.title||'Aset Digital')}</p>
             <p style="font-size:.58rem;color:var(--text3);margin-bottom:10px">${formatDate(o.estDate||o.createdAt)}</p>
             <div style="display:flex;gap:6px;flex-wrap:wrap">
-              ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
+              ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center">⬇ Unduh</a>`:''}
               ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
             </div>
           </div>
         </div>`).join('');
     }
   }
-  const c=document.getElementById('assets-container');
-  if(!c)return;
-  c.innerHTML=orders.length
-    ?`<div style="display:grid;grid-template-columns:1fr;gap:10px">`+orders.map(o=>`
-      <div style="background:rgba(0,0,0,.18);border:1px solid rgba(201,178,109,.1);border-radius:10px;overflow:hidden;transition:.25s" onmouseover="this.style.borderColor='rgba(201,178,109,.35)'" onmouseout="this.style.borderColor='rgba(201,178,109,.1)'">
-        ${o.previewUrl
-          ?`<img src="${escHtml(o.previewUrl)}" style="width:100%;height:auto;display:block;" onerror="this.style.display='none'">`
-          :`<div style="padding:18px;text-align:center;font-size:1.8rem">${(o.division||'').toLowerCase()==='apparel'?'👕':(o.division||'').toLowerCase()==='studio'?'🎨':'📦'}</div>`
-        }
-        <div style="padding:10px 11px">
-          <p style="font-family:var(--font-tech);font-size:.54rem;font-weight:700;color:var(--text);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(o.title||'Aset Digital')}</p>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
-            ${o.downloadUrl?`<a href="${escHtml(o.downloadUrl)}" target="_blank" download class="btn-dl ripple-btn" style="flex:1;justify-content:center"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/></svg>Unduh</a>`:''}
-            ${o.canvaLink?`<a href="${escHtml(o.canvaLink)}" target="_blank" class="btn-dl ripple-btn" style="flex:1;justify-content:center">Canva</a>`:''}
-          </div>
-        </div>
-      </div>`).join('')+`</div>`
-    :'<div style="padding:14px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;letter-spacing:.12em;color:rgba(58,176,255,.3)">BELUM ADA ASET</p></div>';
 }
 
-/* ✅ FIX #2: saveSettings pakai updateProfile yang diimport dengan benar */
+/* ── SETTINGS ── */
 async function saveSettings(){
   if(!currentUser)return;
   const name=document.getElementById('settings-name').value.trim();
   const whatsapp=document.getElementById('settings-phone').value.trim();
   if(!name){showToast('⚠️ Nama tidak boleh kosong');return;}
   try{
-    /* Update Firestore dulu */
     await updateDoc(doc(db,'users',currentUser.uid),{displayName:name,whatsapp});
-    /* Update Firebase Auth profile dengan fungsi modular yang benar */
     await updateProfile(currentUser,{displayName:name});
     showToast('✅ Pengaturan berhasil disimpan');
   }catch(err){showToast('❌ Gagal: '+err.message);}
 }
 window.saveSettings=saveSettings;
 
-/* ✅ FIX #2: uploadAvatar juga pakai updateProfile modular */
+/* ── AVATAR UPLOAD ── */
 async function uploadAvatar(input){
   if(!input.files?.[0])return;
   showToast('⏳ Mengupload foto...',10000);
@@ -1255,21 +1458,16 @@ async function uploadAvatar(input){
     const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,{method:'POST',body:fd});
     const data=await res.json();
     if(data.secure_url){
-      /* Update Firebase Auth profile dengan fungsi modular yang benar */
       await updateProfile(currentUser,{photoURL:data.secure_url});
       await updateDoc(doc(db,'users',currentUser.uid),{photoURL:data.secure_url});
       document.getElementById('avatar-img').src=data.secure_url;
       showToast('✅ Foto berhasil diperbarui');
-    }else{
-      throw new Error(data.error?.message||'Upload gagal');
-    }
-  }catch(err){
-    showToast('❌ Upload gagal: '+err.message);
-  }
+    }else{throw new Error(data.error?.message||'Upload gagal');}
+  }catch(err){showToast('❌ Upload gagal: '+err.message);}
 }
 window.uploadAvatar=uploadAvatar;
 
-/* ANIMATED COUNTER */
+/* ── HELPERS ── */
 function animCounter(id,target,dur=700){
   const el=document.getElementById(id);
   if(!el)return;
@@ -1286,25 +1484,17 @@ function animCounter(id,target,dur=700){
 }
 window.animCounter=animCounter;
 
-/* NETWORK STATUS */
 function updateNetStatus(){
   const dot=document.getElementById('net-dot');
   const lbl=document.getElementById('net-label');
   if(!dot||!lbl)return;
-  if(navigator.onLine){
-    dot.style.background='var(--green)';dot.style.boxShadow='0 0 5px rgba(63,185,80,.6)';
-    lbl.textContent='ONLINE';
-  }else{
-    dot.style.background='#f85149';dot.style.boxShadow='0 0 5px rgba(248,81,73,.6)';
-    lbl.textContent='OFFLINE';
-    showToast('⚠️ Koneksi terputus — data mungkin tidak update');
-  }
+  if(navigator.onLine){dot.style.background='var(--green)';dot.style.boxShadow='0 0 5px rgba(63,185,80,.6)';lbl.textContent='ONLINE';}
+  else{dot.style.background='#f85149';dot.style.boxShadow='0 0 5px rgba(248,81,73,.6)';lbl.textContent='OFFLINE';showToast('⚠️ Koneksi terputus');}
 }
 updateNetStatus();
 window.addEventListener('online',()=>{updateNetStatus();showToast('✅ Koneksi kembali!');});
 window.addEventListener('offline',updateNetStatus);
 
-/* COPY UID */
 function copyUID(){
   const uid=document.getElementById('nav-uid')?.textContent;
   if(!uid||uid==='—')return;
@@ -1312,7 +1502,7 @@ function copyUID(){
 }
 window.copyUID=copyUID;
 
-/* ✅ FIX #3: NOTIF PANEL — cleanup listener lama sebelum buat baru */
+/* ── NOTIF PANEL ── */
 function openNotifPanel(){
   document.getElementById('notif-panel').style.right='0';
   document.getElementById('notif-overlay').style.display='block';
@@ -1324,19 +1514,8 @@ function closeNotifPanel(){
 }
 function loadNotifications(){
   if(!currentUser)return;
-
-  /* ✅ FIX #3: Unsubscribe listener lama dulu sebelum buat yang baru */
-  if(unsubNotifPanel){
-    unsubNotifPanel();
-    unsubNotifPanel=null;
-  }
-
-  const q=query(
-    collection(db,'users',currentUser.uid,'notifications'),
-    orderBy('createdAt','desc'),
-    limit(20)
-  );
-  /* Simpan referensi unsub ke variabel */
+  if(unsubNotifPanel){unsubNotifPanel();unsubNotifPanel=null;}
+  const q=query(collection(db,'users',currentUser.uid,'notifications'),orderBy('createdAt','desc'),limit(20));
   unsubNotifPanel=onSnapshot(q,snap=>{
     const list=document.getElementById('notif-list');
     const badge=document.getElementById('notif-badge');
@@ -1357,16 +1536,12 @@ function loadNotifications(){
           <p style="font-size:.56rem;color:var(--text3);margin-top:3px">${formatDate(n.createdAt)}</p>
         </div>
       </div>`;
-    }).join('')
-    :'<div style="padding:36px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;color:var(--text3);letter-spacing:.12em">BELUM ADA NOTIFIKASI</p></div>';
+    }).join(''):'<div style="padding:36px 0;text-align:center"><p style="font-family:var(--font-tech);font-size:.44rem;color:var(--text3);letter-spacing:.12em">BELUM ADA NOTIFIKASI</p></div>';
   },err=>console.error('loadNotif error:',err));
 }
 async function markAllRead(){
   if(!currentUser)return;
-  const q=query(
-    collection(db,'users',currentUser.uid,'notifications'),
-    where('read','==',false)
-  );
+  const q=query(collection(db,'users',currentUser.uid,'notifications'),where('read','==',false));
   const snap=await getDocs(q);
   if(snap.empty){showToast('✅ Semua sudah dibaca');return;}
   const batch=writeBatch(db);
@@ -1378,7 +1553,7 @@ window.openNotifPanel=openNotifPanel;
 window.closeNotifPanel=closeNotifPanel;
 window.markAllRead=markAllRead;
 
-/* SESSION CLOCK */
+/* ── SESSION CLOCK ── */
 (function(){
   const loginTime=new Date();
   function updateClock(){
@@ -1394,7 +1569,7 @@ window.markAllRead=markAllRead;
   setInterval(updateClock,1000);
 })();
 
-/* UTILS */
+/* ── UTILS ── */
 function formatRupiah(n){return'Rp '+Number(n).toLocaleString('id-ID');}
 function formatDate(ts){
   if(!ts)return'—';
