@@ -200,7 +200,7 @@ body::before {
 /* KPI ROW */
 .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
 .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; cursor: default; }
-.kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(201,178,109,0.18),transparent); }
+.kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(58,176,255,0.25),transparent); }
 .kpi-card:hover { border-color: rgba(201,178,109,0.25); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(201,178,109,0.06); }
 .kpi-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
 .kpi-icon.blue  { background: var(--blue-glow);  border: 1px solid rgba(58,176,255,0.15); }
@@ -235,6 +235,7 @@ body::before {
   background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px; cursor: pointer;
 }
 .form-select option { background: #0D1326; color: var(--text); }
+.form-select optgroup { background: #0D1326; color: var(--gold); font-family: var(--font-tech); font-size: 0.7rem; }
 .form-input::placeholder { color: var(--text3); }
 .form-input:focus, .form-select:focus { border-color: rgba(201,178,109,0.4); box-shadow: 0 0 0 3px rgba(201,178,109,0.07); }
 textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.55; }
@@ -351,7 +352,7 @@ mark.search-hl { background: rgba(201,178,109,0.25); color: var(--gold); border-
 #grid-view { display: none; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
 #grid-view.active { display: grid; }
 .prod-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s; position: relative; }
-.prod-card:hover { transform: translateY(-4px); border-color: rgba(201,178,109,0.25); box-shadow:0 12px 32px rgba(0,0,0,0.4); }
+.prod-card:hover { transform: translateY(-4px); border-color: rgba(58,176,255,0.35); box-shadow:0 12px 32px rgba(58,176,255,0.15); }
 .prod-card-img { width:100%; aspect-ratio:16/10; object-fit:cover; background:var(--bg2); display:block; }
 .prod-card-img-ph { width:100%; aspect-ratio:16/10; background:linear-gradient(135deg,var(--bg2),var(--bg3)); display:flex; align-items:center; justify-content:center; opacity:0.4; }
 .prod-card-body { padding:14px 16px; }
@@ -821,9 +822,75 @@ mark.search-hl { background: rgba(201,178,109,0.25); color: var(--gold); border-
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="f-category">KATEGORI *</label>
+                <label class="form-label" for="f-category">SOFTWARE *</label>
                 <select id="f-category" class="form-select">
-                  <option value="">- Pilih Kategori -</option>
+                  <option value="">- Pilih Software -</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="f-desain">JENIS DESAIN *</label>
+                <select id="f-desain" class="form-select">
+                  <option value="">- Pilih Jenis Desain -</option>
+                  <optgroup label="Bisnis & UMKM">
+                    <option>Feed Instagram Bisnis</option>
+                    <option>Story Promo & Flash Sale</option>
+                    <option>Price List & Menu</option>
+                    <option>Flyer & Brosur</option>
+                    <option>Invoice & Nota</option>
+                    <option>Company Profile</option>
+                  </optgroup>
+                  <optgroup label="Content Creator">
+                    <option>Pack Feed Aesthetic</option>
+                    <option>Story & Highlight Cover</option>
+                    <option>YouTube Thumbnail</option>
+                    <option>Carousel Edukatif</option>
+                    <option>Quote Post</option>
+                    <option>Reels Cover</option>
+                  </optgroup>
+                  <optgroup label="Event & Undangan">
+                    <option>Undangan Nikah Digital</option>
+                    <option>Undangan Ulang Tahun</option>
+                    <option>Undangan Aqiqah & Tasyakuran</option>
+                    <option>Rundown Acara</option>
+                    <option>Name Tag & ID Card</option>
+                    <option>Backdrop & Banner</option>
+                  </optgroup>
+                  <optgroup label="Akademik & Pelajar">
+                    <option>Infografis</option>
+                    <option>Poster Seminar & Webinar</option>
+                    <option>Sertifikat</option>
+                    <option>Template Laporan</option>
+                    <option>Jadwal & Absensi</option>
+                  </optgroup>
+                  <optgroup label="Yearbook & Kenangan">
+                    <option>Cover Yearbook</option>
+                    <option>Layout Halaman Siswa</option>
+                    <option>Halaman Guru & Staff</option>
+                    <option>Halaman Ekskul & Kegiatan</option>
+                    <option>Halaman Quotes Angkatan</option>
+                    <option>Divider & Pemisah Bab</option>
+                  </optgroup>
+                  <optgroup label="Profesional & Personal Branding">
+                    <option>CV & Resume</option>
+                    <option>Media Kit</option>
+                    <option>LinkedIn Banner</option>
+                    <option>Portfolio Layout</option>
+                  </optgroup>
+                  <optgroup label="Digital Product & Planner">
+                    <option>E-Book & Workbook</option>
+                    <option>Planner & Jurnal Harian</option>
+                    <option>Habit Tracker</option>
+                    <option>Kalender Bulanan</option>
+                    <option>To-Do List</option>
+                  </optgroup>
+                  <optgroup label="Hari Besar & Twibbon">
+                    <option>Twibbon</option>
+                    <option>Ucapan Lebaran</option>
+                    <option>Ucapan Natal & Tahun Baru</option>
+                    <option>Ucapan Hari Nasional</option>
+                    <option>Ucapan Hari Besar Islam</option>
+                  </optgroup>
                 </select>
               </div>
 
@@ -991,7 +1058,69 @@ mark.search-hl { background: rgba(201,178,109,0.25); color: var(--gold); border-
       <div class="filter-bar fade-in">
         <input type="text" class="filter-input" id="search-input" placeholder="🔍 Cari nama template..." oninput="window._debouncedSearch && window._debouncedSearch()"/>
         <select class="filter-select" id="filter-cat" onchange="applyFilters()">
-          <option value="">Semua Kategori</option>
+          <option value="">Semua Software</option>
+        </select>
+        <select class="filter-select" id="filter-desain" onchange="applyFilters()">
+          <option value="">Semua Jenis Desain</option>
+          <optgroup label="Bisnis & UMKM">
+            <option>Feed Instagram Bisnis</option>
+            <option>Story Promo & Flash Sale</option>
+            <option>Price List & Menu</option>
+            <option>Flyer & Brosur</option>
+            <option>Invoice & Nota</option>
+            <option>Company Profile</option>
+          </optgroup>
+          <optgroup label="Content Creator">
+            <option>Pack Feed Aesthetic</option>
+            <option>Story & Highlight Cover</option>
+            <option>YouTube Thumbnail</option>
+            <option>Carousel Edukatif</option>
+            <option>Quote Post</option>
+            <option>Reels Cover</option>
+          </optgroup>
+          <optgroup label="Event & Undangan">
+            <option>Undangan Nikah Digital</option>
+            <option>Undangan Ulang Tahun</option>
+            <option>Undangan Aqiqah & Tasyakuran</option>
+            <option>Rundown Acara</option>
+            <option>Name Tag & ID Card</option>
+            <option>Backdrop & Banner</option>
+          </optgroup>
+          <optgroup label="Akademik & Pelajar">
+            <option>Infografis</option>
+            <option>Poster Seminar & Webinar</option>
+            <option>Sertifikat</option>
+            <option>Template Laporan</option>
+            <option>Jadwal & Absensi</option>
+          </optgroup>
+          <optgroup label="Yearbook & Kenangan">
+            <option>Cover Yearbook</option>
+            <option>Layout Halaman Siswa</option>
+            <option>Halaman Guru & Staff</option>
+            <option>Halaman Ekskul & Kegiatan</option>
+            <option>Halaman Quotes Angkatan</option>
+            <option>Divider & Pemisah Bab</option>
+          </optgroup>
+          <optgroup label="Profesional & Personal Branding">
+            <option>CV & Resume</option>
+            <option>Media Kit</option>
+            <option>LinkedIn Banner</option>
+            <option>Portfolio Layout</option>
+          </optgroup>
+          <optgroup label="Digital Product & Planner">
+            <option>E-Book & Workbook</option>
+            <option>Planner & Jurnal Harian</option>
+            <option>Habit Tracker</option>
+            <option>Kalender Bulanan</option>
+            <option>To-Do List</option>
+          </optgroup>
+          <optgroup label="Hari Besar & Twibbon">
+            <option>Twibbon</option>
+            <option>Ucapan Lebaran</option>
+            <option>Ucapan Natal & Tahun Baru</option>
+            <option>Ucapan Hari Nasional</option>
+            <option>Ucapan Hari Besar Islam</option>
+          </optgroup>
         </select>
         <select class="filter-select" id="filter-status" onchange="applyFilters()">
           <option value="">Semua Status</option>
@@ -1284,8 +1413,19 @@ function setView(mode){
   var grd=document.getElementById('grid-view');
   var btnT=document.getElementById('btn-table-view');
   var btnG=document.getElementById('btn-grid-view');
-  if(mode==='grid'){ tbl.style.display='none'; grd.classList.add('active'); btnT.classList.remove('active'); btnG.classList.add('active'); }
-  else { tbl.style.display=''; grd.classList.remove('active'); btnT.classList.add('active'); btnG.classList.remove('active'); }
+  if(mode==='grid'){
+    tbl.style.display='none';
+    grd.style.display='grid';
+    grd.classList.add('active');
+    btnT.classList.remove('active');
+    btnG.classList.add('active');
+  } else {
+    tbl.style.display='';
+    grd.style.display='none';
+    grd.classList.remove('active');
+    btnT.classList.add('active');
+    btnG.classList.remove('active');
+  }
   if(window._renderAll) window._renderAll(window._filteredCache||[]);
 }
 window.setView=setView;
@@ -1472,6 +1612,7 @@ function openPreviewModal(t){
     +'<div style="flex:1;">'
     +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">'
     +'<span class="badge '+(catBadge(t.category))+'">'+esc(t.category||'—')+'</span>'
+    +(t.desain?'<span class="badge neutral" style="font-size:0.36rem;">'+esc(t.desain)+'</span>':'')
     +'</div>'
     +'<h2 style="font-weight:700;font-size:1.1rem;color:var(--text);line-height:1.35;margin-bottom:8px;">'+esc(t.title||'—')+'</h2>'
     +'<p style="font-size:0.8rem;color:var(--text2);line-height:1.65;">'+esc(t.description||'—')+'</p>'
@@ -1724,7 +1865,9 @@ window.applyFilters=function(){
   const sortVal=document.getElementById('sort-select')?.value||'newest';
   let list=[...allTemplates];
   if(search) list=list.filter(t=>(t.title||'').toLowerCase().includes(search));
+  const desainFil=document.getElementById('filter-desain')?.value||'';
   if(catFil) list=list.filter(t=>t.category===catFil);
+  if(desainFil) list=list.filter(t=>t.desain===desainFil);
   if(statusFil) list=list.filter(t=>(t.status||'published')===statusFil);
   switch(sortVal){
     case 'oldest':    list.sort((a,b)=>(a.createdAt||'')>(b.createdAt||'')?1:-1); break;
@@ -1772,7 +1915,10 @@ function renderTable(list){
         ${t.featured?'<span style="font-size:0.56rem;color:var(--gold);">⭐ FEATURED</span>':''}
         ${t.fileUrl?'<span style="font-size:0.58rem;color:var(--cyan-dim);">🔗 file tersedia</span>':'<span style="font-size:0.58rem;color:var(--red-dim);">⚠ no file</span>'}
       </div>
-      <div class="log-cell"><span class="badge ${catBadge(t.category)}">${esc(t.category||'—')}</span></div>
+      <div class="log-cell" style="flex-direction:column;align-items:flex-start;gap:3px;">
+        <span class="badge ${catBadge(t.category)}">${esc(t.category||'—')}</span>
+        ${t.desain?`<span style="font-size:0.6rem;color:var(--text3);">${esc(t.desain)}</span>`:''}
+      </div>
       <div class="log-cell" style="font-family:var(--font-tech);font-size:0.68rem;color:var(--gold);">${formatRp(t.price)}</div>
       <div class="log-cell">${statusBadge}</div>
       <div class="log-cell mono">${esc(t.createdAt||'—')}</div>
@@ -1813,6 +1959,7 @@ function renderGrid(list){
       <div class="prod-card-body">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
           <span class="badge ${catBadge(t.category)}">${esc(t.category||'—')}</span>
+          ${t.desain?`<span class="badge neutral" style="font-size:0.36rem;">${esc(t.desain)}</span>`:''}
           <span class="status-badge ${status}"><span class="status-dot"></span>${status}</span>
         </div>
         <h4 style="font-weight:700;font-size:0.8rem;color:var(--text);line-height:1.35;margin-bottom:5px;">${esc(t.title||'—')}</h4>
@@ -1872,6 +2019,7 @@ window.submitForm=async function(){
   const priceInput=document.getElementById('f-price').value.trim();
   const category=document.getElementById('f-category').value.trim();
   const description=document.getElementById('f-desc').value.trim();
+  const desain=document.getElementById('f-desain')?.value.trim()||'';
   const imageUrl=(document.getElementById('f-imageurl')?.value||'').trim();
   const fileUrl=document.getElementById('f-fileurl').value.trim();
   const createdAt=document.getElementById('f-createdat').value.trim();
@@ -1894,7 +2042,7 @@ window.submitForm=async function(){
 
   setBtnLoading(true);
   const payload={
-    title, price, category, description, imageUrl, images, fileUrl, badge,
+    title, price, category, desain, description, imageUrl, images, fileUrl, badge,
     status, featured: _isFeatured,
     metaTitle, metaDescription, keywords, ogImage,
     createdAt: createdAt||new Date().toISOString().split('T')[0],
@@ -1943,6 +2091,7 @@ window.loadEditForm=function(id){
   document.getElementById('f-desc').value=t.description||'';
   document.getElementById('f-imageurl').value=t.imageUrl||'';
   document.getElementById('f-fileurl').value=t.fileUrl||'';
+  if(document.getElementById('f-desain')) document.getElementById('f-desain').value=t.desain||'';
   document.getElementById('f-createdat').value=t.createdAt||'';
   if(document.getElementById('f-badge')) document.getElementById('f-badge').value=t.badge||'';
   if(document.getElementById('f-status')) document.getElementById('f-status').value=t.status||'published';
@@ -2075,7 +2224,7 @@ function showFormStatus(type,msg){
   setTimeout(()=>box.classList.remove('show'),5000);
 }
 function clearForm(){
-  ['f-title','f-price','f-category','f-desc','f-imageurl','f-fileurl','f-meta-title','f-meta-desc','f-keywords','f-og-image'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-title','f-price','f-category','f-desain','f-desc','f-imageurl','f-fileurl','f-meta-title','f-meta-desc','f-keywords','f-og-image'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   const dateEl=document.getElementById('f-createdat'); if(dateEl) dateEl.value=new Date().toISOString().split('T')[0];
   const pp=document.getElementById('price-preview'); if(pp) pp.textContent='';
   if(document.getElementById('f-status')) document.getElementById('f-status').value='published';
@@ -2090,3 +2239,5 @@ document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') cancelEdit(); })
 
 </body>
 </html>
+
+
