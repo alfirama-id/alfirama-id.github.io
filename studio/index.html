@@ -723,27 +723,36 @@
   overflow: hidden;
   flex-shrink: 0;
   cursor: pointer;
+  width: 100%;
+  display: flex;
 }
 
 .carousel-track {
   display: flex;
   height: 100%;
+  width: 100%;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
 .carousel-slide {
   min-width: 100%;
+  width: 100%;
   height: 100%;
   flex-shrink: 0;
   position: relative;
+  overflow: hidden;
+  display: flex;
 }
 
 .carousel-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
+  width: 100%;
+  height: 100%;
   transition: transform 0.5s ease;
 }
 
@@ -1525,7 +1534,7 @@
       }
 
       /* ── PRODUCT GRID — 2 kolom compact ── */
-      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 2px; }
       .product-card { border-radius: 12px; }
       .product-img-wrap { aspect-ratio: 4/3; }
 
@@ -1665,7 +1674,7 @@
 
     /* ── 480px ke bawah ── */
     @media (max-width: 480px) {
-      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      #products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .order-steps { grid-template-columns: 1fr 1fr; }
       .product-title { font-size: 0.56rem; }
       .product-price { font-size: 0.78rem; }
@@ -1889,6 +1898,7 @@
     <!-- Kolom Info -->
     <div class="lightbox-info-col">
       <span id="lb-cat" class="lightbox-cat"></span>
+      <span id="lb-desain" style="font-family:var(--font-tech);font-size:0.44rem;letter-spacing:0.12em;color:rgba(0,240,255,0.6);display:none;"></span>
       <div id="lb-title" class="lightbox-title"></div>
       <div id="lb-price" class="lightbox-price"></div>
       <div>
@@ -2148,9 +2158,24 @@
         <button class="filter-tab" onclick="filterProducts('PSD', this)">PSD</button>
         <button class="filter-tab" onclick="filterProducts('VEKTOR', this)">VEKTOR</button>
         <button class="filter-tab" onclick="filterProducts('AFTER EFFECTS', this)">AFTER EFFECTS</button>
+        <button class="filter-tab" onclick="filterProducts('CANVA', this)">CANVA</button>
         <button class="filter-tab" onclick="filterProducts('SOCIAL MEDIA KIT', this)">SOCIAL MEDIA KIT</button>
         <button class="filter-tab" onclick="filterProducts('LOGO PACK', this)">LOGO PACK</button>
         <button class="filter-tab" onclick="filterProducts('BRANDING', this)">BRANDING</button>
+      </div>
+    </div>
+    <!-- Filter Jenis Desain -->
+    <div class="filter-tabs-wrap fade-up" style="margin-top:10px;">
+      <div class="filter-tabs" id="filter-desain-tabs">
+        <button class="filter-tab active" onclick="filterDesain('all', this)" style="border-color:rgba(0,240,255,0.3);color:rgba(0,240,255,0.5);">SEMUA JENIS</button>
+        <button class="filter-tab" onclick="filterDesain('Bisnis & UMKM', this)">BISNIS & UMKM</button>
+        <button class="filter-tab" onclick="filterDesain('Content Creator', this)">CONTENT CREATOR</button>
+        <button class="filter-tab" onclick="filterDesain('Event & Undangan', this)">EVENT & UNDANGAN</button>
+        <button class="filter-tab" onclick="filterDesain('Akademik & Pelajar', this)">AKADEMIK</button>
+        <button class="filter-tab" onclick="filterDesain('Yearbook & Kenangan', this)">YEARBOOK</button>
+        <button class="filter-tab" onclick="filterDesain('Profesional & Personal Branding', this)">PERSONAL BRANDING</button>
+        <button class="filter-tab" onclick="filterDesain('Digital Product & Planner', this)">DIGITAL PRODUCT</button>
+        <button class="filter-tab" onclick="filterDesain('Hari Besar & Twibbon', this)">HARI BESAR</button>
       </div>
     </div>
 
@@ -2459,6 +2484,8 @@
     document.getElementById('lb-title').textContent = item.title  || '';
     document.getElementById('lb-price').textContent = item.price  || '';
     document.getElementById('lb-desc').textContent  = item.description || '';
+    const lbDesain = document.getElementById('lb-desain');
+    if (lbDesain) { lbDesain.textContent = item.desain || ''; lbDesain.style.display = item.desain ? 'block' : 'none'; }
 
     const catEl = document.getElementById('lb-cat');
     catEl.textContent = item.catLabel || item.category?.toUpperCase() || 'TEMPLATE';
@@ -2679,43 +2706,54 @@
 
   /* ── 6. PRODUCT FILTER ── */
   let currentFilter = 'all';
- window.runCatalogSearch = function() {
-  const q   = (document.getElementById('search-catalog')?.value||'').toLowerCase();
-  const srt = document.getElementById('sort-catalog')?.value || 'default';
-  const cards = Array.from(document.querySelectorAll('.product-card'));
-  cards.forEach(card => {
-    const title = card.dataset.title?.toLowerCase()||'';
-    const cat   = card.dataset.category?.toUpperCase()||'';
-    const filterMatch = currentFilter==='all' || card.dataset.category?.toUpperCase()===currentFilter.toUpperCase();
-    const searchMatch = !q || title.includes(q) || cat.includes(q.toUpperCase());
-    const show  = searchMatch && filterMatch;
-    card.style.display = show ? '' : 'none';
-  });
-  if(srt !== 'default') {
-    const grid = document.getElementById('products-grid');
-    const visible = cards.filter(c=>c.style.display!=='none');
-    visible.sort((a,b) => {
-      const pa = Number(a.dataset.priceraw)||0, pb = Number(b.dataset.priceraw)||0;
-      if(srt==='price-asc')  return pa-pb;
-      if(srt==='price-desc') return pb-pa;
-      return 0;
-    });
-    visible.forEach(c=>grid.appendChild(c));
-  }
-};
-window.filterProducts = function (cat, btn) {
-    currentFilter = cat;
-    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  let currentDesainFilter = 'all';
+
+  window.filterDesain = function (desain, btn) {
+    currentDesainFilter = desain;
+    document.querySelectorAll('#filter-desain-tabs .filter-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    applyAllFilters();
+  };
+
+  function applyAllFilters() {
+    const q = (document.getElementById('search-catalog')?.value || '').toLowerCase();
     const cards = document.querySelectorAll('.product-card');
     let visible = 0;
     cards.forEach(card => {
-      const show = cat === 'all' || (card.dataset.category?.toUpperCase()) === cat.toUpperCase();
+      const title = card.dataset.title?.toLowerCase() || '';
+      const cat   = card.dataset.category?.toUpperCase() || '';
+      const desain = card.dataset.desain || '';
+      const catMatch    = currentFilter === 'all' || cat === currentFilter.toUpperCase();
+      const desainMatch = currentDesainFilter === 'all' || desain === currentDesainFilter;
+      const searchMatch = !q || title.includes(q) || cat.includes(q.toUpperCase());
+      const show = catMatch && desainMatch && searchMatch;
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
     const emptyEl = document.getElementById('empty-state');
     if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
+  }
+ window.runCatalogSearch = function() {
+    applyAllFilters();
+    const srt = document.getElementById('sort-catalog')?.value || 'default';
+    if (srt !== 'default') {
+      const grid = document.getElementById('products-grid');
+      const cards = Array.from(document.querySelectorAll('.product-card'));
+      const visible = cards.filter(c => c.style.display !== 'none');
+      visible.sort((a, b) => {
+        const pa = Number(a.dataset.priceraw) || 0, pb = Number(b.dataset.priceraw) || 0;
+        if (srt === 'price-asc')  return pa - pb;
+        if (srt === 'price-desc') return pb - pa;
+        return 0;
+      });
+      visible.forEach(c => grid.appendChild(c));
+    }
+  };
+window.filterProducts = function (cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('#filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyAllFilters();
   };
 
   /* ── 7. BUY MODAL ── */
@@ -3164,6 +3202,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
     const imgSrc    = images[0] || item.imageUrl || item.imageFile || '';
     const hasMulti  = images.length > 1;
     const imagesJSON = JSON.stringify(images).replace(/"/g, '&quot;');
+const imagesSafe = JSON.stringify(images).replace(/\\/g, '\\\\').replace(/`/g, '\\`');
 
     const badgeHTML = item.badge === 'new'
       ? '<span class="badge-new">NEW</span>'
@@ -3199,6 +3238,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
     return `
       <div class="product-card"
            data-category="${item.category || 'PSD'}"
+           data-desain="${item.desain || ''}"
            data-id="${item.id}"
            data-price="${price}"
            data-priceraw="${priceRaw}"
@@ -3220,6 +3260,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
 
         <div class="product-body">
           <div class="product-title">${item.title}</div>
+          ${item.desain ? `<div style="font-family:var(--font-tech);font-size:0.42rem;letter-spacing:0.1em;color:rgba(0,240,255,0.6);margin-bottom:6px;">${item.desain}</div>` : ''}
           <div class="product-desc">${descSafe}</div>
           <div class="product-footer">
             <div>
@@ -3239,7 +3280,7 @@ window.unlockDownloadCard = function (templateId, fileLink) {
                   description: \`${descSafe.replace(/`/g, '\\`')}\`,
                   catLabel:    '${catLabel}',
                   catClass:    '${catClass}',
-                  images:      ${JSON.stringify(images)},
+                  images:      ${JSON.stringify(images).replace(/"/g, '&quot;')},
                   imageFile:   '${imgSrc}',
                   imageUrl:    '${imgSrc}'
                 })
