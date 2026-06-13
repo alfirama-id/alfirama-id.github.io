@@ -1116,7 +1116,7 @@
 }
 
 /* Loading & empty states */
-#products-loading { grid-column: 1/-1; text-align: center; padding: 60px 20px; }
+#products-loading { grid-column: 1/-1; display: contents; }
     .loading-spinner {
       width: 36px; height: 36px;
       border: 2px solid rgba(201,178,109,0.15);
@@ -1126,6 +1126,38 @@
       margin: 0 auto 16px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* SKELETON CARD */
+    .skeleton-card {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .skeleton-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.03) 0%,
+        rgba(255,255,255,0.07) 40%,
+        rgba(255,255,255,0.03) 80%);
+      background-size: 400px 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .skeleton-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .skeleton-line {
+      border-radius: 6px;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.03) 0%,
+        rgba(255,255,255,0.07) 40%,
+        rgba(255,255,255,0.03) 80%);
+      background-size: 400px 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
 
     #empty-state { grid-column: 1/-1; text-align: center; padding: 60px 20px; display: none; }
 
@@ -1870,6 +1902,73 @@
 }
 </style>
 
+<!-- KONFETTI CANVAS -->
+<canvas id="konfetti-canvas" style="position:fixed;inset:0;z-index:5000;pointer-events:none;display:none;"></canvas>
+
+<script>
+(function(){
+  const COLORS = ['#C9B26D','#E2CC8E','#00F0FF','#00E676','#ffffff','#FFD700'];
+  let _particles = [];
+  let _raf = null;
+
+  function spawnKonfetti() {
+    const canvas = document.getElementById('konfetti-canvas');
+    if (!canvas) return;
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+    const ctx = canvas.getContext('2d');
+    _particles = [];
+
+    for (let i = 0; i < 120; i++) {
+      _particles.push({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        w: 6 + Math.random() * 8,
+        h: 4 + Math.random() * 5,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 4,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.2,
+        opacity: 1,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      _particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.08;
+        p.angle += p.spin;
+        if (p.y < canvas.height + 20) alive = true;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - p.y / (canvas.height * 1.1));
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      if (alive) {
+        _raf = requestAnimationFrame(draw);
+      } else {
+        canvas.style.display = 'none';
+      }
+    }
+    if (_raf) cancelAnimationFrame(_raf);
+    draw();
+    setTimeout(() => {
+      cancelAnimationFrame(_raf);
+      canvas.style.display = 'none';
+    }, 3500);
+  }
+  window._spawnKonfetti = spawnKonfetti;
+})();
+</script>
+
 <!-- ============================================================
      LIGHTBOX
 ============================================================ -->
@@ -2181,9 +2280,43 @@
 
     <div id="products-grid">
 <!-- wishlist-panel anchor -->
-      <div id="products-loading">
-        <div class="loading-spinner"></div>
-        <p style="font-family:var(--font-tech);font-size:0.6rem;letter-spacing:0.2em;color:var(--text3);">MEMUAT KATALOG...</p>
+     <div id="products-loading">
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line" style="height:14px;width:75%;"></div>
+            <div class="skeleton-line" style="height:11px;width:55%;"></div>
+            <div class="skeleton-line" style="height:11px;width:90%;margin-top:4px;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <div class="skeleton-line" style="height:18px;width:35%;"></div>
+              <div class="skeleton-line" style="height:32px;width:40%;border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line" style="height:14px;width:80%;"></div>
+            <div class="skeleton-line" style="height:11px;width:60%;"></div>
+            <div class="skeleton-line" style="height:11px;width:85%;margin-top:4px;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <div class="skeleton-line" style="height:18px;width:35%;"></div>
+              <div class="skeleton-line" style="height:32px;width:40%;border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line" style="height:14px;width:65%;"></div>
+            <div class="skeleton-line" style="height:11px;width:50%;"></div>
+            <div class="skeleton-line" style="height:11px;width:95%;margin-top:4px;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <div class="skeleton-line" style="height:18px;width:35%;"></div>
+              <div class="skeleton-line" style="height:32px;width:40%;border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="empty-state">
@@ -2724,7 +2857,8 @@
       const cat   = card.dataset.category?.toUpperCase() || '';
       const desain = card.dataset.desain || '';
       const catMatch    = currentFilter === 'all' || cat === currentFilter.toUpperCase();
-      const desainMatch = currentDesainFilter === 'all' || desain === currentDesainFilter;
+      const DMAP={'Feed Instagram Bisnis':'Bisnis & UMKM','Story Promo & Flash Sale':'Bisnis & UMKM','Price List & Menu':'Bisnis & UMKM','Flyer & Brosur':'Bisnis & UMKM','Invoice & Nota':'Bisnis & UMKM','Company Profile':'Bisnis & UMKM','Pack Feed Aesthetic':'Content Creator','Story & Highlight Cover':'Content Creator','YouTube Thumbnail':'Content Creator','Carousel Edukatif':'Content Creator','Quote Post':'Content Creator','Reels Cover':'Content Creator','Undangan Nikah Digital':'Event & Undangan','Undangan Ulang Tahun':'Event & Undangan','Undangan Aqiqah & Tasyakuran':'Event & Undangan','Rundown Acara':'Event & Undangan','Name Tag & ID Card':'Event & Undangan','Backdrop & Banner':'Event & Undangan','Infografis':'Akademik & Pelajar','Poster Seminar & Webinar':'Akademik & Pelajar','Sertifikat':'Akademik & Pelajar','Template Laporan':'Akademik & Pelajar','Jadwal & Absensi':'Akademik & Pelajar','Cover Yearbook':'Yearbook & Kenangan','Layout Halaman Siswa':'Yearbook & Kenangan','Halaman Guru & Staff':'Yearbook & Kenangan','Halaman Ekskul & Kegiatan':'Yearbook & Kenangan','Halaman Quotes Angkatan':'Yearbook & Kenangan','Divider & Pemisah Bab':'Yearbook & Kenangan','CV & Resume':'Profesional & Personal Branding','Media Kit':'Profesional & Personal Branding','LinkedIn Banner':'Profesional & Personal Branding','Portfolio Layout':'Profesional & Personal Branding','E-Book & Workbook':'Digital Product & Planner','Planner & Jurnal Harian':'Digital Product & Planner','Habit Tracker':'Digital Product & Planner','Kalender Bulanan':'Digital Product & Planner','To-Do List':'Digital Product & Planner','Twibbon':'Hari Besar & Twibbon','Ucapan Lebaran':'Hari Besar & Twibbon','Ucapan Natal & Tahun Baru':'Hari Besar & Twibbon','Ucapan Hari Nasional':'Hari Besar & Twibbon','Ucapan Hari Besar Islam':'Hari Besar & Twibbon'};
+const desainMatch = currentDesainFilter === 'all' || DMAP[desain] === currentDesainFilter;
       const searchMatch = !q || title.includes(q) || cat.includes(q.toUpperCase());
       const show = catMatch && desainMatch && searchMatch;
       card.style.display = show ? '' : 'none';
@@ -2802,7 +2936,7 @@ window.filterProducts = function (cat, btn) {
     document.body.style.overflow = '';
   };
 
-  window.showSuccessModal = function (productName, fileUrl) {
+ window.showSuccessModal = function (productName, fileUrl) {
     document.getElementById('success-product-name').textContent = productName || 'produk ini';
     const dlBtn = document.getElementById('success-download-btn');
     if (dlBtn) {
@@ -2811,6 +2945,7 @@ window.filterProducts = function (cat, btn) {
     }
     document.getElementById('success-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    if (window._spawnKonfetti) setTimeout(window._spawnKonfetti, 300);
   };
 
   document.getElementById('buy-modal').addEventListener('click', function (e) {
@@ -2942,6 +3077,27 @@ window.unlockDownloadCard = function (templateId, fileLink) {
   };
 
 /* ── 11. THUMBNAIL CLICK → LIGHTBOX ── */
+  window.copyProductLink = function (id, titleEncoded, btnEl) {
+    const title = decodeURIComponent(titleEncoded);
+    const link = 'https://alfirama.id/studio/?p=' + encodeURIComponent(id);
+    navigator.clipboard.writeText(link).then(() => {
+      showToast('success', 'LINK DISALIN!', '"' + title + '" — link siap dibagikan.', 3000);
+      if (btnEl) {
+        const orig = btnEl.innerHTML;
+        btnEl.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(0,230,118,0.9)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+        btnEl.style.background = 'rgba(0,230,118,0.15)';
+        btnEl.style.borderColor = 'rgba(0,230,118,0.4)';
+        setTimeout(() => {
+          btnEl.innerHTML = orig;
+          btnEl.style.background = 'rgba(0,240,255,0.1)';
+          btnEl.style.borderColor = 'rgba(0,240,255,0.25)';
+        }, 2000);
+      }
+    }).catch(() => {
+      showToast('warning', 'GAGAL COPY', 'Browser tidak mendukung. Coba manual.', 4000);
+    });
+  };
+
   window.handleThumbnailClick = function (wrapEl) {
     const card = wrapEl.closest('.product-card');
     if (!card) return;
@@ -3210,6 +3366,24 @@ const imagesSafe = JSON.stringify(images).replace(/\\/g, '\\\\').replace(/`/g, '
       ? '<span class="badge-hot">🔥 HOT</span>'
       : '';
 
+const productLink = 'https://alfirama.id/studio/?p=' + encodeURIComponent(item.id);
+    const shareBtn = `<button
+      onclick="event.stopPropagation();copyProductLink('${item.id}','${encodeURIComponent(item.title||'')}',this)"
+      style="position:absolute;bottom:10px;right:10px;z-index:6;
+             width:28px;height:28px;border-radius:7px;
+             background:rgba(0,240,255,0.1);
+             border:1px solid rgba(0,240,255,0.25);
+             display:flex;align-items:center;justify-content:center;
+             transition:all 0.2s ease;cursor:pointer;"
+      onmouseover="this.style.background='rgba(0,240,255,0.2)';this.style.borderColor='rgba(0,240,255,0.5)'"
+      onmouseout="this.style.background='rgba(0,240,255,0.1)';this.style.borderColor='rgba(0,240,255,0.25)'"
+      aria-label="Copy link produk">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(0,240,255,0.8)" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+    </button>`;
+
     // Bangun slides
     const slidesHTML = images.length > 0
       ? images.map(src => `
@@ -3256,6 +3430,7 @@ const imagesSafe = JSON.stringify(images).replace(/\\/g, '\\\\').replace(/`/g, '
 <button class="btn-wishlist" onclick="toggleWishlist('${item.id}',event)"
   id="wish-${item.id}" aria-label="Tambah ke wishlist">♡</button>
           ${badgeHTML}
+          ${shareBtn}
         </div>
 
         <div class="product-body">
@@ -3364,7 +3539,9 @@ const imagesSafe = JSON.stringify(images).replace(/\\/g, '\\\\').replace(/`/g, '
         const q = q3(col2(db,'user_downloads'), wh('templateId','==',item.id), wh('status','==','paid'));
         const snap = await getDocs(q);
         const el = document.getElementById('sold-'+item.id);
-        if(el && snap.size > 0) el.textContent = '🛒 '+snap.size+' terjual';
+        if(el && snap.size > 0) {
+          el.innerHTML = '<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);border-radius:4px;padding:2px 7px;">🛒 <b style="color:#00E676;">'+snap.size+'</b> terjual</span>';
+        }
       } catch(e){}
     }
   }
