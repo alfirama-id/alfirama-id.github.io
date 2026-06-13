@@ -1929,11 +1929,17 @@ function renderTable(list){
           onmouseout="this.style.borderColor='rgba(0,212,200,0.18)';this.style.color='var(--cyan-dim)';this.style.background='transparent';">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
         </button>
-        <button class="btn-icon-sm" title="Edit" onclick="loadEditForm('${t.id}')"
+     <button class="btn-icon-sm" title="Edit" onclick="loadEditForm('${t.id}')"
           style="border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text3);"
           onmouseover="this.style.borderColor='rgba(58,176,255,0.4)';this.style.color='var(--blue)';this.style.background='var(--blue-glow)';"
           onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--text3)';this.style.background='transparent';">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn-icon-sm" title="Duplikat" onclick="duplicateTemplate('${t.id}')"
+          style="border:1px solid rgba(201,178,109,0.18);background:transparent;color:rgba(201,178,109,0.5);"
+          onmouseover="this.style.borderColor='rgba(201,178,109,0.5)';this.style.color='var(--gold)';this.style.background='var(--gold-glow)';"
+          onmouseout="this.style.borderColor='rgba(201,178,109,0.18)';this.style.color='rgba(201,178,109,0.5)';this.style.background='transparent';">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         </button>
         <button class="btn-icon-sm" title="Hapus" onclick="confirmDelete('${t.id}','${esc(t.title||'')}')"
           style="border:1px solid rgba(248,81,73,0.18);background:transparent;color:var(--red-dim);"
@@ -1980,6 +1986,12 @@ function renderGrid(list){
             onmouseover="this.style.borderColor='rgba(58,176,255,0.4)';this.style.color='var(--blue)';this.style.background='var(--blue-glow)';"
             onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.color='var(--text3)';this.style.background='transparent';">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+    <button class="btn-icon-sm" title="Duplikat" onclick="duplicateTemplate('${t.id}')"
+            style="border:1px solid rgba(201,178,109,0.18);background:transparent;color:rgba(201,178,109,0.5);"
+            onmouseover="this.style.borderColor='rgba(201,178,109,0.5)';this.style.color='var(--gold)';this.style.background='var(--gold-glow)';"
+            onmouseout="this.style.borderColor='rgba(201,178,109,0.18)';this.style.color='rgba(201,178,109,0.5)';this.style.background='transparent';">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
           <button class="btn-icon-sm" title="Hapus" onclick="confirmDelete('${t.id}','${esc(t.title||'')}')"
             style="border:1px solid rgba(248,81,73,0.18);background:transparent;color:var(--red-dim);"
@@ -2130,6 +2142,28 @@ window.confirmDelete=function(id,name){
       showToast('🗑️ Template berhasil dihapus');
     }catch(err){ showToast('❌ Gagal menghapus: '+err.message,5000); }
   });
+};
+
+/* ── DUPLICATE TEMPLATE ── */
+window.duplicateTemplate=async function(id){
+  const t=allTemplates.find(x=>x.id===id);
+  if(!t){ showToast('⚠️ Data tidak ditemukan'); return; }
+  try{
+    const payload={
+      ...t,
+      title: 'COPY — '+t.title,
+      status: 'draft',
+      featured: false,
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: serverTimestamp(),
+      createdServer: serverTimestamp(),
+    };
+    delete payload.id;
+    await addDoc(collection(db,'studio_templates'),payload);
+    showToast('✅ Duplikat berhasil — tersimpan sebagai Draft');
+  }catch(err){
+    showToast('❌ Gagal duplikat: '+err.message,5000);
+  }
 };
 
 /* ── BULK OPS ── */
