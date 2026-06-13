@@ -1405,7 +1405,7 @@ async function callAI(userMessage, applyTarget){
   aiHistory.push({ role: 'user', content: fullMsg });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://alfirama-ai-proxy.alfirama-id.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
